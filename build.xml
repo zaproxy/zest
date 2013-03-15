@@ -1,0 +1,82 @@
+<project name="ZAP-Extensions" default="dist" basedir=".">
+	<description>Build ZAP extensions</description>
+
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+	<property name="src" location="src" />
+	<property name="src.version" value="1.7" />
+	<property name="zest.version" value="1" />
+	<property name="zest.jar" value="mozilla-zest-${zest.version}.jar" />
+
+	<target name="clean">
+		<delete dir="${dist}" includeEmptyDirs="true" />
+		<delete dir="${build}" includeEmptyDirs="true" />
+	</target>
+
+	<target name="init">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${dist}" />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<echo message="Compiling the source..." />
+		
+		<!-- Compile with debug information if the property "javac.debug" is set to true -->
+		<local name="debug" />
+		<condition property="debug" value="true" else="false">
+			<istrue value="${javac.debug}" />
+		</condition>
+		
+		<!-- Compile the java code from ${src} into ${build} -->
+		<!--javac srcdir="${src}" destdir="${build}" classpath="zap.jar"/-->
+		<!--javac srcdir="${src}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="${debug}"-->
+		<javac srcdir="${src}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="true">
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="dist" depends="compile" description="build the jar file">
+		
+		<mkdir dir="${dist}/lib" />
+
+        <copy todir="${dist}/lib">
+            <fileset dir="${lib}">
+                <include name="**/*.jar" />
+                <exclude name="**/.svn/**" />
+                <exclude name="**/_svn/**" />
+            </fileset>
+        </copy>
+
+        <copy file="${src}/zest.sh" tofile="${dist}/zest.sh"/>
+        <replace file="${dist}/zest.sh" summary="true" encoding="UTF-8">
+            <replacefilter token="_ZEST_JAR_" value="${zest.jar}" />
+        </replace>
+        <chmod perm="755" file="${dist}/zest.sh" />
+
+        <manifestclasspath property="dist.manifest.classpath" jarfile="${dist}/${zest.jar}">
+            <classpath>
+                <fileset dir="${dist}/lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </manifestclasspath>
+
+		<jar jarfile="${dist}/${zest.jar}" update="true" compress="true">
+			<zipfileset dir="${build}" prefix="">
+				<include name="org/**"/>
+			</zipfileset>
+            <manifest>
+                <attribute name="Main-Class" value="org.mozilla.zest.impl.CmdLine" />
+                <attribute name="Class-Path" value="${dist.manifest.classpath}" />
+                <attribute name="Implementation-Version" value="${zest.version}" />
+            </manifest>
+		</jar>
+	</target>
+
+</project>
