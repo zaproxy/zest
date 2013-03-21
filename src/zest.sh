@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This script is for running the Zest command line tool
 
 #Check the java version (min java 7)
 JAVAV=`java -version 2>&1 |awk 'NR==1{ gsub(/"/,""); print $3 }'`
