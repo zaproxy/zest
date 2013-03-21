@@ -43,19 +43,20 @@ public class ZestScript extends ZestElement {
 	}
 	
 	public void duplicateTo(ZestScript script) {
+		script.about = this.about;
 		script.zestVersion = this.zestVersion;
 		script.generatedBy = this.generatedBy;
-		script.about = this.about;
 		script.author = this.author;
 		script.title = this.title;
+		script.description = this.description;
 		script.prefix = this.prefix;
 		script.tokens = this.tokens.deepCopy();
 		
 		for (ZestRequest zr : this.getRequests()) {
-			script.add(zr);
+			script.add(zr.deepCopy());
 		}
 		for (ZestAuthentication za : this.getAuthentication()) {
-			script.addAuthentication(za);
+			script.addAuthentication((ZestAuthentication)za.deepCopy());
 		}
 		// Correct references in the copy... 
 		script.setUpRefs();
