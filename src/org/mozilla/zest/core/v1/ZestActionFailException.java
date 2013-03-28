@@ -4,25 +4,24 @@
 
 package org.mozilla.zest.core.v1;
 
-public class ZestTransformFailException extends Exception {
+public class ZestActionFailException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final ZestTransformation test;
+	private ZestAction action = null;
 
-	public ZestTransformFailException (ZestTransformation test, String message) {
+	public ZestActionFailException (ZestAction action, String message) {
 		super(message);
-		this.test = test;
+		this.action = action;
 	}
 
-	public ZestTransformFailException (ZestTransformation test) {
+	public ZestActionFailException (ZestAction action) {
 		super();
-		this.test = test;
+		this.action = action;
 	}
 
-	public ZestTransformation getTest() {
-		return test;
+	public ZestAction getAction() {
+		return action;
 	}
-	
 	
 }

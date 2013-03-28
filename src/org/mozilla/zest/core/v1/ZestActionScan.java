@@ -4,19 +4,23 @@
 
 package org.mozilla.zest.core.v1;
 
-
-public class ZestTestScan extends ZestTest {
+public class ZestActionScan extends ZestAction {
 
 	private String targetParameter;
 
-	public ZestTestScan() {
+	public ZestActionScan() {
+		super();
 	}
 	
-	public ZestTestScan(String targetParameter) {
+	public ZestActionScan(String targetParameter) {
 		super ();
 		this.targetParameter = targetParameter;
 	}
 	
+	public ZestActionScan(int index) {
+		super(index);
+	}
+
 	public String getTargetParameter() {
 		return targetParameter;
 	}
@@ -26,8 +30,15 @@ public class ZestTestScan extends ZestTest {
 	}
 
 	@Override
-	public ZestTestScan deepCopy() {
-		return new ZestTestScan(this.targetParameter);
+	public ZestActionScan deepCopy() {
+		ZestActionScan copy = new ZestActionScan(this.getIndex());
+		copy.targetParameter = this.targetParameter;
+		return copy;
+	}
+
+	@Override
+	public String invoke(ZestResponse response) throws ZestActionFailException {
+		throw new ZestActionFailException(this);
 	}
 
 }

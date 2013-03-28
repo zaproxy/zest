@@ -41,7 +41,7 @@
 		</javac>
 	</target>
 	
-	<target name="dist" depends="compile" description="build the jar file">
+	<target name="dist" depends="clean,compile" description="build the jar file">
 		
 		<mkdir dir="${dist}/lib" />
 
@@ -63,6 +63,8 @@
             <classpath>
                 <fileset dir="${dist}/lib">
                     <include name="**/*.jar" />
+        			<exclude name="junit*.jar" />
+        			<exclude name="mockito*.jar" />
                 </fileset>
             </classpath>
         </manifestclasspath>

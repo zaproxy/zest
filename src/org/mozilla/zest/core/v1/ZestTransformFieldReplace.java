@@ -28,7 +28,7 @@ public class ZestTransformFieldReplace extends ZestTransformation implements Zes
 	public void transform (ZestRunner runner, ZestRequest request) throws ZestTransformFailException {
 		String replaceValue = runner.getReplacementValue(this.fieldDefinition);
 		if (replaceValue == null) {
-			throw new ZestTransformFailException(this);
+			throw new ZestTransformFailException(this, "No replace value supplied");
 		}
 		request.setData(request.getData().replace(this.requestString, replaceValue));
 	}

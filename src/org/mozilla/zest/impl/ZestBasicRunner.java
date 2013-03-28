@@ -30,9 +30,13 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.mozilla.zest.core.v1.ZestAction;
+import org.mozilla.zest.core.v1.ZestActionFailException;
+import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAuthentication;
+import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestJSON;
@@ -40,8 +44,7 @@ import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
 import org.mozilla.zest.core.v1.ZestScript;
-import org.mozilla.zest.core.v1.ZestTest;
-import org.mozilla.zest.core.v1.ZestTestFailException;
+import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestTransformFailException;
 import org.mozilla.zest.core.v1.ZestTransformFieldReplace;
 import org.mozilla.zest.core.v1.ZestTransformation;
@@ -58,7 +61,7 @@ public class ZestBasicRunner implements ZestRunner {
 
 	@Override
 	public void run(ZestScript script) 
-			throws ZestAssertFailException, ZestTestFailException, ZestTransformFailException, IOException {
+			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException {
 
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
@@ -76,18 +79,57 @@ public class ZestBasicRunner implements ZestRunner {
 		transformList = new ArrayList<ZestTransformation>();
 		replacementValues = new HashMap<String, String>(); 
 		
-		for (ZestRequest req : script.getRequests()) {
-			transformList.addAll(req.getTransformations());
-		}
+		transformList.addAll(script.getTransformations());
 		
-		for (ZestRequest req : script.getRequests()) {
-			ZestRequest req2 = req.deepCopy();
+		ZestResponse lastResponse = null;
+		for (ZestStatement stmt : script.getStatements()) {
+			lastResponse = this.runStatement(script, stmt, lastResponse);
+		}
+	}
+	
+	@Override
+	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
+			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException {
+		if (stmt instanceof ZestRequest) {
+			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
 			req2.replaceTokens(script.getTokens());
 			ZestResponse resp = send(req2);
 			handleResponse (req2, resp);
-			
 			handleTransforms (script, req2, resp);
+			return resp;
+			
+		} else if (stmt instanceof ZestConditional) {
+			ZestConditional zc = (ZestConditional) stmt;
+			
+			if (zc.isTrue(lastResponse)) {
+				this.output("Conditional TRUE: " + zc.getClass().getName());
+				for (ZestStatement ifStmt : zc.getIfStatements()) {
+					lastResponse = this.runStatement(script, ifStmt, lastResponse);
+				}
+			} else {
+				this.output("Conditional FALSE: " + zc.getClass().getName());
+				for (ZestStatement elseStmt : zc.getElseStatements()) {
+					lastResponse = this.runStatement(script, elseStmt, lastResponse);
+				}
+			}
+		} else if (stmt instanceof ZestAction) {
+			String result = handleAction(script, (ZestAction) stmt, lastResponse);
+			if (stmt instanceof ZestActionSetToken) {
+				ZestActionSetToken zast = (ZestActionSetToken) stmt;
+				script.getTokens().setToken(zast.getTokenName(), result);
+			}
 		}
+		return lastResponse;
+	}
+	
+	@Override
+	public String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException {
+		this.output("Action invoke: " + action.getClass().getName());
+		String result = action.invoke(lastResponse);
+		if (result != null) {
+			this.output("Action result: " +result);
+		}
+		return result;
 	}
 
 	@Override
@@ -113,6 +155,7 @@ public class ZestBasicRunner implements ZestRunner {
 							if (fieldStr.equals(inputElement.getAttributeValue("ID")) ||
 									fieldStr.equals(inputElement.getAttributeValue("NAME"))) {
 								String replaceValue = inputElement.getAttributeValue("VALUE");
+								this.output("Got replacement value " + defn.getKey() + " : " + replaceValue);
 								replacementValues.put(defn.getKey(), replaceValue);
 								found = true;
 								break;
@@ -153,19 +196,12 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestTestFailException {
+	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestActionFailException {
 		for (ZestAssertion za : request.getAssertions()) {
 			if (za.isValid(response)) {
 				this.responsePassed(request, response, za);
 			} else {
 				this.responseFailed(request, response, za);
-			}
-		}
-		for (ZestTest zt : request.getTests()) {
-			if (zt.test(response)) {
-				this.responsePassed(request, response, zt);
-			} else {
-				this.responseFailed(request, response, zt);
 			}
 		}
 	}
@@ -185,21 +221,7 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public void responsePassed(ZestRequest request, ZestResponse response, ZestTest test) {
-		this.output("Test PASSED: " + test.getClass().getName());
-	}
-
-	@Override
-	public void responseFailed(ZestRequest request, ZestResponse response, ZestTest test)
-			throws ZestTestFailException {
-		this.output("Test FAILED: " + test.getClass().getName());
-		if (this.getStopOnAssertFail()) {
-			throw new ZestTestFailException(test);
-		}
-	}
-
-	@Override
-	public void runScript(File script) throws ZestTransformFailException, ZestAssertFailException, ZestTestFailException, 
+	public void runScript(File script) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
 			IOException {
 	    BufferedReader fr = new BufferedReader(new FileReader(script));
 	    StringBuilder sb = new StringBuilder();

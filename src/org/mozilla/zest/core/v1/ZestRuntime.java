@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public interface ZestRuntime {
 	
-	void run(ZestScript zest) throws ZestAssertFailException, ZestTestFailException;
+	void run(ZestScript zest) throws ZestAssertFailException, ZestActionFailException;
 	
 	ZestScript load(File file) throws IOException;
 	

@@ -35,4 +35,6 @@ public abstract class ZestElement {
 	
 	abstract ZestElement deepCopy();
 	
+	// abstract String toDisplayString();
+	
 }

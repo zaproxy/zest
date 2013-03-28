@@ -45,6 +45,10 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	}
 
 	public int getRequestId() {
+		if (this.request != null) {
+			// Always believe the request we're refering to
+			return this.request.getIndex();
+		}
 		return requestId;
 	}
 

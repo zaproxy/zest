@@ -5,12 +5,13 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
-public class ZestScript extends ZestElement {
+public class ZestScript extends ZestStatement implements ZestContainer {
 
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
 	public static final String ABOUT = "This is a Zest script. For more details about Zest visit " + ZEST_URL;
@@ -24,13 +25,15 @@ public class ZestScript extends ZestElement {
 	private String prefix;
 	private ZestTokens tokens = new ZestTokens();
 	
-	private List<ZestRequest> requests = new ArrayList<ZestRequest>();
+	private List<ZestStatement> statements = new ArrayList<ZestStatement>();
 	private List<ZestAuthentication> authentication = new ArrayList<ZestAuthentication>();
 	
 	public ZestScript () {
+		super();
 	}
 	
 	public ZestScript (String title, String description) {
+		this();
 		this.title = title;
 		this.description = description;
 	}
@@ -52,7 +55,7 @@ public class ZestScript extends ZestElement {
 		script.prefix = this.prefix;
 		script.tokens = this.tokens.deepCopy();
 		
-		for (ZestRequest zr : this.getRequests()) {
+		for (ZestStatement zr : this.getStatements()) {
 			script.add(zr.deepCopy());
 		}
 		for (ZestAuthentication za : this.getAuthentication()) {
@@ -64,41 +67,60 @@ public class ZestScript extends ZestElement {
 	}
 
 	private void setUpRefs() {
-		for (ZestRequest zr : this.getRequests()) {
+		for (ZestStatement zr : this.getStatements()) {
 			zr.setUpRefs(this);
 		}
 	}
 
-	public void add(ZestRequest req) {
-		this.requests.add(req);
-		req.setIndex(this.requests.indexOf(req));
-		req.setUpRefs(this);
-		update(req);
+	public void add(ZestStatement req) {
+		this.add(this.statements.size(), req);
 	}
 	
-	public void add(int index, ZestRequest req) {
-		this.requests.add(index, req);
-		this.reindex(index);
-		update(req);
+	public void add(int index, ZestStatement req) {
+		ZestStatement prev = this;
+		if (index == this.statements.size()) {
+			// Add at the end
+			this.statements.add(req);
+			
+		} else {
+			this.statements.add(index, req);
+		}
+		if (index > 0) {
+			prev = this.statements.get(index-1);
+		}
+		// This will wire everything up
+		req.insertAfter(prev);
+		updateTokens(req);
 	}
 	
-	public void move(int index, ZestRequest req) {
-		this.requests.remove(req);
-		this.requests.add(index, req);
-		this.reindex(index);
+	public void move(int index, ZestStatement req) {
+		this.remove(req);
+		this.add(index, req);
 	}
 	
-	public void remove(ZestRequest req) {
-		this.removeRequest(this.requests.indexOf(req));
+	public void remove(ZestStatement req) {
+		this.statements.remove(req);
+		req.remove();
 	}
 	
-	public void removeRequest(int index) {
-		this.requests.remove(index);
-		this.reindex(index);
+	public void removeStatement(int index) {
+		this.remove(this.statements.get(index));
 	}
 	
-	public ZestRequest getRequest (int index) throws IndexOutOfBoundsException {
-		return this.requests.get(index);
+	public ZestStatement getStatement (int index) {
+		for (ZestStatement zr : this.getStatements()) {
+			if (zr.getIndex() == index) {
+				return zr;
+			}
+			if (zr instanceof ZestContainer) {
+				ZestStatement stmt = ((ZestContainer)zr).getStatement(index);
+				if (stmt != null) {
+					return stmt;
+				}
+			}
+		}
+
+		return null;
 	}
 	
 	public String getTitle() {
@@ -117,13 +139,12 @@ public class ZestScript extends ZestElement {
 		this.description = description;
 	}
 
-	public List<ZestRequest> getRequests() {
-		return requests;
+	public List<ZestStatement> getStatements() {
+		return statements;
 	}
 
-	public void setRequests(List<ZestRequest> requests) {
-		this.requests = requests;
-		reindex(0);	// Probably not needed, but wont hurt
+	public void setStatements(List<ZestStatement> statements) {
+		this.statements = statements;
 		this.setUpRefs();
 	}
 	
@@ -143,36 +164,19 @@ public class ZestScript extends ZestElement {
 		this.authentication = authentication;
 	}
 	
-	private void reindex(int start) {
-		for (int i = start; i < this.requests.size(); i++) {
-			// Note this will correct the indexes of any references
-			this.requests.get(i).setIndex(i);
-			// TODO Shouldnt really be here...
-			this.update(this.requests.get(i));
-		}
-	}
-
 	public String getPrefix() {
 		return prefix;
 	}
 
-	public void setPrefix(String prefix) throws MalformedURLException {
-		if (this.prefix != null) {
-			// Replace the prefixes
-			int oldLen = this.prefix.length();
-			for (ZestRequest req : this.requests) {
-				String urlStr = prefix + req.getUrl().toString().substring(oldLen);
-				req.setUrl(new URL(urlStr));
-			}
-		} else {
-			// Check all current requests start with the prefix
-			for (ZestRequest req : this.requests) {
-				if (! req.getUrl().toString().startsWith(prefix)) {
-					throw new IllegalArgumentException("Request " + req.getUrl() + " does not start with prefix " + prefix);
-				}
-			}
+	public void setPrefix(String newPrefix) throws MalformedURLException {
+		this.setPrefix(this.prefix, newPrefix);
+	}
+
+	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
+		for (ZestStatement stmt : this.statements) {
+			stmt.setPrefix(oldPrefix, newPrefix);
 		}
-		this.prefix = prefix;
+		this.prefix = newPrefix;
 	}
 
 	public ZestTokens getTokens() {
@@ -183,8 +187,8 @@ public class ZestScript extends ZestElement {
 		this.tokens = tokens;
 	}
 
-	public void update(ZestRequest request) {
-		List<String> allTokens = request.getTokens(this.tokens.getTokenStart(), this.tokens.getTokenEnd());
+	private void updateTokens(ZestStatement statement) {
+		Set<String> allTokens = statement.getTokens(this.tokens.getTokenStart(), this.tokens.getTokenEnd());
 		for (String str : allTokens) {
 			// Will default if not present
 			this.tokens.addToken(str);
@@ -224,6 +228,45 @@ public class ZestScript extends ZestElement {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	@Override
+	public Set<String> getTokens(String tokenStart, String tokenEnd) {
+		Set<String> tokens = new HashSet<String>();
+		for (ZestStatement stmt : this.statements) {
+			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
+		}
+		return tokens;
+	}
+
+	@Override
+	void setUpRefs(ZestScript script) {
+		this.setUpRefs();
+	}
+
+	@Override
+	public List<ZestTransformation> getTransformations() {
+		List<ZestTransformation> list = new ArrayList<ZestTransformation>();
+		for (ZestStatement stmt : this.statements) {
+			list.addAll(stmt.getTransformations());
+		}
+		return list;
+	}
+
+	@Override
+	public ZestStatement getLast() {
+		return null;
+	}
+
+	@Override
+	public ZestStatement getChildBefore(ZestStatement child) {
+		if (this.statements.contains(child)) {
+			int childIndex = this.statements.indexOf(child);
+			if (childIndex > 1) {
+				return this.statements.get(childIndex-1);
+			}
+		}
+		return null;
 	}
 	
 }
