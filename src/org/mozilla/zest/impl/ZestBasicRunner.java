@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -256,6 +257,7 @@ public class ZestBasicRunner implements ZestRunner {
 		int code = 0;
 		String responseHeader = null;
 		String responseBody = null;
+		Date start = new Date();
 		try {
 			this.output(req.getMethod() + " : " + req.getUrl());
 		    code = httpclient.executeMethod(method);
@@ -270,7 +272,7 @@ public class ZestBasicRunner implements ZestRunner {
 		// Update the headers with the ones actually sent
 		req.setHeaders(arrayToStr(method.getRequestHeaders()));
 		
-		return new ZestResponse(responseHeader, responseBody, code);
+		return new ZestResponse(responseHeader, responseBody, code, new Date().getTime() - start.getTime());
 	}
 
 	private void setHeaders(HttpMethod method, String headers) {

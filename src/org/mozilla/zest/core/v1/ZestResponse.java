@@ -9,16 +9,18 @@ public class ZestResponse extends ZestElement {
 	private String headers;
 	private String body;
 	private int statusCode;
+	private long responseTimeInMs;
 	
-	public ZestResponse (String headers, String body, int statusCode) {
+	public ZestResponse (String headers, String body, int statusCode, long responseTimeInMs) {
 		this.headers = headers;
 		this.body = body;
 		this.statusCode = statusCode;
+		this.responseTimeInMs = responseTimeInMs;
 	}
 
 	@Override
 	public ZestResponse deepCopy() {
-		ZestResponse zr = new ZestResponse(this.headers, this.body, this.statusCode);
+		ZestResponse zr = new ZestResponse(this.headers, this.body, this.statusCode, this.responseTimeInMs);
 		return zr;
 	}
 	public String getHeaders() {
@@ -31,6 +33,10 @@ public class ZestResponse extends ZestElement {
 
 	public int getStatusCode() {
 		return statusCode;
+	}
+
+	public long getResponseTimeInMs() {
+		return responseTimeInMs;
 	}
 
 }

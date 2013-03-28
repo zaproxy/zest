@@ -11,6 +11,7 @@ import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditionRegex;
+import org.mozilla.zest.core.v1.ZestConditionResponseTime;
 import org.mozilla.zest.core.v1.ZestConditionStatusCode;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
@@ -109,6 +110,13 @@ public class ZestPrinter {
 			} else if (zc instanceof ZestConditionStatusCode) {
 				ZestConditionStatusCode zcs = (ZestConditionStatusCode) zc;
 				System.out.println("Status Code: " + zcs.getCode());
+			} else if (zc instanceof ZestConditionResponseTime) {
+				ZestConditionResponseTime zcs = (ZestConditionResponseTime) zc;
+				if (zcs.isGreaterThan()) {
+					System.out.println("Status Code: > " + zcs.getTimeInMs());
+				} else {
+					System.out.println("Status Code: < " + zcs.getTimeInMs());
+				}
 			} else {
 				System.out.println("(Unknown conditional: " + stmt.getElementType() + ")");
 			}

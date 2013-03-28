@@ -21,7 +21,7 @@ public class ZestActionSetTokenUnitTest {
 	@Test
 	public void testSimpleCase() throws Exception {
 		ZestActionSetToken ast = new ZestActionSetToken();
-		ZestResponse resp = new ZestResponse("Header prefix12345postfix", "Body Prefix54321Postfix", 200);
+		ZestResponse resp = new ZestResponse("Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
 
 		ast.setTokenName("aaa");
 		ast.setPrefix("prefix");
@@ -37,7 +37,7 @@ public class ZestActionSetTokenUnitTest {
 	@Test
 	public void testExceptions() throws Exception {
 		ZestActionSetToken ast = new ZestActionSetToken();
-		ZestResponse resp = new ZestResponse("aaaa", "bbbb", 200);
+		ZestResponse resp = new ZestResponse("aaaa", "bbbb", 200, 0);
 
 		ast.setTokenName("aaa");
 		ast.setPrefix("bbb");
