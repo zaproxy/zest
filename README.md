@@ -24,3 +24,7 @@ Thats coming soon ;)
 
 There is, however, an OWASP ZAP add-on which provides a UI for creating and running Zest scripts.
 This will be released very shortly...
+
+For more information (when its availavle) see:
+* https://developer.mozilla.org/en-US/docs/Zest
+* http://groups.google.com/group/mozilla-zest
