@@ -7,6 +7,7 @@ package org.mozilla.zest.impl;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestActionScan;
+import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditionRegex;
@@ -120,10 +121,15 @@ public class ZestPrinter {
 			printIndent(indent, stmt.getIndex());
 			if (za instanceof ZestActionFail) {
 				ZestActionFail zaf = (ZestActionFail)za;
-				System.out.println("Fail " + zaf.getMessage());
+				System.out.println("Action Fail: " + zaf.getMessage());
 			} else if (za instanceof ZestActionScan) {
 				ZestActionScan zas = (ZestActionScan)za;
-				System.out.println("Scan " + zas.getTargetParameter());
+				System.out.println("Action Scan: " + zas.getTargetParameter());
+			} else if (za instanceof ZestActionSetToken) {
+				ZestActionSetToken zas = (ZestActionSetToken)za;
+				System.out.println("Action Set Token: " + zas.getTokenName());
+			} else {
+				System.out.println("(Unknown action: " + stmt.getElementType() + ")");
 			}
 		} else {
 			printIndent(indent, stmt.getIndex());

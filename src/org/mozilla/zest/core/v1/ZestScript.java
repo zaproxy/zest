@@ -254,6 +254,11 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	}
 
 	@Override
+	public int getIndex (ZestStatement child) {
+		return this.statements.indexOf(child);
+	}
+
+	@Override
 	public ZestStatement getLast() {
 		return null;
 	}

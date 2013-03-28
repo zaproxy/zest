@@ -105,7 +105,6 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 			this.elseStatements.add(index, req);
 		}
 	}
-	
 
 	public void moveElse(int index, ZestStatement req) {
 		this.removeElse(req);
@@ -127,6 +126,26 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 	
 	public List<ZestStatement> getElseStatements() {
 		return elseStatements;
+	}
+	
+	@Override
+	public int getIndex (ZestStatement child) {
+		if (this.ifStatements.contains(child)) {
+			return this.ifStatements.indexOf(child);
+		}
+		return this.elseStatements.indexOf(child);
+	}
+	
+	public void move(int index, ZestStatement stmt) {
+		if (this.ifStatements.contains(stmt)) {
+			this.removeIf(stmt);
+			this.addIf(index, stmt);
+		} else if (this.elseStatements.contains(stmt)) {
+			this.removeElse(stmt);
+			this.addElse(index, stmt);
+		} else {
+			throw new IllegalArgumentException("Not a direct child: " + stmt);
+		}
 	}
 
 	@Override

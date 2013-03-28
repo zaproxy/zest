@@ -11,6 +11,10 @@ public interface ZestContainer {
 	public ZestStatement getLast();
 	
 	public ZestStatement getStatement (int index);
+	
+	public int getIndex (ZestStatement child);
+
+	public void move(int index, ZestStatement stmt);
 
 	public ZestStatement getChildBefore(ZestStatement child);
 	
