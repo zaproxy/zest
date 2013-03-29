@@ -23,7 +23,7 @@ The java reference implementation for the first phase is complete .. but right n
 Thats coming soon ;)
 
 There is, however, an OWASP ZAP add-on which provides a UI for creating and running Zest scripts.
-This will be released very shortly...
+For more details see: http://code.google.com/p/zap-extensions/wiki/AddOn_Zest
 
 For more information (when its availavle) see:
 * https://developer.mozilla.org/en-US/docs/Zest
