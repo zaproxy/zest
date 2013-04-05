@@ -18,3 +18,13 @@ All constructive feedback is very welcome.
 
 Anyone can contribute to the onward development of Zest, and teams or individuals who develop security tools are 
 especially welcome to join and help shape Zest's future.
+
+The java reference implementation for the first phase is complete .. but right now theres no documentation.
+Thats coming soon ;)
+
+There is, however, an OWASP ZAP add-on which provides a UI for creating and running Zest scripts.
+For more details see: http://code.google.com/p/zap-extensions/wiki/AddOn_Zest
+
+For more information (when its availavle) see:
+* https://developer.mozilla.org/en-US/docs/Zest
+* http://groups.google.com/group/mozilla-zest
