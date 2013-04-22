@@ -10,13 +10,16 @@ import java.io.IOException;
 public interface ZestRunner {
 
 	void run (ZestScript script) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException;
+			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException;
 
 	void runScript (File script) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException;
+			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException;
 	
 	ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
-			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException;
+			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException,
+			ZestInvalidCommonTestException;
 
 	ZestResponse send (ZestRequest request) throws ZestTransformFailException, IOException;
 	
@@ -27,6 +30,12 @@ public interface ZestRunner {
 	
 	void handleTransform (ZestRequest request, ZestTransformation transform) throws ZestTransformFailException;
 
+	void handleCommonTests (ZestScript script, ZestRequest request, ZestResponse response) 
+			throws ZestActionFailException, ZestInvalidCommonTestException;
+	
+	void runCommonTest(ZestStatement stmt, ZestResponse response) 
+			throws ZestActionFailException, ZestInvalidCommonTestException;
+	
 	String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException;
 
 	String getReplacementValue(ZestFieldDefinition defn);
@@ -34,6 +43,10 @@ public interface ZestRunner {
 	void responsePassed (ZestRequest request, ZestResponse response, ZestAssertion assertion);
 
 	void responseFailed (ZestRequest request, ZestResponse response, ZestAssertion assertion) throws ZestAssertFailException;
+	
+	void responsePassed (ZestRequest request, ZestResponse response);
+
+	void responseFailed (ZestRequest request, ZestResponse response) throws ZestAssertFailException;
 	
 	void setStopOnAssertFail(boolean stop);
 	

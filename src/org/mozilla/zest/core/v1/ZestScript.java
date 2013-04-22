@@ -27,6 +27,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	
 	private List<ZestStatement> statements = new ArrayList<ZestStatement>();
 	private List<ZestAuthentication> authentication = new ArrayList<ZestAuthentication>();
+	private List<ZestStatement> commonTests = new ArrayList<ZestStatement>();
 	
 	public ZestScript () {
 		super();
@@ -60,6 +61,9 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		}
 		for (ZestAuthentication za : this.getAuthentication()) {
 			script.addAuthentication((ZestAuthentication)za.deepCopy());
+		}
+		for (ZestStatement zr : this.getCommonTests()) {
+			script.addCommonTest(zr.deepCopy());
 		}
 		// Correct references in the copy... 
 		script.setUpRefs();
@@ -123,6 +127,56 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return null;
 	}
 	
+	public void addCommonTest(ZestStatement req) {
+		this.addCommonTest(this.commonTests.size(), req);
+	}
+	
+	public void addCommonTest(int index, ZestStatement req) {
+		ZestStatement prev = this;
+		if (index == this.commonTests.size()) {
+			// Add at the end
+			this.commonTests.add(req);
+			
+		} else {
+			this.commonTests.add(index, req);
+		}
+		if (index > 0) {
+			prev = this.commonTests.get(index-1);
+		}
+		// This will wire everything up
+		req.insertAfter(prev);
+	}
+	
+	public void moveCommonTest(int index, ZestStatement req) {
+		this.removeCommonTest(req);
+		this.addCommonTest(index, req);
+	}
+	
+	public void removeCommonTest(ZestStatement req) {
+		this.commonTests.remove(req);
+		req.remove();
+	}
+	
+	public void removeCommonTest(int index) {
+		this.remove(this.commonTests.get(index));
+	}
+	
+	public ZestStatement getCommonTest (int index) {
+		for (ZestStatement zr : this.getCommonTests()) {
+			if (zr.getIndex() == index) {
+				return zr;
+			}
+			if (zr instanceof ZestContainer) {
+				ZestStatement stmt = ((ZestContainer)zr).getStatement(index);
+				if (stmt != null) {
+					return stmt;
+				}
+			}
+		}
+
+		return null;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -162,6 +216,14 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 
 	public void setAuthentication(List<ZestAuthentication> authentication) {
 		this.authentication = authentication;
+	}
+	
+	public List<ZestStatement> getCommonTests() {
+		return commonTests;
+	}
+
+	public void setCommonTests(List<ZestStatement> statements) {
+		this.commonTests = statements;
 	}
 	
 	public String getPrefix() {

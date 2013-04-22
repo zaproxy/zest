@@ -33,7 +33,7 @@ public abstract class ZestElement {
 		return this.getClass().equals(ze.getClass());
 	}
 	
-	abstract ZestElement deepCopy();
+	public abstract ZestElement deepCopy();
 	
 	// abstract String toDisplayString();
 	

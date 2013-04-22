@@ -31,7 +31,7 @@ public class ZestAssertStatusCode extends ZestAssertion {
 	}
 
 	@Override
-	ZestAssertStatusCode deepCopy() {
+	public ZestAssertStatusCode deepCopy() {
 		return new ZestAssertStatusCode(this.code);
 	}
 

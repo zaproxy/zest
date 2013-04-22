@@ -99,7 +99,7 @@ public abstract class ZestStatement extends ZestElement {
 
 	public abstract List<ZestTransformation> getTransformations();
 
-	abstract ZestStatement deepCopy();
+	public abstract ZestStatement deepCopy();
 
 	/* Useful when debuging ;)
 	public String toString () {

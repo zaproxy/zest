@@ -32,6 +32,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.mozilla.zest.core.v1.ZestAction;
+import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
@@ -40,6 +41,7 @@ import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
+import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -61,8 +63,8 @@ public class ZestBasicRunner implements ZestRunner {
 	private Map<String, String> replacementValues;
 
 	@Override
-	public void run(ZestScript script) 
-			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException {
+	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
+			ZestTransformFailException, IOException, ZestInvalidCommonTestException {
 
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
@@ -90,12 +92,14 @@ public class ZestBasicRunner implements ZestRunner {
 	
 	@Override
 	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
-			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException {
+			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, 
+			ZestInvalidCommonTestException, IOException {
 		if (stmt instanceof ZestRequest) {
 			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
 			req2.replaceTokens(script.getTokens());
 			ZestResponse resp = send(req2);
 			handleResponse (req2, resp);
+			handleCommonTests (script, req2, resp);
 			handleTransforms (script, req2, resp);
 			return resp;
 			
@@ -198,14 +202,56 @@ public class ZestBasicRunner implements ZestRunner {
 
 	@Override
 	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestActionFailException {
+		boolean passed = true;
 		for (ZestAssertion za : request.getAssertions()) {
 			if (za.isValid(response)) {
 				this.responsePassed(request, response, za);
 			} else {
+				passed = false;
 				this.responseFailed(request, response, za);
 			}
 		}
+		
+		if (passed) {
+			this.responsePassed(request, response);
+		} else {
+			this.responseFailed(request, response);
+		}
+		
 	}
+	
+	@Override
+	public void handleCommonTests (ZestScript script, ZestRequest request, ZestResponse response) throws ZestActionFailException, ZestInvalidCommonTestException {
+		for (ZestStatement stmt : script.getCommonTests()) {
+			this.runCommonTest(stmt, response);
+		}
+	}
+	
+	@Override
+	public void runCommonTest(ZestStatement stmt, ZestResponse response) throws ZestActionFailException, ZestInvalidCommonTestException {
+		if (stmt instanceof ZestConditional) {
+			ZestConditional zc = (ZestConditional) stmt;
+			
+			if (zc.isTrue(response)) {
+				this.output("Common Test Conditional TRUE: " + zc.getClass().getName());
+				for (ZestStatement ifStmt : zc.getIfStatements()) {
+					this.runCommonTest(ifStmt, response);
+				}
+			} else {
+				this.output("Common Test Conditional FALSE: " + zc.getClass().getName());
+				for (ZestStatement elseStmt : zc.getElseStatements()) {
+					this.runCommonTest(elseStmt, response);
+				}
+			}
+		} else if (stmt instanceof ZestActionFail) {
+			ZestActionFail zaf = (ZestActionFail) stmt;
+			zaf.invoke(response);
+		} else {
+			throw new ZestInvalidCommonTestException(stmt);
+		}
+		
+	}
+
 
 	@Override
 	public void responsePassed(ZestRequest request, ZestResponse response, ZestAssertion assertion) {
@@ -221,9 +267,21 @@ public class ZestBasicRunner implements ZestRunner {
 		}
 	}
 
+	// TODO .. do we really need this??
+	@Override
+	public void responsePassed(ZestRequest request, ZestResponse response) {
+		this.output("Assertion PASSED");
+	}
+
+	@Override
+	public void responseFailed(ZestRequest request, ZestResponse response)
+			throws ZestAssertFailException {
+		this.output("Assertion FAILED");
+	}
+
 	@Override
 	public void runScript(File script) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
-			IOException {
+			IOException, ZestInvalidCommonTestException {
 	    BufferedReader fr = new BufferedReader(new FileReader(script));
 	    StringBuilder sb = new StringBuilder();
         String line;

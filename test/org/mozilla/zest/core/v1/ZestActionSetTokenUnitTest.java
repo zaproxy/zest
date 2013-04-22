@@ -32,7 +32,25 @@ public class ZestActionSetTokenUnitTest {
 		ast.setPrefix("Prefix");
 		ast.setPostfix("Postfix");
 		assertEquals ("54321", ast.invoke(resp));
-}
+	}
+
+	@Test
+	public void testRegexes() throws Exception {
+		ZestActionSetToken ast = new ZestActionSetToken();
+		ZestResponse resp = new ZestResponse("Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
+
+		ast.setTokenName("aaa");
+		ast.setPrefix("^");
+		ast.setPostfix("$");
+		ast.setLocation(ZestActionSetToken.LOC_HEAD);
+		assertEquals ("Header prefix12345postfix", ast.invoke(resp));
+
+		ast.setTokenName("aaa");
+		ast.setPrefix("^");
+		ast.setPostfix("$");
+		ast.setLocation(ZestActionSetToken.LOC_BODY);
+		assertEquals ("Body Prefix54321Postfix", ast.invoke(resp));
+	}
 
 	@Test
 	public void testExceptions() throws Exception {
