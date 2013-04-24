@@ -330,7 +330,7 @@ public class ZestBasicRunner implements ZestRunner {
 		// Update the headers with the ones actually sent
 		req.setHeaders(arrayToStr(method.getRequestHeaders()));
 		
-		return new ZestResponse(responseHeader, responseBody, code, new Date().getTime() - start.getTime());
+		return new ZestResponse(req.getUrl(), responseHeader, responseBody, code, new Date().getTime() - start.getTime());
 	}
 
 	private void setHeaders(HttpMethod method, String headers) {

@@ -6,7 +6,7 @@
 	<property name="lib" location="lib" />
 	<property name="src" location="src" />
 	<property name="src.version" value="1.7" />
-	<property name="zest.version" value="1" />
+	<property name="zest.version" value="2" />	<!-- Note that Zest v2 is work in progress" -->
 	<property name="zest.jar" value="mozilla-zest-${zest.version}.jar" />
 
 	<target name="clean">
