@@ -114,7 +114,17 @@ ZestRequest.prototype.load = function(){
 };
 
 ZestRequest.prototype.run = function() {
-  operations.request(this);
+  operations.request(this).then(function(response){
+    for(idx in this.assertions) {
+      var assertion = this.assertions[idx];
+      if (assertion.assert) {
+        assertion.assert(response);
+      }
+    }
+  }.bind(this),
+  function(error){
+    console.log('something went wrong');
+  });
 }
 
 // TODO: Implement ZestResponse
@@ -137,7 +147,8 @@ var ZestAssertStatusCode = function(){};
 
 ZestAssertStatusCode.prototype.load = function(){};
 // TODO: maybe have some kind of assertion base so we can unify reporting
-ZestAssertStatusCode.prototype.assert = function(value){
+ZestAssertStatusCode.prototype.assert = function(response){
+  var value = response.statusCode;
   log.debug('assert: '+value+' == '+this.code+' ?');
   if(this.code == value) {
     log.debug('StatusCode assertion passed');
@@ -151,6 +162,17 @@ ZestAssertStatusCode.prototype.assert = function(value){
 var ZestAssertLength = function(){};
 
 ZestAssertLength.prototype.load = function(){};
+ZestAssertLength.prototype.assert = function(response){
+  var value = parseInt(response.headers['content-length']);
+  log.debug('assert: '+value+' == '+this.length+' ?');
+  if(this.length == value) {
+    log.debug('Length assertion passed');
+    return true;
+  }
+  log.warn('assertion failed');
+  return false;
+};
+
 
 // TODO: Implement ZestTransformRndIntReplace
 var ZestTransformRndIntReplace = function(){};
@@ -163,3 +185,4 @@ var ZestActionScan = function(){};
 
 exports.ZestConstants = ZestConstants;
 exports.ZestScript = ZestScript;
+exports.ZestResponse = ZestResponse;
