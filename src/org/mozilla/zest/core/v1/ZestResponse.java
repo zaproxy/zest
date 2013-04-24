@@ -4,14 +4,18 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.net.URL;
+
 public class ZestResponse extends ZestElement {
 	
+	private URL url;
 	private String headers;
 	private String body;
 	private int statusCode;
 	private long responseTimeInMs;
 	
-	public ZestResponse (String headers, String body, int statusCode, long responseTimeInMs) {
+	public ZestResponse (URL url, String headers, String body, int statusCode, long responseTimeInMs) {
+		this.url = url;
 		this.headers = headers;
 		this.body = body;
 		this.statusCode = statusCode;
@@ -20,9 +24,14 @@ public class ZestResponse extends ZestElement {
 
 	@Override
 	public ZestResponse deepCopy() {
-		ZestResponse zr = new ZestResponse(this.headers, this.body, this.statusCode, this.responseTimeInMs);
+		ZestResponse zr = new ZestResponse(this.url, this.headers, this.body, this.statusCode, this.responseTimeInMs);
 		return zr;
 	}
+	
+	public URL getUrl() {
+		return url;
+	}
+
 	public String getHeaders() {
 		return headers;
 	}

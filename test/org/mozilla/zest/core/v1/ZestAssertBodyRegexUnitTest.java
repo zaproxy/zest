@@ -20,14 +20,14 @@ public class ZestAssertBodyRegexUnitTest {
 	public void testSimpleIncRegex() throws Exception {
 		ZestAssertBodyRegex ze = new ZestAssertBodyRegex();
 		ze.setRegex("test123");
-		assertTrue(ze.isValid(new ZestResponse("", "aaaatest123", 200, 0)));
+		assertTrue(ze.isValid(new ZestResponse(null, "", "aaaatest123", 200, 0)));
 	}
 
 	@Test
 	public void testSimpleExcRegex() throws Exception {
 		ZestAssertBodyRegex ze = new ZestAssertBodyRegex();
 		ze.setRegex("test123");
-		assertFalse(ze.isValid(new ZestResponse("", "aaaatst123", 200, 0)));
+		assertFalse(ze.isValid(new ZestResponse(null, "", "aaaatst123", 200, 0)));
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class ZestAssertBodyRegexUnitTest {
 		ZestAssertBodyRegex ze = new ZestAssertBodyRegex();
 		ze.setRegex("test123");
 		ze.setInverse(true);
-		assertFalse(ze.isValid(new ZestResponse("", "aaaatest123", 200, 0)));
+		assertFalse(ze.isValid(new ZestResponse(null, "", "aaaatest123", 200, 0)));
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class ZestAssertBodyRegexUnitTest {
 		ZestAssertBodyRegex ze = new ZestAssertBodyRegex();
 		ze.setRegex("test123");
 		ze.setInverse(true);
-		assertTrue(ze.isValid(new ZestResponse("", "aaaatst123", 200, 0)));
+		assertTrue(ze.isValid(new ZestResponse(null, "", "aaaatst123", 200, 0)));
 	}
 
 }
