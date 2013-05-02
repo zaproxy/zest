@@ -16,6 +16,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
 	public static final String ABOUT = "This is a Zest script. For more details about Zest visit " + ZEST_URL;
 
+	private enum Type {Targeted, Active, Passive };
+
 	private String about = ABOUT;
 	private int zestVersion = 1;
 	private String generatedBy;
@@ -23,6 +25,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	private String title;
 	private String description;
 	private String prefix;
+	private String type;
 	private ZestTokens tokens = new ZestTokens();
 	
 	private List<ZestStatement> statements = new ArrayList<ZestStatement>();
@@ -33,10 +36,35 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		super();
 	}
 	
-	public ZestScript (String title, String description) {
+	public ZestScript (String title, String description, String type) {
 		this();
 		this.title = title;
 		this.description = description;
+		this.setType(type);
+	}
+	
+	public ZestScript (String title, String description, Type type) {
+		this();
+		this.title = title;
+		this.description = description;
+		this.setType(type);
+	}
+	
+	public void setType(Type type) {
+		this.type = type.name();
+	}
+	
+	public void setType(String type) {
+		try {
+			Type.valueOf(type);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Unsupported type: " + type);
+		}
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -55,6 +83,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		script.description = this.description;
 		script.prefix = this.prefix;
 		script.tokens = this.tokens.deepCopy();
+		script.type = this.type;
 		
 		for (ZestStatement zr : this.getStatements()) {
 			script.add(zr.deepCopy());
