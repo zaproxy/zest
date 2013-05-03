@@ -7,7 +7,7 @@ package org.mozilla.zest.core.v1;
 
 public class ZestActionFail extends ZestAction {
 	
-	public enum Priority {PRIORITY_INFO, PRIORITY_LOW, PRIORITY_MEDIUM, PRIORITY_HIGH};
+	public enum Priority {INFO, LOW, MEDIUM, HIGH};
 
 	private String message;
 	private String priority;

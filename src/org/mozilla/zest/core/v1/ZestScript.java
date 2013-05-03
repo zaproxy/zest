@@ -16,7 +16,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
 	public static final String ABOUT = "This is a Zest script. For more details about Zest visit " + ZEST_URL;
 
-	private enum Type {Targeted, Active, Passive };
+	public enum Type {Targeted, Active, Passive };
 
 	private String about = ABOUT;
 	private int zestVersion = 1;
