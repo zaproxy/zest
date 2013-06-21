@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,7 +66,29 @@ public class ZestBasicRunner implements ZestRunner {
 	@Override
 	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
 			ZestTransformFailException, IOException, ZestInvalidCommonTestException {
+		
+		this.run(script, new HashMap<String, String>());
+	}
 
+	@Override
+	public void run (ZestScript script, ZestRequest target) 
+			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException {
+		
+		if (target == null) {
+			throw new InvalidParameterException("Null target supplied");
+		}
+		HashMap<String, String> initialValues = new HashMap<String, String>();
+		initialValues.put("target.method", target.getMethod());
+		initialValues.put("target.url", target.getUrl().toString());
+		initialValues.put("target.headers", target.getHeaders());
+		initialValues.put("target.body", target.getData());
+		
+		this.run(script, initialValues);
+	}
+
+	private void run (ZestScript script, HashMap<String, String> tokens) throws ZestAssertFailException,
+			ZestActionFailException, ZestTransformFailException, ZestInvalidCommonTestException, IOException {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
 			for (ZestAuthentication za : auth) {
@@ -82,20 +105,28 @@ public class ZestBasicRunner implements ZestRunner {
 		transformList = new ArrayList<ZestTransformation>();
 		replacementValues = new HashMap<String, String>(); 
 		
+		if (tokens != null) {
+			script.getTokens().addTokens(tokens);
+		}
+		
 		transformList.addAll(script.getTransformations());
 		
 		ZestResponse lastResponse = null;
 		for (ZestStatement stmt : script.getStatements()) {
 			lastResponse = this.runStatement(script, stmt, lastResponse);
 		}
+
 	}
 	
+
 	@Override
 	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
 			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, 
 			ZestInvalidCommonTestException, IOException {
 		if (stmt instanceof ZestRequest) {
 			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
+			req2.replaceTokens(script.getTokens());
+			// TODO cope with more than one level of nested tokens
 			req2.replaceTokens(script.getTokens());
 			ZestResponse resp = send(req2);
 			handleResponse (req2, resp);

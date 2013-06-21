@@ -172,7 +172,7 @@ public class CmdLine {
 					return;
 				}
 			}
-			zs.getTokens().setTokens(tokens);
+			zs.getTokens().addTokens(tokens);
 			
 			if (httpAuthSite != null) {
 				List<ZestAuthentication> authList = new ArrayList<ZestAuthentication>();

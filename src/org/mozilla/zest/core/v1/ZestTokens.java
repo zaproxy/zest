@@ -81,7 +81,12 @@ public class ZestTokens extends ZestElement {
 			this.tokens.put(name, name);
 		}
 	}
+
+	public void addTokens(Map<String, String> tokens) {
+		this.tokens.putAll(tokens);
+	}
 	
+
 	public void setToken(String name, String value) {
 		this.tokens.put(name, value);
 	}

@@ -264,8 +264,10 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	}
 
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
-		for (ZestStatement stmt : this.statements) {
-			stmt.setPrefix(oldPrefix, newPrefix);
+		if (newPrefix != null && newPrefix.length() > 0) {
+			for (ZestStatement stmt : this.statements) {
+				stmt.setPrefix(oldPrefix, newPrefix);
+			}
 		}
 		this.prefix = newPrefix;
 	}
