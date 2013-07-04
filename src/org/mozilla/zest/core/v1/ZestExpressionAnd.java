@@ -17,15 +17,6 @@ import java.util.Set;
 public class ZestExpressionAnd extends ZestExpression implements
 		ZestConditionalElement {
 	/**
-	 * the list of and clauses
-	 */
-	private List<ZestConditionalElement> andList;
-	/**
-	 * the parent of this Conditional Element
-	 */
-	private ZestConditionalElement parent;
-
-	/**
 	 * Main construptor
 	 * 
 	 * @param parent
@@ -41,7 +32,7 @@ public class ZestExpressionAnd extends ZestExpression implements
 	 * @param parent
 	 *            the parent of this conditional Element
 	 * @param andList
-	 *            the list of and clauses
+	 *            the list of AND clauses
 	 */
 	public ZestExpressionAnd(ZestConditionalElement parent,
 			List<ZestConditionalElement> andList) {
@@ -49,36 +40,21 @@ public class ZestExpressionAnd extends ZestExpression implements
 	}
 
 	@Override
-	public List<ZestConditionalElement> getChildrenCondition() {
-		return andList;
-	}
-
-	@Override
 	public ZestElement deepCopy() {
-		ZestExpressionAnd copy = new ZestExpressionAnd(this.parent);
-		copy.andList = new LinkedList<>();
-		for (ZestConditionalElement elem : andList) {
-			copy.andList.add(elem);
+		ZestExpressionAnd copy = new ZestExpressionAnd(getParent());
+		List<ZestConditionalElement> copyOfChildren = new LinkedList<>();
+		for (ZestConditionalElement elem : copyOfChildren) {
+			copy.addChildCondition(elem);
 		}
 		return copy;
 	}
 
 	@Override
-	public boolean isLeaf() {
-		return false;
-	}
-
-	@Override
-	public boolean isRoot() {
-		return parent == null;
-	}
-
-	@Override
 	public boolean evaluate() {
 		boolean toReturn = true;
-		for (ZestConditionalElement con : andList) {
+		for (ZestConditionalElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate();// compute AND for each child
 		}
-		return toReturn;
+		return isNot() ? (!toReturn) : toReturn;
 	}
 }

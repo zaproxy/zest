@@ -30,6 +30,11 @@ public interface ZestConditionalElement {
 	 */
 	public boolean isRoot();
 	/**
+	 * returns the parent of this Conditional Element (null if root)
+	 * @return the parent of this Conditional Element (null if root)
+	 */
+	public ZestConditionalElement getParent();
+	/**
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
 	 */
@@ -69,4 +74,14 @@ public interface ZestConditionalElement {
 	 * @return the previous name
 	 */
 	public String setName(String new_name);
+	/**
+	 * return true if the Conditional Element has a NOT clause
+	 * @return true if the Conditional Element has a NOT clause
+	 */
+	public boolean isNot();
+	/**
+	 * sets if the Conditional Element has a NOT clause
+	 * @param not true if this Conditional Element has to contain the NOT clause
+	 */
+	public void setNot(boolean not);
 }
