@@ -15,11 +15,6 @@ import java.util.List;
  */
 public interface ZestConditionalElement {
 	/**
-	 * The children (if any) of this Conditional Element (null for Simple conditional)
-	 * @return null if simple conditional, the children of this Conditional Element otherwise
-	 */
-	public List<ZestConditionalElement> getChildrenCondition();
-	/**
 	 * true if it is a Simple Conditional false otherwise
 	 * @return true if it is a Simple Conditional false otherwise
 	 */
@@ -45,31 +40,7 @@ public interface ZestConditionalElement {
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
 	 */
-	public boolean evaluate();
-	
-	/**
-	 * adds a new Condition to the children (last position)
-	 * @param child the child condition to add
-	 */
-	public void addChildCondition(ZestConditionalElement child);
-	/**
-	 * adds a new Condition to the children (give position)
-	 * @param child the child condition to add
-	 * @param position the position where to add the condition
-	 */
-	public void addChildCondition(ZestConditionalElement child, int position);
-	/**
-	 * returns the Condition Child in position i
-	 * @param index position of the child we're searching for
-	 * @return  the child found at the given position
-	 */
-	public ZestConditionalElement getChild(int index);
-	/**
-	 * sets the list of Children and return the previous list
-	 * @param new_list the new list of Children Condition
-	 * @return the previous list of Children Condition
-	 */
-	public List<ZestConditionalElement> setChildrenCondition(List<ZestConditionalElement>  new_list);
+	public boolean evaluate(ZestResponse response);
 	/**
 	 * return the name of the Conditional Element
 	 * @return the name of the Conditional Element

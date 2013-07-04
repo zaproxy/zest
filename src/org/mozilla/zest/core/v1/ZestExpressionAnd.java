@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public class ZestExpressionAnd extends ZestExpression implements
 		ZestConditionalElement {
+	public static final String DEFAULT_NAME="default_and_";
+	private static int counter=0;
 	/**
 	 * Main construptor
 	 * 
@@ -24,6 +26,7 @@ public class ZestExpressionAnd extends ZestExpression implements
 	 */
 	public ZestExpressionAnd(ZestConditionalElement parent) {
 		super(parent);
+		this.setName(DEFAULT_NAME+counter++);
 	}
 
 	/**
@@ -37,6 +40,7 @@ public class ZestExpressionAnd extends ZestExpression implements
 	public ZestExpressionAnd(ZestConditionalElement parent,
 			List<ZestConditionalElement> andList) {
 		super(parent, andList);
+		this.setName(DEFAULT_NAME+counter++);
 	}
 
 	@Override
@@ -50,11 +54,15 @@ public class ZestExpressionAnd extends ZestExpression implements
 	}
 
 	@Override
-	public boolean evaluate() {
+	public boolean evaluate(ZestResponse response) {
 		boolean toReturn = true;
 		for (ZestConditionalElement con : getChildrenCondition()) {
-			toReturn = toReturn && con.evaluate();// compute AND for each child
+			toReturn = toReturn && con.evaluate(response);// compute AND for each child
 		}
 		return isNot() ? (!toReturn) : toReturn;
+	}
+	@Override
+	public int getCount(){
+		return counter;
 	}
 }

@@ -10,7 +10,7 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 	private ZestConditionalElement parent;
 	private String name;
 	private static int counter=0;
-	private static final String DEFAULT_NAME="default_expression_";
+	public static final String DEFAULT_NAME="default_expression_";
 	public ZestExpression(ZestConditionalElement parent){
 		super();
 		this.name=DEFAULT_NAME+counter++;
@@ -23,7 +23,9 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 		this.parent=parent;
 		this.children=children;
 	}
-	@Override
+	/**
+	 * returns the children condition of this Zest Expression
+	 */
 	public List<ZestConditionalElement> getChildrenCondition() {
 		return this.children;
 	}
@@ -37,19 +39,34 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 	public boolean isRoot() {
 		return parent==null;
 	}
-	@Override
+	/**
+	 * adds a new Condition to the children (last position)
+	 * @param child the child condition to add
+	 */
 	public void addChildCondition(ZestConditionalElement child) {
 		this.children.add(child);
 	}
-	@Override
+	/**
+	 * adds a new Condition to the children (give position)
+	 * @param child the child condition to add
+	 * @param position the position where to add the condition
+	 */
 	public void addChildCondition(ZestConditionalElement child, int position) {
 		this.children.add(position, child);
 	}
-	@Override
+	/**
+	 * returns the Condition Child in position i
+	 * @param index position of the child we're searching for
+	 * @return  the child found at the given position
+	 */
 	public ZestConditionalElement getChild(int index) {
 		return children.get(index);
 	}
-	@Override
+	/**
+	 * sets the list of Children and return the previous list
+	 * @param new_list the new list of Children Condition
+	 * @return the previous list of Children Condition
+	 */
 	public List<ZestConditionalElement> setChildrenCondition(
 			List<ZestConditionalElement> new_list) {
 		List<ZestConditionalElement> old_children=children;
@@ -84,5 +101,12 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 	}
 	public void setNot(boolean not){
 		this.not=not;
+	}
+	/**
+	 * returns the number of ZestExpression created
+	 * @return the number of the ZestExpression created
+	 */
+	public int getCount(){
+		return counter;
 	}
 }

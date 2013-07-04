@@ -19,7 +19,7 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 	public ZestConditional(int index) {
 		super(index);
 	}
-
+	private ZestConditionalElement rootExpression;
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
 	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
 
@@ -250,5 +250,13 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 		}
 
 		return null;
+	}
+	public ZestConditionalElement getRootExpression(){
+		return this.rootExpression;
+	}
+	public ZestConditionalElement setRootExpression(ZestConditionalElement new_root){
+		ZestConditionalElement old_root=this.getRootExpression();
+		this.rootExpression=new_root;
+		return old_root;
 	}
 }
