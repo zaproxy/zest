@@ -62,12 +62,22 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 	}
 	@Override
 	public String setName(String new_name) {
+		if(new_name==null){
+			throw new IllegalArgumentException("the name cannot be null!");
+		}
 		String old_name=name;
 		this.name=new_name;
 		return old_name;
 	}
+	@Override
 	public ZestConditionalElement getParent(){
 		return this.parent;
+	}
+	@Override
+	public ZestConditionalElement setParent(ZestConditionalElement new_parent){
+		ZestConditionalElement old_parent=this.getParent();
+		this.parent=new_parent;
+		return old_parent;
 	}
 	public boolean isNot(){
 		return not;

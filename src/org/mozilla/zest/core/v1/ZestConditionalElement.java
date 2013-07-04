@@ -34,6 +34,13 @@ public interface ZestConditionalElement {
 	 * @return the parent of this Conditional Element (null if root)
 	 */
 	public ZestConditionalElement getParent();
+	
+	/**
+	 * returns the old parent and sets the new one
+	 * @param new_parent the ew parent
+	 * @return the old parent
+	 */
+	public ZestConditionalElement setParent(ZestConditionalElement new_parent);
 	/**
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
