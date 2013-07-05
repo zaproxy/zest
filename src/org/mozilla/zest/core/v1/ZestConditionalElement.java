@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @author Alessandro Secco: seccoale@gmail.com
  */
-public interface ZestConditionalElement {
+public interface ZestConditionalElement{
 	/**
 	 * true if it is a Simple Conditional false otherwise
 	 * @return true if it is a Simple Conditional false otherwise
@@ -56,10 +56,15 @@ public interface ZestConditionalElement {
 	 * return true if the Conditional Element has a NOT clause
 	 * @return true if the Conditional Element has a NOT clause
 	 */
-	public boolean isNot();
+	public boolean isInverse();
 	/**
 	 * sets if the Conditional Element has a NOT clause
 	 * @param not true if this Conditional Element has to contain the NOT clause
 	 */
-	public void setNot(boolean not);
+	public void setInverse(boolean not);
+	/**
+	 * @see ZestElement
+	 * @return a copy of the ZestConditionalElement
+	 */
+	public ZestElement deepCopy();
 }

@@ -1,28 +1,33 @@
 package org.mozilla.zest.core.v1;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-public abstract class ZestExpression extends ZestElement implements ZestConditionalElement{
+public abstract class ZestExpression extends ZestElement implements
+		ZestConditionalElement {
 	private List<ZestConditionalElement> children;
-	private boolean not=false;
+	private boolean not = false;
 	private ZestConditionalElement parent;
 	private String name;
-	private static int counter=0;
-	public static final String DEFAULT_NAME="default_expression_";
-	public ZestExpression(ZestConditionalElement parent){
+	private static int counter = 0;
+	public static final String DEFAULT_NAME = "default_expression_";
+
+	public ZestExpression(ZestConditionalElement parent) {
 		super();
-		this.name=DEFAULT_NAME+counter++;
-		this.parent=parent;
-		this.children=new LinkedList<>();
+		this.name = DEFAULT_NAME + counter++;
+		this.parent = parent;
+		this.children = new LinkedList<>();
 	}
-	public ZestExpression(ZestConditionalElement parent, List<ZestConditionalElement> children){
+
+	public ZestExpression(ZestConditionalElement parent,
+			List<ZestConditionalElement> children) {
 		super();
-		this.name=DEFAULT_NAME+counter++;
-		this.parent=parent;
-		this.children=children;
+		this.name = DEFAULT_NAME + counter++;
+		this.parent = parent;
+		this.children = children;
 	}
+
 	/**
 	 * returns the children condition of this Zest Expression
 	 */
@@ -37,76 +42,102 @@ public abstract class ZestExpression extends ZestElement implements ZestConditio
 
 	@Override
 	public boolean isRoot() {
-		return parent==null;
+		return parent == null;
 	}
+
 	/**
 	 * adds a new Condition to the children (last position)
-	 * @param child the child condition to add
+	 * 
+	 * @param child
+	 *            the child condition to add
 	 */
 	public void addChildCondition(ZestConditionalElement child) {
 		this.children.add(child);
 	}
+
 	/**
 	 * adds a new Condition to the children (give position)
-	 * @param child the child condition to add
-	 * @param position the position where to add the condition
+	 * 
+	 * @param child
+	 *            the child condition to add
+	 * @param position
+	 *            the position where to add the condition
 	 */
 	public void addChildCondition(ZestConditionalElement child, int position) {
 		this.children.add(position, child);
 	}
+
 	/**
 	 * returns the Condition Child in position i
-	 * @param index position of the child we're searching for
-	 * @return  the child found at the given position
+	 * 
+	 * @param index
+	 *            position of the child we're searching for
+	 * @return the child found at the given position
 	 */
 	public ZestConditionalElement getChild(int index) {
 		return children.get(index);
 	}
+
 	/**
 	 * sets the list of Children and return the previous list
-	 * @param new_list the new list of Children Condition
+	 * 
+	 * @param new_list
+	 *            the new list of Children Condition
 	 * @return the previous list of Children Condition
 	 */
 	public List<ZestConditionalElement> setChildrenCondition(
 			List<ZestConditionalElement> new_list) {
-		List<ZestConditionalElement> old_children=children;
-		this.children=new_list;
+		List<ZestConditionalElement> old_children = children;
+		this.children = new_list;
 		return old_children;
 	}
+
 	@Override
 	public String getName() {
 		return name;
 	}
+
 	@Override
 	public String setName(String new_name) {
-		if(new_name==null){
+		if (new_name == null) {
 			throw new IllegalArgumentException("the name cannot be null!");
 		}
-		String old_name=name;
-		this.name=new_name;
+		String old_name = name;
+		this.name = new_name;
 		return old_name;
 	}
+
 	@Override
-	public ZestConditionalElement getParent(){
+	public ZestConditionalElement getParent() {
 		return this.parent;
 	}
+
 	@Override
-	public ZestConditionalElement setParent(ZestConditionalElement new_parent){
-		ZestConditionalElement old_parent=this.getParent();
-		this.parent=new_parent;
+	public ZestConditionalElement setParent(ZestConditionalElement new_parent) {
+		ZestConditionalElement old_parent = this.getParent();
+		this.parent = new_parent;
 		return old_parent;
 	}
-	public boolean isNot(){
+
+	public boolean isInverse() {
 		return not;
 	}
-	public void setNot(boolean not){
-		this.not=not;
+
+	public void setInverse(boolean not) {
+		this.not = not;
 	}
+
 	/**
 	 * returns the number of ZestExpression created
+	 * 
 	 * @return the number of the ZestExpression created
 	 */
-	public int getCount(){
+	public int getCount() {
 		return counter;
+	}
+
+	public ZestExpression deepCopy(){//TODO
+		ZestExpression copy=null;
+		return copy;
 	}
 }

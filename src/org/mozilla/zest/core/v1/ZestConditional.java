@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ZestConditional extends ZestStatement implements ZestContainer {
+public class ZestConditional extends ZestStatement implements ZestContainer {
 
 	public ZestConditional() {
 		super();
@@ -22,15 +22,6 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 	private ZestConditionalElement rootExpression;
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
 	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
-
-	/**
-	 * Override this in the classes that implement this method
-	 * @param response
-	 * @return
-	 */
-	public boolean isTrue (ZestResponse response) {
-		throw new IllegalArgumentException();
-	}
 
 	public void addIf(ZestStatement req) {
 		this.addIf(this.ifStatements.size(), req);
@@ -258,5 +249,14 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 		ZestConditionalElement old_root=this.getRootExpression();
 		this.rootExpression=new_root;
 		return old_root;
+	}
+
+	@Override
+	public ZestStatement deepCopy() {
+		ZestConditional copy=new ZestConditional(getIndex());
+		copy.rootExpression=this.rootExpression;
+		copy.ifStatements=new ArrayList<>(this.getIfStatements());
+		copy.elseStatements=new ArrayList<>(this.getElseStatements());
+		return copy;
 	}
 }

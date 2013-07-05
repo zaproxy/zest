@@ -44,22 +44,12 @@ public class ZestExpressionAnd extends ZestExpression implements
 	}
 
 	@Override
-	public ZestElement deepCopy() {
-		ZestExpressionAnd copy = new ZestExpressionAnd(getParent());
-		List<ZestConditionalElement> copyOfChildren = new LinkedList<>();
-		for (ZestConditionalElement elem : copyOfChildren) {
-			copy.addChildCondition(elem);
-		}
-		return copy;
-	}
-
-	@Override
 	public boolean evaluate(ZestResponse response) {
 		boolean toReturn = true;
 		for (ZestConditionalElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
 		}
-		return isNot() ? (!toReturn) : toReturn;
+		return isInverse() ? (!toReturn) : toReturn;
 	}
 	@Override
 	public int getCount(){

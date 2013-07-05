@@ -4,7 +4,7 @@
 
 package org.mozilla.zest.core.v1;
 
-
+@Deprecated
 public class ZestAssertLength extends ZestAssertion {
 
 	private int length;

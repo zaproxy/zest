@@ -5,18 +5,35 @@
 package org.mozilla.zest.core.v1;
 
 
-public abstract class ZestAssertion extends ZestElement {
-
+public class ZestAssertion extends ZestElement {
+	private ZestConditionalElement rootExpression;
 	public ZestAssertion() {
 	}
-
+	
+	public ZestAssertion(ZestConditionalElement reeotCond){
+		this.rootExpression=rootExpression;
+	}
+	public ZestConditionalElement getRootExpression(){
+		return this.rootExpression;
+	}
+	public ZestConditionalElement setRootExpression(ZestConditionalElement new_rootExpression){
+		ZestConditionalElement old_expr=this.rootExpression;
+		this.rootExpression=new_rootExpression;
+		return old_expr;
+	}
 	public boolean isValid (ZestResponse response) {
-		throw new IllegalArgumentException();
+		return rootExpression.evaluate(response);
 	}
 
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestAssertion;
+	}
+
+	@Override
+	public ZestElement deepCopy() {
+		ZestConditionalElement copy_root_expr=rootExpression;
+		return new ZestAssertion(copy_root_expr);
 	}
 
 }

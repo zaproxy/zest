@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mozilla.zest.core.v1.ZestConditionRegex;
+import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
@@ -44,7 +44,7 @@ public class ZestScriptUnitTest {
 		// 1:   req
 		checkOrder(new ZestStatement[]{script, req, null});
 		
-		ZestConditionRegex cond1 = new ZestConditionRegex();
+		ZestExpressionRegex cond1 = new ZestExpressionRegex();
 		script.add(cond1);
 		// 0: script
 		// 1:   req
@@ -82,10 +82,10 @@ public class ZestScriptUnitTest {
 
 	@Test
 	public void testDeepComplex() throws Exception {
-		ZestConditionRegex zc1 = new ZestConditionRegex();
-		ZestConditionRegex zc2 = new ZestConditionRegex();
-		ZestConditionRegex zc3 = new ZestConditionRegex();
-		ZestConditionRegex zc4 = new ZestConditionRegex();
+		ZestExpressionRegex zc1 = new ZestExpressionRegex();
+		ZestExpressionRegex zc2 = new ZestExpressionRegex();
+		ZestExpressionRegex zc3 = new ZestExpressionRegex();
+		ZestExpressionRegex zc4 = new ZestExpressionRegex();
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -160,9 +160,9 @@ public class ZestScriptUnitTest {
 	@Test
 	public void testDeepMiscOrder() throws Exception {
 		ZestScript script = new ZestScript();
-		ZestConditionRegex zc1 = new ZestConditionRegex();
-		ZestConditionRegex zc2 = new ZestConditionRegex();
-		ZestConditionRegex zc3 = new ZestConditionRegex();
+		ZestExpressionRegex zc1 = new ZestExpressionRegex();
+		ZestExpressionRegex zc2 = new ZestExpressionRegex();
+		ZestExpressionRegex zc3 = new ZestExpressionRegex();
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();

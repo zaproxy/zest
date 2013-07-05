@@ -6,7 +6,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.regex.Pattern;
 
-
+@Deprecated
 public class ZestAssertBodyRegex extends ZestAssertion {
 
 	private String regex;

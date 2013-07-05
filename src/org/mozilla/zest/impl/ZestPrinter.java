@@ -10,9 +10,9 @@ import org.mozilla.zest.core.v1.ZestActionScan;
 import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAuthentication;
-import org.mozilla.zest.core.v1.ZestConditionRegex;
-import org.mozilla.zest.core.v1.ZestConditionResponseTime;
-import org.mozilla.zest.core.v1.ZestConditionStatusCode;
+import org.mozilla.zest.core.v1.ZestExpressionRegex;
+import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
+import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestRequest;
@@ -104,14 +104,14 @@ public class ZestPrinter {
 			ZestConditional zc = (ZestConditional)stmt;
 			printIndent(indent, stmt.getIndex());
 			System.out.print("IF ");
-			if (zc instanceof ZestConditionRegex) {
-				ZestConditionRegex zcr = (ZestConditionRegex) zc;
+			if (zc instanceof ZestExpressionRegex) {
+				ZestExpressionRegex zcr = (ZestExpressionRegex) zc;
 				System.out.println("Regex: " + zcr.getLocation() + " " + zcr.getRegex());
-			} else if (zc instanceof ZestConditionStatusCode) {
-				ZestConditionStatusCode zcs = (ZestConditionStatusCode) zc;
+			} else if (zc instanceof ZestExpressionStatusCode) {
+				ZestExpressionStatusCode zcs = (ZestExpressionStatusCode) zc;
 				System.out.println("Status Code: " + zcs.getCode());
-			} else if (zc instanceof ZestConditionResponseTime) {
-				ZestConditionResponseTime zcs = (ZestConditionResponseTime) zc;
+			} else if (zc instanceof ZestExpressionResponseTime) {
+				ZestExpressionResponseTime zcs = (ZestExpressionResponseTime) zc;
 				if (zcs.isGreaterThan()) {
 					System.out.println("Status Code: > " + zcs.getTimeInMs());
 				} else {

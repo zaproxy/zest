@@ -31,17 +31,7 @@ public class ZestExpressionOr extends ZestExpression implements
 		for (ZestConditionalElement con : getChildrenCondition()) {
 			toReturn = toReturn || con.evaluate(response);// compute AND for each child
 		}
-		return isNot() ? (!toReturn) : toReturn;
-	}
-
-	@Override
-	public ZestElement deepCopy() {
-		ZestExpressionOr copy = new ZestExpressionOr(getParent());
-		List<ZestConditionalElement> copyOfChildren = new LinkedList<>();
-		for (ZestConditionalElement elem : copyOfChildren) {
-			copy.addChildCondition(elem);
-		}
-		return copy;
+		return isInverse() ? (!toReturn) : toReturn;
 	}
 	@Override
 	public int getCount(){
