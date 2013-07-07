@@ -1,27 +1,26 @@
 package org.mozilla.zest.core.v1;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class ZestExpression extends ZestElement implements
-		ZestConditionalElement {
-	private List<ZestConditionalElement> children;
+		ZestExpressionElement {
+	private List<ZestExpressionElement> children;
 	private boolean not = false;
-	private ZestConditionalElement parent;
+	private ZestExpressionElement parent;
 	private String name;
 	private static int counter = 0;
 	public static final String DEFAULT_NAME = "default_expression_";
 
-	public ZestExpression(ZestConditionalElement parent) {
+	public ZestExpression(ZestExpressionElement parent) {
 		super();
 		this.name = DEFAULT_NAME + counter++;
 		this.parent = parent;
 		this.children = new LinkedList<>();
 	}
 
-	public ZestExpression(ZestConditionalElement parent,
-			List<ZestConditionalElement> children) {
+	public ZestExpression(ZestExpressionElement parent,
+			List<ZestExpressionElement> children) {
 		super();
 		this.name = DEFAULT_NAME + counter++;
 		this.parent = parent;
@@ -31,7 +30,7 @@ public abstract class ZestExpression extends ZestElement implements
 	/**
 	 * returns the children condition of this Zest Expression
 	 */
-	public List<ZestConditionalElement> getChildrenCondition() {
+	public List<ZestExpressionElement> getChildrenCondition() {
 		return this.children;
 	}
 
@@ -51,7 +50,7 @@ public abstract class ZestExpression extends ZestElement implements
 	 * @param child
 	 *            the child condition to add
 	 */
-	public void addChildCondition(ZestConditionalElement child) {
+	public void addChildCondition(ZestExpressionElement child) {
 		this.children.add(child);
 	}
 
@@ -63,7 +62,7 @@ public abstract class ZestExpression extends ZestElement implements
 	 * @param position
 	 *            the position where to add the condition
 	 */
-	public void addChildCondition(ZestConditionalElement child, int position) {
+	public void addChildCondition(ZestExpressionElement child, int position) {
 		this.children.add(position, child);
 	}
 
@@ -74,7 +73,7 @@ public abstract class ZestExpression extends ZestElement implements
 	 *            position of the child we're searching for
 	 * @return the child found at the given position
 	 */
-	public ZestConditionalElement getChild(int index) {
+	public ZestExpressionElement getChild(int index) {
 		return children.get(index);
 	}
 
@@ -85,9 +84,9 @@ public abstract class ZestExpression extends ZestElement implements
 	 *            the new list of Children Condition
 	 * @return the previous list of Children Condition
 	 */
-	public List<ZestConditionalElement> setChildrenCondition(
-			List<ZestConditionalElement> new_list) {
-		List<ZestConditionalElement> old_children = children;
+	public List<ZestExpressionElement> setChildrenCondition(
+			List<ZestExpressionElement> new_list) {
+		List<ZestExpressionElement> old_children = children;
 		this.children = new_list;
 		return old_children;
 	}
@@ -108,13 +107,13 @@ public abstract class ZestExpression extends ZestElement implements
 	}
 
 	@Override
-	public ZestConditionalElement getParent() {
+	public ZestExpressionElement getParent() {
 		return this.parent;
 	}
 
 	@Override
-	public ZestConditionalElement setParent(ZestConditionalElement new_parent) {
-		ZestConditionalElement old_parent = this.getParent();
+	public ZestExpressionElement setParent(ZestExpressionElement new_parent) {
+		ZestExpressionElement old_parent = this.getParent();
 		this.parent = new_parent;
 		return old_parent;
 	}

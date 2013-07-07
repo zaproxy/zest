@@ -1,8 +1,6 @@
 package org.mozilla.zest.core.v1;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 
@@ -15,7 +13,7 @@ import java.util.Set;
  * @author Alessandro Secco: seccoale@gmail.com
  */
 public class ZestExpressionAnd extends ZestExpression implements
-		ZestConditionalElement {
+		ZestExpressionElement {
 	public static final String DEFAULT_NAME="default_and_";
 	private static int counter=0;
 	/**
@@ -24,7 +22,7 @@ public class ZestExpressionAnd extends ZestExpression implements
 	 * @param parent
 	 *            the parent of this Conditional Element
 	 */
-	public ZestExpressionAnd(ZestConditionalElement parent) {
+	public ZestExpressionAnd(ZestExpressionElement parent) {
 		super(parent);
 		this.setName(DEFAULT_NAME+counter++);
 	}
@@ -37,8 +35,8 @@ public class ZestExpressionAnd extends ZestExpression implements
 	 * @param andList
 	 *            the list of AND clauses
 	 */
-	public ZestExpressionAnd(ZestConditionalElement parent,
-			List<ZestConditionalElement> andList) {
+	public ZestExpressionAnd(ZestExpressionElement parent,
+			List<ZestExpressionElement> andList) {
 		super(parent, andList);
 		this.setName(DEFAULT_NAME+counter++);
 	}
@@ -46,7 +44,7 @@ public class ZestExpressionAnd extends ZestExpression implements
 	@Override
 	public boolean evaluate(ZestResponse response) {
 		boolean toReturn = true;
-		for (ZestConditionalElement con : getChildrenCondition()) {
+		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
 		}
 		return isInverse() ? (!toReturn) : toReturn;

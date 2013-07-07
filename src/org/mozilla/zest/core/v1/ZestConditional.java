@@ -10,16 +10,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ZestConditional extends ZestStatement implements ZestContainer {
+public class ZestConditional extends ZestStatement implements ZestContainer, ZestExpressionElement {
 
 	public ZestConditional() {
 		super();
+	}
+	public ZestConditional(ZestExpressionElement rootExp) {
+		super();
+		this.rootExpression=rootExp;
 	}
 
 	public ZestConditional(int index) {
 		super(index);
 	}
-	private ZestConditionalElement rootExpression;
+	public ZestConditional(int index, ZestExpressionElement rootExp) {
+		super(index);
+		this.rootExpression=rootExp;
+	}
+	private ZestExpressionElement rootExpression;
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
 	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
 
@@ -242,11 +250,11 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
 
 		return null;
 	}
-	public ZestConditionalElement getRootExpression(){
+	public ZestExpressionElement getRootExpression(){
 		return this.rootExpression;
 	}
-	public ZestConditionalElement setRootExpression(ZestConditionalElement new_root){
-		ZestConditionalElement old_root=this.getRootExpression();
+	public ZestExpressionElement setRootExpression(ZestExpressionElement new_root){
+		ZestExpressionElement old_root=this.getRootExpression();
 		this.rootExpression=new_root;
 		return old_root;
 	}
@@ -258,5 +266,45 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
 		copy.ifStatements=new ArrayList<>(this.getIfStatements());
 		copy.elseStatements=new ArrayList<>(this.getElseStatements());
 		return copy;
+	}
+	@Override
+	public boolean isLeaf() {
+		return rootExpression==null;
+	}
+	@Override
+	public boolean isRoot() {
+		return true;//this is always root
+	}
+	@Override
+	public ZestExpressionElement getParent() {
+		return null;//this is always root
+	}
+	@Override
+	public ZestExpressionElement setParent(ZestExpressionElement new_parent) {
+		//do nothing: this is root!
+		return null;
+	}
+	@Override
+	public boolean evaluate(ZestResponse response) {
+		if(rootExpression!=null)
+		return this.rootExpression.evaluate(response);
+		else return true;//no condition to check
+	}
+	@Override
+	public String getName() {
+		return rootExpression!=null?rootExpression.getName():null;
+	}
+	@Override
+	public String setName(String new_name) {
+		return rootExpression!=null?rootExpression.setName(new_name):null;
+	}
+	@Override
+	public boolean isInverse() {
+		return rootExpression!=null?rootExpression.isInverse():false;
+	}
+	@Override
+	public void setInverse(boolean not) {
+		if(rootExpression!=null)
+			rootExpression.setInverse(not);
 	}
 }
