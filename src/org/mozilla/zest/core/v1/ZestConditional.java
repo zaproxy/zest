@@ -79,7 +79,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 	public void addElse(ZestStatement req) {
 		this.addElse(this.elseStatements.size(), req);
 	}
-	
 	public void addElse(int index, ZestStatement req) {
 		ZestStatement prev = this;
 		if (this.ifStatements.size() > 0) {
@@ -249,6 +248,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 		}
 
 		return null;
+	}
+	public boolean isTrue(ZestResponse response){//Code duplication for retrocompatibility
+		return evaluate(response);
 	}
 	public ZestExpressionElement getRootExpression(){
 		return this.rootExpression;
