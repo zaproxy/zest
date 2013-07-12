@@ -50,9 +50,6 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 
 	@Override
 	public ZestExpressionAnd deepCopy() {
-		ZestExpressionAnd copy=new ZestExpressionAnd();
-		for(ZestExpressionElement child:getChildrenCondition())
-			copy.addChildCondition((ZestExpression) child.deepCopy());
-		return copy;
+		return (ZestExpressionAnd)super.deepCopy();
 	}
 }

@@ -190,7 +190,7 @@ public class ZestPrinter {
 					printExpression(andElement.getChild(i));
 					System.out.println(" && ");
 				}
-				printExpression(andElement);
+				printExpression(andElement.getChild(andElement.getChildrenCondition().size()-1));
 				System.out.println(")");
 			} else if (element instanceof ZestExpressionOr) {
 				ZestExpressionOr orElement = (ZestExpressionOr) element;
@@ -199,7 +199,7 @@ public class ZestPrinter {
 					printExpression(orElement.getChild(i));
 					System.out.println(" || ");
 				}
-				printExpression(orElement);
+				printExpression(orElement.getChild(orElement.getChildrenCondition().size()-1));
 				System.out.println(")");
 			}
 		}

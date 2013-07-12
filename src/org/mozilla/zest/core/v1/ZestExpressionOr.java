@@ -32,11 +32,7 @@ public class ZestExpressionOr extends ZestStructuredExpression{
 		return isInverse() ? (!toReturn) : toReturn;
 	}
 	@Override
-	public ZestExpression deepCopy() {
-		ZestExpressionOr copy=new ZestExpressionOr();
-		for(ZestExpressionElement child:this.getChildrenCondition()){
-			copy.addChildCondition((ZestExpression)child.deepCopy());
-		}
-		return null;
+	public ZestExpressionOr deepCopy() {
+		return (ZestExpressionOr)super.deepCopy();
 	}
 }
