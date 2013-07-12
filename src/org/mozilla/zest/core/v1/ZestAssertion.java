@@ -5,7 +5,7 @@
 package org.mozilla.zest.core.v1;
 
 
-public class ZestAssertion extends ZestElement implements ZestExpressionElement{
+public class ZestAssertion extends ZestElement{
 	private ZestExpressionElement rootExpression;
 	public ZestAssertion() {
 	}
@@ -37,51 +37,4 @@ public class ZestAssertion extends ZestElement implements ZestExpressionElement{
 		ZestExpressionElement copy_root_expr=rootExpression;
 		return new ZestAssertion(copy_root_expr);
 	}
-
-	@Override
-	public boolean isLeaf() {
-		return rootExpression==null;
-	}
-
-	@Override
-	public boolean isRoot() {
-		return true;//always root
-	}
-
-	@Override
-	public ZestExpressionElement getParent() {
-		return null;//always root
-	}
-
-	@Override
-	public ZestExpressionElement setParent(ZestExpressionElement new_parent) {
-		return null;//no parent
-	}
-
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		return isValid(response);
-	}
-
-	@Override
-	public String getName() {
-		return rootExpression!=null?rootExpression.getName():null;
-	}
-
-	@Override
-	public String setName(String new_name) {
-		return rootExpression!=null?rootExpression.setName(new_name):null;
-	}
-
-	@Override
-	public boolean isInverse() {
-		return rootExpression!=null?rootExpression.isInverse():false;
-	}
-
-	@Override
-	public void setInverse(boolean not) {
-		if(rootExpression!=null)
-			rootExpression.setInverse(not);
-	}
-
 }

@@ -8,17 +8,11 @@ public class ZestExpressionLength extends ZestExpression{
 
 	private int length;
 	private int approx;
-	public ZestExpressionLength() {
-		super(null);
-	}	
-	public ZestExpressionLength(int length, int approx) {
-		this(null, length, approx);
+	public ZestExpressionLength(){
+		this(0, 0);
 	}
-	public ZestExpressionLength(ZestExpressionElement parent){
-		this(parent,0, 0);
-	}
-	public ZestExpressionLength(ZestExpressionElement parent, int length, int approx){
-		super(parent);
+	public ZestExpressionLength(int length, int approx){
+		super();
 		this.length=length;
 		this.approx=approx;
 	}

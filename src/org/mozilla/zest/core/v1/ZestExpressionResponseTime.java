@@ -14,9 +14,9 @@ public class ZestExpressionResponseTime extends ZestConditional {
 		super();
 	}
 	
-	public ZestExpressionResponseTime(int index) {
-		super(index);
-	}
+//	public ZestExpressionResponseTime(int index) {
+//		super(index);
+//	}
 	
 	public boolean isTrue (ZestResponse response) {
 		if (greaterThan) {
@@ -44,7 +44,7 @@ public class ZestExpressionResponseTime extends ZestConditional {
 
 	@Override
 	public ZestExpressionResponseTime deepCopy() {
-		ZestExpressionResponseTime copy = new ZestExpressionResponseTime(this.getIndex());
+		ZestExpressionResponseTime copy = new ZestExpressionResponseTime();
 		copy.greaterThan = this.greaterThan;
 		copy.timeInMs = this.timeInMs;
 		for (ZestStatement stmt : this.getIfStatements()) {

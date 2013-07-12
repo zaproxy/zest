@@ -15,43 +15,29 @@ public class ZestExpressionRegex extends ZestExpression implements ZestExpressio
 	private transient static final String LOC_BODY = "BODY"; 
 	private transient static final Set<String> LOCATIONS = 
 			new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
-	private transient static final String DEFAULT_NAME="default_regex_";
-	private static transient int counter=0;
 
 	private String regex;
 	private String location;
 	
 	private ZestExpressionElement parent=null;
 	private boolean inverse=false;
-	private String name=DEFAULT_NAME+(counter++);
 	
 	private transient Pattern pattern = null;
 
-	public ZestExpressionRegex() {
-		this(null, null, false, null);
+	public ZestExpressionRegex(){
+		this(null,null,false);
 	}
-	public ZestExpressionRegex(ZestExpressionElement parent){
-		this(null,null,false,parent);
-	}
-	
 	public ZestExpressionRegex(String location, String regex) {
-		this (location, regex, false, null);
+		this(location, regex, false);
 	}
 	public ZestExpressionRegex(String location, String regex, boolean inverse) {
-		this(location, regex, inverse, null);
-	}
-	public ZestExpressionRegex(String location, String regex, ZestExpressionElement parent) {
-		this(location, regex, false, parent);
-	}
-	public ZestExpressionRegex(String location, String regex, boolean inverse, ZestExpressionElement parent) {
-		super (parent);
+		super ();
 		this.inverse=inverse;
 		this.setLocation(location);
 		this.regex = regex;
 		if (regex != null) {
 			this.pattern = Pattern.compile(regex);
 		}
-		setChildrenCondition(null);
 	}
 	
 	public boolean isTrue (ZestResponse response) {
@@ -112,36 +98,13 @@ public class ZestExpressionRegex extends ZestExpression implements ZestExpressio
 
 	@Override
 	public boolean isRoot() {
-		return getParent()==null;
-	}
-
-	@Override
-	public ZestExpressionElement getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public ZestExpressionElement setParent(ZestExpressionElement new_parent) {
-		ZestExpressionElement old_parent=this.getParent();
-		this.parent=new_parent;
-		return old_parent;
+		//TODO
+		return false;
 	}
 
 	@Override
 	public boolean evaluate(ZestResponse response) {
 		return inverse?!isTrue(response):isTrue(response);
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public String setName(String new_name) {
-		String oldName=this.getName();
-		this.name=new_name;
-		return oldName;
 	}
 
 	@Override
@@ -152,6 +115,10 @@ public class ZestExpressionRegex extends ZestExpression implements ZestExpressio
 	@Override
 	public void setInverse(boolean not) {
 		inverse=not;
+	}
+	@Override
+	public ZestExpression deepCopy() {
+		return new ZestExpressionRegex(this.getLocation(), this.getRegex(), this.isInverse());
 	}
 	
 }

@@ -12,6 +12,10 @@ import java.util.Set;
 
 public class ZestConditional extends ZestStatement implements ZestContainer, ZestExpressionElement {
 
+	private ZestExpressionElement rootExpression;
+	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
+	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
+
 	public ZestConditional() {
 		super();
 	}
@@ -27,10 +31,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 		super(index);
 		this.rootExpression=rootExp;
 	}
-	private ZestExpressionElement rootExpression;
-	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
-	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
-
 	public void addIf(ZestStatement req) {
 		this.addIf(this.ifStatements.size(), req);
 	}
@@ -278,27 +278,10 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 		return true;//this is always root
 	}
 	@Override
-	public ZestExpressionElement getParent() {
-		return null;//this is always root
-	}
-	@Override
-	public ZestExpressionElement setParent(ZestExpressionElement new_parent) {
-		//do nothing: this is root!
-		return null;
-	}
-	@Override
 	public boolean evaluate(ZestResponse response) {
 		if(rootExpression!=null)
 		return this.rootExpression.evaluate(response);
 		else return true;//no condition to check
-	}
-	@Override
-	public String getName() {
-		return rootExpression!=null?rootExpression.getName():null;
-	}
-	@Override
-	public String setName(String new_name) {
-		return rootExpression!=null?rootExpression.setName(new_name):null;
 	}
 	@Override
 	public boolean isInverse() {

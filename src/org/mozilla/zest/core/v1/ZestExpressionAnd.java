@@ -12,19 +12,16 @@ import java.util.List;
  * 
  * @author Alessandro Secco: seccoale@gmail.com
  */
-public class ZestExpressionAnd extends ZestExpression implements
+public class ZestExpressionAnd extends ZestStructuredExpression implements
 		ZestExpressionElement {
-	public static final String DEFAULT_NAME="default_and_";
-	private static int counter=0;
 	/**
 	 * Main construptor
 	 * 
 	 * @param parent
 	 *            the parent of this Conditional Element
 	 */
-	public ZestExpressionAnd(ZestExpressionElement parent) {
-		super(parent);
-		this.setName(DEFAULT_NAME+counter++);
+	public ZestExpressionAnd() {
+		super();
 	}
 
 	/**
@@ -35,10 +32,8 @@ public class ZestExpressionAnd extends ZestExpression implements
 	 * @param andList
 	 *            the list of AND clauses
 	 */
-	public ZestExpressionAnd(ZestExpressionElement parent,
-			List<ZestExpressionElement> andList) {
-		super(parent, andList);
-		this.setName(DEFAULT_NAME+counter++);
+	public ZestExpressionAnd(List<ZestExpressionElement> andList) {
+		super(andList);
 	}
 
 	@Override
@@ -46,11 +41,16 @@ public class ZestExpressionAnd extends ZestExpression implements
 		boolean toReturn = true;
 		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
+			if(!toReturn) break;//lazy evaluation
 		}
 		return isInverse() ? (!toReturn) : toReturn;
 	}
+
 	@Override
-	public int getCount(){
-		return counter;
+	public ZestExpressionAnd deepCopy() {
+		ZestExpressionAnd copy=new ZestExpressionAnd();
+		for(ZestExpressionElement child:getChildrenCondition())
+			copy.addChildCondition((ZestExpression) child.deepCopy());
+		return copy;
 	}
 }

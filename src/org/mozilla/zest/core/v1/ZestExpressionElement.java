@@ -24,33 +24,10 @@ public interface ZestExpressionElement{
 	 */
 	public boolean isRoot();
 	/**
-	 * returns the parent of this Conditional Element (null if root)
-	 * @return the parent of this Conditional Element (null if root)
-	 */
-	public ZestExpressionElement getParent();
-	
-	/**
-	 * returns the old parent and sets the new one
-	 * @param new_parent the ew parent
-	 * @return the old parent
-	 */
-	public ZestExpressionElement setParent(ZestExpressionElement new_parent);
-	/**
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
 	 */
 	public boolean evaluate(ZestResponse response);
-	/**
-	 * return the name of the Conditional Element
-	 * @return the name of the Conditional Element
-	 */
-	public String getName();
-	/**
-	 * Sets the name of the Conditional Element
-	 * @param new_name the new name
-	 * @return the previous name
-	 */
-	public String setName(String new_name);
 	/**
 	 * return true if the Conditional Element has a NOT clause
 	 * @return true if the Conditional Element has a NOT clause
