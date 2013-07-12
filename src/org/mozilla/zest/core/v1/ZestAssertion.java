@@ -34,7 +34,7 @@ public class ZestAssertion extends ZestElement{
 
 	@Override
 	public ZestElement deepCopy() {
-		ZestExpressionElement copy_root_expr=rootExpression;
+		ZestExpressionElement copy_root_expr=(ZestExpressionElement)rootExpression.deepCopy();
 		return new ZestAssertion(copy_root_expr);
 	}
 }

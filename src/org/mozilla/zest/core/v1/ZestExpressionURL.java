@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class ZestExpressionURL extends ZestConditional {
+public class ZestExpressionURL extends ZestExpression {
 	
 	private List<String> includeRegexes = new ArrayList<String>();
 	private List<String> excludeRegexes = new ArrayList<String>();
@@ -19,10 +19,6 @@ public class ZestExpressionURL extends ZestConditional {
 
 	public ZestExpressionURL() {
 		super();
-	}
-	
-	public ZestExpressionURL(int index) {
-		super(index);
 	}
 	
 	public ZestExpressionURL(List<String> includeRegexes, List<String> excludeRegexes) {
@@ -83,23 +79,14 @@ public class ZestExpressionURL extends ZestConditional {
 
 	@Override
 	public ZestExpressionURL deepCopy() {
-		ZestExpressionURL copy = new ZestExpressionURL(this.getIndex());
-		
-		List<String> copyIncRegexes = new ArrayList<String>();
-		Collections.copy(copyIncRegexes, this.includeRegexes);
-		copy.setIncludeRegexes(copyIncRegexes);
-
-		List<String> copyExcRegexes = new ArrayList<String>();
-		Collections.copy(copyExcRegexes, this.excludeRegexes);
-		copy.setExcludeRegexes(copyExcRegexes);
-
-		for (ZestStatement stmt : this.getIfStatements()) {
-			copy.addIf(stmt.deepCopy());
-		}
-		for (ZestStatement stmt : this.getElseStatements()) {
-			copy.addElse(stmt.deepCopy());
-		}
+		ZestExpressionURL copy = new ZestExpressionURL();
 		return copy;
+	}
+
+	@Override
+	public boolean evaluate(ZestResponse response) {
+		boolean toReturn=isTrue(response);
+		return isInverse()?!toReturn:toReturn;
 	}
 	
 }
