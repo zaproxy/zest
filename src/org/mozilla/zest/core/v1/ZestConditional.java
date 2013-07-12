@@ -264,9 +264,15 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 	@Override
 	public ZestStatement deepCopy() {
 		ZestConditional copy=new ZestConditional(getIndex());
-		copy.rootExpression=this.rootExpression;
-		copy.ifStatements=new ArrayList<>(this.getIfStatements());
-		copy.elseStatements=new ArrayList<>(this.getElseStatements());
+		copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
+		ArrayList<ZestStatement> ifList=new ArrayList<>();
+		for(ZestStatement stmt:ifStatements)
+			copy.ifStatements.add(stmt.deepCopy());
+		ArrayList<ZestStatement> elseList=new ArrayList<>();
+		for(ZestStatement stmt:elseStatements)
+			copy.elseStatements.add(stmt.deepCopy());
+		copy.elseStatements=elseList;
+		copy.ifStatements=ifList;
 		return copy;
 	}
 	@Override
