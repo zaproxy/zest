@@ -14,9 +14,9 @@ public class ZestExpressionResponseTime extends ZestConditional {
 		super();
 	}
 	
-//	public ZestExpressionResponseTime(int index) {
-//		super(index);
-//	}
+	public ZestExpressionResponseTime(int time) {
+		super(time);
+	}
 	
 	public boolean isTrue (ZestResponse response) {
 		if (greaterThan) {

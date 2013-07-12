@@ -110,7 +110,7 @@ public class ZestPrinter {
 			ZestConditional zc = (ZestConditional) stmt;
 			printIndent(indent, stmt.getIndex());
 			System.out.print("IF ");
-			printExpression(zc.getRootExpression());
+			printExpression(zc.getRootExpression(), 0);
 //			if (zc instanceof ZestExpressionRegex) {
 //				ZestExpressionRegex zcr = (ZestExpressionRegex) zc;
 //				System.out.println("Regex: " + zcr.getLocation() + " "
@@ -160,48 +160,61 @@ public class ZestPrinter {
 
 	}
 
-	public static void printExpression(ZestExpressionElement element) {
+	public static void printExpression(ZestExpressionElement element, int indent) {
 		if (element.isLeaf()) {
 			if (element instanceof ZestExpressionLength) {
 				ZestExpressionLength lengthExpr = (ZestExpressionLength) element;
-				System.out.println("length: " + lengthExpr.getLength()
+				printIndent(indent);
+				System.out.print("length: " + lengthExpr.getLength()
 						+ " approx: " + lengthExpr.getApprox());
 			} else if (element instanceof ZestExpressionRegex) {
 				ZestExpressionRegex regexExpr = (ZestExpressionRegex) element;
-				System.out.println("Regex: " + regexExpr.getLocation() + " "
+				printIndent(indent);
+				System.out.print("Regex: " + regexExpr.getLocation() + " "
 						+ regexExpr.getRegex());
 			} else if (element instanceof ZestExpressionResponseTime) {
 				ZestExpressionResponseTime timeExpr = (ZestExpressionResponseTime) element;
-				System.out.println("Response Time: "
+				printIndent(indent);
+				System.out.print("Response Time: "
 						+ (timeExpr.isGreaterThan() ? ">" : "<=")
 						+ timeExpr.getTimeInMs() + " ");
 			} else if (element instanceof ZestExpressionStatusCode) {
 				ZestExpressionStatusCode codeExpr = (ZestExpressionStatusCode) element;
-				System.out.println("Status Code: " + codeExpr.getCode());
+				printIndent(indent);
+				System.out.print("Status Code: " + codeExpr.getCode());
 			} else if (element instanceof ZestExpressionURL) {
 //				ZestExpressionURL urlExpr=(ZestExpressionURL)element;
-				System.out.println("URL: ");
+				printIndent(indent);
+				System.out.print("URL: ");
 			}
 		} else {
+			int lastChildPrinted;
 			if (element instanceof ZestExpressionAnd) {
 				ZestExpressionAnd andElement = (ZestExpressionAnd) element;
+				System.out.println();
+				printIndent(indent);
 				System.out.println("AND: (");
-				for (int i = 0; i < andElement.getChildrenCondition().size() - 1; i++) {
-					printExpression(andElement.getChild(i));
-					System.out.println(" && ");
+				for (lastChildPrinted = 0; lastChildPrinted < andElement.getChildrenCondition().size() - 1; lastChildPrinted++) {
+					printExpression(andElement.getChild(lastChildPrinted), indent+1);
+					System.out.print(" && ");
 				}
-				printExpression(andElement.getChild(andElement.getChildrenCondition().size()-1));
+				printExpression(andElement.getChild(lastChildPrinted), indent+1);
 				System.out.println(")");
 			} else if (element instanceof ZestExpressionOr) {
 				ZestExpressionOr orElement = (ZestExpressionOr) element;
-				System.out.println("OR: (");
-				for (int i = 0; i < orElement.getChildrenCondition().size() - 1; i++) {
-					printExpression(orElement.getChild(i));
-					System.out.println(" || ");
+				System.out.println();
+				printIndent(indent);
+				System.out.print("OR: (");
+				for (lastChildPrinted = 0; lastChildPrinted < orElement.getChildrenCondition().size() - 1; lastChildPrinted++) {
+					printExpression(orElement.getChild(lastChildPrinted), indent+1);
+					System.out.print(" || ");
 				}
-				printExpression(orElement.getChild(orElement.getChildrenCondition().size()-1));
-				System.out.println(")");
+				printExpression(orElement.getChild(lastChildPrinted), indent+1);
+				System.out.println();
+				printIndent(indent);
+				System.out.print(")");
 			}
+//			System.out.println();
 		}
 	}
 
