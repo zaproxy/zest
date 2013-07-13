@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestStatement;
@@ -18,7 +19,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testAddingIfs() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 
 		ZestRequest req = new ZestRequest();
 		zc.addIf(req);
@@ -43,7 +44,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testRemoveFirstIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -58,7 +59,8 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testRemoveMiddleIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -73,7 +75,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testRemoveLastIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -88,7 +90,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveFirstIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -103,7 +105,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveSecondIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -119,7 +121,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveLastIf() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -134,7 +136,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testAddingElses() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 
 		ZestRequest req = new ZestRequest();
 		zc.addElse(req);
@@ -159,7 +161,7 @@ public class ZestConditionalRegexUnitTest {
 	
 	@Test
 	public void testRemoveFirstElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -174,7 +176,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testRemoveMiddleElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -189,7 +191,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testRemoveLastElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -204,7 +206,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveFirstElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -219,7 +221,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveSecondElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -234,7 +236,7 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testMoveLastElse() throws Exception {
-		ZestExpressionRegex zc = new ZestExpressionRegex();
+		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
@@ -249,8 +251,8 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testDeepConditionals1() throws Exception {
-		ZestExpressionRegex zc1 = new ZestExpressionRegex();
-		ZestExpressionRegex zc2 = new ZestExpressionRegex();
+		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestConditional zc2= new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		
@@ -263,10 +265,10 @@ public class ZestConditionalRegexUnitTest {
 
 	@Test
 	public void testDeepConditionals2() throws Exception {
-		ZestExpressionRegex zc1 = new ZestExpressionRegex();
-		ZestExpressionRegex zc2 = new ZestExpressionRegex();
-		ZestExpressionRegex zc3 = new ZestExpressionRegex();
-		ZestExpressionRegex zc4 = new ZestExpressionRegex();
+		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestConditional zc3 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestConditional zc4 = new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();

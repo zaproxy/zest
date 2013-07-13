@@ -19,7 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestAssertBodyRegexUnitTest.class,
 	ZestConditionalRegexUnitTest.class,
 	ZestRequestUnitTest.class,
-	ZestScriptUnitTest.class
+	ZestScriptUnitTest.class,
+	ZestExpressionAndUnitTest.class
 	})
 
 public final class ZestAllTestSuite {
