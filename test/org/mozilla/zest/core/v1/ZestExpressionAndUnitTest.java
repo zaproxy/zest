@@ -1,20 +1,15 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package mozilla.zest.core.v1;
 
-import static org.junit.Assert.*;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.theories.Theory;
-import org.junit.internal.runners.statements.ExpectException;
-import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
-import org.mozilla.zest.core.v1.ZestExpressionElement;
-import org.mozilla.zest.core.v1.ZestExpressionLength;
-import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
 
 public class ZestExpressionAndUnitTest {
 
