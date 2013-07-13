@@ -161,6 +161,8 @@ public class ZestPrinter {
 	}
 
 	public static void printExpression(ZestExpressionElement element, int indent) {
+		if(element.isInverse())
+			System.out.print("NOT ");
 		if (element.isLeaf()) {
 			if (element instanceof ZestExpressionLength) {
 				ZestExpressionLength lengthExpr = (ZestExpressionLength) element;
@@ -208,7 +210,7 @@ public class ZestPrinter {
 				}
 				printExpression(orElement.getChild(lastChildPrinted), indent+1);
 //				System.out.println();
-				printIndent(indent);
+//				printIndent(indent);
 				System.out.println(")");
 				printIndent(indent);
 			}
