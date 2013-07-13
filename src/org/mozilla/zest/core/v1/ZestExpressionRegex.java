@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ZestExpressionRegex extends ZestExpression implements ZestExpressionElement{
+public class ZestExpressionRegex extends ZestExpression{
 	
 	private transient static final String LOC_HEAD = "HEAD"; 
 	private transient static final String LOC_BODY = "BODY"; 
@@ -19,7 +19,6 @@ public class ZestExpressionRegex extends ZestExpression implements ZestExpressio
 	private String regex;
 	private String location;
 	
-	private ZestExpressionElement parent=null;
 	private boolean inverse=false;
 	
 	private transient Pattern pattern = null;

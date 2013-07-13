@@ -5,7 +5,7 @@
 package org.mozilla.zest.core.v1;
 
 
-public class ZestExpressionStatusCode extends ZestConditional {
+public class ZestExpressionStatusCode extends ZestExpression {
 	
 	private int code;
 	
@@ -13,8 +13,9 @@ public class ZestExpressionStatusCode extends ZestConditional {
 		super();
 	}
 	
-	public ZestExpressionStatusCode(int index) {
-		super(index);
+	public ZestExpressionStatusCode(int code) {
+		super();
+		this.code=code;
 	}
 	
 	public boolean isTrue (ZestResponse response) {
@@ -32,15 +33,14 @@ public class ZestExpressionStatusCode extends ZestConditional {
 
 	@Override
 	public ZestExpressionStatusCode deepCopy() {
-		ZestExpressionStatusCode copy = new ZestExpressionStatusCode(this.getIndex());
+		ZestExpressionStatusCode copy = new ZestExpressionStatusCode();
 		copy.code = code;
-		for (ZestStatement stmt : this.getIfStatements()) {
-			copy.addIf(stmt.deepCopy());
-		}
-		for (ZestStatement stmt : this.getElseStatements()) {
-			copy.addElse(stmt.deepCopy());
-		}
 		return copy;
+	}
+
+	@Override
+	public boolean evaluate(ZestResponse response) {
+		return false;
 	}
 	
 }
