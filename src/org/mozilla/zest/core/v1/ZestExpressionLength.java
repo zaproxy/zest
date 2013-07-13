@@ -22,17 +22,6 @@ public class ZestExpressionLength extends ZestExpression {
 	public ZestExpressionLength deepCopy() {
 		return new ZestExpressionLength(this.length, this.approx);
 	}
-
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		if (response.getBody() == null) {
-			return false;
-		}
-		boolean toReturn = Math.abs(length - response.getBody().length()) <= length
-				* approx / 100;
-		return isInverse() ? !toReturn : toReturn;
-	}
-
 	public int getLength() {
 		return length;
 	}
@@ -47,6 +36,16 @@ public class ZestExpressionLength extends ZestExpression {
 
 	public void setApprox(int approx) {
 		this.approx = approx;
+	}
+
+	@Override
+	public boolean isTrue(ZestResponse response) {
+		if (response.getBody() == null) {
+			return false;
+		}
+		boolean toReturn = Math.abs(length - response.getBody().length()) <= length
+				* approx / 100;
+		return toReturn;
 	}
 
 }

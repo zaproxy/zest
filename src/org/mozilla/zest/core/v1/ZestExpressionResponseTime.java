@@ -50,10 +50,5 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		copy.timeInMs = this.timeInMs;
 		return copy;
 	}
-
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		return isTrue(response);
-	}
 	
 }

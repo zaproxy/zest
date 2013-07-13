@@ -76,29 +76,11 @@ public class ZestExpressionRegex extends ZestExpression{
 		this.pattern = Pattern.compile(regex);
 	}
 
-//	@Override
-//	public ZestExpressionRegex deepCopy() {
-//		ZestExpressionRegex copy = new ZestExpressionRegex(this.getIndex());
-//		copy.location = location;
-//		copy.regex = regex;
-//		for (ZestStatement stmt : this.getIfStatements()) {
-//			copy.addIf(stmt.deepCopy());
-//		}
-//		for (ZestStatement stmt : this.getElseStatements()) {
-//			copy.addElse(stmt.deepCopy());
-//		}
-//		return copy;
-//	}
-
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		return inverse?!isTrue(response):isTrue(response);
-	}
 
 	@Override
 	public boolean isInverse() {

@@ -21,12 +21,6 @@ public class ZestExpressionStatusCode extends ZestExpression {
 	public boolean isTrue (ZestResponse response) {
 		return code == response.getStatusCode();
 	}
-	
-	@Override
-	public boolean evaluate(ZestResponse response){
-		boolean toReturn=isTrue(response);
-		return isInverse()? (!toReturn) : toReturn;
-	}
 
 	public int getCode() {
 		return code;

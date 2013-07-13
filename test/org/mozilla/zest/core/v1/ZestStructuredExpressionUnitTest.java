@@ -217,13 +217,14 @@ public class ZestStructuredExpressionUnitTest {
 			ZestExpression genericExp=new ZestExpression() {
 				
 				@Override
-				public boolean evaluate(ZestResponse response) {
-					return false;
-				}
-				
-				@Override
 				public ZestExpression deepCopy() {
 					return null;
+				}
+
+				@Override
+				public boolean isTrue(ZestResponse response) {
+					// TODO Auto-generated method stub
+					return false;
 				}
 			};
 			or.addChildCondition(genericExp);

@@ -39,17 +39,17 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 	}
 
 	@Override
-	public boolean evaluate(ZestResponse response) {
+	public ZestExpressionAnd deepCopy() {
+		return (ZestExpressionAnd)super.deepCopy();
+	}
+
+	@Override
+	public boolean isTrue(ZestResponse response) {
 		boolean toReturn = true;
 		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
 			if(!toReturn) break;//lazy evaluation
 		}
-		return isInverse() ? (!toReturn) : toReturn;
-	}
-
-	@Override
-	public ZestExpressionAnd deepCopy() {
-		return (ZestExpressionAnd)super.deepCopy();
+		return toReturn;
 	}
 }

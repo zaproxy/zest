@@ -3,10 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-
 public abstract class ZestExpression extends ZestElement implements
 		ZestExpressionElement {
 	private boolean not = false;
+
 	public ZestExpression() {
 		super();
 	}
@@ -24,14 +24,20 @@ public abstract class ZestExpression extends ZestElement implements
 		this.not = not;
 	}
 
-//	/**
-//	 * returns the number of ZestExpression created
-//	 * 
-//	 * @return the number of the ZestExpression created
-//	 */
-//	public int getCount() {
-//		return counter;
-//	}
+	@Override
+	public boolean evaluate(ZestResponse response) {
+		boolean toReturn = isTrue(response);
+		return isInverse() ? !toReturn : toReturn;
+	}
+
+	// /**
+	// * returns the number of ZestExpression created
+	// *
+	// * @return the number of the ZestExpression created
+	// */
+	// public int getCount() {
+	// return counter;
+	// }
 
 	public abstract ZestExpression deepCopy();
 }

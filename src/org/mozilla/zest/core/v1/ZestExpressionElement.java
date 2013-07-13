@@ -22,6 +22,11 @@ public interface ZestExpressionElement{
 	 */
 	public boolean isLeaf();
 	/**
+	 * the boolean value result of the expression without inverse flag
+	 * @return the boolean value of the expression without inverse flag
+	 */
+	public boolean isTrue(ZestResponse response);
+	/**
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
 	 */

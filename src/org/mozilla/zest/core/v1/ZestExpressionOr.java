@@ -23,13 +23,13 @@ public class ZestExpressionOr extends ZestStructuredExpression{
 	}
 
 	@Override
-	public boolean evaluate(ZestResponse response) {
+	public boolean isTrue(ZestResponse response){
 		boolean toReturn = false;
 		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn || con.evaluate(response);// compute OR for each child
 			if(toReturn) break;//lazy evaluation
 		}
-		return isInverse() ? (!toReturn) : toReturn;
+		return toReturn;
 	}
 	@Override
 	public ZestExpressionOr deepCopy() {

@@ -82,11 +82,5 @@ public class ZestExpressionURL extends ZestExpression {
 		ZestExpressionURL copy = new ZestExpressionURL();
 		return copy;
 	}
-
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		boolean toReturn=isTrue(response);
-		return isInverse()?!toReturn:toReturn;
-	}
 	
 }
