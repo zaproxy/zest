@@ -24,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestExpressionLengthUnitTest.class,
 	ZestExpressionRegexUnitTest.class,
 	ZestExpressionResponseTimeUnitTest.class,
-	ZestExpressionURLUnitTest.class
+	ZestExpressionURLUnitTest.class,
+	ZestExpressionAndUnitTest.class
 	})
 
 public final class ZestAllTestSuite {
