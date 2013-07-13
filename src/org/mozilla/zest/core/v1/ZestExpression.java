@@ -7,7 +7,7 @@ package org.mozilla.zest.core.v1;
 public abstract class ZestExpression extends ZestElement implements
 		ZestExpressionElement {
 	private boolean not = false;
-
+	private boolean isRoot=false;
 	public ZestExpression() {
 		super();
 	}
@@ -17,10 +17,6 @@ public abstract class ZestExpression extends ZestElement implements
 		return true;
 	}
 
-	@Override
-	public boolean isRoot() {
-		return false;
-	}
 	public boolean isInverse() {
 		return not;
 	}

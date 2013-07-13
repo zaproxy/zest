@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +53,38 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	 */
 	public void addChildCondition(ZestExpressionElement child) {
 		children.add(child);
+	}
+	/**
+	 * removes a child from the list of children condition
+	 * @param child the Expression to remove
+	 * @return the expression removed if any, null otherwise.
+	 */
+	public ZestExpressionElement removeChildCondition(ZestExpressionElement child){
+		if(children.remove(child))
+			return child;
+		else return null;		
+	}
+	/**
+	 * removes an element from the list of children condition
+	 * @param index the index of the element to remove
+	 * @return the element removed if any.
+	 */
+	public ZestExpressionElement removeChildCondition(int index){
+		return children.remove(index);
+	}
+	/**
+	 * Removes a collection of Expressions
+	 * @param childrenToRemove the Expressions, children of this StructuredExpression, which has to be removed
+	 * @return true if list of children condition changed as a result of the call
+	 */
+	public boolean removeAllChildren(Collection<ZestExpressionElement> childrenToRemove){
+		return children.removeAll(childrenToRemove);
+	}
+	/**
+	 * clears the list of children expression.
+	 */
+	public void clearChildren(){
+		children.clear();
 	}
 
 	/**

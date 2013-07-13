@@ -97,12 +97,6 @@ public class ZestExpressionRegex extends ZestExpression implements ZestExpressio
 	}
 
 	@Override
-	public boolean isRoot() {
-		//TODO
-		return false;
-	}
-
-	@Override
 	public boolean evaluate(ZestResponse response) {
 		return inverse?!isTrue(response):isTrue(response);
 	}

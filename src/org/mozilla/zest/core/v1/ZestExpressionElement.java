@@ -22,11 +22,6 @@ public interface ZestExpressionElement{
 	 */
 	public boolean isLeaf();
 	/**
-	 * true if it has no parent (null)
-	 * @return true if it has no parent (null)
-	 */
-	public boolean isRoot();
-	/**
 	 * the boolean value of the whole Conditional Element
 	 * @return the boolean value of the whole Conditional Element
 	 */

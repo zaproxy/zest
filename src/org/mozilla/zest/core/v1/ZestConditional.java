@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ZestConditional extends ZestStatement implements ZestContainer, ZestExpressionElement {
+public class ZestConditional extends ZestStatement implements ZestContainer{
 
 	private ZestExpressionElement rootExpression;
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
@@ -250,7 +250,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 		return null;
 	}
 	public boolean isTrue(ZestResponse response){//Code duplication for retrocompatibility
-		return evaluate(response);
+		return getRootExpression().evaluate(response);
 	}
 	public ZestExpressionElement getRootExpression(){
 		return this.rootExpression;
@@ -274,28 +274,5 @@ public class ZestConditional extends ZestStatement implements ZestContainer, Zes
 		copy.elseStatements=elseList;
 		copy.ifStatements=ifList;
 		return copy;
-	}
-	@Override
-	public boolean isLeaf() {
-		return rootExpression==null;
-	}
-	@Override
-	public boolean isRoot() {
-		return true;//this is always root
-	}
-	@Override
-	public boolean evaluate(ZestResponse response) {
-		if(rootExpression!=null)
-		return this.rootExpression.evaluate(response);
-		else return true;//no condition to check
-	}
-	@Override
-	public boolean isInverse() {
-		return rootExpression!=null?rootExpression.isInverse():false;
-	}
-	@Override
-	public void setInverse(boolean not) {
-		if(rootExpression!=null)
-			rootExpression.setInverse(not);
 	}
 }
