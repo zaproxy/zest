@@ -164,42 +164,39 @@ public class ZestPrinter {
 		if (element.isLeaf()) {
 			if (element instanceof ZestExpressionLength) {
 				ZestExpressionLength lengthExpr = (ZestExpressionLength) element;
-				printIndent(indent);
 				System.out.print("length: " + lengthExpr.getLength()
 						+ " approx: " + lengthExpr.getApprox());
 			} else if (element instanceof ZestExpressionRegex) {
 				ZestExpressionRegex regexExpr = (ZestExpressionRegex) element;
-				printIndent(indent);
 				System.out.print("Regex: " + regexExpr.getLocation() + " "
 						+ regexExpr.getRegex());
 			} else if (element instanceof ZestExpressionResponseTime) {
 				ZestExpressionResponseTime timeExpr = (ZestExpressionResponseTime) element;
-				printIndent(indent);
 				System.out.print("Response Time: "
 						+ (timeExpr.isGreaterThan() ? ">" : "<=")
 						+ timeExpr.getTimeInMs() + " ");
 			} else if (element instanceof ZestExpressionStatusCode) {
 				ZestExpressionStatusCode codeExpr = (ZestExpressionStatusCode) element;
-				printIndent(indent);
 				System.out.print("Status Code: " + codeExpr.getCode());
 			} else if (element instanceof ZestExpressionURL) {
 //				ZestExpressionURL urlExpr=(ZestExpressionURL)element;
-				printIndent(indent);
-				System.out.print("URL: ");
+				System.out.print("URL ");
 			}
 		} else {
+			printIndent(indent);
 			int lastChildPrinted;
 			if (element instanceof ZestExpressionAnd) {
 				ZestExpressionAnd andElement = (ZestExpressionAnd) element;
 				System.out.println();
 				printIndent(indent);
-				System.out.println("AND: (");
+				System.out.print("AND: (");
 				for (lastChildPrinted = 0; lastChildPrinted < andElement.getChildrenCondition().size() - 1; lastChildPrinted++) {
 					printExpression(andElement.getChild(lastChildPrinted), indent+1);
 					System.out.print(" && ");
 				}
 				printExpression(andElement.getChild(lastChildPrinted), indent+1);
 				System.out.println(")");
+				printIndent(indent);
 			} else if (element instanceof ZestExpressionOr) {
 				ZestExpressionOr orElement = (ZestExpressionOr) element;
 				System.out.println();
@@ -210,9 +207,10 @@ public class ZestPrinter {
 					System.out.print(" || ");
 				}
 				printExpression(orElement.getChild(lastChildPrinted), indent+1);
-				System.out.println();
+//				System.out.println();
 				printIndent(indent);
-				System.out.print(")");
+				System.out.println(")");
+				printIndent(indent);
 			}
 //			System.out.println();
 		}

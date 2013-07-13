@@ -20,7 +20,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestConditionalRegexUnitTest.class,
 	ZestRequestUnitTest.class,
 	ZestScriptUnitTest.class,
-	ZestExpressionAndUnitTest.class,
 	ZestStructuredExpressionUnitTest.class
 	})
 

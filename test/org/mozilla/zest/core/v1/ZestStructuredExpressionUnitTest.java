@@ -7,16 +7,28 @@ package mozilla.zest.core.v1;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mozilla.zest.core.v1.ZestConditional;
+import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
 import org.mozilla.zest.core.v1.ZestExpressionLength;
+import org.mozilla.zest.core.v1.ZestExpressionOr;
+import org.mozilla.zest.core.v1.ZestExpressionRegex;
+import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
+import org.mozilla.zest.core.v1.ZestExpressionURL;
+import org.mozilla.zest.core.v1.ZestResponse;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ZestStructuredExpressionUnitTest {
 	@Test
 	public void testDeepCopySingleAndSameChildrenSize() {
@@ -183,6 +195,48 @@ public class ZestStructuredExpressionUnitTest {
 						+ "; obtained " + wrong.getName();
 				assertTrue(msg, and.getChild(i).getClass().equals(expected));
 			}
+		}
+	}
+	@Test
+	public void testComplexCondition(){
+		ZestExpressionAnd and=new ZestExpressionAnd();
+		ZestExpressionOr or=new ZestExpressionOr();
+		try {
+			ZestResponse resp = new ZestResponse(new URL("http://this.is.a.test"), "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 1000);
+			ZestExpressionLength length=new ZestExpressionLength(0, 1);
+			length.setInverse(true);
+			ZestExpressionStatusCode code=new ZestExpressionStatusCode(200);
+			ZestExpressionRegex regex=new ZestExpressionRegex("BODY", "54321");
+			ZestExpressionResponseTime time=new ZestExpressionResponseTime(100);
+			LinkedList<String> includeRegex=new LinkedList<>();
+			LinkedList<String> excludeRegex=new LinkedList<>();
+			excludeRegex.add("");
+			ZestExpressionURL url=new ZestExpressionURL(includeRegex, excludeRegex);
+			url.setInverse(true);
+			time.setGreaterThan(true);
+			ZestExpression genericExp=new ZestExpression() {
+				
+				@Override
+				public boolean evaluate(ZestResponse response) {
+					return false;
+				}
+				
+				@Override
+				public ZestExpression deepCopy() {
+					return null;
+				}
+			};
+			or.addChildCondition(genericExp);
+			and.addChildCondition(length);
+			and.addChildCondition(code);
+			and.addChildCondition(regex);
+			and.addChildCondition(time);
+			and.addChildCondition(url);
+			or.addChildCondition(and);
+			ZestConditional cond=new ZestConditional(or);
+			assertTrue(cond.isTrue(resp));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 	}
 }
