@@ -17,6 +17,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	ZestActionSetTokenUnitTest.class, 
 	ZestAssertBodyRegexUnitTest.class,
+	ZestConditionalRegexUnitTest.class,
 	ZestConditionalRegexExprUnitTest.class,
 	ZestRequestUnitTest.class,
 	ZestScriptUnitTest.class,
@@ -26,7 +27,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestExpressionResponseTimeUnitTest.class,
 	ZestExpressionURLUnitTest.class,
 	ZestExpressionAndUnitTest.class
-	})
+})
 
 public final class ZestAllTestSuite {
 
