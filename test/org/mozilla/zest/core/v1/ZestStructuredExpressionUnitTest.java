@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
+import org.mozilla.zest.core.v1.ZestElement;
 import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
@@ -190,32 +191,37 @@ public class ZestStructuredExpressionUnitTest {
 				assertTrue(msg, and.getChild(i).getClass().equals(expected));
 			} else {
 				Class<ZestExpressionLength> wrong = ZestExpressionLength.class;
-				Class<ZestExpressionStatusCode> expected= ZestExpressionStatusCode.class;
+				Class<ZestExpressionStatusCode> expected = ZestExpressionStatusCode.class;
 				String msg = "Pos: " + i + ". Expected " + expected.getName()
 						+ "; obtained " + wrong.getName();
 				assertTrue(msg, and.getChild(i).getClass().equals(expected));
 			}
 		}
 	}
+
 	@Test
-	public void testComplexCondition(){
-		ZestExpressionAnd and=new ZestExpressionAnd();
-		ZestExpressionOr or=new ZestExpressionOr();
+	public void testComplexCondition() {
+		ZestExpressionAnd and = new ZestExpressionAnd();
+		ZestExpressionOr or = new ZestExpressionOr();
 		try {
-			ZestResponse resp = new ZestResponse(new URL("http://this.is.a.test"), "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 1000);
-			ZestExpressionLength length=new ZestExpressionLength(0, 1);
+			ZestResponse resp = new ZestResponse(new URL(
+					"http://this.is.a.test"), "Header prefix12345postfix",
+					"Body Prefix54321Postfix", 200, 1000);
+			ZestExpressionLength length = new ZestExpressionLength(0, 1);
 			length.setInverse(true);
-			ZestExpressionStatusCode code=new ZestExpressionStatusCode(200);
-			ZestExpressionRegex regex=new ZestExpressionRegex("BODY", "54321");
-			ZestExpressionResponseTime time=new ZestExpressionResponseTime(100);
-			LinkedList<String> includeRegex=new LinkedList<>();
-			LinkedList<String> excludeRegex=new LinkedList<>();
+			ZestExpressionStatusCode code = new ZestExpressionStatusCode(200);
+			ZestExpressionRegex regex = new ZestExpressionRegex("BODY", "54321");
+			ZestExpressionResponseTime time = new ZestExpressionResponseTime(
+					100);
+			LinkedList<String> includeRegex = new LinkedList<>();
+			LinkedList<String> excludeRegex = new LinkedList<>();
 			excludeRegex.add("");
-			ZestExpressionURL url=new ZestExpressionURL(includeRegex, excludeRegex);
+			ZestExpressionURL url = new ZestExpressionURL(includeRegex,
+					excludeRegex);
 			url.setInverse(true);
 			time.setGreaterThan(true);
-			ZestExpression genericExp=new ZestExpression() {
-				
+			ZestExpression genericExp = new ZestExpression() {
+
 				@Override
 				public ZestExpression deepCopy() {
 					return null;
@@ -234,10 +240,77 @@ public class ZestStructuredExpressionUnitTest {
 			and.addChildCondition(time);
 			and.addChildCondition(url);
 			or.addChildCondition(and);
-			ZestConditional cond=new ZestConditional(or);
+			ZestConditional cond = new ZestConditional(or);
 			assertTrue(cond.isTrue(resp));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void testSetChildrenCondition() {
+		List<ZestExpressionElement> children = new LinkedList<>();
+		children.add(new ZestExpressionAnd());
+		children.add(new ZestExpressionLength(1, 2));
+		children.add(new ZestExpressionStatusCode(200));
+		ZestExpressionAnd root = new ZestExpressionAnd();
+		root.setChildrenCondition(children);
+		for (int i = 0; i < children.size(); i++) {
+			String expected = children.get(i).getClass().getName();
+			String obtained = root.getChild(i).getClass().getName();
+			String msg = "[" + i + "] - Obtained " + obtained + " instead of "
+					+ expected;
+			assertTrue(
+					msg,
+					children.get(i).getClass()
+							.equals(root.getChild(i).getClass()));
+		}
+	}
+
+	@Test
+	public void testDeepCopyOr() {
+		ZestExpressionOr or = new ZestExpressionOr();
+		ZestExpressionOr copy = or.deepCopy();
+		assertTrue(or.getClass().equals(copy.getClass()));
+	}
+
+	@Test
+	public void testClearChildren() {
+		ZestExpressionAnd and = new ZestExpressionAnd();
+		LinkedList<ZestExpressionElement> children = new LinkedList<>();
+		children.add(new ZestExpressionAnd());
+		children.add(new ZestExpressionLength());
+		children.add(new ZestExpressionOr());
+		ZestExpressionOr or=new ZestExpressionOr(children);
+		and.setChildrenCondition(children);
+		and.addChildCondition(or);
+		and.clearChildren();
+		assertTrue(and.getChildrenCondition().isEmpty());
+	}
+	@Test
+	public void testDeepCopyNullChildren(){
+		ZestExpressionAnd and=new ZestExpressionAnd(null);
+		ZestExpressionAnd copy=and.deepCopy();
+		assertTrue(copy.getClass().equals(and.getClass()));
+	}
+	@Test
+	public void testRemoveChildCondition(){
+		ZestExpressionAnd and=new ZestExpressionAnd();
+		ZestExpressionLength lengthExpr=new ZestExpressionLength(10,20);
+		and.addChildCondition(lengthExpr);
+		and.removeChildCondition(lengthExpr);
+		assertTrue(and.getChildrenCondition().isEmpty());
+	}
+	@Test
+	public void testRemoveChildConditionReturnValue(){
+		ZestExpressionAnd and=new ZestExpressionAnd();
+		ZestExpressionLength lengthExpr=new ZestExpressionLength(10,20);
+		and.addChildCondition(lengthExpr);
+		assertTrue(and.removeChildCondition(lengthExpr).equals(lengthExpr));
+	}
+	@Test
+	public void testRemoveChildNotPresent(){
+		ZestExpressionAnd and=new ZestExpressionAnd();
+		assertTrue(and.removeChildCondition(new ZestExpressionLength())==null);
 	}
 }

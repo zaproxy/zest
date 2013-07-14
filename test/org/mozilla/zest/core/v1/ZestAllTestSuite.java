@@ -17,10 +17,12 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	ZestActionSetTokenUnitTest.class, 
 	ZestAssertBodyRegexUnitTest.class,
-	ZestConditionalRegexUnitTest.class,
+	ZestConditionalRegexExprUnitTest.class,
 	ZestRequestUnitTest.class,
 	ZestScriptUnitTest.class,
-	ZestStructuredExpressionUnitTest.class
+	ZestStructuredExpressionUnitTest.class,
+	ZestExpressionLengthUnitTest.class,
+	ZestExpressionRegexUnitTest.class
 	})
 
 public final class ZestAllTestSuite {

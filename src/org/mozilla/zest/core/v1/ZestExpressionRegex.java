@@ -92,7 +92,7 @@ public class ZestExpressionRegex extends ZestExpression{
 		inverse=not;
 	}
 	@Override
-	public ZestExpression deepCopy() {
+	public ZestExpressionRegex deepCopy() {
 		return new ZestExpressionRegex(this.getLocation(), this.getRegex(), this.isInverse());
 	}
 	
