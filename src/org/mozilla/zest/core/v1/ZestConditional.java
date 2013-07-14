@@ -249,7 +249,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 
 		return null;
 	}
-	public boolean isTrue(ZestResponse response){//Code duplication for retrocompatibility
+	public boolean isTrue(ZestResponse response){
 		return getRootExpression().evaluate(response);
 	}
 	public ZestExpressionElement getRootExpression(){

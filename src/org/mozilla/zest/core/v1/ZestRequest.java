@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class ZestRequest extends ZestStatement {
 
 	private URL url;
+	private String urlToken;	// String version of the URL including tokens - as these wont be a valid urls
 	private String data;	// TODO this dependant on protocol, eg http / ws / ??
 	private String method;
 	private String headers;
@@ -38,6 +39,7 @@ public class ZestRequest extends ZestStatement {
 	public ZestRequest deepCopy () {
 		ZestRequest zr = new ZestRequest(this.getIndex());
 		zr.setUrl(this.url);
+		zr.setUrlToken(this.urlToken);
 		zr.setData(this.data);
 		zr.setMethod(this.method);
 		zr.setHeaders(this.headers);
@@ -55,10 +57,24 @@ public class ZestRequest extends ZestStatement {
 	}
 	
 	public URL getUrl() {
+		if (url == null && urlToken != null) {
+			try {
+				// We're assuming that the token has been replaced by this time ;)
+				return new URL(this.urlToken);
+			} catch (MalformedURLException e) {
+				// Ignore - assume it includes an unexpanded token
+			}
+		}
 		return url;
 	}
 	public void setUrl(URL url) {
 		this.url = url;
+	}
+	public String getUrlToken() {
+		return urlToken;
+	}
+	public void setUrlToken(String urlToken) {
+		this.urlToken = urlToken;
 	}
 	public String getData() {
 		return data;
@@ -212,7 +228,10 @@ public class ZestRequest extends ZestStatement {
 			} catch (MalformedURLException e) {
 				// Ignore
 			}
+		} else if (this.urlToken != null) {
+			this.setUrlToken(this.replaceInString(tokens, this.urlToken));
 		}
+		this.setMethod(this.replaceInString(tokens, this.getMethod()));
 		this.setHeaders(this.replaceInString(tokens, this.getHeaders()));
 		this.setData(this.replaceInString(tokens, this.getData()));
 	}
@@ -224,9 +243,10 @@ public class ZestRequest extends ZestStatement {
 	
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
-		if (this.getUrl().toString().startsWith(oldPrefix)) {
+		if (this.getUrl() != null && this.getUrl().toString().startsWith(oldPrefix)) {
 			String urlStr = newPrefix + getUrl().toString().substring(oldPrefix.length());
 			this.setUrl(new URL(urlStr));
+			// TODO handle urlToken in the same way?
 		} else {
 			throw new IllegalArgumentException("Request url " + getUrl() + " does not start with " + oldPrefix);
 		}

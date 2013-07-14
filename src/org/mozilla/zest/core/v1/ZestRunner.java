@@ -17,6 +17,10 @@ public interface ZestRunner {
 			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException;
 	
+	void run (ZestScript script, ZestRequest target) 
+			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException;
+
 	ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
 			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException,
 			ZestInvalidCommonTestException;

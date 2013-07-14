@@ -6,6 +6,7 @@
 	<property name="lib" location="lib" />
 	<property name="src" location="src" />
 	<property name="src.version" value="1.7" />
+	<property name="zap.addon.dir" location="../zap-extensions-alpha/" />
 	<property name="zest.version" value="2" />	<!-- Note that Zest v2 is work in progress" -->
 	<property name="zest.jar" value="mozilla-zest-${zest.version}.jar" />
 
@@ -81,4 +82,10 @@
 		</jar>
 	</target>
 
+	<target name="deploy-to-zap-addon" depends="dist" description="deploy to the ZAP addon">
+        <copy file="${dist}/${zest.jar}" todir="${zap.addon.dir}/lib" />
+        <copy file="${dist}/${zest.jar}" todir="${zap.addon.dir}/src/org/zaproxy/zap/extension/zest/lib" />
+	</target>
+
+	
 </project>

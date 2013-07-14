@@ -4,9 +4,13 @@
 
 package org.mozilla.zest.core.v1;
 
+
 public class ZestActionFail extends ZestAction {
 	
+	public enum Priority {INFO, LOW, MEDIUM, HIGH};
+
 	private String message;
+	private String priority;
 	
 	public ZestActionFail() {
 		super();
@@ -19,6 +23,18 @@ public class ZestActionFail extends ZestAction {
 	public ZestActionFail(String message) {
 		super();
 		this.message = message;
+	}
+
+	public ZestActionFail(String message, String priority) {
+		super();
+		this.message = message;
+		this.setPriority(priority);
+	}
+
+	public ZestActionFail(String message, Priority priority) {
+		super();
+		this.message = message;
+		this.setPriority(priority);
 	}
 
 	@Override
@@ -37,11 +53,30 @@ public class ZestActionFail extends ZestAction {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Priority priority) {
+		this.priority = priority.name();
+	}
+
+	public void setPriority(String priority) {
+		try {
+			Priority.valueOf(priority);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Unsupported priority: " + priority);
+		}
+		this.priority = priority;
+	}
 
 	@Override
 	public ZestActionFail deepCopy() {
 		ZestActionFail copy = new ZestActionFail(this.getIndex());
 		copy.message = message;
+		copy.priority = priority;
 		return copy;
 	}
+
 }
