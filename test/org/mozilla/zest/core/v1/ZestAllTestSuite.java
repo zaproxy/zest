@@ -22,7 +22,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestScriptUnitTest.class,
 	ZestStructuredExpressionUnitTest.class,
 	ZestExpressionLengthUnitTest.class,
-	ZestExpressionRegexUnitTest.class
+	ZestExpressionRegexUnitTest.class,
+	ZestExpressionResponseTimeUnitTest.class,
+	ZestExpressionURLUnitTest.class
 	})
 
 public final class ZestAllTestSuite {

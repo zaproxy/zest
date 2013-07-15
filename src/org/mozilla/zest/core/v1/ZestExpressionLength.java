@@ -19,6 +19,11 @@ public class ZestExpressionLength extends ZestExpression {
 		this.approx = approx;
 	}
 
+	public ZestExpressionLength(int length, int j, boolean b) {
+		this(length,j);
+		this.setInverse(b);
+	}
+
 	public ZestExpressionLength deepCopy() {
 		return new ZestExpressionLength(this.length, this.approx);
 	}

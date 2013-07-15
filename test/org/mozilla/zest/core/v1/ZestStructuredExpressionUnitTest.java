@@ -4,6 +4,7 @@
 
 package mozilla.zest.core.v1;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -17,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
-import org.mozilla.zest.core.v1.ZestElement;
 import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
@@ -312,5 +312,47 @@ public class ZestStructuredExpressionUnitTest {
 	public void testRemoveChildNotPresent(){
 		ZestExpressionAnd and=new ZestExpressionAnd();
 		assertTrue(and.removeChildCondition(new ZestExpressionLength())==null);
+	}
+	@Test
+	public void testZestExpressionAndLazyEvaluation(){
+		ZestExpressionAnd and=new ZestExpressionAnd();
+		ZestExpressionLength lengthExpr=new ZestExpressionLength(100, 100, true);
+		ZestExpression expectException=new ZestExpression() {
+			
+			@Override
+			public boolean isTrue(ZestResponse response) {
+				throw new IllegalAccessError("This has not to be thrown cause of the Lazy evaluation!");
+			}
+			
+			@Override
+			public ZestExpression deepCopy() {
+				return null;
+			}
+		};
+		and.addChildCondition(lengthExpr);
+		and.addChildCondition(expectException);
+		ZestResponse response=new ZestResponse(null, "", "", 200, 100);
+		assertFalse(and.evaluate(response));
+	}
+	@Test
+	public void testZestExpressionOrLazyEvaluation(){
+		ZestExpressionOr or=new ZestExpressionOr();
+		ZestExpressionLength lengthExpr=new ZestExpressionLength(100, 100);
+		ZestExpression expectedException=new ZestExpression() {
+			
+			@Override
+			public boolean isTrue(ZestResponse response) {
+				throw new IllegalAccessError("This has not to be thrown cause of the Lazy evaluation!");
+			}
+			
+			@Override
+			public ZestExpression deepCopy() {
+				return null;
+			}
+		};
+		or.addChildCondition(lengthExpr);
+		or.addChildCondition(expectedException);
+		ZestResponse response=new ZestResponse(null, "", "", 200, 100);
+		assertTrue(or.evaluate(response));
 	}
 }
