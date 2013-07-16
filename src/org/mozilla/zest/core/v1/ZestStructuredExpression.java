@@ -127,12 +127,14 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	@Override
+	@Deprecated
 	public ZestStructuredExpression deepCopy() {
 		ZestStructuredExpression copy = null;
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();
 		if (getChildrenCondition() != null) {
-			for (ZestExpressionElement child : this.children)
+			for (ZestExpressionElement child : this.children){
 				copyChildren.add((ZestExpressionElement) child.deepCopy());
+			}
 		}
 		if (this instanceof ZestExpressionOr) {
 			copy = new ZestExpressionOr(copyChildren);

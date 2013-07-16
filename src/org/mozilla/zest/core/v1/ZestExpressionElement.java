@@ -45,5 +45,5 @@ public interface ZestExpressionElement{
 	 * @see ZestElement
 	 * @return a copy of the ZestConditionalElement
 	 */
-	public ZestElement deepCopy();
+	public ZestExpressionElement deepCopy();
 }

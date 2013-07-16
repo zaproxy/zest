@@ -22,8 +22,9 @@ public class ZestAssertion extends ZestElement{
 		return old_expr;
 	}
 	public boolean isValid (ZestResponse response) {
-		if(rootExpression==null)
-			return true;//no condition to check!
+		if(rootExpression==null){
+			return false;//no condition to check!
+		}
 		return rootExpression.evaluate(response);
 	}
 

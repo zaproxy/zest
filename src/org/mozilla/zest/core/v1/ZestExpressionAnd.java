@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,7 +41,14 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 
 	@Override
 	public ZestExpressionAnd deepCopy() {
-		return (ZestExpressionAnd)super.deepCopy();
+		List<ZestExpressionElement> copyChildren = new LinkedList<>();
+		if (getChildrenCondition()!=null) {
+			for (int i = 0; i < getChildrenCondition().size(); i++) {
+				copyChildren.add(getChildrenCondition().get(i).deepCopy());
+			}
+		}
+		ZestExpressionAnd copy=new ZestExpressionAnd(copyChildren);
+		return copy;
 	}
 
 	@Override
@@ -51,7 +59,9 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		boolean toReturn = true;
 		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
-			if(!toReturn) break;//lazy evaluation
+			if(!toReturn) {
+				break;//lazy evaluation
+			}
 		}
 		return toReturn;
 	}

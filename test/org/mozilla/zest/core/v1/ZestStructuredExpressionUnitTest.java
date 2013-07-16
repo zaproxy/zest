@@ -43,6 +43,14 @@ public class ZestStructuredExpressionUnitTest {
 		assertTrue(and.getChildrenCondition().size() == copy
 				.getChildrenCondition().size());
 	}
+	public void testOrDeepCopySingleAndSameChildrenSize() {
+		ZestExpressionOr or = new ZestExpressionOr();
+		or.addChildCondition(new ZestExpressionStatusCode(100));
+		or.addChildCondition(new ZestExpressionLength(1, 1));
+		ZestExpressionOr copy = or.deepCopy();
+		assertTrue(or.getChildrenCondition().size() == copy
+				.getChildrenCondition().size());
+	}
 
 	@Test
 	public void testDeepCopySingleAndSameChildrenClasses() {
@@ -54,6 +62,19 @@ public class ZestStructuredExpressionUnitTest {
 		ZestExpressionAnd copy = and.deepCopy();
 		for (int i = 0; i < children.size(); i++) {
 			assertTrue(and.getChild(i).getClass() == copy.getChild(i)
+					.getClass());
+		}
+	}
+	@Test
+	public void testOrDeepCopySingleAndSameChildrenClasses() {
+		List<ZestExpressionElement> children = new LinkedList<>();
+		for (int i = 0; i < 10; i++) {
+			children.add(new ZestExpressionLength());
+		}
+		ZestExpressionOr or = new ZestExpressionOr(children);
+		ZestExpressionOr copy = or.deepCopy();
+		for (int i = 0; i < children.size(); i++) {
+			assertTrue(or.getChild(i).getClass() == copy.getChild(i)
 					.getClass());
 		}
 	}
@@ -295,6 +316,12 @@ public class ZestStructuredExpressionUnitTest {
 		ZestExpressionAnd and=new ZestExpressionAnd(null);
 		ZestExpressionAnd copy=and.deepCopy();
 		assertTrue(copy.getClass().equals(and.getClass()));
+	}
+	@Test
+	public void testOrDeepCopyNullChildren(){
+		ZestExpressionOr or=new ZestExpressionOr(null);
+		ZestExpressionOr copy=or.deepCopy();
+		assertTrue(copy.getClass().equals(or.getClass()));
 	}
 	@Test
 	public void testRemoveChildCondition(){
