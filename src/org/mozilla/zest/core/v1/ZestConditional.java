@@ -266,11 +266,13 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		ZestConditional copy=new ZestConditional(getIndex());
 		copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
 		ArrayList<ZestStatement> ifList=new ArrayList<>();
-		for(ZestStatement stmt:ifStatements)
+		for(ZestStatement stmt:ifStatements){
 			copy.ifStatements.add(stmt.deepCopy());
+		}
 		ArrayList<ZestStatement> elseList=new ArrayList<>();
-		for(ZestStatement stmt:elseStatements)
+		for(ZestStatement stmt:elseStatements){
 			copy.elseStatements.add(stmt.deepCopy());
+		}
 		copy.elseStatements=elseList;
 		copy.ifStatements=ifList;
 		return copy;

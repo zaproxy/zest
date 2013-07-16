@@ -84,10 +84,6 @@ public class ZestExpressionURL extends ZestExpression {
 		ZestExpressionURL copy = new ZestExpressionURL();
 		List<String> copyIncludeRegex = new ArrayList<>(includeRegexes);
 		List<String> copyExcludeRegex = new ArrayList<>(excludeRegexes);
-		List<Pattern> copyIncludePatterns = new ArrayList<>(includePatterns);
-		List<Pattern> copyExcludePatterns = new ArrayList<>(excludePatterns);
-		copy.excludePatterns = copyExcludePatterns;
-		copy.includePatterns = copyIncludePatterns;
 		copy.includeRegexes = copyIncludeRegex;
 		copy.excludeRegexes = copyExcludeRegex;
 		return copy;
