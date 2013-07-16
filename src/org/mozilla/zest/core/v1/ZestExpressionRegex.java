@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ZestConditionRegex extends ZestConditional {
+public class ZestExpressionRegex extends ZestExpression{
 	
 	private transient static final String LOC_HEAD = "HEAD"; 
 	private transient static final String LOC_BODY = "BODY"; 
@@ -19,22 +19,19 @@ public class ZestConditionRegex extends ZestConditional {
 	private String regex;
 	private String location;
 	
+	private boolean inverse=false;
+	
 	private transient Pattern pattern = null;
 
-	public ZestConditionRegex() {
-		super();
+	public ZestExpressionRegex(){
+		this(null,null,false);
 	}
-	
-	public ZestConditionRegex(int index) {
-		super(index);
+	public ZestExpressionRegex(String location, String regex) {
+		this(location, regex, false);
 	}
-	
-	public ZestConditionRegex(String location, String regex) {
-		this (location, regex, false);
-	}
-	
-	public ZestConditionRegex(String location, String regex, boolean inverse) {
+	public ZestExpressionRegex(String location, String regex, boolean inverse) {
 		super ();
+		this.inverse=inverse;
 		this.setLocation(location);
 		this.regex = regex;
 		if (regex != null) {
@@ -42,7 +39,6 @@ public class ZestConditionRegex extends ZestConditional {
 		}
 	}
 	
-	@Override
 	public boolean isTrue (ZestResponse response) {
 		String str = null;		
 		if (LOC_HEAD.equals(this.location)) {
@@ -81,17 +77,23 @@ public class ZestConditionRegex extends ZestConditional {
 	}
 
 	@Override
-	public ZestConditionRegex deepCopy() {
-		ZestConditionRegex copy = new ZestConditionRegex(this.getIndex());
-		copy.location = location;
-		copy.regex = regex;
-		for (ZestStatement stmt : this.getIfStatements()) {
-			copy.addIf(stmt.deepCopy());
-		}
-		for (ZestStatement stmt : this.getElseStatements()) {
-			copy.addElse(stmt.deepCopy());
-		}
-		return copy;
+	public boolean isLeaf() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isInverse() {
+		return inverse;
+	}
+
+	@Override
+	public void setInverse(boolean not) {
+		inverse=not;
+	}
+	@Override
+	public ZestExpressionRegex deepCopy() {
+		return new ZestExpressionRegex(this.getLocation(), this.getRegex(), this.isInverse());
 	}
 	
 }

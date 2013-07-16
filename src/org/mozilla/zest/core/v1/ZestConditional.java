@@ -10,28 +10,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ZestConditional extends ZestStatement implements ZestContainer {
+public class ZestConditional extends ZestStatement implements ZestContainer{
+
+	private ZestExpressionElement rootExpression;
+	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
+	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
 
 	public ZestConditional() {
 		super();
+	}
+	public ZestConditional(ZestExpressionElement rootExp) {
+		super();
+		this.rootExpression=rootExp;
 	}
 
 	public ZestConditional(int index) {
 		super(index);
 	}
-
-	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
-	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
-
-	/**
-	 * Override this in the classes that implement this method
-	 * @param response
-	 * @return
-	 */
-	public boolean isTrue (ZestResponse response) {
-		throw new IllegalArgumentException();
+	public ZestConditional(int index, ZestExpressionElement rootExp) {
+		super(index);
+		this.rootExpression=rootExp;
 	}
-
 	public void addIf(ZestStatement req) {
 		this.addIf(this.ifStatements.size(), req);
 	}
@@ -80,7 +79,6 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 	public void addElse(ZestStatement req) {
 		this.addElse(this.elseStatements.size(), req);
 	}
-	
 	public void addElse(int index, ZestStatement req) {
 		ZestStatement prev = this;
 		if (this.ifStatements.size() > 0) {
@@ -251,6 +249,32 @@ public abstract class ZestConditional extends ZestStatement implements ZestConta
 
 		return null;
 	}
+	public boolean isTrue(ZestResponse response){
+		return getRootExpression().evaluate(response);
+	}
+	public ZestExpressionElement getRootExpression(){
+		return this.rootExpression;
+	}
+	public ZestExpressionElement setRootExpression(ZestExpressionElement new_root){
+		ZestExpressionElement old_root=this.getRootExpression();
+		this.rootExpression=new_root;
+		return old_root;
+	}
 
-
+	@Override
+	public ZestStatement deepCopy() {
+		ZestConditional copy=new ZestConditional(getIndex());
+		copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
+		ArrayList<ZestStatement> ifList=new ArrayList<>();
+		for(ZestStatement stmt:ifStatements){
+			copy.ifStatements.add(stmt.deepCopy());
+		}
+		ArrayList<ZestStatement> elseList=new ArrayList<>();
+		for(ZestStatement stmt:elseStatements){
+			copy.elseStatements.add(stmt.deepCopy());
+		}
+		copy.elseStatements=elseList;
+		copy.ifStatements=ifList;
+		return copy;
+	}
 }

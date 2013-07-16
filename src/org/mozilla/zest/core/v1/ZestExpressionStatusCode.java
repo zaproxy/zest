@@ -5,20 +5,20 @@
 package org.mozilla.zest.core.v1;
 
 
-public class ZestAssertStatusCode extends ZestAssertion {
-
+public class ZestExpressionStatusCode extends ZestExpression {
+	
 	private int code;
 	
-	public ZestAssertStatusCode() {
+	public ZestExpressionStatusCode() {
+		super();
 	}
 	
-	public ZestAssertStatusCode(int code) {
-		super ();
-		this.code = code;
+	public ZestExpressionStatusCode(int code) {
+		super();
+		this.code=code;
 	}
 	
-	@Override
-	public boolean isValid (ZestResponse response) {
+	public boolean isTrue (ZestResponse response) {
 		return code == response.getStatusCode();
 	}
 
@@ -31,8 +31,10 @@ public class ZestAssertStatusCode extends ZestAssertion {
 	}
 
 	@Override
-	public ZestAssertStatusCode deepCopy() {
-		return new ZestAssertStatusCode(this.code);
+	public ZestExpressionStatusCode deepCopy() {
+		ZestExpressionStatusCode copy = new ZestExpressionStatusCode();
+		copy.code = code;
+		return copy;
 	}
-
+	
 }
