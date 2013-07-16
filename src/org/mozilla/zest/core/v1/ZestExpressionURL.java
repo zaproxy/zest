@@ -62,10 +62,11 @@ public class ZestExpressionURL extends ZestExpression {
 		this.includeRegexes = includeRegexes;
 
 		this.includePatterns.clear();
-		if (includeRegexes != null)
+		if (includeRegexes != null) {
 			for (String regex : includeRegexes) {
 				this.includePatterns.add(Pattern.compile(regex));
 			}
+		}
 	}
 
 	public void setExcludeRegexes(List<String> excludeRegexes) {

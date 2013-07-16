@@ -64,10 +64,11 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	 */
 	public ZestExpressionElement removeChildCondition(
 			ZestExpressionElement child) {
-		if (children.remove(child))
+		if (children.remove(child)) {
 			return child;
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
