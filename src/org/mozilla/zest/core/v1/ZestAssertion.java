@@ -5,13 +5,27 @@
 package org.mozilla.zest.core.v1;
 
 
-public abstract class ZestAssertion extends ZestElement {
-
+public class ZestAssertion extends ZestElement{
+	private ZestExpressionElement rootExpression;
 	public ZestAssertion() {
 	}
-
+	
+	public ZestAssertion(ZestExpressionElement rootExpr){
+		this.rootExpression=rootExpr;
+	}
+	public ZestExpressionElement getRootExpression(){
+		return this.rootExpression;
+	}
+	public ZestExpressionElement setRootExpression(ZestExpressionElement new_rootExpression){
+		ZestExpressionElement old_expr=this.rootExpression;
+		this.rootExpression=new_rootExpression;
+		return old_expr;
+	}
 	public boolean isValid (ZestResponse response) {
-		throw new IllegalArgumentException();
+		if(rootExpression==null){
+			return false;//no condition to check!
+		}
+		return rootExpression.evaluate(response);
 	}
 
 	@Override
@@ -19,4 +33,9 @@ public abstract class ZestAssertion extends ZestElement {
 		return ze instanceof ZestAssertion;
 	}
 
+	@Override
+	public ZestElement deepCopy() {
+		ZestExpressionElement copy_root_expr=(ZestExpressionElement)rootExpression.deepCopy();
+		return new ZestAssertion(copy_root_expr);
+	}
 }
