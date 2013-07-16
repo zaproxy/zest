@@ -5,20 +5,20 @@
 package org.mozilla.zest.core.v1;
 
 
-public class ZestConditionResponseTime extends ZestConditional {
+public class ZestExpressionResponseTime extends ZestExpression {
 	
 	private boolean greaterThan = true;
 	private long timeInMs;
 	
-	public ZestConditionResponseTime() {
+	public ZestExpressionResponseTime() {
 		super();
 	}
 	
-	public ZestConditionResponseTime(int index) {
-		super(index);
+	public ZestExpressionResponseTime(long time) {
+		super();
+		this.timeInMs=time;
 	}
 	
-	@Override
 	public boolean isTrue (ZestResponse response) {
 		if (greaterThan) {
 			return response.getResponseTimeInMs() > this.timeInMs;
@@ -44,16 +44,10 @@ public class ZestConditionResponseTime extends ZestConditional {
 	}
 
 	@Override
-	public ZestConditionResponseTime deepCopy() {
-		ZestConditionResponseTime copy = new ZestConditionResponseTime(this.getIndex());
+	public ZestExpressionResponseTime deepCopy() {
+		ZestExpressionResponseTime copy = new ZestExpressionResponseTime();
 		copy.greaterThan = this.greaterThan;
 		copy.timeInMs = this.timeInMs;
-		for (ZestStatement stmt : this.getIfStatements()) {
-			copy.addIf(stmt.deepCopy());
-		}
-		for (ZestStatement stmt : this.getElseStatements()) {
-			copy.addElse(stmt.deepCopy());
-		}
 		return copy;
 	}
 	
