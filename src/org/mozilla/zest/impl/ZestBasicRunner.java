@@ -209,6 +209,8 @@ public class ZestBasicRunner implements ZestRunner {
 		if (this.outputWriter != null) {
 			try {
 				this.outputWriter.append(str);
+				this.outputWriter.append("\n");
+				this.outputWriter.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
