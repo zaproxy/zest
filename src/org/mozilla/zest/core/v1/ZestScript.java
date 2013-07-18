@@ -13,13 +13,15 @@ import java.util.Set;
 
 public class ZestScript extends ZestStatement implements ZestContainer {
 
+	public static final String VERSION = "0.2";
+
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
 	public static final String ABOUT = "This is a Zest script. For more details about Zest visit " + ZEST_URL;
 
 	public enum Type {Targeted, Active, Passive };
 
 	private String about = ABOUT;
-	private int zestVersion = 1;
+	private String zestVersion = VERSION;
 	private String generatedBy;
 	private String author;
 	private String title;
@@ -288,12 +290,12 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		}
 	}
 
-	public int getZestVersion() {
+	public String getZestVersion() {
 		return zestVersion;
 	}
 
-	public void setZestVersion(int zestVersion) {
-		if (zestVersion != 1) {
+	public void setZestVersion(String zestVersion) {
+		if (! VERSION.equals(zestVersion)) {
 			throw new IllegalArgumentException("Version " + zestVersion + " not supported by this class");
 		}
 		this.zestVersion = zestVersion;

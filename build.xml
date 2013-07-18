@@ -7,7 +7,7 @@
 	<property name="src" location="src" />
 	<property name="src.version" value="1.7" />
 	<property name="zap.addon.dir" location="../zap-extensions-alpha/" />
-	<property name="zest.version" value="2" />	<!-- Note that Zest v2 is work in progress" -->
+	<property name="zest.version" value="0.2" />	<!-- Note that Zest v0.2 is work in progress" -->
 	<property name="zest.jar" value="mozilla-zest-${zest.version}.jar" />
 
 	<target name="clean">
@@ -79,6 +79,13 @@
                 <attribute name="Class-Path" value="${dist.manifest.classpath}" />
                 <attribute name="Implementation-Version" value="${zest.version}" />
             </manifest>
+			<metainf  dir="${src}/META-INF"  includes="**/*" /> 
+			<zipgroupfileset dir="${lib}" includes="*.jar" erroronmissingdir="false"/>
+			<!--metainf>
+                <fileset dir="${src}/META-INF">
+                    <include name="**/*" />
+                </fileset>
+			</metainf-->
 		</jar>
 	</target>
 

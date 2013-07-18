@@ -5,10 +5,9 @@
 package org.mozilla.zest.impl;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +57,7 @@ public class ZestBasicRunner implements ZestRunner {
 	private HttpClient httpclient = new HttpClient();
 	private boolean stopOnAssertFail = true;
 	private boolean stopOnTestFail = true;
-	private PrintStream outputStream = null;
+	private Writer outputWriter = null;
 	
 	private List<ZestTransformation> transformList;
 	private Map<String, String> replacementValues;
@@ -207,8 +206,12 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	private void output(String str) {
-		if (this.outputStream != null) {
-			this.outputStream.println(str);
+		if (this.outputWriter != null) {
+			try {
+				this.outputWriter.append(str);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -311,9 +314,9 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public void runScript(File script) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
+	public void runScript(Reader reader) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
 			IOException, ZestInvalidCommonTestException {
-	    BufferedReader fr = new BufferedReader(new FileReader(script));
+	    BufferedReader fr = new BufferedReader(reader);
 	    StringBuilder sb = new StringBuilder();
         String line;
         while ((line = fr.readLine()) != null) {
@@ -321,6 +324,12 @@ public class ZestBasicRunner implements ZestRunner {
         }
         fr.close();
 	    run ((ZestScript) ZestJSON.fromString(sb.toString()));
+	}
+
+	@Override
+	public void runScript(String  script) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
+			IOException, ZestInvalidCommonTestException {
+	    run ((ZestScript) ZestJSON.fromString(script));
 	}
 
 	private ZestResponse send(HttpClient httpclient, ZestRequest req) throws IOException {
@@ -413,8 +422,9 @@ public class ZestBasicRunner implements ZestRunner {
 		return stopOnTestFail;
 	}
 
-	public void setOutputStream(PrintStream output) {
-		this.outputStream = output;
+	@Override
+	public void setOutputWriter(Writer writer) {
+		this.outputWriter = writer;
 	}
 
 	@Override
