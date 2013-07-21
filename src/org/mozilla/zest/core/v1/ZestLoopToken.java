@@ -7,36 +7,25 @@
  */
 package org.mozilla.zest.core.v1;
 
-public class ZestLoopToken implements ZestToken {
-	private String token=null;
-	public ZestLoopToken(){
+public abstract class ZestLoopToken<T> extends ZestElement{
+	private T value;
+	protected ZestLoopToken(T value, int index){
+		if(value==null){
+			throw new IllegalArgumentException("null param is invalid");
+		}
+		if(index<0){
+			throw new IllegalArgumentException("index must be non negative");
+		}
+		this.value=value;
 	}
-	public ZestLoopToken(String token){
-		this.token=token;
+//	public int compareTo(ZestLoopToken<T> otherToken){
+//		return this.index-otherToken.index;
+//	}
+	public boolean equals(ZestLoopToken<T> token){
+		return this.value.equals(token.getValue());
 	}
-	@Override
-	public String getToken(){
-		return this.token;
-	}
-	@Override
-	public String setToken(String newToken){
-		String oldToken=this.token;
-		this.token=newToken;
-		return oldToken;
-	}
-	@Override
-	public int compareTo(ZestToken otherToken) {
-		return this.token.compareTo(otherToken.getToken());
-	}
-
-	@Override
-	public boolean equals(ZestToken token) {
-		return this.token.equals(token.getToken());
-	}
-	@Override
-	public ZestLoopToken deepCopy() {
-		ZestLoopToken copy=new ZestLoopToken();
-		copy.token=this.token;
-		return copy;
+	public abstract ZestLoopToken<T> deepCopy();
+	public T getValue(){
+		return this.value;
 	}
 }

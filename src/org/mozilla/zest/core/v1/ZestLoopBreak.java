@@ -7,27 +7,35 @@
  */
 package org.mozilla.zest.core.v1;
 
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Set;
 
-public class ZestLoopBreak extends ZestElement {
-	private ZestLoop loop=null;
-	public ZestLoopBreak(ZestLoop loop){
-		this.loop=loop;
+
+public class ZestLoopBreak extends ZestStatement {
+
+	@Override
+	void setPrefix(String oldPrefix, String newPrefix)
+			throws MalformedURLException {		
 	}
-	private ZestLoopBreak(){
+
+	@Override
+	Set<String> getTokens(String tokenStart, String tokenEnd) {
+		return null;
 	}
-	protected ZestLoop getZestLoop(){
-		return this.loop;
+
+	@Override
+	void setUpRefs(ZestScript script) {		
 	}
-	protected ZestLoop setZestLoop(ZestLoop newLoop){
-		ZestLoop oldLoop=this.loop;
-		this.loop=newLoop;
-		return oldLoop;
+
+	@Override
+	public List<ZestTransformation> getTransformations() {
+		return null;
 	}
 
 	@Override
 	public ZestLoopBreak deepCopy() {
-		ZestLoopBreak copy=new ZestLoopBreak();
-		copy.loop=this.loop;
-		return copy;
+		return new ZestLoopBreak();
 	}
+	
 }
