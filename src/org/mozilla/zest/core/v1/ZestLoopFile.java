@@ -11,16 +11,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * This class represent a loop through a list of strings given in input through a file
+ */
 public class ZestLoopFile extends ZestLoopValues {
+	/**
+	 * the input file
+	 */
 	private final File file;
-
+/**
+ * The main construptor
+ * @param file the file in input
+ * @throws FileNotFoundException if the file does not exist
+ */
 	public ZestLoopFile(File file) throws FileNotFoundException {
 		super();
 		this.file = file;
 		init();
 	}
-
+/**
+ * Construptor
+ * @param file the input file
+ * @param statements the list of statements inside the loop
+ * @throws FileNotFoundException if the file does not exist
+ */
 	public ZestLoopFile(File file, List<ZestStatement> statements)
 			throws FileNotFoundException {
 		super();
@@ -30,7 +44,10 @@ public class ZestLoopFile extends ZestLoopValues {
 		}
 		init();
 	}
-
+/**
+ * private method for initialization of the loop (TokenSet & first state)
+ * @throws FileNotFoundException if the file does not exist
+ */
 	private void init() throws FileNotFoundException {
 		Scanner in = new Scanner(this.file);
 		ZestLoopState<String> initializationState;

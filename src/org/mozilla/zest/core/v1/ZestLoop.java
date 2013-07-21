@@ -15,47 +15,82 @@ import java.util.List;
 import java.util.Set;
 
 public class ZestLoop<T> extends ZestStatement implements ZestContainer {
+	/**
+	 * contains all the statement inside the loop
+	 */
 	private List<ZestStatement> statements;
+	/**
+	 * contains the snapshot of the current state of the loop
+	 */
 	private ZestLoopState<T> currentState;
-
+/**
+ * Main construptor with the initialization state
+ * @param initializationState the initialization state (first value and the set of values)
+ */
 	public ZestLoop(ZestLoopState<T> initializationState) {
 		this.statements = new LinkedList<>();
 		this.currentState = initializationState;
 	}
-
+/**
+ * Construptor with initialization state and the list of statement inside the loop
+ * @param initializationState the initialization state (first value and the set of values)
+ * @param statements all the statements inside the loop
+ */
 	public ZestLoop(ZestLoopState<T> initializationState,
 			List<ZestStatement> statements) {
 		this.currentState = initializationState;
 		this.statements = statements;
 	}
-
+/**
+ * protected empty method for subclasses
+ */
 	protected ZestLoop() {
 	}
-
+/**
+ * sets the current state to the new one (for subclasses)
+ * @param newState the new state
+ */
 	protected void setState(ZestLoopState<T> newState) {
 		this.currentState = newState;
 	}
-
+/**
+ * increase the current state (all the statements are compiuted for this loop, lets start a new one)
+ * @return the new state (of the following loop)
+ */
 	public boolean loop() {
 		return this.currentState.increase();
 	}
-
+/**
+ * ends the loops and set the state to the final value
+ */
 	public void endLoop() {
 		this.currentState.endState();
 	}
-
+/**
+ * adds a new statement inside the loop
+ * @param stmt the new statement to add
+ */
 	public void addStatement(ZestStatement stmt) {
 		statements.add(stmt);
 	}
-
+/**
+ * returns the current state of the loop
+ * @return
+ */
 	public ZestLoopState<T> getCurrentState() {
 		return this.currentState;
 	}
-
+/**
+ * return the current token considered inside the loop
+ * @return the current token considered inside the loop
+ */
 	public ZestLoopToken<T> getCurrentToken() {
 		return this.currentState.getCurrentToken();
 	}
-
+/**
+ * return the current value of the token considered inside the loop
+ * @return the current value of the token considered inside the loop
+ */
 	public T getCurrentValue() {
 		return this.currentState.getCurrentToken().getValue();
 	}

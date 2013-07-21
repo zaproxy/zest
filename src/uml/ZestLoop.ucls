@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="org.mozilla.zest.core.v1.ZestLoopBreak" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopBreak.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="170" width="282" x="799" y="37"/>    
+    <position height="-1" width="-1" x="179" y="493"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="org.mozilla.zest.core.v1.ZestLoopInteger" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopInteger.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="116" width="369" x="41" y="535"/>    
+    <position height="-1" width="-1" x="230" y="663"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -174,7 +174,6 @@
     <end type="TARGET" refId="1"/>  
   </generalization>  
   <generalization id="36">    
-    <bendpoint x="477" y="159"/>    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="11"/>  
   </generalization>  

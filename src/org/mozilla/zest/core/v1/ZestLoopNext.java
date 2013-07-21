@@ -11,13 +11,13 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Set;
 /**
- * empty class: represents a BREAK inside the loop
+ * This class represents a NEXT statement for a loop
  */
-public class ZestLoopBreak extends ZestStatement {
+public class ZestLoopNext extends ZestStatement {
 
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix)
-			throws MalformedURLException {		
+			throws MalformedURLException {
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class ZestLoopBreak extends ZestStatement {
 	}
 
 	@Override
-	void setUpRefs(ZestScript script) {		
+	void setUpRefs(ZestScript script) {
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class ZestLoopBreak extends ZestStatement {
 	}
 
 	@Override
-	public ZestLoopBreak deepCopy() {
-		return new ZestLoopBreak();
+	public ZestLoopNext deepCopy() {
+		return new ZestLoopNext();
 	}
-	
+
 }

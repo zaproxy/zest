@@ -6,17 +6,18 @@
  * @author Alessandro Secco: seccoale@gmail.com
  */
 package org.mozilla.zest.core.v1;
-
+/**
+ * this class represents a token with String value
+ */
 public class ZestLoopTokenValue extends ZestLoopToken<String> {
-	private static int counter=0;//don't like this
+	/**
+	 * main construptor
+	 * @param value the value of this token
+	 */
 	public ZestLoopTokenValue(String value) {
-		super(value, ++counter);
+		super(value);
 	}
 
-//	@Override
-//	public int compareTo(ZestLoopToken<String> otherToken) {
-//		return 0;//TODO really needed?
-//	}
 
 	@Override
 	public ZestLoopTokenValue deepCopy() {
