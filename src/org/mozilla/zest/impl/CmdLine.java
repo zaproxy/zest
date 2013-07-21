@@ -7,6 +7,7 @@ package org.mozilla.zest.impl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class CmdLine {
 
 	private static final String USAGE = 
 			"Usage: -script <file> [-summary | -list] [-prefix <http://prefix>] [-token <name>=<value>]...\n" +
-			"    [-http-auth-site <site> -http-auth-realm <realm> -http-auth-user <user> -http-auth-password <password>] " +
+			"    [-http-auth-site <site> -http-auth-realm <realm> -http-auth-user <user> -http-auth-password <password>] \n" +
 			"    For more information about Zest visit " + ZestScript.ZEST_URL;
 	
 	private enum Mode {run, summary, list}
@@ -142,7 +143,7 @@ public class CmdLine {
         try {
 			zs = (ZestScript) ZestJSON.fromString(sb.toString());
 			
-			if (zs.getZestVersion() != 1) {
+			if (!ZestScript.VERSION.equals(zs.getZestVersion())) {
 				error("Error Zest version " + zs.getZestVersion() + " not supported");
 				return;
 			}
@@ -193,7 +194,7 @@ public class CmdLine {
 
 	private static void run(ZestScript zs) {
 		ZestBasicRunner zbr = new ZestBasicRunner();
-		zbr.setOutputStream(System.out);
+		zbr.setOutputWriter(new OutputStreamWriter(System.out));
 		zbr.setStopOnAssertFail(false);
 		try {
 			zbr.run(zs);

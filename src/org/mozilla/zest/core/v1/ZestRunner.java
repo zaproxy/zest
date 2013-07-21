@@ -4,8 +4,9 @@
 
 package org.mozilla.zest.core.v1;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 public interface ZestRunner {
 
@@ -13,7 +14,11 @@ public interface ZestRunner {
 			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException;
 
-	void runScript (File script) 
+	void runScript (Reader reader) 
+			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException;
+	
+	void runScript (String script) 
 			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException;
 	
@@ -61,5 +66,7 @@ public interface ZestRunner {
 	boolean getStopOnTestFail();
 	
 	void setProxy(String host, int port);
+
+	void setOutputWriter(Writer writer);
 
 }
