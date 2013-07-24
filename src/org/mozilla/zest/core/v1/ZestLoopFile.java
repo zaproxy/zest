@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * This class represent a loop through a list of strings given in input through a file
  */
-public class ZestLoopFile extends ZestLoopValues {
+public class ZestLoopFile extends ZestLoopString {
 	/**
 	 * the input file
 	 */
@@ -56,7 +56,7 @@ public class ZestLoopFile extends ZestLoopValues {
 		while (in.hasNextLine()) {
 			line = in.nextLine();
 			if (!line.startsWith("#")) {
-				initializationTokenSet.addToken(new ZestLoopTokenValue(in
+				initializationTokenSet.addToken(new ZestLoopToken<String>(in
 						.nextLine()));
 			}
 		}

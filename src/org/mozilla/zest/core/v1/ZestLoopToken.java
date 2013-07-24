@@ -9,16 +9,16 @@ package org.mozilla.zest.core.v1;
 /**
  * this class represent a token of a loop
  */
-public abstract class ZestLoopToken<T> extends ZestElement{
+public class ZestLoopToken<T> extends ZestElement{
 	/**
 	 * the value of this token
 	 */
-	private T value;
+	private T value=null;
 	/**
 	 * construptor
 	 * @param value the value of the token
 	 */
-	protected ZestLoopToken(T value){
+	public ZestLoopToken(T value){
 		if(value==null){
 			throw new IllegalArgumentException("null param is invalid");
 		}
@@ -30,10 +30,12 @@ public abstract class ZestLoopToken<T> extends ZestElement{
 	 * @return true if token is equal to this
 	 */
 	public boolean equals(ZestLoopToken<T> token){
-		return this.value.equals(token.getValue());
+		return this.getValue().equals(token.getValue());
 	}
 	@Override
-	public abstract ZestLoopToken<T> deepCopy();
+	public ZestLoopToken<T> deepCopy(){
+		return new ZestLoopToken<>(this.getValue());
+	}
 	/**
 	 * returns the value of this token
 	 * @return the value of this token

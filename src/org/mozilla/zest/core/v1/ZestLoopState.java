@@ -27,6 +27,9 @@ public class ZestLoopState<T> extends ZestElement{
 	 * @param initializationTokenSet the set of token and the fisrt value to consider inside the loop
 	 */
 	public ZestLoopState(ZestLoopTokenSet<T> initializationTokenSet){
+		if(initializationTokenSet==null){
+			throw new IllegalArgumentException("a null token set is not allowed");
+		}
 		this.tokens=initializationTokenSet;
 		this.currentIndex=tokens.getIndexStart();
 		this.currentToken=tokens.getFirstConsideredToken();
@@ -44,6 +47,9 @@ public class ZestLoopState<T> extends ZestElement{
 	 */
 	public int getCurrentIndex(){
 		return this.currentIndex;
+	}
+	public ZestLoopTokenSet<T> getTokenSet(){
+		return this.tokens;
 	}
 	/**
 	 * this increase the state and goes to the next state
@@ -73,5 +79,8 @@ public class ZestLoopState<T> extends ZestElement{
 		copyOfState.currentIndex=this.currentIndex;
 		copyOfState.currentToken=this.currentToken.deepCopy();
 		return copyOfState;
+	}
+	public boolean isLastState() {
+		return this.getCurrentIndex() >= (this.tokens.size());
 	}
 }

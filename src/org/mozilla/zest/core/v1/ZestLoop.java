@@ -9,12 +9,13 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class ZestLoop<T> extends ZestStatement implements ZestContainer {
+public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumeration<ZestStatement> {
 	/**
 	 * contains all the statement inside the loop
 	 */
@@ -23,11 +24,15 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer {
 	 * contains the snapshot of the current state of the loop
 	 */
 	private ZestLoopState<T> currentState;
+	/**
+	 * contains the index of the current statement considered.
+	 */
+	private int stmtIndex=0;
 /**
  * Main construptor with the initialization state
  * @param initializationState the initialization state (first value and the set of values)
  */
-	public ZestLoop(ZestLoopState<T> initializationState) {
+	protected ZestLoop(ZestLoopState<T> initializationState) {
 		this.statements = new LinkedList<>();
 		this.currentState = initializationState;
 	}
@@ -36,7 +41,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer {
  * @param initializationState the initialization state (first value and the set of values)
  * @param statements all the statements inside the loop
  */
-	public ZestLoop(ZestLoopState<T> initializationState,
+	protected ZestLoop(ZestLoopState<T> initializationState,
 			List<ZestStatement> statements) {
 		this.currentState = initializationState;
 		this.statements = statements;
@@ -52,6 +57,11 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer {
  */
 	protected void setState(ZestLoopState<T> newState) {
 		this.currentState = newState;
+	}
+	protected List<ZestStatement> setStatement(List<ZestStatement> stmts){
+		List<ZestStatement> oldStatements=this.statements;
+		this.statements=stmts;
+		return oldStatements;
 	}
 /**
  * increase the current state (all the statements are compiuted for this loop, lets start a new one)
@@ -199,5 +209,31 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer {
 			copy.statements.add(this.statements.get(i).deepCopy());
 		}
 		return copy;
+	}
+	@Override
+	public boolean hasMoreElements() {
+		boolean isLastLoop=this.getCurrentState().isLastState();
+		boolean isLastStmt=this.stmtIndex==statements.size()-1;
+		boolean isBreakStatement=this.statements.get(stmtIndex).getClass().equals(ZestLoopBreak.class);
+		return !isLastLoop && !isLastStmt && !isBreakStatement;
+	}
+	@Override
+	public ZestStatement nextElement() {
+		++stmtIndex;
+		if(stmtIndex==statements.size()){
+			this.currentState.increase();
+			stmtIndex=0;
+		}
+		ZestStatement newStatement=statements.get(stmtIndex);
+		if(newStatement instanceof ZestLoopBreak){
+			this.currentState.endState();
+			this.stmtIndex=statements.size();
+			return null;
+		}
+		else if(newStatement instanceof ZestLoopNext){
+			this.currentState.increase();
+			this.stmtIndex=0;
+		}
+		return statements.get(stmtIndex);
 	}
 }

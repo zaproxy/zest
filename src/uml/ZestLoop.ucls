@@ -3,7 +3,7 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="org.mozilla.zest.core.v1.ZestLoop" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoop.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="458" width="300" x="450" y="37"/>    
+    <position height="-1" width="-1" x="755" y="225"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="org.mozilla.zest.core.v1.ZestLoopValues" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopValues.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="org.mozilla.zest.core.v1.ZestLoopString" project="zest_fork" 
+    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopString.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="116" width="363" x="450" y="535"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="org.mozilla.zest.core.v1.ZestLoopBreak" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopBreak.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="179" y="493"/>    
+    <position height="-1" width="-1" x="68" y="73"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="org.mozilla.zest.core.v1.ZestLoopInteger" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopInteger.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="230" y="663"/>    
+    <position height="-1" width="-1" x="226" y="592"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -73,118 +73,105 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="org.mozilla.zest.core.v1.ZestLoopTokenInteger" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopTokenInteger.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="116" width="217" x="622" y="1327"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" name="org.mozilla.zest.core.v1.ZestLoopTokenValue" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopTokenValue.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="116" width="211" x="879" y="1327"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
-    </display>  
-  </class>  
-  <class id="11" language="java" name="org.mozilla.zest.core.v1.ZestStatement" project="zest_fork" 
+  <class id="9" language="java" name="org.mozilla.zest.core.v1.ZestStatement" project="zest_fork" 
     file="/zest_fork/src/org/mozilla/zest/core/v1/ZestStatement.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="227" y="188"/>    
+    <position height="-1" width="-1" x="417" y="151"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <generalization id="12">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="13">    
+  <class id="10" language="java" name="org.mozilla.zest.core.v1.ZestLoopNext" project="zest_fork" 
+    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopNext.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="77" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association id="11">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="14" name="tokens"/>      
-      <multiplicity id="15" minimum="0" maximum="1"/>    
+      <attribute id="12" name="tokens"/>      
+      <multiplicity id="13" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="16">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <association id="17">    
+  <association id="14">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="statements"/>      
-      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="20">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <association id="21">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="22" name="next"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="25">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="26" name="previous"/>      
-      <multiplicity id="27" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <association id="29">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="30" name="currentState"/>      
-      <multiplicity id="31" minimum="0" maximum="1"/>    
+      <attribute id="15" name="currentState"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="32">    
+  <association id="17">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="18" name="next"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
     <bendpoint x="874" y="763"/>    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="33" name="currentToken"/>      
-      <multiplicity id="34" minimum="0" maximum="1"/>    
+      <attribute id="21" name="currentToken"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="35">    
+  <association id="23">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="24" name="previous"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="27" name="tokens"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="33">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="34" name="statements"/>      
+      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="37">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <association id="37">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="38" name="tokens"/>      
-      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    

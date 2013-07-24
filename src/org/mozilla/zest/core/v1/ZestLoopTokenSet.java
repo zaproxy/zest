@@ -49,6 +49,27 @@ public class ZestLoopTokenSet<T> extends ZestElement{
 		this.tokens=tokens;
 	}
 	/**
+	 * construptor
+	 * @param values the values of the token to consider
+	 */
+	public ZestLoopTokenSet(T[] values){
+		if(tokens==null){
+			tokens=new LinkedList<>();
+		}
+		for(int i=0; i<values.length; i++){
+			tokens.add(new ZestLoopToken<T>(values[i]));
+		}
+	}
+	/**
+	 * construptor
+	 * @param values values of the token to consider
+	 * @param startIndex the index of the first element to consider inside the loop
+	 */
+	public ZestLoopTokenSet(T[] values, int startIndex){
+		this(values);
+		this.indexStart=startIndex;
+	}
+	/**
 	 * returns the index of the first token to consider
 	 * @return the index of the first token to consider
 	 */
@@ -75,6 +96,10 @@ public class ZestLoopTokenSet<T> extends ZestElement{
 	 */
 	public ZestLoopToken<T> getToken(int index){
 		return tokens.get(index);
+	}
+	
+	public List<ZestLoopToken<T>> getTokens(){
+		return this.tokens;
 	}
 	/**
 	 * returns the index of a given token
@@ -145,7 +170,10 @@ public class ZestLoopTokenSet<T> extends ZestElement{
 	@Override
 	public ZestLoopTokenSet<T> deepCopy() {
 		if(tokens==null){
-			return new ZestLoopTokenSet<T>(null, this.indexStart);
+			ZestLoopTokenSet<T> copy=new ZestLoopTokenSet<>();
+			copy.tokens=null;
+			copy.indexStart=this.indexStart;
+			return copy;
 		}
 		LinkedList<ZestLoopToken<T>> copyOfTokens=new LinkedList<>();
 		for(int i=0; i<tokens.size(); i++){
@@ -153,4 +181,5 @@ public class ZestLoopTokenSet<T> extends ZestElement{
 		}
 		return new ZestLoopTokenSet<T>(copyOfTokens, this.indexStart);
 	}
+	
 }
