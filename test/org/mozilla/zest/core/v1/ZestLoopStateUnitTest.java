@@ -14,23 +14,23 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mozilla.zest.core.v1.ZestLoopState;
+import org.mozilla.zest.core.v1.ZestLoopStateString;
 import org.mozilla.zest.core.v1.ZestLoopToken;
-import org.mozilla.zest.core.v1.ZestLoopTokenSet;
+import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ZestLoopStateUnitTest {
 	String[] values={"A","B","C","D","D"};
-	ZestLoopTokenSet<String> set=new ZestLoopTokenSet<>(values);
+	ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(values);
 	@Test
 	public void testZestLoopState() {
-		ZestLoopState<String> state=new ZestLoopState<>(set);
+		ZestLoopStateString state=new ZestLoopStateString(set);
 		assertFalse(state.isLastState());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testZestLoopStateNull(){
-		new ZestLoopState<>(null);
+		new ZestLoopStateString(null);
 		fail();
 	}
 
@@ -38,7 +38,7 @@ public class ZestLoopStateUnitTest {
 	public void testGetCurrentToken() {
 		int index=0;
 		set.setIndexStart(index);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
+		ZestLoopStateString state=new ZestLoopStateString(set);
 		assertTrue(state.getCurrentToken().equals(new ZestLoopToken<String>(values[index])));
 	}
 
@@ -46,7 +46,7 @@ public class ZestLoopStateUnitTest {
 	public void testGetCurrentIndex() {
 		int index=3;
 		set.setIndexStart(index);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
+		ZestLoopStateString state=new ZestLoopStateString(set);
 		state.increase();
 		assertTrue(state.getCurrentIndex()==index+1);
 	}
@@ -54,7 +54,7 @@ public class ZestLoopStateUnitTest {
 	@Test
 	public void testIncrease() {
 		set.setIndexStart(0);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
+		ZestLoopStateString state=new ZestLoopStateString(set);
 		int currentIndex=state.getCurrentIndex();
 		boolean increasable=state.increase();
 		if(!increasable){
@@ -65,18 +65,18 @@ public class ZestLoopStateUnitTest {
 	}
 
 	@Test
-	public void testEndState() {
+	public void testToLastState() {
 		set.setIndexStart(0);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
-		state.endState();
+		ZestLoopStateString state=new ZestLoopStateString(set);
+		state.toLastState();
 		assertTrue(state.isLastState());
 	}
 
 	@Test
 	public void testDeepCopy() {
 		set.setIndexStart(2);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
-		ZestLoopState<String> copy=state.deepCopy();
+		ZestLoopStateString state=new ZestLoopStateString(set);
+		ZestLoopStateString copy=(ZestLoopStateString) state.deepCopy();
 		if(state.getCurrentIndex()!=copy.getCurrentIndex()){
 			fail("Not same index!");
 		}
@@ -91,7 +91,7 @@ public class ZestLoopStateUnitTest {
 	@Test
 	public void testIsLastState() {
 		set.setIndexStart(0);
-		ZestLoopState<String> state=new ZestLoopState<>(set);
+		ZestLoopStateString state=new ZestLoopStateString(set);
 		for(int i=0; i<13; i++){
 			state.increase();
 			if(state.getCurrentIndex()==set.size()){

@@ -50,8 +50,8 @@ public class ZestLoopFile extends ZestLoopString {
  */
 	private void init() throws FileNotFoundException {
 		Scanner in = new Scanner(this.file);
-		ZestLoopState<String> initializationState;
-		ZestLoopTokenSet<String> initializationTokenSet = new ZestLoopTokenSet<>();
+		ZestLoopStateString initializationState;
+		ZestLoopTokenStringSet initializationTokenSet = new ZestLoopTokenStringSet();
 		String line;
 		while (in.hasNextLine()) {
 			line = in.nextLine();
@@ -60,7 +60,7 @@ public class ZestLoopFile extends ZestLoopString {
 						.nextLine()));
 			}
 		}
-		initializationState = new ZestLoopState<>(initializationTokenSet);
+		initializationState = new ZestLoopStateString(initializationTokenSet);
 		in.close();
 		this.setState(initializationState);
 	}

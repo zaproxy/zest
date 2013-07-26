@@ -74,7 +74,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
  * ends the loops and set the state to the final value
  */
 	public void endLoop() {
-		this.currentState.endState();
+		this.currentState.toLastState();
 	}
 /**
  * adds a new statement inside the loop
@@ -226,7 +226,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 		}
 		ZestStatement newStatement=statements.get(stmtIndex);
 		if(newStatement instanceof ZestLoopBreak){
-			this.currentState.endState();
+			this.currentState.toLastState();
 			this.stmtIndex=statements.size();
 			return null;
 		}
@@ -235,5 +235,8 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 			this.stmtIndex=0;
 		}
 		return statements.get(stmtIndex);
+	}
+	public boolean equals(ZestLoop<T> otherLoop){
+		return this.currentState.equals(otherLoop.currentState) && this.statements.equals(otherLoop.statements) && this.stmtIndex==otherLoop.stmtIndex;
 	}
 }
