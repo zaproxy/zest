@@ -9,59 +9,34 @@ package org.mozilla.zest.core.v1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 /**
  * This class represent a loop through a list of strings given in input through a file
  */
-public class ZestLoopFile extends ZestLoopString {
-	/**
-	 * the input file
-	 */
-	private final File file;
-/**
- * The main construptor
- * @param file the file in input
- * @throws FileNotFoundException if the file does not exist
- */
+public class ZestLoopFile extends ZestLoop<File>{
 	public ZestLoopFile(File file) throws FileNotFoundException {
-		super();
-		this.file = file;
-		init();
+		this(file, new LinkedList<ZestStatement>());
 	}
-/**
- * Construptor
- * @param file the input file
- * @param statements the list of statements inside the loop
- * @throws FileNotFoundException if the file does not exist
- */
-	public ZestLoopFile(File file, List<ZestStatement> statements)
-			throws FileNotFoundException {
-		super();
-		this.file = file;
-		for (ZestStatement stmt : statements) {
-			this.addStatement(stmt);
-		}
-		init();
+	public ZestLoopFile(int index, File file) throws FileNotFoundException{
+		this(index, file, new LinkedList<ZestStatement>());
 	}
-/**
- * private method for initialization of the loop (TokenSet & first state)
- * @throws FileNotFoundException if the file does not exist
- */
-	private void init() throws FileNotFoundException {
-		Scanner in = new Scanner(this.file);
-		ZestLoopStateString initializationState;
-		ZestLoopTokenStringSet initializationTokenSet = new ZestLoopTokenStringSet();
-		String line;
-		while (in.hasNextLine()) {
-			line = in.nextLine();
-			if (!line.startsWith("#")) {
-				initializationTokenSet.addToken(new ZestLoopToken<String>(in
-						.nextLine()));
-			}
-		}
-		initializationState = new ZestLoopStateString(initializationTokenSet);
-		in.close();
-		this.setState(initializationState);
+	public ZestLoopFile(String pathToFile) throws FileNotFoundException{
+		this(pathToFile, new LinkedList<ZestStatement>());
+	}
+	public ZestLoopFile(int index, String pathToFile) throws FileNotFoundException{
+		this(index, pathToFile, new LinkedList<ZestStatement>());
+	}
+	public ZestLoopFile(String pathToFile, List<ZestStatement> statements) throws FileNotFoundException{
+		super(new ZestLoopStateFile(pathToFile), statements);
+	}
+	public ZestLoopFile(File file, List<ZestStatement> statements) throws FileNotFoundException{
+		super(new ZestLoopStateFile(file), statements);
+	}
+	public ZestLoopFile(int index, String pathToFile, List<ZestStatement> statements) throws FileNotFoundException{
+		super(new ZestLoopStateFile(pathToFile), statements);
+	}
+	public ZestLoopFile( int index, File file, List<ZestStatement> statements) throws FileNotFoundException{
+		super(index, new ZestLoopStateFile(file), statements);
 	}
 }

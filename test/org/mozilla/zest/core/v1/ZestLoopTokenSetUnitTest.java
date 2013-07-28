@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mozilla.zest.core.v1.ZestLoopToken;
 import org.mozilla.zest.core.v1.ZestLoopTokenSet;
 import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 @RunWith(MockitoJUnitRunner.class)
@@ -31,8 +30,8 @@ public class ZestLoopTokenSetUnitTest {
 	public void testGetToken() {
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
 		for(int i=0; i<arrayValueS.length; i++){
-			String msg=i+" expected "+arrayValueS[i]+", obtained "+set.getToken(i).getValue();
-			assertTrue(msg, arrayValueS[i].equals(set.getToken(i).getValue()));
+			String msg=i+" expected "+arrayValueS[i]+", obtained "+set.getToken(i);
+			assertTrue(msg, arrayValueS[i].equals(set.getToken(i)));
 		}
 	}
 
@@ -40,7 +39,7 @@ public class ZestLoopTokenSetUnitTest {
 	public void testIndexOf() {
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
 		int indexConsidered=3;
-		ZestLoopToken<String> token=set.getToken(indexConsidered);
+		String token=set.getToken(indexConsidered);
 		int indexFound=set.indexOf(token);
 		assertTrue(indexFound==indexConsidered);
 	}
@@ -48,17 +47,10 @@ public class ZestLoopTokenSetUnitTest {
 	@Test
 	public void testRemoveToken() {
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
-		ZestLoopToken<String> tokenRemoved=set.getFirstConsideredToken();
+		String tokenRemoved=set.getToken(0);
 		boolean isPresentBeforeRemove=set.indexOf(tokenRemoved)>=0;
 		set.removeToken(0);
 		assertTrue(isPresentBeforeRemove && set.indexOf(tokenRemoved)<0);
-	}
-
-	@Test
-	public void testSetIndexStart() {
-		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
-		set.setIndexStart(2);
-		assertTrue(set.getIndexStart()==2);
 	}
 
 	@Test
@@ -66,16 +58,16 @@ public class ZestLoopTokenSetUnitTest {
 		int indexOfReplace=2;
 		String valueOfNewToken="CHANGED";
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
-		ZestLoopToken<String> newToken=new ZestLoopToken<String>(valueOfNewToken);
+		String newToken=valueOfNewToken;
 		set.replace(indexOfReplace, newToken);
-		assertTrue(set.getToken(indexOfReplace).getValue().equals(valueOfNewToken));
+		assertTrue(set.getToken(indexOfReplace).equals(valueOfNewToken));
 	}
 
 	@Test
 	public void testSize() {
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
 		int prevSize=set.size();
-		set.addToken(new ZestLoopToken<String>("ernvgqiup"));
+		set.addToken("ernvgqiup");
 		assertTrue(prevSize==arrayValueS.length && set.size()==prevSize+1);
 	}
 
@@ -84,9 +76,9 @@ public class ZestLoopTokenSetUnitTest {
 		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(arrayValueS);
 		ZestLoopTokenSet<String> copy=set.deepCopy();
 		for(int i=0; i<set.size(); i++){
-			ZestLoopToken<String> expected=set.getToken(i);
-			ZestLoopToken<String> obtained=copy.getToken(i);
-			String msg=i+" obtained "+obtained.getValue()+" instead of "+expected.getValue();
+			String expected=set.getToken(i);
+			String obtained=copy.getToken(i);
+			String msg=i+" obtained "+obtained+" instead of "+expected;
 			assertTrue(msg,expected.equals(obtained));
 		}
 	}

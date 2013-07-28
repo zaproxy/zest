@@ -16,25 +16,16 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	/**
 	 * main construptor (empty)
 	 */
-	public ZestLoopInteger(){
-		super();
+	public ZestLoopInteger(int index, int start, int end, List<ZestStatement> statements){
+		super(index, new ZestLoopStateInteger(start, end), statements);
 	}
-	public ZestLoopInteger(int[] values, List<ZestStatement> statements){
-		this(values, 0, statements);
+	public ZestLoopInteger(int start, int end, List<ZestStatement> statements){
+		super(new ZestLoopStateInteger(start, end),statements);
 	}
-	public ZestLoopInteger(int[] values, int startIndex, List<ZestStatement> statements){
-		super();
-		ZestLoopState<Integer> state=new ZestLoopState<>(new ZestLoopTokenSet<>(toArrayObject(values), startIndex));
-		this.setState(state);
+	public ZestLoopInteger(int index, int start, int end){
+		this(index, start, end, new LinkedList<ZestStatement>());
 	}
-	public ZestLoopInteger(int[] values){
-		this(values, 0, new LinkedList<ZestStatement>());
-	}
-	private static Integer[] toArrayObject(int[] values){
-		Integer[] boxedValues=new Integer[values.length];
-		for(int i=0; i<values.length; i++){
-			boxedValues[i]=values[i];
-		}
-		return boxedValues;
+	public ZestLoopInteger(int start, int end){
+		this(start, end, new LinkedList<ZestStatement>());
 	}
 }

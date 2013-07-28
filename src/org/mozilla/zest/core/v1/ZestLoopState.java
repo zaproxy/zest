@@ -11,13 +11,10 @@ package org.mozilla.zest.core.v1;
  */
 public abstract class ZestLoopState<T> extends ZestElement{
 	/**
-	 * the value of the current index which univocally defines a token
-	 */
-	private int currentIndex=ZestLoopTokenSet.DEFAULT_INDEX_START;
-	/**
 	 * the current token considered inside the loop
 	 */
-	private ZestLoopToken<T> currentToken;
+	private T currentToken;
+	private int currentIndex=0;
 	public ZestLoopState(){
 	}
 	/**
@@ -28,18 +25,17 @@ public abstract class ZestLoopState<T> extends ZestElement{
 		if(initializationTokenSet==null){
 			throw new IllegalArgumentException("a null token set is not allowed");
 		}
-		this.currentToken=initializationTokenSet.getFirstConsideredToken();
-		this.currentIndex=initializationTokenSet.getIndexStart();
+		this.currentToken=initializationTokenSet.getToken(0);
 	}
 	/**
 	 * returns the current token considered inside the loop
 	 * @return the current token considered inside the loop
 	 */
-	public ZestLoopToken<T> getCurrentToken(){
+	public T getCurrentToken(){
 		return this.currentToken;
 	}
-	protected ZestLoopToken<T> setCurrentToken(ZestLoopToken<T> newToken){
-		ZestLoopToken<T> oldToken=this.getCurrentToken();
+	protected T setCurrentToken(T newToken){
+		T oldToken=this.getCurrentToken();
 		this.currentToken=newToken;
 		return oldToken;
 	}

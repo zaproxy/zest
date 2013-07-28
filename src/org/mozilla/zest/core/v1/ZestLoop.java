@@ -28,28 +28,40 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 	 * contains the index of the current statement considered.
 	 */
 	private int stmtIndex=0;
+	protected ZestLoop(){
+		this(null, new LinkedList<ZestStatement>());
+	}
+	protected ZestLoop(ZestLoopState<T> initializationState){
+		this(initializationState, new LinkedList<ZestStatement>());
+	}
+	protected ZestLoop(ZestLoopState<T> initializationState, List<ZestStatement> stmts){
+		super();
+		this.setState(initializationState);
+		this.statements=stmts;
+	}
 /**
  * Main construptor with the initialization state
  * @param initializationState the initialization state (first value and the set of values)
  */
-	protected ZestLoop(ZestLoopState<T> initializationState) {
-		this.statements = new LinkedList<>();
-		this.currentState = initializationState;
+	protected ZestLoop(int index, ZestLoopState<T> initializationState) {
+		this(index, initializationState, new LinkedList<ZestStatement>());
 	}
 /**
  * Construptor with initialization state and the list of statement inside the loop
  * @param initializationState the initialization state (first value and the set of values)
  * @param statements all the statements inside the loop
  */
-	protected ZestLoop(ZestLoopState<T> initializationState,
+	protected ZestLoop(int index, ZestLoopState<T> initializationState,
 			List<ZestStatement> statements) {
+		super(index);
 		this.currentState = initializationState;
 		this.statements = statements;
 	}
 /**
  * protected empty method for subclasses
  */
-	protected ZestLoop() {
+	protected ZestLoop(int index) {
+		this(index, null, new LinkedList<ZestStatement>());
 	}
 /**
  * sets the current state to the new one (for subclasses)
@@ -58,7 +70,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 	protected void setState(ZestLoopState<T> newState) {
 		this.currentState = newState;
 	}
-	protected List<ZestStatement> setStatement(List<ZestStatement> stmts){
+	protected List<ZestStatement> setStatements(List<ZestStatement> stmts){
 		List<ZestStatement> oldStatements=this.statements;
 		this.statements=stmts;
 		return oldStatements;
@@ -94,15 +106,8 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
  * return the current token considered inside the loop
  * @return the current token considered inside the loop
  */
-	public ZestLoopToken<T> getCurrentToken() {
+	public T getCurrentToken() {
 		return this.currentState.getCurrentToken();
-	}
-/**
- * return the current value of the token considered inside the loop
- * @return the current value of the token considered inside the loop
- */
-	public T getCurrentValue() {
-		return this.currentState.getCurrentToken().getValue();
 	}
 
 	@Override
@@ -199,7 +204,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 
 	@Override
 	public ZestLoop<T> deepCopy() {
-		ZestLoop<T> copy = new ZestLoop<>();
+		ZestLoop<T> copy = new ZestLoop<>(this.getIndex());
 		copy.currentState = this.currentState.deepCopy();
 		if (this.statements == null) {
 			return copy;

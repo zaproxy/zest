@@ -10,13 +10,13 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ZestLoopTokenStringSet extends ZestLoopTokenSet<String> {
-	private List<ZestLoopToken<String>> tokens;
+public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopTokenSet<String> {
+	private List<String> tokens;
 	public ZestLoopTokenStringSet(){
 		super();
 		this.tokens=new LinkedList<>();
 	}
-	public ZestLoopTokenStringSet(List<ZestLoopToken<String>> tokens){
+	public ZestLoopTokenStringSet(List<String> tokens){
 		super();
 		this.tokens=tokens;
 	}
@@ -24,11 +24,11 @@ public class ZestLoopTokenStringSet extends ZestLoopTokenSet<String> {
 		super();
 		tokens=new LinkedList<>();
 		for(String value:values){
-			tokens.add(new ZestLoopToken<String>(value));
+			tokens.add(value);
 		}
 	}
 	@Override
-	public void addToken(ZestLoopToken<String> token) {
+	public void addToken(String token) {
 		if(tokens==null){
 			tokens=new LinkedList<>();
 		}
@@ -36,27 +36,22 @@ public class ZestLoopTokenStringSet extends ZestLoopTokenSet<String> {
 	}
 
 	@Override
-	public ZestLoopToken<String> getToken(int index) {
+	public String getToken(int index) {
 		return tokens.get(index);
 	}
 
 	@Override
-	public List<ZestLoopToken<String>> getTokens() {
+	public List<String> getTokens() {
 		return this.tokens;
 	}
 
 	@Override
-	public int indexOf(ZestLoopToken<String> token) {
+	public int indexOf(String token) {
 		return tokens.indexOf(token);
 	}
 
 	@Override
-	public ZestLoopToken<String> getFirstConsideredToken() {
-		return tokens.get(this.getIndexStart());
-	}
-
-	@Override
-	public ZestLoopToken<String> getLastConsideredToken() {
+	public String getLastConsideredToken() {
 		return this.tokens.get(tokens.size()-1);
 	}
 
@@ -70,18 +65,17 @@ public class ZestLoopTokenStringSet extends ZestLoopTokenSet<String> {
 		if(this.tokens==null){
 			return new ZestLoopTokenStringSet();
 		}
-		ZestLoopTokenStringSet copy=new ZestLoopTokenStringSet(new LinkedList<ZestLoopToken<String>>());
-		for(ZestLoopToken<String> token:this.tokens){
-			copy.addToken(token.deepCopy());
+		ZestLoopTokenStringSet copy=new ZestLoopTokenStringSet(new LinkedList<String>());
+		for(String token:this.tokens){
+			copy.addToken(token);
 		}
-		copy.setIndexStart(this.getIndexStart());
 		return copy;
 	}
-	public ZestLoopToken<String> removeToken(int index) {
+	public String removeToken(int index) {
 		return this.tokens.remove(index);
 	}
-	public ZestLoopToken<String> replace(int indexOfReplace, ZestLoopToken<String> newToken) {
-		ZestLoopToken<String> replaced=this.tokens.get(indexOfReplace);
+	public String replace(int indexOfReplace, String newToken) {
+		String replaced=this.tokens.get(indexOfReplace);
 		this.tokens.remove(indexOfReplace);
 		this.tokens.add(indexOfReplace, newToken);
 		return replaced;

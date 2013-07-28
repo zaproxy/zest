@@ -13,19 +13,22 @@ import java.util.List;
  * this class represents a Loop through String values
  */
 public class ZestLoopString extends ZestLoop<String> {
-	public ZestLoopString(){
-		super();
-	}
-	public ZestLoopString(String[] values, int startIndex, List<ZestStatement> statements){
-		super();
-		ZestLoopTokenStringSet set=new ZestLoopTokenStringSet(values);
-		ZestLoopStateString state=new ZestLoopStateString(set);
-		this.setState(state);
-	}
-	public ZestLoopString(String[] values, List<ZestStatement> statements){
-		this(values,0,statements);
+	protected ZestLoopString(){
+		super(new ZestLoopStateString());
 	}
 	public ZestLoopString(String[] values){
-		this(values,0,new LinkedList<ZestStatement>());
+		super(new ZestLoopStateString(values));
+	}
+	public ZestLoopString(String[] values, List<ZestStatement> statements){
+		super(new ZestLoopStateString(values), statements);
+	}
+	protected ZestLoopString(int index){
+		super(index, new ZestLoopStateString());
+	}
+	public ZestLoopString(int index, String[] values, List<ZestStatement> statements){
+		super(index, new ZestLoopStateString(values), statements);
+	}
+	public ZestLoopString(int index, String[] values){
+		this(index, values,new LinkedList<ZestStatement>());
 	}
 }

@@ -7,6 +7,7 @@
  */
 package org.mozilla.zest.core.v1;
 
+
 public class ZestLoopStateString extends ZestLoopState<String> {
 	private ZestLoopTokenStringSet tokens;
 
@@ -17,6 +18,10 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	public ZestLoopStateString(ZestLoopTokenStringSet initializationTokenSet) {
 		super(initializationTokenSet);
 		this.tokens = initializationTokenSet;
+	}
+
+	public ZestLoopStateString(String[] values) {
+		this(new ZestLoopTokenStringSet(values));
 	}
 
 	@Override
@@ -32,11 +37,11 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 
 	@Override
 	public void toLastState() {
-		if (this.tokens == null || this.tokens.size() == 0) {
+		if (this.isLastState()) {
 			return;
 		} else {
 			this.setCurrentToken(tokens.getLastConsideredToken());
-			this.setIndex(tokens.indexOf(getCurrentToken()));
+			this.setIndex(tokens.size()-1);
 		}
 	}
 
@@ -47,7 +52,7 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		}
 		ZestLoopStateString copy=new ZestLoopStateString();
 		copy.tokens=this.tokens.deepCopy();
-		copy.setCurrentToken(this.getCurrentToken().deepCopy());
+		copy.setCurrentToken(this.getCurrentToken());
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setIndex(this.getCurrentIndex());
 		return copy;
