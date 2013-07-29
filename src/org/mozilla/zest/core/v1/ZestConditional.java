@@ -12,7 +12,14 @@ import java.util.Set;
 
 public class ZestConditional extends ZestStatement implements ZestContainer{
 
+<<<<<<< HEAD
 	private ZestExpressionElement rootExpression;
+=======
+	/** The root expression. */
+	private ZestExpressionElement rootExpression=null;
+	
+	/** The if statements. */
+>>>>>>> fb89e2d... Fixed Deserialization bug in ZestJSON
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
 	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
 
