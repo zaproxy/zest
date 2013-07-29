@@ -53,14 +53,9 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 
 	@Override
 	public boolean isTrue(ZestResponse response) {
-<<<<<<< HEAD
 		if(getChildrenCondition().isEmpty()){
 			return false;
 		}
-=======
-		if(getChildrenCondition().isEmpty())
-			return false;
->>>>>>> 7964b06... Modified std return values, brackets, ZestExpressionURL.deepCopy &
 		boolean toReturn = true;
 		for (ZestExpressionElement con : getChildrenCondition()) {
 			toReturn = toReturn && con.evaluate(response);// compute AND for each child
