@@ -8,16 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 //TODO: Auto-generated Javadoc
 /**
-<<<<<<< HEAD
 * The Class ZestStructuredExpression.
 */
 
 public abstract class ZestStructuredExpression extends ZestExpression {
-=======
- * The Class ZestStructuredExpression.
- */
-public abstract class ZestStructuredExpression extends ZestExpression implements ZestExpressionElement{
->>>>>>> fb89e2d... Fixed Deserialization bug in ZestJSON
 	
 	/** The children. */
 	private List<ZestExpressionElement> children = new LinkedList<>();
