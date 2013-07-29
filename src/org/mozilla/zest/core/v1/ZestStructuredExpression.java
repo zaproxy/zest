@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The Class ZestStructuredExpression.
  */
-public abstract class ZestStructuredExpression extends ZestExpression {
+public abstract class ZestStructuredExpression extends ZestExpression implements ZestExpressionElement{
 	
 	/** The children. */
 	private List<ZestExpressionElement> children = new LinkedList<>();

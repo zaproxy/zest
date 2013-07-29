@@ -56,12 +56,11 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 			// Need to add all of the abstract classes
 			gson = new GsonBuilder()
 						.registerTypeAdapter(ZestAction.class, new ZestJSON())
-						.registerTypeAdapter(ZestAssertion.class, new ZestJSON())
 						.registerTypeAdapter(ZestAuthentication.class, new ZestJSON())
-						.registerTypeAdapter(ZestConditional.class, new ZestJSON())
 						.registerTypeAdapter(ZestElement.class, new ZestJSON())
 						.registerTypeAdapter(ZestStatement.class, new ZestJSON())
 						.registerTypeAdapter(ZestTransformation.class, new ZestJSON())
+						.registerTypeAdapter(ZestExpressionElement.class, new ZestJSON())
 						.setPrettyPrinting()
 						.create();
 			

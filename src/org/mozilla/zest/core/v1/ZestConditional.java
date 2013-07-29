@@ -17,7 +17,7 @@ import java.util.Set;
 public class ZestConditional extends ZestStatement implements ZestContainer{
 
 	/** The root expression. */
-	private ZestExpressionElement rootExpression;
+	private ZestExpressionElement rootExpression=null;
 	
 	/** The if statements. */
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
