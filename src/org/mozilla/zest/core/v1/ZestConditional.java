@@ -13,8 +13,11 @@ import java.util.Set;
 public class ZestConditional extends ZestStatement implements ZestContainer{
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ZestExpressionElement rootExpression;
 =======
+=======
+>>>>>>> fb89e2d... Fixed Deserialization bug in ZestJSON
 	/** The root expression. */
 	private ZestExpressionElement rootExpression=null;
 	
