@@ -11,18 +11,43 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestLoopStateFile.
+ */
 public class ZestLoopStateFile extends ZestLoopState<File> {
+	
+	/** The path to file. */
 	private String pathToFile;
+	
+	/** The converted state. */
 	private transient ZestLoopStateString convertedState;
+	
+	/** The file. */
 	private transient File file;
 
+	/**
+	 * Instantiates a new zest loop state file.
+	 */
 	private ZestLoopStateFile() {
 	}
 
+	/**
+	 * Instantiates a new zest loop state file.
+	 *
+	 * @param pathToFile the path to file
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopStateFile(String pathToFile) throws FileNotFoundException {
 		this(new File(pathToFile));
 	}
 
+	/**
+	 * Instantiates a new zest loop state file.
+	 *
+	 * @param file the file
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopStateFile(File file) throws FileNotFoundException {
 		super();
 		this.file = file;
@@ -31,10 +56,9 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 	}
 
 	/**
-	 * private method for initialization of the loop (TokenSet & first state)
-	 * 
-	 * @throws FileNotFoundException
-	 *             if the file does not exist
+	 * private method for initialization of the loop (TokenSet & first state).
+	 *
+	 * @throws FileNotFoundException if the file does not exist
 	 */
 	private void init() throws FileNotFoundException {
 		Scanner in = new Scanner(this.file);
@@ -50,16 +74,25 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 		in.close();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase()
+	 */
 	@Override
 	public boolean increase() {
 		return convertedState.increase();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#toLastState()
+	 */
 	@Override
 	public void toLastState() {
 		convertedState.toLastState();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#deepCopy()
+	 */
 	@Override
 	public ZestLoopState<File> deepCopy() {
 		ZestLoopStateFile copy = new ZestLoopStateFile();
@@ -70,15 +103,30 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 		return copy;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#isLastState()
+	 */
 	@Override
 	public boolean isLastState() {
 		return convertedState.isLastState();
 	}
 
+	/**
+	 * Gets the file.
+	 *
+	 * @return the file
+	 */
 	public File getFile() {
 		return this.file;
 	}
 
+	/**
+	 * Sets the file.
+	 *
+	 * @param newFile the new file
+	 * @return the file
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public File setFile(File newFile) throws FileNotFoundException {
 		File oldFile = this.file;
 		this.file = newFile;

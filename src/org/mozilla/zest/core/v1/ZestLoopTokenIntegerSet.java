@@ -10,36 +10,84 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestLoopTokenIntegerSet.
+ */
 public class ZestLoopTokenIntegerSet extends ZestElement implements
 		ZestLoopTokenSet<Integer> {
+	
+	/** The start. */
 	private int start;
+	
+	/** The end. */
 	private int end;
+	
+	/**
+	 * Instantiates a new zest loop token integer set.
+	 *
+	 * @param indexStart the index start
+	 * @param indexEnd the index end
+	 */
 	public ZestLoopTokenIntegerSet(int indexStart, int indexEnd){
 		super();
 		this.start=indexStart;
 		this.end=indexEnd;
 	}
+	
+	/**
+	 * Gets the start.
+	 *
+	 * @return the start
+	 */
 	public int getStart(){
 		return start;
 	}
+	
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
 	public int getEnd(){
 		return end;
 	}
+	
+	/**
+	 * Sets the start.
+	 *
+	 * @param newStart the new start
+	 * @return the int
+	 */
 	public int setStart(int newStart){
 		int oldStart=this.start;
 		this.start=newStart;
 		return oldStart;
 	}
+	
+	/**
+	 * Sets the end.
+	 *
+	 * @param newEnd the new end
+	 * @return the int
+	 */
 	public int setEnd(int newEnd){
 		int oldEnd=this.end;
 		this.end=newEnd;
 		return oldEnd;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
+	 */
 	@Override
 	public ZestLoopTokenIntegerSet deepCopy() {
 		return new ZestLoopTokenIntegerSet(this.start, this.end);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#addToken(java.lang.Object)
+	 */
 	@Override//TODO remove from interface??
 	public void addToken(Integer token) {
 		int newTokenValue=token;
@@ -54,6 +102,9 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getToken(int)
+	 */
 	@Override//TODO remove from interface?
 	public Integer getToken(int index) {
 		if(index<0){
@@ -65,6 +116,9 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		throw new IllegalArgumentException("the index give is not inside this set.");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getTokens()
+	 */
 	@Override//TODO remove from interface?
 	public List<Integer> getTokens() {
 		LinkedList<Integer> toReturn=new LinkedList<>();
@@ -74,6 +128,9 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		return toReturn;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#indexOf(java.lang.Object)
+	 */
 	@Override
 	public int indexOf(Integer token) {
 		int tokenValue=token;
@@ -84,11 +141,17 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		return index;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastConsideredToken()
+	 */
 	@Override
 	public Integer getLastConsideredToken() {
 		return end;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#size()
+	 */
 	@Override
 	public int size() {
 		return end-start;

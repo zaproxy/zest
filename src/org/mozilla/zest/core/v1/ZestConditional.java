@@ -10,31 +10,73 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestConditional.
+ */
 public class ZestConditional extends ZestStatement implements ZestContainer{
 
+	/** The root expression. */
 	private ZestExpressionElement rootExpression;
+	
+	/** The if statements. */
 	private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
+	
+	/** The else statements. */
 	private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
 
+	/**
+	 * Instantiates a new zest conditional.
+	 */
 	public ZestConditional() {
 		super();
 	}
+	
+	/**
+	 * Instantiates a new zest conditional.
+	 *
+	 * @param rootExp the root exp
+	 */
 	public ZestConditional(ZestExpressionElement rootExp) {
 		super();
 		this.rootExpression=rootExp;
 	}
 
+	/**
+	 * Instantiates a new zest conditional.
+	 *
+	 * @param index the index
+	 */
 	public ZestConditional(int index) {
 		super(index);
 	}
+	
+	/**
+	 * Instantiates a new zest conditional.
+	 *
+	 * @param index the index
+	 * @param rootExp the root exp
+	 */
 	public ZestConditional(int index, ZestExpressionElement rootExp) {
 		super(index);
 		this.rootExpression=rootExp;
 	}
+	
+	/**
+	 * Adds the if.
+	 *
+	 * @param req the req
+	 */
 	public void addIf(ZestStatement req) {
 		this.addIf(this.ifStatements.size(), req);
 	}
 	
+	/**
+	 * Adds the if.
+	 *
+	 * @param index the index
+	 * @param req the req
+	 */
 	public void addIf(int index, ZestStatement req) {
 		ZestStatement prev = this;
 		if (index > 0) {
@@ -54,31 +96,71 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 	
+	/**
+	 * Move if.
+	 *
+	 * @param index the index
+	 * @param req the req
+	 */
 	public void moveIf(int index, ZestStatement req) {
 		this.removeIf(req);
 		this.addIf(index, req);
 	}
 	
+	/**
+	 * Removes the if.
+	 *
+	 * @param req the req
+	 */
 	public void removeIf(ZestStatement req) {
 		this.ifStatements.remove(req);
 		req.remove();
 	}
 	
+	/**
+	 * Removes the if statement.
+	 *
+	 * @param index the index
+	 */
 	public void removeIfStatement(int index) {
 		this.removeIf(this.ifStatements.get(index));
 	}
 	
+	/**
+	 * Gets the if statement.
+	 *
+	 * @param index the index
+	 * @return the if statement
+	 * @throws IndexOutOfBoundsException the index out of bounds exception
+	 */
 	public ZestStatement getIfStatement (int index) throws IndexOutOfBoundsException {
 		return this.ifStatements.get(index);
 	}
 	
+	/**
+	 * Gets the if statements.
+	 *
+	 * @return the if statements
+	 */
 	public List<ZestStatement> getIfStatements() {
 		return ifStatements;
 	}
 
+	/**
+	 * Adds the else.
+	 *
+	 * @param req the req
+	 */
 	public void addElse(ZestStatement req) {
 		this.addElse(this.elseStatements.size(), req);
 	}
+	
+	/**
+	 * Adds the else.
+	 *
+	 * @param index the index
+	 * @param req the req
+	 */
 	public void addElse(int index, ZestStatement req) {
 		ZestStatement prev = this;
 		if (this.ifStatements.size() > 0) {
@@ -104,28 +186,59 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 
+	/**
+	 * Move else.
+	 *
+	 * @param index the index
+	 * @param req the req
+	 */
 	public void moveElse(int index, ZestStatement req) {
 		this.removeElse(req);
 		this.addElse(index, req);
 	}
 	
+	/**
+	 * Removes the else.
+	 *
+	 * @param req the req
+	 */
 	public void removeElse(ZestStatement req) {
 		this.elseStatements.remove(req);
 		req.remove();
 	}
 	
+	/**
+	 * Removes the else statement.
+	 *
+	 * @param index the index
+	 */
 	public void removeElseStatement(int index) {
 		this.removeElse(this.elseStatements.get(index));
 	}
 	
+	/**
+	 * Gets the else statement.
+	 *
+	 * @param index the index
+	 * @return the else statement
+	 * @throws IndexOutOfBoundsException the index out of bounds exception
+	 */
 	public ZestStatement getElseStatement (int index) throws IndexOutOfBoundsException {
 		return this.elseStatements.get(index);
 	}
 	
+	/**
+	 * Gets the else statements.
+	 *
+	 * @return the else statements
+	 */
 	public List<ZestStatement> getElseStatements() {
 		return elseStatements;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core.v1.ZestStatement)
+	 */
 	@Override
 	public int getIndex (ZestStatement child) {
 		if (this.ifStatements.contains(child)) {
@@ -134,6 +247,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return this.elseStatements.indexOf(child);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
+	 */
 	public void move(int index, ZestStatement stmt) {
 		if (this.ifStatements.contains(stmt)) {
 			this.removeIf(stmt);
@@ -146,11 +262,17 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
+	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestConditional;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		for (ZestStatement stmt : this.ifStatements) {
@@ -161,6 +283,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Set<String> getTokens(String tokenStart, String tokenEnd) {
 		Set<String> tokens = new HashSet<String>();
@@ -173,6 +298,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return tokens;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
+	 */
 	@Override
 	void setUpRefs(ZestScript script) {
 		for (ZestStatement stmt : this.ifStatements) {
@@ -183,6 +311,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
+	 */
 	@Override
 	public List<ZestTransformation> getTransformations() {
 		List<ZestTransformation> xforms = new ArrayList<ZestTransformation>();
@@ -196,6 +327,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return xforms;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
+	 */
 	public ZestStatement getLast() {
 		if (this.elseStatements.size() > 0) {
 			return this.elseStatements.get(this.elseStatements.size()-1);
@@ -206,6 +340,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return this;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest.core.v1.ZestStatement)
+	 */
 	@Override
 	public ZestStatement getChildBefore(ZestStatement child) {
 		if (this.ifStatements.contains(child)) {
@@ -222,6 +359,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
+	 */
 	@Override
 	public ZestStatement getStatement (int index) {
 		for (ZestStatement zr : this.getIfStatements()) {
@@ -249,18 +389,41 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 
 		return null;
 	}
+	
+	/**
+	 * Checks if is true.
+	 *
+	 * @param response the response
+	 * @return true, if is true
+	 */
 	public boolean isTrue(ZestResponse response){
 		return getRootExpression().evaluate(response);
 	}
+	
+	/**
+	 * Gets the root expression.
+	 *
+	 * @return the root expression
+	 */
 	public ZestExpressionElement getRootExpression(){
 		return this.rootExpression;
 	}
+	
+	/**
+	 * Sets the root expression.
+	 *
+	 * @param new_root the new_root
+	 * @return the zest expression element
+	 */
 	public ZestExpressionElement setRootExpression(ZestExpressionElement new_root){
 		ZestExpressionElement old_root=this.getRootExpression();
 		this.rootExpression=new_root;
 		return old_root;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
+	 */
 	@Override
 	public ZestStatement deepCopy() {
 		ZestConditional copy=new ZestConditional(getIndex());

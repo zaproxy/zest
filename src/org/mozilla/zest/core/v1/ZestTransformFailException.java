@@ -4,22 +4,44 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestTransformFailException.
+ */
 public class ZestTransformFailException extends Exception {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
+	/** The test. */
 	private final ZestTransformation test;
 
+	/**
+	 * Instantiates a new zest transform fail exception.
+	 *
+	 * @param test the test
+	 * @param message the message
+	 */
 	public ZestTransformFailException (ZestTransformation test, String message) {
 		super(message);
 		this.test = test;
 	}
 
+	/**
+	 * Instantiates a new zest transform fail exception.
+	 *
+	 * @param test the test
+	 */
 	public ZestTransformFailException (ZestTransformation test) {
 		super();
 		this.test = test;
 	}
 
+	/**
+	 * Gets the test.
+	 *
+	 * @return the test
+	 */
 	public ZestTransformation getTest() {
 		return test;
 	}

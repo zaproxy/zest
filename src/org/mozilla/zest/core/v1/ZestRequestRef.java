@@ -4,11 +4,30 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ZestRequestRef.
+ */
 public interface ZestRequestRef {
 
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	ZestRequest getRequest();
 	
+	/**
+	 * Gets the request id.
+	 *
+	 * @return the request id
+	 */
 	int getRequestId();
 	
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	void setRequest(ZestRequest request);
 }

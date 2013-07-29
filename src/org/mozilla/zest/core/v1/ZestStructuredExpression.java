@@ -7,13 +7,27 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestStructuredExpression.
+ */
 public abstract class ZestStructuredExpression extends ZestExpression {
+	
+	/** The children. */
 	private List<ZestExpressionElement> children = new LinkedList<>();
 
+	/**
+	 * Instantiates a new zest structured expression.
+	 */
 	public ZestStructuredExpression() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new zest structured expression.
+	 *
+	 * @param childrenExpression the children expression
+	 */
 	public ZestStructuredExpression(
 			List<ZestExpressionElement> childrenExpression) {
 		super();
@@ -21,10 +35,9 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	/**
-	 * sets the list of Children and return the previous list
-	 * 
-	 * @param new_list
-	 *            the new list of Children Condition
+	 * sets the list of Children and return the previous list.
+	 *
+	 * @param new_list the new list of Children Condition
 	 * @return the previous list of Children Condition
 	 */
 	public List<ZestExpressionElement> setChildrenCondition(
@@ -35,31 +48,34 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	/**
-	 * returns the children condition of this Zest Expression
+	 * returns the children condition of this Zest Expression.
+	 *
+	 * @return the children condition
 	 */
 	public List<ZestExpressionElement> getChildrenCondition() {
 		return this.children;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
+	 */
 	public boolean isLeaf() {
 		return false;
 	}
 
 	/**
-	 * adds a new Condition to the children (last position)
-	 * 
-	 * @param child
-	 *            the child condition to add
+	 * adds a new Condition to the children (last position).
+	 *
+	 * @param child the child condition to add
 	 */
 	public void addChildCondition(ZestExpressionElement child) {
 		children.add(child);
 	}
 
 	/**
-	 * removes a child from the list of children condition
-	 * 
-	 * @param child
-	 *            the Expression to remove
+	 * removes a child from the list of children condition.
+	 *
+	 * @param child the Expression to remove
 	 * @return the expression removed if any, null otherwise.
 	 */
 	public ZestExpressionElement removeChildCondition(
@@ -72,10 +88,9 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	/**
-	 * removes an element from the list of children condition
-	 * 
-	 * @param index
-	 *            the index of the element to remove
+	 * removes an element from the list of children condition.
+	 *
+	 * @param index the index of the element to remove
 	 * @return the element removed if any.
 	 */
 	public ZestExpressionElement removeChildCondition(int index) {
@@ -83,13 +98,12 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	/**
-	 * Removes a collection of Expressions
-	 * 
-	 * @param childrenToRemove
-	 *            the Expressions, children of this StructuredExpression, which
-	 *            has to be removed
+	 * Removes a collection of Expressions.
+	 *
+	 * @param childrenToRemove the Expressions, children of this StructuredExpression, which
+	 * has to be removed
 	 * @return true if list of children condition changed as a result of the
-	 *         call
+	 * call
 	 */
 	public boolean removeAllChildren(
 			Collection<ZestExpressionElement> childrenToRemove) {
@@ -104,22 +118,19 @@ public abstract class ZestStructuredExpression extends ZestExpression {
 	}
 
 	/**
-	 * adds a new Condition to the children (give position)
-	 * 
-	 * @param child
-	 *            the child condition to add
-	 * @param position
-	 *            the position where to add the condition
+	 * adds a new Condition to the children (give position).
+	 *
+	 * @param child the child condition to add
+	 * @param position the position where to add the condition
 	 */
 	public void addChildCondition(ZestExpressionElement child, int position) {
 		this.children.add(position, child);
 	}
 
 	/**
-	 * returns the Condition Child in position i
-	 * 
-	 * @param index
-	 *            position of the child we're searching for
+	 * returns the Condition Child in position i.
+	 *
+	 * @param index position of the child we're searching for
 	 * @return the child found at the given position
 	 */
 	public ZestExpressionElement getChild(int index) {

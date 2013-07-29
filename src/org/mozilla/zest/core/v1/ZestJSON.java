@@ -17,18 +17,40 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestJSON.
+ */
 public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<ZestElement> {
 	
+	/** The gson. */
 	private static Gson gson = null;
 	
+	/**
+	 * To string.
+	 *
+	 * @param element the element
+	 * @return the string
+	 */
 	public static String toString(ZestElement element) {
 		return getGson().toJson(element).toString();
 	}
 	
+	/**
+	 * From string.
+	 *
+	 * @param str the str
+	 * @return the zest element
+	 */
 	public static ZestElement fromString(String str) {
 		return getGson().fromJson(str, ZestElement.class);
 	}
 	
+	/**
+	 * Gets the gson.
+	 *
+	 * @return the gson
+	 */
 	private static Gson getGson() {
 		if (gson == null) {
 			// Need to add all of the abstract classes
@@ -47,6 +69,9 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return gson;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+	 */
 	@Override
 	public ZestElement deserialize(JsonElement element, Type rawType,
 			JsonDeserializationContext arg2) throws JsonParseException {
@@ -69,6 +94,9 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
 	public JsonElement serialize(ZestElement element, Type rawType,
 			JsonSerializationContext context) {

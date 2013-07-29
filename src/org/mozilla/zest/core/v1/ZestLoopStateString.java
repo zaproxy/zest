@@ -8,22 +8,44 @@
 package org.mozilla.zest.core.v1;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestLoopStateString.
+ */
 public class ZestLoopStateString extends ZestLoopState<String> {
+	
+	/** The tokens. */
 	private ZestLoopTokenStringSet tokens;
 
+	/**
+	 * Instantiates a new zest loop state string.
+	 */
 	public ZestLoopStateString() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new zest loop state string.
+	 *
+	 * @param initializationTokenSet the initialization token set
+	 */
 	public ZestLoopStateString(ZestLoopTokenStringSet initializationTokenSet) {
 		super(initializationTokenSet);
 		this.tokens = initializationTokenSet;
 	}
 
+	/**
+	 * Instantiates a new zest loop state string.
+	 *
+	 * @param values the values
+	 */
 	public ZestLoopStateString(String[] values) {
 		this(new ZestLoopTokenStringSet(values));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase()
+	 */
 	@Override
 	public boolean increase() {
 		if (this.tokens == null || this.getCurrentIndex() + 1 >= tokens.size()) {
@@ -35,6 +57,9 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#toLastState()
+	 */
 	@Override
 	public void toLastState() {
 		if (this.isLastState()) {
@@ -45,6 +70,9 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#deepCopy()
+	 */
 	@Override
 	public ZestLoopState<String> deepCopy() {
 		if(this.tokens==null){
@@ -58,11 +86,19 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		return copy;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#isLastState()
+	 */
 	@Override
 	public boolean isLastState() {
 		return tokens==null || this.getCurrentIndex()+1>=tokens.size();
 	}
 
+	/**
+	 * Gets the token set.
+	 *
+	 * @return the token set
+	 */
 	public ZestLoopTokenStringSet getTokenSet() {
 		return this.tokens;
 	}
