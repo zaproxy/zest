@@ -6,29 +6,32 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestExpressionOr.
+ */
 public class ZestExpressionOr extends ZestStructuredExpression {
+	
 	/**
-	 * Main construptor
-	 * 
-	 * @param parent
-	 *            the parent of this ZestConditionalElement
+	 * Main construptor.
+	 *
 	 */
 	public ZestExpressionOr() {
 		super();
 	}
 
 	/**
-	 * Construptor
-	 * 
-	 * @param parent
-	 *            the parent of this Conditional Element
-	 * @param children
-	 *            the list of the OR clauses
+	 * Construptor.
+	 *
+	 * @param children the list of the OR clauses
 	 */
 	public ZestExpressionOr(List<ZestExpressionElement> children) {
 		super(children);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	@Override
 	public boolean isTrue(ZestResponse response) {
 		boolean toReturn = false;
@@ -42,6 +45,9 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return toReturn;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
+	 */
 	@Override
 	public ZestExpressionOr deepCopy() {
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();

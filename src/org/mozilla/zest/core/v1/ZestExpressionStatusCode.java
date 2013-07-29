@@ -5,31 +5,60 @@
 package org.mozilla.zest.core.v1;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestExpressionStatusCode.
+ */
 public class ZestExpressionStatusCode extends ZestExpression {
 	
+	/** The code. */
 	private int code;
 	
+	/**
+	 * Instantiates a new zest expression status code.
+	 */
 	public ZestExpressionStatusCode() {
 		super();
 	}
 	
+	/**
+	 * Instantiates a new zest expression status code.
+	 *
+	 * @param code the code
+	 */
 	public ZestExpressionStatusCode(int code) {
 		super();
 		this.code=code;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	public boolean isTrue (ZestResponse response) {
 		return code == response.getStatusCode();
 	}
 
+	/**
+	 * Gets the code.
+	 *
+	 * @return the code
+	 */
 	public int getCode() {
 		return code;
 	}
 
+	/**
+	 * Sets the code.
+	 *
+	 * @param code the new code
+	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
+	 */
 	@Override
 	public ZestExpressionStatusCode deepCopy() {
 		ZestExpressionStatusCode copy = new ZestExpressionStatusCode();

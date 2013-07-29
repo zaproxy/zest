@@ -14,27 +14,58 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestRequest.
+ */
 public class ZestRequest extends ZestStatement {
 
+	/** The url. */
 	private URL url;
+	
+	/** The url token. */
 	private String urlToken;	// String version of the URL including tokens - as these wont be a valid urls
+	
+	/** The data. */
 	private String data;	// TODO this dependant on protocol, eg http / ws / ??
+	
+	/** The method. */
 	private String method;
+	
+	/** The headers. */
 	private String headers;
+	
+	/** The response. */
 	private ZestResponse response;
+	
+	/** The transformations. */
 	private List<ZestTransformation> transformations = new ArrayList<ZestTransformation>();
+	
+	/** The assertions. */
 	private List<ZestAssertion> assertions = new ArrayList<ZestAssertion>();
 	
+	/** The referers. */
 	private transient List<ZestRequestRef> referers = new ArrayList<ZestRequestRef>();
 	
+	/**
+	 * Instantiates a new zest request.
+	 *
+	 * @param index the index
+	 */
 	public ZestRequest(int index) {
 		super(index);
 	}
 	
+	/**
+	 * Instantiates a new zest request.
+	 */
 	public ZestRequest() {
 		super();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
+	 */
 	@Override
 	public ZestRequest deepCopy () {
 		ZestRequest zr = new ZestRequest(this.getIndex());
@@ -56,6 +87,11 @@ public class ZestRequest extends ZestStatement {
 		return zr;
 	}
 	
+	/**
+	 * Gets the url.
+	 *
+	 * @return the url
+	 */
 	public URL getUrl() {
 		if (url == null && urlToken != null) {
 			try {
@@ -67,67 +103,179 @@ public class ZestRequest extends ZestStatement {
 		}
 		return url;
 	}
+	
+	/**
+	 * Sets the url.
+	 *
+	 * @param url the new url
+	 */
 	public void setUrl(URL url) {
 		this.url = url;
 	}
+	
+	/**
+	 * Gets the url token.
+	 *
+	 * @return the url token
+	 */
 	public String getUrlToken() {
 		return urlToken;
 	}
+	
+	/**
+	 * Sets the url token.
+	 *
+	 * @param urlToken the new url token
+	 */
 	public void setUrlToken(String urlToken) {
 		this.urlToken = urlToken;
 	}
+	
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	public String getData() {
 		return data;
 	}
+	
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(String data) {
 		this.data = data;
 	}
+	
+	/**
+	 * Gets the headers.
+	 *
+	 * @return the headers
+	 */
 	public String getHeaders() {
 		return headers;
 	}
+	
+	/**
+	 * Sets the headers.
+	 *
+	 * @param headers the new headers
+	 */
 	public void setHeaders(String headers) {
 		this.headers = headers;
 	}
+	
+	/**
+	 * Gets the method.
+	 *
+	 * @return the method
+	 */
 	public String getMethod() {
 		return method;
 	}
+	
+	/**
+	 * Sets the method.
+	 *
+	 * @param method the new method
+	 */
 	public void setMethod(String method) {
 		this.method = method;
 	}
+	
+	/**
+	 * Adds the transformation.
+	 *
+	 * @param transformation the transformation
+	 */
 	public void addTransformation(ZestTransformation transformation) {
 		this.transformations.add(transformation);
 	}
+	
+	/**
+	 * Removes the transformation.
+	 *
+	 * @param transformation the transformation
+	 */
 	public void removeTransformation (ZestTransformation transformation) {
 		this.transformations.remove(transformation);
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
+	 */
 	public List<ZestTransformation> getTransformations() {
 		return transformations;
 	}
+	
+	/**
+	 * Adds the assertion.
+	 *
+	 * @param assertion the assertion
+	 */
 	public void addAssertion (ZestAssertion assertion) {
 		this.assertions.add(assertion);
 	}
+	
+	/**
+	 * Removes the assertion.
+	 *
+	 * @param assertion the assertion
+	 */
 	public void removeAssertion (ZestAssertion assertion) {
 		this.assertions.remove(assertion);
 	}
+	
+	/**
+	 * Gets the assertions.
+	 *
+	 * @return the assertions
+	 */
 	public List<ZestAssertion> getAssertions() {
 		return assertions;
 	}
 
+	/**
+	 * Gets the response.
+	 *
+	 * @return the response
+	 */
 	public ZestResponse getResponse() {
 		return response;
 	}
 
+	/**
+	 * Sets the response.
+	 *
+	 * @param response the new response
+	 */
 	public void setResponse(ZestResponse response) {
 		this.response = response;
 	}
 	
+	/**
+	 * Adds the referer.
+	 *
+	 * @param ref the ref
+	 */
 	protected void addReferer(ZestRequestRef ref) {
 		this.referers.add(ref);
 	}
+	
+	/**
+	 * Removes the referer.
+	 *
+	 * @param ref the ref
+	 */
 	protected void removeReferer(ZestRequestRef ref) {
 		this.referers.remove(ref);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
+	 */
 	@Override
 	public void setUpRefs(ZestScript script) {
 		for (ZestTransformation zt : getTransformations()) {
@@ -143,6 +291,11 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 	
+	/**
+	 * Move up.
+	 *
+	 * @param ze the ze
+	 */
 	public void moveUp (ZestElement ze) {
 		int i;
 		if (ze instanceof ZestAssertion) {
@@ -164,6 +317,11 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
+	/**
+	 * Move down.
+	 *
+	 * @param ze the ze
+	 */
 	public void moveDown (ZestElement ze) {
 		int i;
 		if (ze instanceof ZestAssertion) {
@@ -185,6 +343,9 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Set<String> getTokens(String tokenStart, String tokenEnd) {
 		Set<String> tokens = new TreeSet<String>();
@@ -208,6 +369,13 @@ public class ZestRequest extends ZestStatement {
 		return tokens;
 	}
 	
+	/**
+	 * Replace in string.
+	 *
+	 * @param tokens the tokens
+	 * @param str the str
+	 * @return the string
+	 */
 	private String replaceInString (ZestTokens tokens, String str) {
 		if (str == null) {
 			return null;
@@ -221,6 +389,11 @@ public class ZestRequest extends ZestStatement {
 		return str;
 	}
 
+	/**
+	 * Replace tokens.
+	 *
+	 * @param tokens the tokens
+	 */
 	public void replaceTokens(ZestTokens tokens) {
 		if (this.url != null) {
 			try {
@@ -236,11 +409,17 @@ public class ZestRequest extends ZestStatement {
 		this.setData(this.replaceInString(tokens, this.getData()));
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
+	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestRequest;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		if (this.getUrl() != null && this.getUrl().toString().startsWith(oldPrefix)) {
@@ -252,6 +431,12 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	public static void main(String[] args) throws Exception {
 		ZestRequest req = new ZestRequest();
 		req.setHeaders("Testing tokens {{token1}} and {{token2}}");

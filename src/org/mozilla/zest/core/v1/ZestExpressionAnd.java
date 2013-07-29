@@ -6,6 +6,7 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * 
  /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -17,28 +18,27 @@ import java.util.List;
  * @author Alessandro Secco: seccoale@gmail.com
  */
 public class ZestExpressionAnd extends ZestStructuredExpression{
+	
 	/**
-	 * Main construptor
-	 * 
-	 * @param parent
-	 *            the parent of this Conditional Element
+	 * Main construptor.
+	 *
 	 */
 	public ZestExpressionAnd() {
 		super();
 	}
 
 	/**
-	 * Construptor
-	 * 
-	 * @param parent
-	 *            the parent of this conditional Element
-	 * @param andList
-	 *            the list of AND clauses
+	 * Construptor.
+	 *
+	 * @param andList the list of AND clauses
 	 */
 	public ZestExpressionAnd(List<ZestExpressionElement> andList) {
 		super(andList);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
+	 */
 	@Override
 	public ZestExpressionAnd deepCopy() {
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();
@@ -51,6 +51,9 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		return copy;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	@Override
 	public boolean isTrue(ZestResponse response) {
 		if(getChildrenCondition().isEmpty()){
