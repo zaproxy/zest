@@ -6,18 +6,14 @@ package org.mozilla.zest.core.v1;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-<<<<<<< HEAD
-public abstract class ZestStructuredExpression extends ZestExpression {
-=======
-// TODO: Auto-generated Javadoc
+//TODO: Auto-generated Javadoc
 /**
- * The Class ZestStructuredExpression.
- */
-public abstract class ZestStructuredExpression extends ZestExpression implements ZestExpressionElement{
+* The Class ZestStructuredExpression.
+*/
+
+public abstract class ZestStructuredExpression extends ZestExpression {
 	
 	/** The children. */
->>>>>>> fb89e2d... Fixed Deserialization bug in ZestJSON
 	private List<ZestExpressionElement> children = new LinkedList<>();
 
 	public ZestStructuredExpression() {
