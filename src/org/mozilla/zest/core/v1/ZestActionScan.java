@@ -4,31 +4,62 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestActionScan.
+ */
 public class ZestActionScan extends ZestAction {
 
+	/** The target parameter. */
 	private String targetParameter;
 
+	/**
+	 * Instantiates a new zest action scan.
+	 */
 	public ZestActionScan() {
 		super();
 	}
 	
+	/**
+	 * Instantiates a new zest action scan.
+	 *
+	 * @param targetParameter the target parameter
+	 */
 	public ZestActionScan(String targetParameter) {
 		super ();
 		this.targetParameter = targetParameter;
 	}
 	
+	/**
+	 * Instantiates a new zest action scan.
+	 *
+	 * @param index the index
+	 */
 	public ZestActionScan(int index) {
 		super(index);
 	}
 
+	/**
+	 * Gets the target parameter.
+	 *
+	 * @return the target parameter
+	 */
 	public String getTargetParameter() {
 		return targetParameter;
 	}
 
+	/**
+	 * Sets the target parameter.
+	 *
+	 * @param targetParameter the new target parameter
+	 */
 	public void setTargetParameter(String targetParameter) {
 		this.targetParameter = targetParameter;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
+	 */
 	@Override
 	public ZestActionScan deepCopy() {
 		ZestActionScan copy = new ZestActionScan(this.getIndex());
@@ -36,6 +67,9 @@ public class ZestActionScan extends ZestAction {
 		return copy;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	@Override
 	public String invoke(ZestResponse response) throws ZestActionFailException {
 		throw new ZestActionFailException(this);

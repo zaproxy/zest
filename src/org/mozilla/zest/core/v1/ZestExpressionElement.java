@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
 /**
  * 
 /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -16,34 +17,49 @@ package org.mozilla.zest.core.v1;
  * @author Alessandro Secco: seccoale@gmail.com
  */
 public interface ZestExpressionElement{
+	
 	/**
-	 * true if it is a Simple Conditional false otherwise
+	 * true if it is a Simple Conditional false otherwise.
+	 *
 	 * @return true if it is a Simple Conditional false otherwise
 	 */
 	public boolean isLeaf();
+	
 	/**
-	 * the boolean value result of the expression without inverse flag
+	 * the boolean value result of the expression without inverse flag.
+	 *
+	 * @param response the response
 	 * @return the boolean value of the expression without inverse flag
 	 */
 	public boolean isTrue(ZestResponse response);
+	
 	/**
-	 * the boolean value of the whole Conditional Element
+	 * the boolean value of the whole Conditional Element.
+	 *
+	 * @param response the response
 	 * @return the boolean value of the whole Conditional Element
 	 */
 	public boolean evaluate(ZestResponse response);
+	
 	/**
-	 * return true if the Conditional Element has a NOT clause
+	 * return true if the Conditional Element has a NOT clause.
+	 *
 	 * @return true if the Conditional Element has a NOT clause
 	 */
 	public boolean isInverse();
+	
 	/**
-	 * sets if the Conditional Element has a NOT clause
+	 * sets if the Conditional Element has a NOT clause.
+	 *
 	 * @param not true if this Conditional Element has to contain the NOT clause
 	 */
 	public void setInverse(boolean not);
+	
 	/**
-	 * @see ZestElement
+	 * Deep copy.
+	 *
 	 * @return a copy of the ZestConditionalElement
+	 * @see ZestElement
 	 */
 	public ZestExpressionElement deepCopy();
 }

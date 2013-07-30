@@ -6,18 +6,58 @@ package org.mozilla.zest.core.v1;
 
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ZestContainer.
+ */
 public interface ZestContainer {
 
+	/**
+	 * Gets the last.
+	 *
+	 * @return the last
+	 */
 	public ZestStatement getLast();
 	
+	/**
+	 * Gets the statement.
+	 *
+	 * @param index the index
+	 * @return the statement
+	 */
 	public ZestStatement getStatement (int index);
 	
+	/**
+	 * Gets the index.
+	 *
+	 * @param child the child
+	 * @return the index
+	 */
 	public int getIndex (ZestStatement child);
 
+	/**
+	 * Move.
+	 *
+	 * @param index the index
+	 * @param stmt the stmt
+	 */
 	public void move(int index, ZestStatement stmt);
 
+	/**
+	 * Gets the child before.
+	 *
+	 * @param child the child
+	 * @return the child before
+	 */
 	public ZestStatement getChildBefore(ZestStatement child);
 	
+	/**
+	 * Gets the tokens.
+	 *
+	 * @param tokenStart the token start
+	 * @param tokenEnd the token end
+	 * @return the tokens
+	 */
 	public Set<String> getTokens(String tokenStart, String tokenEnd);
 
 }

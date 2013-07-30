@@ -5,25 +5,49 @@
 package org.mozilla.zest.core.v1;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestTransformFieldReplace.
+ */
 public class ZestTransformFieldReplace extends ZestTransformation implements ZestRequestRef {
 
+	/** The request string. */
 	private String requestString;
+	
+	/** The field definition. */
 	private ZestFieldDefinition fieldDefinition; 
 	
+	/**
+	 * Instantiates a new zest transform field replace.
+	 */
 	public ZestTransformFieldReplace() {
 	}
 
+	/**
+	 * Instantiates a new zest transform field replace.
+	 *
+	 * @param requestString the request string
+	 */
 	public ZestTransformFieldReplace(String requestString) {
 		super();
 		this.requestString = requestString;
 	}
 
+	/**
+	 * Instantiates a new zest transform field replace.
+	 *
+	 * @param requestString the request string
+	 * @param fieldDefinition the field definition
+	 */
 	public ZestTransformFieldReplace(String requestString, ZestFieldDefinition fieldDefinition) {
 		super();
 		this.requestString = requestString;
 		this.fieldDefinition = fieldDefinition;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
+	 */
 	@Override
 	public void transform (ZestRunner runner, ZestRequest request) throws ZestTransformFailException {
 		String replaceValue = runner.getReplacementValue(this.fieldDefinition);
@@ -33,27 +57,53 @@ public class ZestTransformFieldReplace extends ZestTransformation implements Zes
 		request.setData(request.getData().replace(this.requestString, replaceValue));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
+	 */
 	@Override
 	public ZestTransformFieldReplace deepCopy() {
 		return new ZestTransformFieldReplace(this.requestString, this.fieldDefinition.deepCopy());
 	}
 
+	/**
+	 * Gets the request string.
+	 *
+	 * @return the request string
+	 */
 	public String getRequestString() {
 		return requestString;
 	}
 
+	/**
+	 * Sets the request string.
+	 *
+	 * @param requestString the new request string
+	 */
 	public void setRequestString(String requestString) {
 		this.requestString = requestString;
 	}
 
+	/**
+	 * Gets the field definition.
+	 *
+	 * @return the field definition
+	 */
 	public ZestFieldDefinition getFieldDefinition() {
 		return fieldDefinition;
 	}
 
+	/**
+	 * Sets the field definition.
+	 *
+	 * @param fieldDefinition the new field definition
+	 */
 	public void setFieldDefinition(ZestFieldDefinition fieldDefinition) {
 		this.fieldDefinition = fieldDefinition;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestRequestRef#getRequest()
+	 */
 	@Override
 	public ZestRequest getRequest() {
 		if (fieldDefinition != null) {
@@ -62,6 +112,9 @@ public class ZestTransformFieldReplace extends ZestTransformation implements Zes
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestRequestRef#getRequestId()
+	 */
 	@Override
 	public int getRequestId() {
 		if (fieldDefinition != null) {
@@ -70,6 +123,9 @@ public class ZestTransformFieldReplace extends ZestTransformation implements Zes
 		return 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestRequestRef#setRequest(org.mozilla.zest.core.v1.ZestRequest)
+	 */
 	@Override
 	public void setRequest(ZestRequest request) {
 		if (fieldDefinition != null) {
