@@ -6,8 +6,14 @@ package org.mozilla.zest.core.v1;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+//TODO: Auto-generated Javadoc
+/**
+* The Class ZestStructuredExpression.
+*/
 
 public abstract class ZestStructuredExpression extends ZestExpression {
+	
+	/** The children. */
 	private List<ZestExpressionElement> children = new LinkedList<>();
 
 	public ZestStructuredExpression() {
