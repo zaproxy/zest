@@ -145,7 +145,7 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastConsideredToken()
 	 */
 	@Override
-	public Integer getLastConsideredToken() {
+	public Integer getLastToken() {
 		return end;
 	}
 

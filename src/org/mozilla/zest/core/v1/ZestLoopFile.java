@@ -116,4 +116,7 @@ public class ZestLoopFile extends ZestLoop<String>{
 		copy.setStatements(this.copyStatements());
 		return copy;
 	}
+	public File getFile(){
+		return((ZestLoopStateFile)this.getCurrentState()).getFile();
+	}
 }

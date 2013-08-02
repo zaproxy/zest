@@ -88,7 +88,7 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastConsideredToken()
 	 */
 	@Override
-	public String getLastConsideredToken() {
+	public String getLastToken() {
 		return this.tokens.get(tokens.size()-1);
 	}
 

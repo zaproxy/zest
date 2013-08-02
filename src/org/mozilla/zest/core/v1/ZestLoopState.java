@@ -6,7 +6,6 @@
  * @author Alessandro Secco: seccoale@gmail.com
  */
 package org.mozilla.zest.core.v1;
-// TODO: Auto-generated Javadoc
 
 /**
  * This class represent a state of the loop.
@@ -25,6 +24,7 @@ public abstract class ZestLoopState<T> extends ZestElement{
 	 * Instantiates a new zest loop state.
 	 */
 	public ZestLoopState(){
+		super();
 	}
 	
 	/**

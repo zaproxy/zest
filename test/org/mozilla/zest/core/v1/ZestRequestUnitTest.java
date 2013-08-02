@@ -15,9 +15,15 @@ import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestTokens;
 
 
+/**
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ZestRequestUnitTest {
 
+	/**
+	 * Method testTokenReplacement.
+	 * @throws Exception
+	 */
 	@Test
 	public void testTokenReplacement() throws Exception {
 		ZestRequest req = new ZestRequest ();

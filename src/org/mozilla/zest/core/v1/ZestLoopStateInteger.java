@@ -15,7 +15,9 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	
 	/** The set. */
 	private ZestLoopTokenIntegerSet set;
-	
+	public ZestLoopStateInteger(){
+		super();
+	}
 	/**
 	 * Instantiates a new zest loop state integer.
 	 *

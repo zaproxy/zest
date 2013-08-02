@@ -65,7 +65,7 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		if (this.isLastState()) {
 			return;
 		} else {
-			this.setCurrentToken(tokens.getLastConsideredToken());
+			this.setCurrentToken(tokens.getLastToken());
 			this.setIndex(tokens.size()-1);
 		}
 	}

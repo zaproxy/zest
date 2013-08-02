@@ -20,6 +20,11 @@ import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
 import org.mozilla.zest.core.v1.ZestExpressionURL;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
+import org.mozilla.zest.core.v1.ZestLoop;
+import org.mozilla.zest.core.v1.ZestLoopFile;
+import org.mozilla.zest.core.v1.ZestLoopInteger;
+import org.mozilla.zest.core.v1.ZestLoopString;
+import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
@@ -112,24 +117,6 @@ public class ZestPrinter {
 			printIndent(indent, stmt.getIndex());
 			System.out.print("IF ");
 			printExpression(zc.getRootExpression(), 0);
-//			if (zc instanceof ZestExpressionRegex) {
-//				ZestExpressionRegex zcr = (ZestExpressionRegex) zc;
-//				System.out.println("Regex: " + zcr.getLocation() + " "
-//						+ zcr.getRegex());
-//			} else if (zc instanceof ZestExpressionStatusCode) {
-//				ZestExpressionStatusCode zcs = (ZestExpressionStatusCode) zc;
-//				System.out.println("Status Code: " + zcs.getCode());
-//			} else if (zc instanceof ZestExpressionResponseTime) {
-//				ZestExpressionResponseTime zcs = (ZestExpressionResponseTime) zc;
-//				if (zcs.isGreaterThan()) {
-//					System.out.println("Status Code: > " + zcs.getTimeInMs());
-//				} else {
-//					System.out.println("Status Code: < " + zcs.getTimeInMs());
-//				}
-//			} else {
-//				System.out.println("(Unknown conditional: "
-//						+ stmt.getElementType() + ")");
-//			}
 			for (ZestStatement ifStmt : zc.getIfStatements()) {
 				list(ifStmt, indent + 1);
 			}
@@ -142,8 +129,9 @@ public class ZestPrinter {
 			ZestAction za = (ZestAction) stmt;
 			printIndent(indent, stmt.getIndex());
 			if (za instanceof ZestActionFail) {
-				ZestActionFail zaf = (ZestActionFail)za;
-				System.out.println("Action Fail: " + zaf.getPriority() + " : " + zaf.getMessage());
+				ZestActionFail zaf = (ZestActionFail) za;
+				System.out.println("Action Fail: " + zaf.getPriority() + " : "
+						+ zaf.getMessage());
 			} else if (za instanceof ZestActionScan) {
 				ZestActionScan zas = (ZestActionScan) za;
 				System.out.println("Action Scan: " + zas.getTargetParameter());
@@ -154,6 +142,34 @@ public class ZestPrinter {
 				System.out.println("(Unknown action: " + stmt.getElementType()
 						+ ")");
 			}
+		} else if (stmt instanceof ZestLoop) {
+			ZestLoop<?> loop = (ZestLoop<?>) stmt;
+			printIndent(indent, loop.getIndex());
+			if (stmt instanceof ZestLoopString) {
+				ZestLoopString loopString = (ZestLoopString) loop;
+				System.out.print("FOR tokens IN [");
+				ZestLoopTokenStringSet set = (ZestLoopTokenStringSet) loopString
+						.getCurrentState().getSet();
+				for (int i = 0; i < set.size() - 1; i++) {
+					System.out.print(set.getToken(i) + ",");
+				}
+				System.out.println(set.getToken(set.size() - 1) + "] DO");
+			} else if (stmt instanceof ZestLoopFile) {
+				ZestLoopFile loopFile = (ZestLoopFile) loop;
+				System.out.println("FOR tokens IN FILE "
+						+ loopFile.getFile().getAbsolutePath() + " DO");
+			} else if (stmt instanceof ZestLoopInteger) {
+				ZestLoopInteger loopInteger = (ZestLoopInteger) loop;
+				System.out.println("FOR tokens FROM " + loopInteger.getStart()
+						+ " TO " + loopInteger.getEnd() + " DO");
+			} else {
+				System.out.println("(Unknown loop: " + stmt.getElementType()
+						+ ")");
+			}
+			for (ZestStatement stmtInLoop : loop.getStatements()) {
+				list(stmtInLoop, indent + 1);
+			}
+
 		} else {
 			printIndent(indent, stmt.getIndex());
 			System.out.println("(Unknown: " + stmt.getElementType() + ")");
@@ -162,7 +178,7 @@ public class ZestPrinter {
 	}
 
 	public static void printExpression(ZestExpressionElement element, int indent) {
-		if(element.isInverse())
+		if (element.isInverse())
 			System.out.print("NOT ");
 		if (element.isLeaf()) {
 			if (element instanceof ZestExpressionLength) {
@@ -182,7 +198,7 @@ public class ZestPrinter {
 				ZestExpressionStatusCode codeExpr = (ZestExpressionStatusCode) element;
 				System.out.print("Status Code: " + codeExpr.getCode());
 			} else if (element instanceof ZestExpressionURL) {
-//				ZestExpressionURL urlExpr=(ZestExpressionURL)element;
+				// ZestExpressionURL urlExpr=(ZestExpressionURL)element;
 				System.out.print("URL ");
 			}
 		} else {
@@ -193,11 +209,14 @@ public class ZestPrinter {
 				System.out.println();
 				printIndent(indent);
 				System.out.print("AND: (");
-				for (lastChildPrinted = 0; lastChildPrinted < andElement.getChildrenCondition().size() - 1; lastChildPrinted++) {
-					printExpression(andElement.getChild(lastChildPrinted), indent+1);
+				for (lastChildPrinted = 0; lastChildPrinted < andElement
+						.getChildrenCondition().size() - 1; lastChildPrinted++) {
+					printExpression(andElement.getChild(lastChildPrinted),
+							indent + 1);
 					System.out.print(" && ");
 				}
-				printExpression(andElement.getChild(lastChildPrinted), indent+1);
+				printExpression(andElement.getChild(lastChildPrinted),
+						indent + 1);
 				System.out.println(")");
 				printIndent(indent);
 			} else if (element instanceof ZestExpressionOr) {
@@ -205,17 +224,20 @@ public class ZestPrinter {
 				System.out.println();
 				printIndent(indent);
 				System.out.print("OR: (");
-				for (lastChildPrinted = 0; lastChildPrinted < orElement.getChildrenCondition().size() - 1; lastChildPrinted++) {
-					printExpression(orElement.getChild(lastChildPrinted), indent+1);
+				for (lastChildPrinted = 0; lastChildPrinted < orElement
+						.getChildrenCondition().size() - 1; lastChildPrinted++) {
+					printExpression(orElement.getChild(lastChildPrinted),
+							indent + 1);
 					System.out.print(" || ");
 				}
-				printExpression(orElement.getChild(lastChildPrinted), indent+1);
-//				System.out.println();
-//				printIndent(indent);
+				printExpression(orElement.getChild(lastChildPrinted),
+						indent + 1);
+				// System.out.println();
+				// printIndent(indent);
 				System.out.println(")");
 				printIndent(indent);
 			}
-//			System.out.println();
+			// System.out.println();
 		}
 	}
 

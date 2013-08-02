@@ -23,6 +23,8 @@ import org.mozilla.zest.core.v1.ZestLoopNext;
 import org.mozilla.zest.core.v1.ZestLoopString;
 import org.mozilla.zest.core.v1.ZestStatement;
 
+/**
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ZestLoopIntegerUnitTest {
 	static String[] values = { "a", "b", "c" };

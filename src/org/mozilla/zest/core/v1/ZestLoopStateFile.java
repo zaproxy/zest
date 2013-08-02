@@ -30,6 +30,7 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 	 * Instantiates a new zest loop state file.
 	 */
 	private ZestLoopStateFile() {
+		super();
 	}
 
 	/**

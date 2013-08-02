@@ -49,6 +49,12 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public ZestLoopInteger(int index, int start, int end){
 		this(index, start, end, new LinkedList<ZestStatement>());
 	}
+	public int getStart(){
+		return this.getCurrentState().getSet().getStart();
+	}
+	public int getEnd(){
+		return this.getCurrentState().getSet().getEnd();
+	}
 	
 	/**
 	 * Instantiates a new zest loop integer.

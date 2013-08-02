@@ -71,6 +71,14 @@ public class ZestLoopString extends ZestLoop<String> {
 	public ZestLoopString(int index, String[] values){
 		this(index, values,new LinkedList<ZestStatement>());
 	}
+	public String[] getValues(){
+		ZestLoopTokenStringSet set=(ZestLoopTokenStringSet) this.getCurrentState().getSet();
+		String[] array=new String[set.size()];
+		for(int i=0; i<array.length; i++){
+			array[i]=set.getToken(i);
+		}
+		return  array;
+	}
 	@Override
 	public ZestLoopString deepCopy(){
 		ZestLoopString copy=new ZestLoopString(this.getIndex());

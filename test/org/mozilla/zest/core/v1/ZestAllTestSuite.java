@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * Suite for all Zest v1 unit tests.
  *
  * @author psiinon
+ * @version $Revision: 1.0 $
  */
 @RunWith(Suite.class)
 @SuiteClasses({ 

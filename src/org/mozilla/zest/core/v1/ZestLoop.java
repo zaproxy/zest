@@ -114,7 +114,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 		this.statements=stmts;
 		return oldStatements;
 	}
-	protected List<ZestStatement> getStatements(){
+	public List<ZestStatement> getStatements(){
 		return this.statements;
 	}
 

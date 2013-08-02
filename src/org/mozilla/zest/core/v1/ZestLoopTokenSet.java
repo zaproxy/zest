@@ -52,7 +52,7 @@ public interface ZestLoopTokenSet<T>{
 	 *
 	 * @return the last token the loop may  consider
 	 */
-	public T getLastConsideredToken();
+	public T getLastToken();
 
 	/**
 	 * returns the size of this set.

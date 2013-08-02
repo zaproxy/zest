@@ -13,10 +13,17 @@ import java.io.IOException;
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestLoopFile;
 
+/**
+ */
 public class ZestLoopFileUnitTest {
-	static final File file=new File("test/org/TestLoopFile.txt");
+	public static final File file=new File("test/org/TestLoopFile.txt");
+	/**
+	 * Method testOpenFile.
+	 * @throws IOException
+	 */
 	@Test
 	public void testOpenFile() throws IOException {
-		ZestLoopFile loop=new ZestLoopFile(file);
+		new ZestLoopFile(file);
 	}
+	
 }
