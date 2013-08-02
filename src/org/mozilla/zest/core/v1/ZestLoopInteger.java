@@ -79,4 +79,9 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 		copy.setState(state);
 		return copy;
 	}
+
+	@Override
+	public ZestLoopTokenIntegerSet getSet() {
+		return this.getCurrentState().getSet();
+	}
 }

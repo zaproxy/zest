@@ -119,7 +119,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	}
 
 /**
- * increase the current state (all the statements are compiuted for this loop, lets start a new one).
+ * increase the current state (ignoring all the statements which are still to be computed for this loop: a new one starts).
  *
  * @return the new state (of the following loop)
  */
@@ -160,6 +160,11 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	public T getCurrentToken() {
 		return this.currentState.getCurrentToken();
 	}
+	/**
+	 * returns the set of the tokens in this loop
+	 * @return the set of the tokens in this loop
+	 */
+	public abstract ZestLoopTokenSet<T> getSet();
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()

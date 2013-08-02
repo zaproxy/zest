@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopStateFile.
  */

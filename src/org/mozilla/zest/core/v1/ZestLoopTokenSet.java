@@ -9,7 +9,6 @@ package org.mozilla.zest.core.v1;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * this class represents a Set of loop tokens.
  *

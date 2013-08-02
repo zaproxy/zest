@@ -10,7 +10,6 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopTokenIntegerSet.
  */
@@ -98,7 +97,8 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 			this.start=newTokenValue;
 		}
 		else{
-			throw new IllegalArgumentException("Operation not allowed: the set must be a continue set of integers");
+			throw new IllegalArgumentException("Operation not allowed: the set must be a continue set of integers " +
+												"Start: "+getStart()+"; End: "+getEnd());
 		}
 	}
 
@@ -113,7 +113,7 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		if(start+index<end){//restrictive
 			return (start+index);//???
 		}
-		throw new IllegalArgumentException("the index give is not inside this set.");
+		throw new IllegalArgumentException("the index given is not inside this set.");
 	}
 
 	/* (non-Javadoc)

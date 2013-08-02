@@ -116,7 +116,19 @@ public class ZestLoopFile extends ZestLoop<String>{
 		copy.setStatements(this.copyStatements());
 		return copy;
 	}
+	/**
+	 * returns the file of this loop
+	 * @return the file of this loop
+	 */
 	public File getFile(){
-		return((ZestLoopStateFile)this.getCurrentState()).getFile();
+		return this.getCurrentState().getFile();
+	}
+	@Override
+	public ZestLoopStateFile getCurrentState(){
+		return (ZestLoopStateFile) super.getCurrentState();
+	}
+	@Override
+	public ZestLoopTokenStringSet getSet(){
+		return (ZestLoopTokenStringSet) this.getCurrentState().getSet();
 	}
 }

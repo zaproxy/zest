@@ -86,4 +86,12 @@ public class ZestLoopString extends ZestLoop<String> {
 		copy.setStatements(this.copyStatements());
 		return copy;
 	}
+	@Override
+	public ZestLoopStateString getCurrentState(){
+		return (ZestLoopStateString) super.getCurrentState();
+	}
+	@Override
+	public ZestLoopTokenSet<String> getSet() {
+		return this.getCurrentState().getSet();
+	}
 }

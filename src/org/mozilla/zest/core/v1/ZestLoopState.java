@@ -8,7 +8,7 @@
 package org.mozilla.zest.core.v1;
 
 /**
- * This class represent a state of the loop.
+ * This class represents a state of the loop.
  *
  * @param <T> the generic type
  */
@@ -109,6 +109,11 @@ public abstract class ZestLoopState<T> extends ZestElement{
 	 * @return true, if is last state
 	 */
 	public abstract boolean isLastState();
+	/**
+	 * true if the two states are equals
+	 * @param otherState the other state
+	 * @return true if the two states are equals
+	 */
 	public boolean equals(ZestLoopState<T> otherState){
 		return this.currentIndex==otherState.currentIndex && this.currentToken==otherState.currentToken;
 	}

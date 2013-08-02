@@ -29,7 +29,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestLoopTokenSetUnitTest.class,
 	ZestLoopStateUnitTest.class,
 	ZestLoopStringUnitTest.class,
-	ZestLoopIntegerUnitTest.class
+	ZestLoopIntegerUnitTest.class,
+	ZestLoopSerializationUnitTest.class
 	})
 
 public final class ZestAllTestSuite {
