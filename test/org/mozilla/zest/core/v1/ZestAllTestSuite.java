@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * Suite for all Zest v1 unit tests.
  *
  * @author psiinon
+ * @version $Revision: 1.0 $
  */
 @RunWith(Suite.class)
 @SuiteClasses({ 
@@ -26,7 +27,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestExpressionRegexUnitTest.class,
 	ZestExpressionResponseTimeUnitTest.class,
 	ZestExpressionURLUnitTest.class,
-	ZestExpressionAndUnitTest.class
+	ZestLoopTokenSetUnitTest.class,
+	ZestLoopStateUnitTest.class,
+	ZestLoopStringUnitTest.class,
+	ZestLoopIntegerUnitTest.class,
+	ZestLoopSerializationUnitTest.class
 })
 
 public final class ZestAllTestSuite {

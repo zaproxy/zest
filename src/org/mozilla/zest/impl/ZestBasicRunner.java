@@ -43,6 +43,7 @@ import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
+import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
@@ -152,6 +153,13 @@ public class ZestBasicRunner implements ZestRunner {
 			if (stmt instanceof ZestActionSetToken) {
 				ZestActionSetToken zast = (ZestActionSetToken) stmt;
 				script.getTokens().setToken(zast.getTokenName(), result);
+			}
+		}
+		else if (stmt instanceof ZestLoop){
+			ZestLoop<?> loop=(ZestLoop<?>) stmt;
+			ZestResponse tmpResponse=lastResponse;
+			while(loop.hasMoreElements()){
+				tmpResponse=this.runStatement(script, loop.nextElement(), tmpResponse);
 			}
 		}
 		return lastResponse;

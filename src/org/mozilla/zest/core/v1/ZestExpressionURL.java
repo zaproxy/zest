@@ -8,24 +8,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestExpressionURL.
+ */
 public class ZestExpressionURL extends ZestExpression {
 
+	/** The include regexes. */
 	private List<String> includeRegexes = new ArrayList<String>();
+	
+	/** The exclude regexes. */
 	private List<String> excludeRegexes = new ArrayList<String>();
 
+	/** The include patterns. */
 	private transient List<Pattern> includePatterns = new ArrayList<Pattern>();
+	
+	/** The exclude patterns. */
 	private transient List<Pattern> excludePatterns = new ArrayList<Pattern>();
 
+	/**
+	 * Instantiates a new zest expression url.
+	 */
 	public ZestExpressionURL() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new zest expression url.
+	 *
+	 * @param includeRegexes the include regexes
+	 * @param excludeRegexes the exclude regexes
+	 */
 	public ZestExpressionURL(List<String> includeRegexes,
 			List<String> excludeRegexes) {
 		this.setIncludeRegexes(includeRegexes);
 		this.setExcludeRegexes(excludeRegexes);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	public boolean isTrue(ZestResponse response) {
 		String url = response.getUrl().toString();
 		boolean inc = false;
@@ -50,14 +72,29 @@ public class ZestExpressionURL extends ZestExpression {
 		return true;
 	}
 
+	/**
+	 * Gets the include regexes.
+	 *
+	 * @return the include regexes
+	 */
 	public List<String> getIncludeRegexes() {
 		return includeRegexes;
 	}
 
+	/**
+	 * Gets the exclude regexes.
+	 *
+	 * @return the exclude regexes
+	 */
 	public List<String> getExcludeRegexes() {
 		return excludeRegexes;
 	}
 
+	/**
+	 * Sets the include regexes.
+	 *
+	 * @param includeRegexes the new include regexes
+	 */
 	public void setIncludeRegexes(List<String> includeRegexes) {
 		this.includeRegexes = includeRegexes;
 
@@ -69,6 +106,11 @@ public class ZestExpressionURL extends ZestExpression {
 		}
 	}
 
+	/**
+	 * Sets the exclude regexes.
+	 *
+	 * @param excludeRegexes the new exclude regexes
+	 */
 	public void setExcludeRegexes(List<String> excludeRegexes) {
 		this.excludeRegexes = excludeRegexes;
 
@@ -80,6 +122,9 @@ public class ZestExpressionURL extends ZestExpression {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
+	 */
 	@Override
 	public ZestExpressionURL deepCopy() {
 		ZestExpressionURL copy = new ZestExpressionURL();

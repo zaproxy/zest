@@ -4,16 +4,32 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestAssertFailException.
+ */
 public class ZestAssertFailException extends Exception {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The assertion. */
 	private ZestAssertion assertion;
 	
+	/**
+	 * Instantiates a new zest assert fail exception.
+	 *
+	 * @param assertion the assertion
+	 */
 	public ZestAssertFailException(ZestAssertion assertion) {
 		this.assertion = assertion;
 	}
 
+	/**
+	 * Gets the assertion.
+	 *
+	 * @return the assertion
+	 */
 	public ZestAssertion getAssertion() {
 		return assertion;
 	}

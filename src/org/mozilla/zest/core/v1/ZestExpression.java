@@ -3,27 +3,48 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZestExpression.
+ */
 public abstract class ZestExpression extends ZestElement implements
 		ZestExpressionElement {
+	
+	/** The not. */
 	private boolean not = false;
 
+	/**
+	 * Instantiates a new zest expression.
+	 */
 	public ZestExpression() {
 		super();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isLeaf()
+	 */
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isInverse()
+	 */
 	public boolean isInverse() {
 		return not;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#setInverse(boolean)
+	 */
 	public void setInverse(boolean not) {
 		this.not = not;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#evaluate(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	@Override
 	public boolean evaluate(ZestResponse response) {
 		boolean toReturn = isTrue(response);
@@ -39,5 +60,8 @@ public abstract class ZestExpression extends ZestElement implements
 	// return counter;
 	// }
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
+	 */
 	public abstract ZestExpression deepCopy();
 }
