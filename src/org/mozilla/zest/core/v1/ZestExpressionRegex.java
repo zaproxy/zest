@@ -24,7 +24,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	private transient Pattern pattern = null;
 
 	public ZestExpressionRegex(){
-		this(null,null,false);
+		this(LOC_HEAD,null,false);
 	}
 	public ZestExpressionRegex(String location, String regex) {
 		this(location, regex, false);
