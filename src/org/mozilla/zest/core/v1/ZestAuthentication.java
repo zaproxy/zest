@@ -4,6 +4,9 @@
 
 package org.mozilla.zest.core.v1;
 
+/**
+ * The Class ZestAuthentication.
+ */
 public abstract class ZestAuthentication extends ZestElement {
 
 

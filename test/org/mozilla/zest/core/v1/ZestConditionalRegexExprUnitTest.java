@@ -18,9 +18,15 @@ import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestStatement;
 
+/**
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ZestConditionalRegexExprUnitTest {
 
+	/**
+	 * Method testAddingIfs.
+	 * @throws Exception
+	 */
 	@Test
 	public void testAddingIfs() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -46,6 +52,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req, req3, req2, null});
 	}
 
+	/**
+	 * Method testRemoveFirstIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveFirstIf() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -61,6 +71,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req2, req3, null});
 	}
 
+	/**
+	 * Method testRemoveMiddleIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveMiddleIf() throws Exception {
 
@@ -77,6 +91,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req3, null});
 	}
 
+	/**
+	 * Method testRemoveLastIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveLastIf() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -92,6 +110,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req2, null});
 	}
 
+	/**
+	 * Method testMoveFirstIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveFirstIf() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -107,6 +129,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req2, req3, req1, null});
 	}
 
+	/**
+	 * Method testMoveSecondIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveSecondIf() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -123,6 +149,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req2, req1, req3, null});
 	}
 
+	/**
+	 * Method testMoveLastIf.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveLastIf() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -138,6 +168,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req3, req2, null});
 	}
 
+	/**
+	 * Method testAddingElses.
+	 * @throws Exception
+	 */
 	@Test
 	public void testAddingElses() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -163,6 +197,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req, req3, req2, null});
 	}
 	
+	/**
+	 * Method testRemoveFirstElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveFirstElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -178,6 +216,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req2, req3, null});
 	}
 
+	/**
+	 * Method testRemoveMiddleElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveMiddleElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -193,6 +235,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req3, null});
 	}
 
+	/**
+	 * Method testRemoveLastElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRemoveLastElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -208,6 +254,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req2, null});
 	}
 
+	/**
+	 * Method testMoveFirstElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveFirstElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -223,6 +273,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req2, req1, req3, null});
 	}
 
+	/**
+	 * Method testMoveSecondElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveSecondElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -238,6 +292,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req1, req3, req2, null});
 	}
 
+	/**
+	 * Method testMoveLastElse.
+	 * @throws Exception
+	 */
 	@Test
 	public void testMoveLastElse() throws Exception {
 		ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -253,6 +311,10 @@ public class ZestConditionalRegexExprUnitTest {
 		checkOrder(new ZestStatement[]{zc, req3, req1, req2, null});
 	}
 
+	/**
+	 * Method testDeepConditionals1.
+	 * @throws Exception
+	 */
 	@Test
 	public void testDeepConditionals1() throws Exception {
 		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -267,6 +329,10 @@ public class ZestConditionalRegexExprUnitTest {
 		
 	}
 
+	/**
+	 * Method testDeepConditionals2.
+	 * @throws Exception
+	 */
 	@Test
 	public void testDeepConditionals2() throws Exception {
 		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -389,7 +455,11 @@ System.out.println("Add req4... " + req4);
 	}
 */
 
-	private void checkOrder (ZestStatement[] stmts) {
+	/**
+		 * Method checkOrder.
+		 * @param stmts ZestStatement[]
+		 */
+		private void checkOrder (ZestStatement[] stmts) {
 		for (int i=0; i < stmts.length; i++) {
 			if (stmts[i] != null) {
 				assertEquals(i, stmts[i].getIndex());

@@ -17,9 +17,15 @@ import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestTransformFieldReplace;
 
+/**
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ZestScriptUnitTest {
 	
+	/**
+	 * Method testSimpleIndexing.
+	 * @throws Exception
+	 */
 	@Test
 	public void testSimpleIndexing() throws Exception {
 		ZestScript script = new ZestScript();
@@ -36,6 +42,10 @@ public class ZestScriptUnitTest {
 		checkOrder(new ZestStatement[]{script, req, req1b, req2, null});
 	}
 		
+	/**
+	 * Method testDepthIndexing.
+	 * @throws Exception
+	 */
 	@Test
 	public void testDepthIndexing() throws Exception {
 		ZestScript script = new ZestScript();
@@ -81,6 +91,10 @@ public class ZestScriptUnitTest {
 		
 	}
 
+	/**
+	 * Method testDeepComplex.
+	 * @throws Exception
+	 */
 	@Test
 	public void testDeepComplex() throws Exception {
 		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
@@ -158,6 +172,10 @@ public class ZestScriptUnitTest {
 		assertEquals(req4.getIndex(), xfrm2.getRequestId());
 	}
 
+	/**
+	 * Method testDeepMiscOrder.
+	 * @throws Exception
+	 */
 	@Test
 	public void testDeepMiscOrder() throws Exception {
 		ZestScript script = new ZestScript();
@@ -205,6 +223,10 @@ public class ZestScriptUnitTest {
 		// ZestPrinter.list(script);
 	}
 
+	/**
+	 * Method checkOrder.
+	 * @param stmts ZestStatement[]
+	 */
 	private void checkOrder (ZestStatement[] stmts) {
 		for (int i=0; i < stmts.length; i++) {
 			if (stmts[i] != null) {

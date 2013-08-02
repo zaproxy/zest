@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestResponse;
 
+/**
+ */
 public class ZestExpressionRegexUnitTest {
 	public static final String BODY = "BODY";
 	public static final String HEADER = "HEAD";
@@ -99,13 +101,6 @@ public class ZestExpressionRegexUnitTest {
 		ZestResponse response = new ZestResponse(null, null, null, 0, 0);
 		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
 		assertFalse(regex.isTrue(response));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalArgumentExcpetionNoParams() {
-		@SuppressWarnings("unused")
-		ZestExpressionRegex regex = new ZestExpressionRegex();
-		fail();
 	}
 
 	@Test(expected = IllegalArgumentException.class)

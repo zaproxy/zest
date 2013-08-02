@@ -15,9 +15,15 @@ import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestResponse;
 
 
+/**
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ZestActionSetTokenUnitTest {
 
+	/**
+	 * Method testSimpleCase.
+	 * @throws Exception
+	 */
 	@Test
 	public void testSimpleCase() throws Exception {
 		ZestActionSetToken ast = new ZestActionSetToken();
@@ -34,6 +40,10 @@ public class ZestActionSetTokenUnitTest {
 		assertEquals ("54321", ast.invoke(resp));
 	}
 
+	/**
+	 * Method testRegexes.
+	 * @throws Exception
+	 */
 	@Test
 	public void testRegexes() throws Exception {
 		ZestActionSetToken ast = new ZestActionSetToken();
@@ -52,6 +62,10 @@ public class ZestActionSetTokenUnitTest {
 		assertEquals ("Body Prefix54321Postfix", ast.invoke(resp));
 	}
 
+	/**
+	 * Method testExceptions.
+	 * @throws Exception
+	 */
 	@Test
 	public void testExceptions() throws Exception {
 		ZestActionSetToken ast = new ZestActionSetToken();
