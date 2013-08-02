@@ -15,9 +15,11 @@ import org.mozilla.zest.core.v1.ZestRunner;
 
 public class ZestScriptEngine extends AbstractScriptEngine {
 
+	private ZestScriptEngineFactory factory;
 	private ZestRunner runner;
 	
-	public ZestScriptEngine (ZestRunner runner) {
+	public ZestScriptEngine (ZestScriptEngineFactory factory, ZestRunner runner) {
+		this.factory = factory;
 		this.runner = runner;
 	}
 	
@@ -62,6 +64,6 @@ public class ZestScriptEngine extends AbstractScriptEngine {
 
 	@Override
 	public ScriptEngineFactory getFactory() {
-		return new ZestScriptEngineFactory();
+		return factory;
 	}
 }

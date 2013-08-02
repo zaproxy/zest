@@ -104,13 +104,6 @@ public class ZestExpressionRegexUnitTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalArgumentExcpetionNoParams() {
-		@SuppressWarnings("unused")
-		ZestExpressionRegex regex = new ZestExpressionRegex();
-		fail();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalArgumentExceptionWrongParams() {
 		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
 		regex.setLocation("My home");

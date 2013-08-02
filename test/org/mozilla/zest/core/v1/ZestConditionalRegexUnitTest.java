@@ -58,11 +58,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		zc.removeIf(req1);
 		checkOrder(new ZestStatement[]{zc, req2, req3, null});
 	}
@@ -78,11 +78,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		zc.removeIf(req2);
 		checkOrder(new ZestStatement[]{zc, req1, req3, null});
 	}
@@ -97,11 +97,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		zc.removeIf(req3);
 		checkOrder(new ZestStatement[]{zc, req1, req2, null});
 	}
@@ -116,11 +116,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		zc.moveIf(2, req1);
 		checkOrder(new ZestStatement[]{zc, req2, req3, req1, null});
 	}
@@ -135,11 +135,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		checkOrder(new ZestStatement[]{zc, req1, req2, req3, null});
 		zc.moveIf(0, req2);
 		checkOrder(new ZestStatement[]{zc, req2, req1, req3, null});
@@ -155,11 +155,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addIf(req1);
 		zc.addIf(req2);
 		zc.addIf(req3);
-		
+
 		zc.moveIf(1, req3);
 		checkOrder(new ZestStatement[]{zc, req1, req3, req2, null});
 	}
@@ -203,11 +203,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.removeElse(req1);
 		checkOrder(new ZestStatement[]{zc, req2, req3, null});
 	}
@@ -222,11 +222,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.removeElse(req2);
 		checkOrder(new ZestStatement[]{zc, req1, req3, null});
 	}
@@ -241,11 +241,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.removeElse(req3);
 		checkOrder(new ZestStatement[]{zc, req1, req2, null});
 	}
@@ -260,11 +260,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.moveElse(1, req1);
 		checkOrder(new ZestStatement[]{zc, req2, req1, req3, null});
 	}
@@ -279,11 +279,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.moveElse(2, req2);
 		checkOrder(new ZestStatement[]{zc, req1, req3, req2, null});
 	}
@@ -298,11 +298,11 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
 		ZestRequest req3 = new ZestRequest();
-		
+
 		zc.addElse(req1);
 		zc.addElse(req2);
 		zc.addElse(req3);
-		
+
 		zc.moveElse(0, req3);
 		checkOrder(new ZestStatement[]{zc, req3, req1, req2, null});
 	}
@@ -317,12 +317,12 @@ public class ZestConditionalRegexUnitTest {
 		ZestConditional zc2= new ZestConditional(new ZestExpressionRegex("BODY",""));
 		ZestRequest req1 = new ZestRequest();
 		ZestRequest req2 = new ZestRequest();
-		
+
 		zc1.addIf(zc2);
 		zc2.addIf(req1);
 		zc1.addElse(req2);
 		checkOrder(new ZestStatement[]{zc1, zc2, req1, req2, null});
-		
+
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class ZestConditionalRegexUnitTest {
 		ZestRequest req4 = new ZestRequest();
 		ZestRequest req5 = new ZestRequest();
 		ZestRequest req6 = new ZestRequest();
-		
+
 		/*
 		 * 0 zc1 if
 		 *     req1
@@ -373,7 +373,7 @@ public class ZestConditionalRegexUnitTest {
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, null});
 		zc4.addElse(req6);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, req6, null});
-		
+
 		/*
 		 * 0 zc1 if
 		 *     req1

@@ -16,10 +16,12 @@ import org.mozilla.zest.core.v1.ZestScript;
 
 public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
+	public static final String NAME = "Mozilla Zest";
+	
 	private ZestRunner runner = new ZestBasicRunner();
 	
 	public String getEngineName () {
-		return "Mozilla Zest";
+		return NAME;
 	}
 
 	public String getEngineVersion () {
@@ -94,7 +96,7 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
 	@Override
 	public ScriptEngine getScriptEngine() {
-		return new ZestScriptEngine(runner);
+		return new ZestScriptEngine(this, runner);
 	}
 
 	public void setRunner(ZestRunner runner) {

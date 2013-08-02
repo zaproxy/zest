@@ -38,7 +38,6 @@ public class TestPrint {
 		ZestExpressionOr or=new ZestExpressionOr();
 		or.addChildCondition(new ZestExpressionLength(10, 20));
 		or.addChildCondition(new ZestExpressionStatusCode(200));
-		or.setInverse(true);
 		ZestExpressionAnd and=new ZestExpressionAnd();
 		and.addChildCondition(new ZestExpressionLength(100,200));
 		and.addChildCondition(new ZestExpressionResponseTime(1000));

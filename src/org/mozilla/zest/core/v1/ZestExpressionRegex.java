@@ -41,7 +41,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * Instantiates a new zest expression regex.
 	 */
 	public ZestExpressionRegex(){
-		this(null,null,false);
+		this(LOC_HEAD,null,false);
 	}
 	
 	/**
