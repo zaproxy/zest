@@ -67,5 +67,4 @@ public interface ZestLoopTokenSet<T>{
 	 * @return the zest loop token set
 	 */
 	public ZestLoopTokenSet<T> deepCopy();
-	
 }

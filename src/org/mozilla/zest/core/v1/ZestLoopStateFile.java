@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * The Class ZestLoopStateFile.
  */
-public class ZestLoopStateFile extends ZestLoopState<File> {
+public class ZestLoopStateFile extends ZestLoopState<String> {
 	
 	/** The path to file. */
 	private String pathToFile;
@@ -67,7 +67,7 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 		while (in.hasNextLine()) {
 			line = in.nextLine();
 			if (!line.startsWith("#")) {
-				initializationSet.addToken(in.nextLine());
+				initializationSet.addToken(line);
 			}
 		}
 		this.convertedState = new ZestLoopStateString(initializationSet);
@@ -94,7 +94,7 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 	 * @see org.mozilla.zest.core.v1.ZestLoopState#deepCopy()
 	 */
 	@Override
-	public ZestLoopState<File> deepCopy() {
+	public ZestLoopState<String> deepCopy() {
 		ZestLoopStateFile copy = new ZestLoopStateFile();
 		copy.convertedState = (ZestLoopStateString) this.convertedState
 				.deepCopy();
@@ -134,5 +134,10 @@ public class ZestLoopStateFile extends ZestLoopState<File> {
 		this.convertedState = new ZestLoopStateString();
 		init();
 		return oldFile;
+	}
+
+	@Override
+	public ZestLoopTokenStringSet getSet() {
+		return this.convertedState.getSet();
 	}
 }

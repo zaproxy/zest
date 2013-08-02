@@ -16,8 +16,11 @@ import java.util.List;
 /**
  * This class represent a loop through a list of strings given in input through a file.
  */
-public class ZestLoopFile extends ZestLoop<File>{
+public class ZestLoopFile extends ZestLoop<String>{
 	
+	private ZestLoopFile(int index){
+		super(index);
+	}
 	/**
 	 * Instantiates a new zest loop file.
 	 *
@@ -104,5 +107,13 @@ public class ZestLoopFile extends ZestLoop<File>{
 	 */
 	public ZestLoopFile( int index, File file, List<ZestStatement> statements) throws FileNotFoundException{
 		super(index, new ZestLoopStateFile(file), statements);
+	}
+	
+	@Override
+	public ZestLoopFile deepCopy(){
+		ZestLoopFile copy=new ZestLoopFile(this.getIndex());
+		copy.setState(this.getCurrentState().deepCopy());
+		copy.setStatements(this.copyStatements());
+		return copy;
 	}
 }

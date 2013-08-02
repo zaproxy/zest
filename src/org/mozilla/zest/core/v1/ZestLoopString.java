@@ -20,7 +20,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * Instantiates a new zest loop string.
 	 */
 	protected ZestLoopString(){
-		super(new ZestLoopStateString());
+		super();
 	}
 	
 	/**
@@ -70,5 +70,12 @@ public class ZestLoopString extends ZestLoop<String> {
 	 */
 	public ZestLoopString(int index, String[] values){
 		this(index, values,new LinkedList<ZestStatement>());
+	}
+	@Override
+	public ZestLoopString deepCopy(){
+		ZestLoopString copy=new ZestLoopString(this.getIndex());
+		copy.setState(this.getCurrentState().deepCopy());
+		copy.setStatements(this.copyStatements());
+		return copy;
 	}
 }

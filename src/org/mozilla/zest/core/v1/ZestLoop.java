@@ -21,10 +21,10 @@ import java.util.Set;
  *
  * @param <T> the generic type
  */
-public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumeration<ZestStatement> {
+public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumeration<ZestStatement> {
 	
 	/** contains all the statement inside the loop. */
-	private List<ZestStatement> statements;
+	private List<ZestStatement> statements=new LinkedList<>();
 	
 	/** contains the snapshot of the current state of the loop. */
 	private ZestLoopState<T> currentState;
@@ -113,6 +113,9 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 		List<ZestStatement> oldStatements=this.statements;
 		this.statements=stmts;
 		return oldStatements;
+	}
+	protected List<ZestStatement> getStatements(){
+		return this.statements;
 	}
 
 /**
@@ -284,18 +287,7 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
-	public ZestLoop<T> deepCopy() {
-		ZestLoop<T> copy = new ZestLoop<>(this.getIndex());
-		copy.currentState = this.currentState.deepCopy();
-		if (this.statements == null) {
-			return copy;
-		}
-		copy.statements = new LinkedList<>();
-		for (int i = 0; i < this.statements.size(); i++) {
-			copy.statements.add(this.statements.get(i).deepCopy());
-		}
-		return copy;
-	}
+	public abstract ZestLoop<T> deepCopy();
 	
 	/* (non-Javadoc)
 	 * @see java.util.Enumeration#hasMoreElements()
@@ -303,9 +295,17 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 	@Override
 	public boolean hasMoreElements() {
 		boolean isLastLoop=this.getCurrentState().isLastState();
-		boolean isLastStmt=this.stmtIndex==statements.size()-1;
-		boolean isBreakStatement=this.statements.get(stmtIndex).getClass().equals(ZestLoopBreak.class);
-		return !isLastLoop && !isLastStmt && !isBreakStatement;
+		if(isLastLoop){
+			return false;
+		}
+		boolean isLastStmt=this.stmtIndex==statements.size();
+		if(isLastStmt){
+			return false;
+		}
+		if(this.statements.get(stmtIndex) instanceof ZestLoopBreak){
+			return false;
+		}
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -313,12 +313,13 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 	 */
 	@Override
 	public ZestStatement nextElement() {
+		int currentStmt=stmtIndex;
 		++stmtIndex;
 		if(stmtIndex==statements.size()){
 			this.currentState.increase();
 			stmtIndex=0;
 		}
-		ZestStatement newStatement=statements.get(stmtIndex);
+		ZestStatement newStatement=statements.get(currentStmt);
 		if(newStatement instanceof ZestLoopBreak){
 			this.currentState.toLastState();
 			this.stmtIndex=statements.size();
@@ -327,17 +328,15 @@ public class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumera
 		else if(newStatement instanceof ZestLoopNext){
 			this.currentState.increase();
 			this.stmtIndex=0;
+			return statements.get(stmtIndex);
 		}
-		return statements.get(stmtIndex);
+		return statements.get(currentStmt);
 	}
-	
-	/**
-	 * Equals.
-	 *
-	 * @param otherLoop the other loop
-	 * @return true, if successful
-	 */
-	public boolean equals(ZestLoop<T> otherLoop){
-		return this.currentState.equals(otherLoop.currentState) && this.statements.equals(otherLoop.statements) && this.stmtIndex==otherLoop.stmtIndex;
+	public List<ZestStatement> copyStatements(){
+		List<ZestStatement> statements=new LinkedList<>();
+		for(ZestStatement stmt:this.getStatements()){
+			statements.add(stmt.deepCopy());
+		}
+		return statements;
 	}
 }

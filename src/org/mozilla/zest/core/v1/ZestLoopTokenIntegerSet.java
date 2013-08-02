@@ -156,5 +156,8 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	public int size() {
 		return end-start;
 	}
+	public boolean equals(ZestLoopTokenIntegerSet otherSet){
+		return this.start==otherSet.start && this.end==otherSet.end;
+	}
 
 }

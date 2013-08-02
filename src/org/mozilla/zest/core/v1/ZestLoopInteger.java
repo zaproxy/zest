@@ -57,6 +57,20 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param end the end
 	 */
 	public ZestLoopInteger(int start, int end){
-		this(start, end, new LinkedList<ZestStatement>());
+	}
+	@Override
+	public ZestLoopStateInteger getCurrentState(){
+		return (ZestLoopStateInteger)super.getCurrentState();
+	}
+	@Override
+	public ZestLoopInteger deepCopy(){
+		ZestLoopStateInteger state=this.getCurrentState().deepCopy();
+		ZestLoopTokenIntegerSet set=state.getSet();
+		ZestLoopInteger copy=new ZestLoopInteger(set.getStart(), set.getEnd());
+		for(ZestStatement stmt:this.getStatements()){
+			copy.addStatement(stmt.deepCopy());
+		}
+		copy.setState(state);
+		return copy;
 	}
 }

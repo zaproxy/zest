@@ -38,6 +38,7 @@ public abstract class ZestLoopState<T> extends ZestElement{
 		}
 		this.currentToken=initializationTokenSet.getToken(0);
 	}
+	public abstract ZestLoopTokenSet<T> getSet();
 	
 	/**
 	 * returns the current token considered inside the loop.
@@ -108,4 +109,7 @@ public abstract class ZestLoopState<T> extends ZestElement{
 	 * @return true, if is last state
 	 */
 	public abstract boolean isLastState();
+	public boolean equals(ZestLoopState<T> otherState){
+		return this.currentIndex==otherState.currentIndex && this.currentToken==otherState.currentToken;
+	}
 }

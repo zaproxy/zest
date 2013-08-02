@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -88,7 +87,7 @@ public class ZestLoopStringUnitTest {
 		assertTrue(loop.getLast().getClass().equals(ZestLoopString.class));
 	}
 
-	@Ignore
+	@Test
 	public void testDeepCopy() {
 		ZestLoopString loop=new ZestLoopString(values);
 		loop.addStatement(new ZestConditional());
@@ -97,4 +96,9 @@ public class ZestLoopStringUnitTest {
 		ZestLoopString copy=(ZestLoopString) loop.deepCopy();
 		assertTrue("same state", copy.getCurrentState().equals(loop.getCurrentState()));
 	}
+//	@Test
+//	public void testHasMoreElement(){
+//		ZestLoopString loop=new ZestLoopString(values);
+//		loop.addStatement(new ZestCon)
+//	}
 }

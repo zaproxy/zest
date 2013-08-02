@@ -16,9 +16,6 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	/** The set. */
 	private ZestLoopTokenIntegerSet set;
 	
-	/** The current index. */
-	private transient int currentIndex;
-	
 	/**
 	 * Instantiates a new zest loop state integer.
 	 *
@@ -26,9 +23,9 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	 * @param end the end
 	 */
 	public ZestLoopStateInteger(int start, int end){
-		super();
-		this.set=new ZestLoopTokenIntegerSet(start, end);
-		this.currentIndex=start;
+		super(new ZestLoopTokenIntegerSet(start, end));
+		set=new ZestLoopTokenIntegerSet(start, end);
+		this.setCurrentToken(start);
 	}
 	
 	/* (non-Javadoc)
@@ -36,8 +33,9 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	 */
 	@Override
 	public boolean increase() {
-		++currentIndex;
-		return currentIndex<set.getEnd();
+		super.increaseIndex();
+		super.setCurrentToken(super.getCurrentToken()+1);
+		return super.getCurrentToken()<set.getEnd();
 	}
 
 	/* (non-Javadoc)
@@ -45,7 +43,7 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	 */
 	@Override
 	public void toLastState() {
-		currentIndex=set.getEnd();
+		super.setCurrentToken(set.getEnd());
 	}
 
 	/* (non-Javadoc)
@@ -54,8 +52,9 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	@Override
 	public ZestLoopStateInteger deepCopy() {
 		ZestLoopStateInteger copy=new ZestLoopStateInteger(this.set.getStart(), this.set.getEnd());
-		copy.currentIndex=this.currentIndex;
 		copy.set=this.set.deepCopy();
+		copy.setCurrentToken(this.getCurrentToken());
+		copy.setIndex(this.getCurrentIndex());
 		return copy;
 	}
 
@@ -64,7 +63,15 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	 */
 	@Override
 	public boolean isLastState() {
-		return currentIndex<set.getEnd();
+		return !(super.getCurrentToken()<set.getEnd());
+	}
+
+	@Override
+	public ZestLoopTokenIntegerSet getSet() {
+		return this.set;
+	}
+	public boolean equals(ZestLoopStateInteger otherState) {
+		return super.equals(otherState) && this.set.equals(otherState.set);
 	}
 
 }

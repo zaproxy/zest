@@ -103,4 +103,9 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 		return this.tokens;
 	}
 
+	@Override
+	public ZestLoopTokenStringSet getSet() {
+		return this.tokens;
+	}
+
 }

@@ -427,7 +427,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	@Override
 	public ZestStatement deepCopy() {
 		ZestConditional copy=new ZestConditional(getIndex());
-		copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
+		if(this.rootExpression!=null){
+			copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
+		}
 		ArrayList<ZestStatement> ifList=new ArrayList<>();
 		for(ZestStatement stmt:ifStatements){
 			copy.ifStatements.add(stmt.deepCopy());

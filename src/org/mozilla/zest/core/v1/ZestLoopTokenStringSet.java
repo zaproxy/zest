@@ -17,14 +17,13 @@ import java.util.List;
 public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopTokenSet<String> {
 	
 	/** The tokens. */
-	private List<String> tokens;
+	private List<String> tokens=new LinkedList<>();
 	
 	/**
 	 * Instantiates a new zest loop token string set.
 	 */
 	public ZestLoopTokenStringSet(){
 		super();
-		this.tokens=new LinkedList<>();
 	}
 	
 	/**
