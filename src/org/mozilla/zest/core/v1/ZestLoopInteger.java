@@ -15,7 +15,9 @@ import java.util.List;
  * This class represent a loop through a set of integers.
  */
 public class ZestLoopInteger extends ZestLoop<Integer> {
-	
+	public ZestLoopInteger(){
+		super();
+	}
 	/**
 	 * main construptor (empty).
 	 *

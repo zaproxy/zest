@@ -17,7 +17,9 @@ import java.util.List;
  * This class represent a loop through a list of strings given in input through a file.
  */
 public class ZestLoopFile extends ZestLoop<String>{
-	
+	public ZestLoopFile(){
+		super();
+	}
 	private ZestLoopFile(int index){
 		super(index);
 	}
