@@ -6,16 +6,11 @@ package org.mozilla.zest.core.v1;
 
 import java.security.SecureRandom;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class ZestTransformRndIntReplace.
+ * The Class ZestTransformRndIntReplace assigned a random integer to the specified variable.
  */
-public class ZestTransformRndIntReplace extends ZestTransformation {
+public class ZestAssignRandomInteger extends ZestAssignment {
 
-	/** The request string. */
-	private String requestString;
-	
 	/** The min int. */
 	private int minInt = 0;
 	
@@ -26,31 +21,29 @@ public class ZestTransformRndIntReplace extends ZestTransformation {
 	private transient SecureRandom rnd = new SecureRandom(); 
 	
 	/**
-	 * Instantiates a new zest transform rnd int replace.
+	 * Instantiates a new zest assign random integer.
 	 */
-	public ZestTransformRndIntReplace() {
+	public ZestAssignRandomInteger() {
 	}
 
 	/**
-	 * Instantiates a new zest transform rnd int replace.
+	 * Instantiates a new zest assign random integer.
 	 *
-	 * @param requestString the request string
+	 * @param variableName the variable name
 	 */
-	public ZestTransformRndIntReplace(String requestString) {
-		super();
-		this.requestString = requestString;
+	public ZestAssignRandomInteger(String variableName) {
+		super(variableName);
 	}
 
 	/**
-	 * Instantiates a new zest transform rnd int replace.
+	 * Instantiates a new zest assign random integer.
 	 *
-	 * @param requestString the request string
+	 * @param variableName the variable name
 	 * @param minInt the min int
 	 * @param maxInt the max int
 	 */
-	public ZestTransformRndIntReplace(String requestString, int minInt, int maxInt) {
-		super();
-		this.requestString = requestString;
+	public ZestAssignRandomInteger(String variableName, int minInt, int maxInt) {
+		super(variableName);
 		this.minInt = minInt;
 		this.maxInt = maxInt;
 	}
@@ -59,35 +52,17 @@ public class ZestTransformRndIntReplace extends ZestTransformation {
 	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
 	 */
 	@Override
-	public void transform (ZestRunner runner, ZestRequest request) throws ZestTransformFailException {
+	public String assign (ZestResponse response) throws ZestAssignFailException {
 		int val = minInt + rnd.nextInt(maxInt - minInt);
-		request.setData(request.getData().replace(this.requestString, Integer.toString(val)));
+		return Integer.toString(val);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	@Override
-	public ZestTransformRndIntReplace deepCopy() {
-		return new ZestTransformRndIntReplace(this.requestString, this.minInt, this.maxInt);
-	}
-
-	/**
-	 * Gets the request string.
-	 *
-	 * @return the request string
-	 */
-	public String getRequestString() {
-		return requestString;
-	}
-
-	/**
-	 * Sets the request string.
-	 *
-	 * @param requestString the new request string
-	 */
-	public void setRequestString(String requestString) {
-		this.requestString = requestString;
+	public ZestAssignRandomInteger deepCopy() {
+		return new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);
 	}
 
 	/**

@@ -16,7 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ 
-	ZestActionSetTokenUnitTest.class, 
+	ZestAssignRegexDelimitersUnitTest.class, 
 	ZestAssertBodyRegexUnitTest.class,
 	ZestConditionalRegexUnitTest.class,
 	ZestConditionalRegexExprUnitTest.class,

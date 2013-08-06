@@ -6,7 +6,6 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,9 +36,6 @@ public class ZestRequest extends ZestStatement {
 	
 	/** The response. */
 	private ZestResponse response;
-	
-	/** The transformations. */
-	private List<ZestTransformation> transformations = new ArrayList<ZestTransformation>();
 	
 	/** The assertions. */
 	private List<ZestAssertion> assertions = new ArrayList<ZestAssertion>();
@@ -77,9 +73,6 @@ public class ZestRequest extends ZestStatement {
 		
 		if (this.getResponse()!= null) {
 			zr.setResponse(this.getResponse().deepCopy());
-		}
-		for (ZestTransformation zt : this.getTransformations()) {
-			zr.addTransformation((ZestTransformation)zt.deepCopy());
 		}
 		for (ZestAssertion zt : this.getAssertions()) {
 			zr.addAssertion((ZestAssertion)zt.deepCopy());
@@ -186,31 +179,6 @@ public class ZestRequest extends ZestStatement {
 	}
 	
 	/**
-	 * Adds the transformation.
-	 *
-	 * @param transformation the transformation
-	 */
-	public void addTransformation(ZestTransformation transformation) {
-		this.transformations.add(transformation);
-	}
-	
-	/**
-	 * Removes the transformation.
-	 *
-	 * @param transformation the transformation
-	 */
-	public void removeTransformation (ZestTransformation transformation) {
-		this.transformations.remove(transformation);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
-	 */
-	public List<ZestTransformation> getTransformations() {
-		return transformations;
-	}
-	
-	/**
 	 * Adds the assertion.
 	 *
 	 * @param assertion the assertion
@@ -273,24 +241,6 @@ public class ZestRequest extends ZestStatement {
 		this.referers.remove(ref);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
-	 */
-	@Override
-	public void setUpRefs(ZestScript script) {
-		for (ZestTransformation zt : getTransformations()) {
-			if (zt instanceof ZestRequestRef) {
-				ZestRequestRef zrr = (ZestRequestRef)zt;
-				ZestStatement stmt = script.getStatement(zrr.getRequestId());
-				if (stmt != null && stmt instanceof ZestRequest) {
-					zrr.setRequest((ZestRequest)stmt);
-				} else {
-					throw new InvalidParameterException("Failed to find request id: " + zrr.getRequestId());
-				}
-			}
-		}
-	}
-	
 	/**
 	 * Move up.
 	 *
@@ -304,13 +254,6 @@ public class ZestRequest extends ZestStatement {
 			if (i > 0) {
 				this.assertions.remove(za);
 				this.assertions.add(i-1, za);
-			}
-		} else if (ze instanceof ZestTransformation) {
-			ZestTransformation zt = (ZestTransformation) ze;
-			i = this.transformations.indexOf(zt);
-			if (i > 0) {
-				this.transformations.remove(zt);
-				this.transformations.add(i-1, zt);
 			}
 		} else {
 			throw new IllegalArgumentException("Unrecognised element class: " + ze.getClass().getCanonicalName());
@@ -330,13 +273,6 @@ public class ZestRequest extends ZestStatement {
 			if (i >= 0 && i < this.assertions.size()) {
 				this.assertions.remove(za);
 				this.assertions.add(i+1, za);
-			}
-		} else if (ze instanceof ZestTransformation) {
-			ZestTransformation zt = (ZestTransformation) ze;
-			i = this.transformations.indexOf(zt);
-			if (i >= 0 && i < this.transformations.size()) {
-				this.transformations.remove(zt);
-				this.transformations.add(i+1, zt);
 			}
 		} else {
 			throw new IllegalArgumentException("Unrecognised element class: " + ze.getClass().getCanonicalName());
@@ -376,7 +312,7 @@ public class ZestRequest extends ZestStatement {
 	 * @param str the str
 	 * @return the string
 	 */
-	private String replaceInString (ZestTokens tokens, String str) {
+	private String replaceInString (ZestVariables tokens, String str) {
 		if (str == null) {
 			return null;
 		}
@@ -394,7 +330,7 @@ public class ZestRequest extends ZestStatement {
 	 *
 	 * @param tokens the tokens
 	 */
-	public void replaceTokens(ZestTokens tokens) {
+	public void replaceTokens(ZestVariables tokens) {
 		if (this.url != null) {
 			try {
 				this.setUrl(new URL(replaceInString(tokens, this.url.toString())));
@@ -443,7 +379,7 @@ public class ZestRequest extends ZestStatement {
 		req.setData("Testing tokens {{token3}} and {{token4}}");
 		
 		
-		ZestTokens tokens = new ZestTokens();
+		ZestVariables tokens = new ZestVariables();
 
 		Set<String> tkns = req.getTokens(tokens.getTokenStart(), tokens.getTokenEnd());
 		for (String tkn : tkns) {
