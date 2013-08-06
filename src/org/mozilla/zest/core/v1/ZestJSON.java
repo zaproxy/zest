@@ -6,7 +6,6 @@ package org.mozilla.zest.core.v1;
 
 import java.lang.reflect.Type;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -56,10 +55,10 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 			// Need to add all of the abstract classes
 			gson = new GsonBuilder()
 						.registerTypeAdapter(ZestAction.class, new ZestJSON())
+						.registerTypeAdapter(ZestAssignment.class, new ZestJSON())
 						.registerTypeAdapter(ZestAuthentication.class, new ZestJSON())
 						.registerTypeAdapter(ZestElement.class, new ZestJSON())
 						.registerTypeAdapter(ZestStatement.class, new ZestJSON())
-						.registerTypeAdapter(ZestTransformation.class, new ZestJSON())
 						.registerTypeAdapter(ZestExpressionElement.class, new ZestJSON())
 						.registerTypeAdapter(ZestLoopState.class, new ZestJSON())
 						.setPrettyPrinting()

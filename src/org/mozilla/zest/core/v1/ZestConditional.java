@@ -299,35 +299,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
-	 */
-	@Override
-	void setUpRefs(ZestScript script) {
-		for (ZestStatement stmt : this.ifStatements) {
-			stmt.setUpRefs(script);
-		}
-		for (ZestStatement stmt : this.elseStatements) {
-			stmt.setUpRefs(script);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
-	 */
-	@Override
-	public List<ZestTransformation> getTransformations() {
-		List<ZestTransformation> xforms = new ArrayList<ZestTransformation>();
-		for (ZestStatement stmt : this.ifStatements) {
-			xforms.addAll(stmt.getTransformations());
-		}
-		for (ZestStatement stmt : this.elseStatements) {
-			xforms.addAll(stmt.getTransformations());
-		}
-		
-		return xforms;
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
 	 */
 	public ZestStatement getLast() {

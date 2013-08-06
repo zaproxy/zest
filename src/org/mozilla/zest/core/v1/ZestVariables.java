@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestTokens.
  */
-public class ZestTokens extends ZestElement {
+public class ZestVariables extends ZestElement {
 
 	/** The token start. */
 	private String tokenStart = "{{";
@@ -28,7 +27,7 @@ public class ZestTokens extends ZestElement {
 	/**
 	 * Instantiates a new zest tokens.
 	 */
-	public ZestTokens () {
+	public ZestVariables () {
 		super();
 	}
 
@@ -36,8 +35,8 @@ public class ZestTokens extends ZestElement {
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	@Override
-	public ZestTokens deepCopy() {
-		ZestTokens zt = new ZestTokens();
+	public ZestVariables deepCopy() {
+		ZestVariables zt = new ZestVariables();
 		zt.setTokenStart(this.tokenStart);
 		zt.setTokenEnd(this.tokenEnd);
 		for (Entry<String, String> entry : tokens.entrySet()) {

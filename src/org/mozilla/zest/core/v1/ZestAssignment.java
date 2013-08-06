@@ -13,13 +13,21 @@ import java.util.Set;
 /**
  * The Class ZestAction.
  */
-public abstract class ZestAction extends ZestStatement {
+public abstract class ZestAssignment extends ZestStatement {
+
+	/** The variable name. */
+	private String variableName;
 
 	/**
 	 * Instantiates a new zest action.
 	 */
-	public ZestAction() {
+	public ZestAssignment() {
 		super();
+	}
+
+	public ZestAssignment(String variableName) {
+		super();
+		this.variableName = variableName;
 	}
 
 	/**
@@ -27,7 +35,7 @@ public abstract class ZestAction extends ZestStatement {
 	 *
 	 * @param index the index
 	 */
-	public ZestAction(int index) {
+	public ZestAssignment(int index) {
 		super(index);
 	}
 
@@ -36,7 +44,7 @@ public abstract class ZestAction extends ZestStatement {
 	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
-		return ze instanceof ZestAction;
+		return ze instanceof ZestAssignment;
 	}
 	
 	/* (non-Javadoc)
@@ -56,12 +64,26 @@ public abstract class ZestAction extends ZestStatement {
 	}
 
 	/**
+	 * Returns the variable name
+	 */
+	public String getVariableName() {
+		return variableName;
+	}
+
+	/**
+	 * Sets the variable name
+	 */
+	public void setVariableName(String name) {
+		this.variableName = name;
+	}
+
+	/**
 	 * Invoke.
 	 *
 	 * @param response the response
 	 * @return the string
 	 * @throws ZestActionFailException the zest action fail exception
 	 */
-	public abstract String invoke(ZestResponse response) throws ZestActionFailException;
-
+	public abstract String assign(ZestResponse response) throws ZestAssignFailException;
+	
 }

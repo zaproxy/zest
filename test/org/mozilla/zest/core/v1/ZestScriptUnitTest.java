@@ -15,7 +15,7 @@ import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
-import org.mozilla.zest.core.v1.ZestTransformFieldReplace;
+import org.mozilla.zest.core.v1.ZestAssignFieldValue;
 
 /**
  */
@@ -107,8 +107,8 @@ public class ZestScriptUnitTest {
 		ZestRequest req4 = new ZestRequest();
 		ZestRequest req5 = new ZestRequest();
 		ZestRequest req6 = new ZestRequest();
-		ZestTransformFieldReplace xfrm1 = new ZestTransformFieldReplace();
-		ZestTransformFieldReplace xfrm2 = new ZestTransformFieldReplace();
+		ZestAssignFieldValue xfrm1 = new ZestAssignFieldValue();
+		ZestAssignFieldValue xfrm2 = new ZestAssignFieldValue();
 		
 		/*
 		 * 0 zc1 if
@@ -132,8 +132,8 @@ public class ZestScriptUnitTest {
 		zc2.addIf(req2);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, null});
 		xfrm1.setFieldDefinition(new ZestFieldDefinition(req1, 1, "xxx"));
-		assertEquals(req1.getIndex(), xfrm1.getRequestId());
-		req2.addTransformation(xfrm1);
+		//assertEquals(req1.getIndex(), xfrm1.getRequestId());
+		//req2.addTransformation(xfrm1);
 
 		zc2.addElse(req3);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, null});
@@ -147,8 +147,8 @@ public class ZestScriptUnitTest {
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, null});
 		zc4.addElse(req6);
 		xfrm2.setFieldDefinition(new ZestFieldDefinition(req4, 1, "xxx"));
-		req6.addTransformation(xfrm2);
-		assertEquals(req4.getIndex(), xfrm2.getRequestId());
+		//req6.addTransformation(xfrm2);
+		//assertEquals(req4.getIndex(), xfrm2.getRequestId());
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, req6, null});
 		/*
 		 * 0 zc1 if
@@ -168,8 +168,8 @@ public class ZestScriptUnitTest {
 		zc1.removeIf(req3);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, zc3, req4, req5, zc4, req6, null});
 		// Check the transforms have been updated
-		assertEquals(req1.getIndex(), xfrm1.getRequestId());
-		assertEquals(req4.getIndex(), xfrm2.getRequestId());
+		//assertEquals(req1.getIndex(), xfrm1.getRequestId());
+		//assertEquals(req4.getIndex(), xfrm2.getRequestId());
 	}
 
 	/**

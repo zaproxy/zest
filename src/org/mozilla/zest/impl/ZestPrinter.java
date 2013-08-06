@@ -7,8 +7,10 @@ package org.mozilla.zest.impl;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestActionScan;
-import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertion;
+import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
+import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
+import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
@@ -28,7 +30,6 @@ import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
-import org.mozilla.zest.core.v1.ZestTransformation;
 
 public class ZestPrinter {
 
@@ -104,10 +105,6 @@ public class ZestPrinter {
 				printIndent(indent + 1);
 				System.out.println("Data: " + req.getData());
 			}
-			for (ZestTransformation zt : req.getTransformations()) {
-				printIndent(indent + 1);
-				System.out.println("Transform: " + zt.getElementType());
-			}
 			for (ZestAssertion za : req.getAssertions()) {
 				printIndent(indent + 1);
 				System.out.println("Assert: " + za.getElementType());
@@ -135,12 +132,20 @@ public class ZestPrinter {
 			} else if (za instanceof ZestActionScan) {
 				ZestActionScan zas = (ZestActionScan) za;
 				System.out.println("Action Scan: " + zas.getTargetParameter());
-			} else if (za instanceof ZestActionSetToken) {
-				ZestActionSetToken zas = (ZestActionSetToken) za;
-				System.out.println("Action Set Token: " + zas.getTokenName());
 			} else {
-				System.out.println("(Unknown action: " + stmt.getElementType()
-						+ ")");
+				System.out.println("(Unknown action: " + stmt.getElementType() + ")");
+			}
+		} else if (stmt instanceof ZestAssignment) {
+			ZestAssignment za = (ZestAssignment) stmt;
+			printIndent(indent, stmt.getIndex());
+			if (za instanceof ZestAssignRegexDelimiters) {
+				ZestAssignRegexDelimiters zas = (ZestAssignRegexDelimiters) za;
+				System.out.println("Set Variable: " + zas.getVariableName());
+			} else if (za instanceof ZestAssignStringDelimiters) {
+				ZestAssignStringDelimiters zas = (ZestAssignStringDelimiters) za;
+				System.out.println("Set Variable: " + zas.getVariableName());
+			} else {
+				System.out.println("(Unknown assignment: " + stmt.getElementType() + ")");
 			}
 		} else if (stmt instanceof ZestLoop) {
 			ZestLoop<?> loop = (ZestLoop<?>) stmt;

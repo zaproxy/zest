@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestRequest;
-import org.mozilla.zest.core.v1.ZestTokens;
+import org.mozilla.zest.core.v1.ZestVariables;
 
 
 /**
@@ -34,7 +34,7 @@ public class ZestRequestUnitTest {
 		
 		ZestRequest req2 = req.deepCopy();
 		
-		ZestTokens tokens = new ZestTokens();
+		ZestVariables tokens = new ZestVariables();
 		tokens.setTokenStart("{{");
 		tokens.setTokenEnd("}}");
 		tokens.addToken("token", "ABC");
