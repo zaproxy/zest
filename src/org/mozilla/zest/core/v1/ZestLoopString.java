@@ -20,7 +20,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * Instantiates a new zest loop string.
 	 */
 	public ZestLoopString(){
-		super();
+		this(new String[]{""});
 	}
 	
 	/**

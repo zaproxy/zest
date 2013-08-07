@@ -36,7 +36,9 @@ public abstract class ZestLoopState<T> extends ZestElement{
 		if(initializationTokenSet==null){
 			throw new IllegalArgumentException("a null token set is not allowed");
 		}
-		this.currentToken=initializationTokenSet.getToken(0);
+		if(initializationTokenSet.size()>0){
+			this.currentToken=initializationTokenSet.getToken(0);
+		}
 	}
 	public abstract ZestLoopTokenSet<T> getSet();
 	
