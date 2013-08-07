@@ -5,7 +5,7 @@
  * 
  * @author Alessandro Secco: seccoale@gmail.com
  */
-package mozilla.zest.core.v1;
+package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

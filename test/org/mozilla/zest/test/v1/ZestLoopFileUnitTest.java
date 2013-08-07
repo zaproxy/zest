@@ -5,7 +5,7 @@
  * 
  * @author Alessandro Secco: seccoale@gmail.com
  */
-package mozilla.zest.core.v1;
+package org.mozilla.zest.test.v1;
 
 import java.io.File;
 import java.io.IOException;
