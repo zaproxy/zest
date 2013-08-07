@@ -5,9 +5,7 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -55,22 +53,6 @@ public abstract class ZestAction extends ZestStatement {
 	@Override
 	Set<String> getTokens(String tokenStart, String tokenEnd) {
 		return new HashSet<String>();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
-	 */
-	@Override
-	void setUpRefs(ZestScript script) {
-		// Ignore
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
-	 */
-	@Override
-	public List<ZestTransformation> getTransformations() {
-		return new ArrayList<ZestTransformation>();
 	}
 
 	/**

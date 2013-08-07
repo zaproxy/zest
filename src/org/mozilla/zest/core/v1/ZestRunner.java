@@ -25,8 +25,8 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 */
 	void run (ZestScript script) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException;
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException;
 
 	/**
 	 * Run script.
@@ -39,8 +39,8 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 */
 	void runScript (Reader reader) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException;
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException;
 	
 	/**
 	 * Run script.
@@ -53,8 +53,8 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 */
 	void runScript (String script) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException;
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException;
 	
 	/**
 	 * Run.
@@ -68,8 +68,8 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 */
 	void run (ZestScript script, ZestRequest target) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException;
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException;
 
 	/**
 	 * Run statement.
@@ -85,8 +85,8 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 */
 	ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
-			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, IOException,
-			ZestInvalidCommonTestException;
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException;
 
 	/**
 	 * Send.
@@ -96,7 +96,7 @@ public interface ZestRunner {
 	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	ZestResponse send (ZestRequest request) throws ZestTransformFailException, IOException;
+	ZestResponse send (ZestRequest request) throws IOException;
 	
 	/**
 	 * Handle response.
@@ -108,27 +108,8 @@ public interface ZestRunner {
 	 * @throws ZestActionFailException the zest action fail exception
 	 */
 	void handleResponse (ZestRequest request, ZestResponse response) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException;
+			throws ZestAssertFailException, ZestActionFailException;
 	
-	/**
-	 * Handle transforms.
-	 *
-	 * @param script the script
-	 * @param request the request
-	 * @param response the response
-	 * @throws ZestTransformFailException the zest transform fail exception
-	 */
-	void handleTransforms(ZestScript script, ZestRequest request, ZestResponse response) throws ZestTransformFailException;
-	
-	/**
-	 * Handle transform.
-	 *
-	 * @param request the request
-	 * @param transform the transform
-	 * @throws ZestTransformFailException the zest transform fail exception
-	 */
-	void handleTransform (ZestRequest request, ZestTransformation transform) throws ZestTransformFailException;
-
 	/**
 	 * Handle common tests.
 	 *
@@ -162,6 +143,17 @@ public interface ZestRunner {
 	 * @throws ZestActionFailException the zest action fail exception
 	 */
 	String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException;
+
+	/**
+	 * Handle an assignment.
+	 *
+	 * @param script the script
+	 * @param assign the assignment
+	 * @param lastResponse the last response
+	 * @return the string
+	 * @throws ZestAssignFailException the zest assignment fail exception
+	 */
+	String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException;
 
 	/**
 	 * Gets the replacement value.

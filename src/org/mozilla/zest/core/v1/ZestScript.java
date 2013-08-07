@@ -59,7 +59,7 @@ Targeted, /** The Active. */
 	private String type;
 	
 	/** The tokens. */
-	private ZestTokens tokens = new ZestTokens();
+	private ZestVariables tokens = new ZestVariables();
 	
 	/** The statements. */
 	private List<ZestStatement> statements = new ArrayList<ZestStatement>();
@@ -172,18 +172,7 @@ Targeted, /** The Active. */
 		for (ZestStatement zr : this.getCommonTests()) {
 			script.addCommonTest(zr.deepCopy());
 		}
-		// Correct references in the copy... 
-		script.setUpRefs();
 		script.setTokens(this.getTokens().deepCopy());
-	}
-
-	/**
-	 * Sets the up refs.
-	 */
-	private void setUpRefs() {
-		for (ZestStatement zr : this.getStatements()) {
-			zr.setUpRefs(this);
-		}
 	}
 
 	/**
@@ -399,7 +388,6 @@ Targeted, /** The Active. */
 	 */
 	public void setStatements(List<ZestStatement> statements) {
 		this.statements = statements;
-		this.setUpRefs();
 	}
 	
 	/**
@@ -492,7 +480,7 @@ Targeted, /** The Active. */
 	 *
 	 * @return the tokens
 	 */
-	public ZestTokens getTokens() {
+	public ZestVariables getTokens() {
 		return this.tokens;
 	}
 
@@ -501,7 +489,7 @@ Targeted, /** The Active. */
 	 *
 	 * @param tokens the new tokens
 	 */
-	public void setTokens(ZestTokens tokens) {
+	public void setTokens(ZestVariables tokens) {
 		this.tokens = tokens;
 	}
 
@@ -603,26 +591,6 @@ Targeted, /** The Active. */
 			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
 		}
 		return tokens;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
-	 */
-	@Override
-	void setUpRefs(ZestScript script) {
-		this.setUpRefs();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
-	 */
-	@Override
-	public List<ZestTransformation> getTransformations() {
-		List<ZestTransformation> list = new ArrayList<ZestTransformation>();
-		for (ZestStatement stmt : this.statements) {
-			list.addAll(stmt.getTransformations());
-		}
-		return list;
 	}
 
 	/* (non-Javadoc)

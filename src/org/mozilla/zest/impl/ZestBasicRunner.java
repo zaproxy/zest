@@ -9,15 +9,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
-import net.htmlparser.jericho.Source;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -34,9 +29,10 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestActionFailException;
-import org.mozilla.zest.core.v1.ZestActionSetToken;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
 import org.mozilla.zest.core.v1.ZestAssertion;
+import org.mozilla.zest.core.v1.ZestAssignFailException;
+import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestFieldDefinition;
@@ -49,9 +45,6 @@ import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
-import org.mozilla.zest.core.v1.ZestTransformFailException;
-import org.mozilla.zest.core.v1.ZestTransformFieldReplace;
-import org.mozilla.zest.core.v1.ZestTransformation;
 
 public class ZestBasicRunner implements ZestRunner {
 
@@ -60,20 +53,19 @@ public class ZestBasicRunner implements ZestRunner {
 	private boolean stopOnTestFail = true;
 	private Writer outputWriter = null;
 	
-	private List<ZestTransformation> transformList;
 	private Map<String, String> replacementValues;
 
 	@Override
 	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
-			ZestTransformFailException, IOException, ZestInvalidCommonTestException {
+			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
 		
 		this.run(script, new HashMap<String, String>());
 	}
 
 	@Override
 	public void run (ZestScript script, ZestRequest target) 
-			throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException {
+			throws ZestAssertFailException, ZestActionFailException, IOException,
+			ZestInvalidCommonTestException, ZestAssignFailException {
 		
 		if (target == null) {
 			throw new InvalidParameterException("Null target supplied");
@@ -88,7 +80,7 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	private void run (ZestScript script, HashMap<String, String> tokens) throws ZestAssertFailException,
-			ZestActionFailException, ZestTransformFailException, ZestInvalidCommonTestException, IOException {
+			ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
 			for (ZestAuthentication za : auth) {
@@ -101,15 +93,11 @@ public class ZestBasicRunner implements ZestRunner {
 			}
 		}
 		
-		// Cache all of the transformations so we dont have to cache all the responses
-		transformList = new ArrayList<ZestTransformation>();
 		replacementValues = new HashMap<String, String>(); 
 		
 		if (tokens != null) {
 			script.getTokens().addTokens(tokens);
 		}
-		
-		transformList.addAll(script.getTransformations());
 		
 		ZestResponse lastResponse = null;
 		for (ZestStatement stmt : script.getStatements()) {
@@ -121,8 +109,8 @@ public class ZestBasicRunner implements ZestRunner {
 
 	@Override
 	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
-			throws ZestAssertFailException, ZestActionFailException, ZestTransformFailException, 
-			ZestInvalidCommonTestException, IOException {
+			throws ZestAssertFailException, ZestActionFailException,  
+			ZestInvalidCommonTestException, IOException, ZestAssignFailException {
 		if (stmt instanceof ZestRequest) {
 			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
 			req2.replaceTokens(script.getTokens());
@@ -131,7 +119,6 @@ public class ZestBasicRunner implements ZestRunner {
 			ZestResponse resp = send(req2);
 			handleResponse (req2, resp);
 			handleCommonTests (script, req2, resp);
-			handleTransforms (script, req2, resp);
 			return resp;
 			
 		} else if (stmt instanceof ZestConditional) {
@@ -149,11 +136,9 @@ public class ZestBasicRunner implements ZestRunner {
 				}
 			}
 		} else if (stmt instanceof ZestAction) {
-			String result = handleAction(script, (ZestAction) stmt, lastResponse);
-			if (stmt instanceof ZestActionSetToken) {
-				ZestActionSetToken zast = (ZestActionSetToken) stmt;
-				script.getTokens().setToken(zast.getTokenName(), result);
-			}
+			handleAction(script, (ZestAction) stmt, lastResponse);
+		} else if (stmt instanceof ZestAssignment) {
+			handleAssignment(script, (ZestAssignment) stmt, lastResponse);
 		}
 		else if (stmt instanceof ZestLoop){
 			ZestLoop<?> loop=(ZestLoop<?>) stmt;
@@ -174,43 +159,16 @@ public class ZestBasicRunner implements ZestRunner {
 		}
 		return result;
 	}
-
+	
 	@Override
-	public void handleTransforms(ZestScript script, ZestRequest request, ZestResponse response) throws ZestTransformFailException {
-		for (ZestTransformation za : this.transformList) {
-			if (za instanceof ZestTransformFieldReplace) {
-				ZestTransformFieldReplace zfrt = (ZestTransformFieldReplace) za;
-				ZestFieldDefinition defn = zfrt.getFieldDefinition();
-				int index = zfrt.getFieldDefinition().getRequestId();
-				if (request.getIndex() == index) {
-					boolean found = false;
-					String fieldStr = defn.getFieldName();
-					int formId = defn.getFormIndex();
-					
-					Source src = new Source(response.getHeaders() + response.getBody());
-					List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
-
-					if (formElements != null && formId < formElements.size()) {
-						Element form = formElements.get(formId);
-						
-						List<Element> inputElements = form.getAllElements(HTMLElementName.INPUT);
-						for (Element inputElement : inputElements) {
-							if (fieldStr.equals(inputElement.getAttributeValue("ID")) ||
-									fieldStr.equals(inputElement.getAttributeValue("NAME"))) {
-								String replaceValue = inputElement.getAttributeValue("VALUE");
-								this.output("Got replacement value " + defn.getKey() + " : " + replaceValue);
-								replacementValues.put(defn.getKey(), replaceValue);
-								found = true;
-								break;
-							}
-						}
-					}
-					if (!found) {
-						throw new ZestTransformFailException(zfrt);
-					}
-				}
-			}
+	public String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException {
+		this.output("Assign: " + assign.getClass().getName());
+		String result = assign.assign(lastResponse);
+		script.getTokens().setToken(assign.getVariableName(), result);
+		if (result != null) {
+			this.output("Assignment result: " +result);
 		}
+		return result;
 	}
 
 	private void output(String str) {
@@ -230,20 +188,10 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public ZestResponse send(ZestRequest request) throws ZestTransformFailException, IOException {
-		List<ZestTransformation> ztList = request.getTransformations();
-		for (ZestTransformation zt : ztList) {
-			this.handleTransform(request, zt);
-		}
+	public ZestResponse send(ZestRequest request) throws IOException {
 		return send(httpclient, request);
 	}
 	
-	@Override
-	public void handleTransform (ZestRequest request, ZestTransformation transform) 
-			throws ZestTransformFailException {
-		transform.transform(this, request);
-	}
-
 	@Override
 	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestActionFailException {
 		boolean passed = true;
@@ -324,8 +272,8 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public void runScript(Reader reader) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
-			IOException, ZestInvalidCommonTestException {
+	public void runScript(Reader reader) throws ZestAssertFailException, ZestActionFailException, 
+			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
 	    BufferedReader fr = new BufferedReader(reader);
 	    StringBuilder sb = new StringBuilder();
         String line;
@@ -337,8 +285,8 @@ public class ZestBasicRunner implements ZestRunner {
 	}
 
 	@Override
-	public void runScript(String  script) throws ZestTransformFailException, ZestAssertFailException, ZestActionFailException, 
-			IOException, ZestInvalidCommonTestException {
+	public void runScript(String  script) throws ZestAssertFailException, ZestActionFailException, 
+			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
 	    run ((ZestScript) ZestJSON.fromString(script));
 	}
 

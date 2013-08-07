@@ -5,7 +5,6 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.List;
 import java.util.Set;
 
 
@@ -166,20 +165,6 @@ public abstract class ZestStatement extends ZestElement {
 	 * @return the tokens
 	 */
 	abstract Set<String> getTokens(String tokenStart, String tokenEnd);
-
-	/**
-	 * Sets the up refs.
-	 *
-	 * @param script the new up refs
-	 */
-	abstract void setUpRefs(ZestScript script);
-
-	/**
-	 * Gets the transformations.
-	 *
-	 * @return the transformations
-	 */
-	public abstract List<ZestTransformation> getTransformations();
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()

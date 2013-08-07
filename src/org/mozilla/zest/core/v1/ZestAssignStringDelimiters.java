@@ -7,18 +7,13 @@ package org.mozilla.zest.core.v1;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ZestActionSetToken.
+ * The Class ZestAssignStringDelimiters allows you to assign a string to the specified variable
+ * from the last response received. The string is delimited by the strings specified.
  */
-public class ZestActionSetToken extends ZestAction {
+public class ZestAssignStringDelimiters extends ZestAssignment {
 
-	/** The token name. */
-	private String tokenName;
-	
 	/** The prefix. */
 	private String prefix;
 	
@@ -28,70 +23,45 @@ public class ZestActionSetToken extends ZestAction {
 	/** The location. */
 	private String location;
 
-	/** The Constant LOC_HEAD. */
+	/** The location constant which represents the Head of a response */
 	transient public static final String LOC_HEAD = "HEAD"; 
 	
-	/** The Constant LOC_BODY. */
+	/** The location constant which represents the Body of a response */
 	transient public static final String LOC_BODY = "BODY"; 
 
-	/** The prefix pattern. */
-	transient private Pattern prefixPattern = null;
-	
-	/** The postfix pattern. */
-	transient private Pattern postfixPattern = null;
-	
-	/** The Constant LOCATIONS. */
+	/** The set of valid locations. */
 	transient private static final Set<String> LOCATIONS = 
 			new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
 
 	/**
-	 * Instantiates a new zest action set token.
+	 * Instantiates a new zest action set variable.
 	 */
-	public ZestActionSetToken() {
+	public ZestAssignStringDelimiters() {
 		super();
 	}
 	
 	/**
-	 * Instantiates a new zest action set token.
+	 * Instantiates a new zest action set variable.
 	 *
-	 * @param tokenName the token name
+	 * @param variableName the variable name
 	 * @param location the location
 	 * @param prefix the prefix
 	 * @param postfix the postfix
 	 */
-	public ZestActionSetToken(String tokenName, String location, String prefix, String postfix) {
-		super();
-		this.tokenName = tokenName;
+	public ZestAssignStringDelimiters(String variableName, String location, String prefix, String postfix) {
+		super(variableName);
 		this.location = location;
 		this.setPrefix(prefix);
 		this.setPostfix(postfix);
 	}
 	
 	/**
-	 * Instantiates a new zest action set token.
+	 * Instantiates a new zest action set variable.
 	 *
 	 * @param index the index
 	 */
-	public ZestActionSetToken(int index) {
+	public ZestAssignStringDelimiters(int index) {
 		super(index);
-	}
-
-	/**
-	 * Gets the token name.
-	 *
-	 * @return the token name
-	 */
-	public String getTokenName() {
-		return tokenName;
-	}
-
-	/**
-	 * Sets the token name.
-	 *
-	 * @param tokenName the new token name
-	 */
-	public void setTokenName(String tokenName) {
-		this.tokenName = tokenName;
 	}
 
 	/**
@@ -110,9 +80,6 @@ public class ZestActionSetToken extends ZestAction {
 	 */
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
-		if (prefix != null) {
-			this.prefixPattern = Pattern.compile(prefix);
-		}
 	}
 
 	/**
@@ -131,9 +98,6 @@ public class ZestActionSetToken extends ZestAction {
 	 */
 	public void setPostfix(String postfix) {
 		this.postfix = postfix;
-		if (postfix != null) {
-			this.postfixPattern = Pattern.compile(postfix);
-		}
 	}
 
 	/**
@@ -161,9 +125,9 @@ public class ZestActionSetToken extends ZestAction {
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
-	public ZestActionSetToken deepCopy() {
-		ZestActionSetToken copy = new ZestActionSetToken(this.getIndex());
-		copy.tokenName = this.tokenName;
+	public ZestAssignStringDelimiters deepCopy() {
+		ZestAssignStringDelimiters copy = new ZestAssignStringDelimiters(this.getIndex());
+		copy.setVariableName(this.getVariableName());
 		copy.location = this.location;
 		copy.setPrefix(this.prefix);
 		copy.setPostfix(this.postfix);
@@ -171,21 +135,19 @@ public class ZestActionSetToken extends ZestAction {
 	}
 	
 	/**
-	 * Gets the token value.
+	 * Gets the variable value.
 	 *
 	 * @param str the str
-	 * @return the token value
+	 * @return the variable value
 	 */
-	private String getTokenValue(String str) {
-		if (str != null) {
-			Matcher prefixMatcher = this.prefixPattern.matcher(str);
-			if (prefixMatcher.find()) {
-				int tokenStart = prefixMatcher.end();
-				String str2 = str.substring(tokenStart);
-				Matcher postfixMatcher = this.postfixPattern.matcher(str2);
-				if (postfixMatcher.find()) {
-					int tokenEnd = postfixMatcher.start();
-					return str2.substring(0, tokenEnd);
+	private String getVariableValue(String str) {
+		if (str != null && prefix != null && postfix != null) {
+			int startIndex = str.indexOf(prefix);
+			if (startIndex >= 0) {
+				startIndex += prefix.length();
+				int endIndex = str.indexOf(postfix, startIndex);
+				if (endIndex >= 0) {
+					return str.substring(startIndex, endIndex);
 				}
 			}
 		}
@@ -197,34 +159,34 @@ public class ZestActionSetToken extends ZestAction {
 	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	@Override
-	public String invoke(ZestResponse response) throws ZestActionFailException {
+	public String assign(ZestResponse response) throws ZestAssignFailException {
 		if (prefix == null || prefix.length() == 0) {
-			throw new ZestActionFailException(this, "Null prefix");
+			throw new ZestAssignFailException(this, "Null prefix");
 		}
 		if (postfix == null || postfix.length() == 0) {
-			throw new ZestActionFailException(this, "Null postfix");
+			throw new ZestAssignFailException(this, "Null postfix");
 		}
 		if (response == null) {
-			throw new ZestActionFailException(this, "Null response");
+			throw new ZestAssignFailException(this, "Null response");
 		}
 		String value;
 		
 		if (LOC_HEAD.equals(this.location)) {
-			value = this.getTokenValue(response.getHeaders());
+			value = this.getVariableValue(response.getHeaders());
 		} else if (LOC_BODY.equals(this.location)) {
-			value = this.getTokenValue(response.getBody());
+			value = this.getVariableValue(response.getBody());
 		} else {
 			// Not specified - check in both (probably a v1 script)
-			value = this.getTokenValue(response.getHeaders());
+			value = this.getVariableValue(response.getHeaders());
 			if (value == null) {
-				value = this.getTokenValue(response.getBody());
+				value = this.getVariableValue(response.getBody());
 			}
 		}
 		
 		if (value != null) {
 			return value;
 		}
-		throw new ZestActionFailException(this, "Failed to find value between '" + prefix + "' and '" + postfix + "'");
+		throw new ZestAssignFailException(this, "Failed to find value between '" + prefix + "' and '" + postfix + "'");
 	}
 
 }

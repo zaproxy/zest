@@ -8,7 +8,6 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -264,28 +263,6 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 		for (ZestStatement stmt : this.statements) {
 			stmt.setPrefix(oldPrefix, newPrefix);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setUpRefs(org.mozilla.zest.core.v1.ZestScript)
-	 */
-	@Override
-	void setUpRefs(ZestScript script) {
-		for (ZestStatement stmt : this.statements) {
-			stmt.setUpRefs(script);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTransformations()
-	 */
-	@Override
-	public List<ZestTransformation> getTransformations() {
-		List<ZestTransformation> xforms = new ArrayList<ZestTransformation>();
-		for (ZestStatement stmt : this.statements) {
-			xforms.addAll(stmt.getTransformations());
-		}
-		return xforms;
 	}
 
 	/* (non-Javadoc)
