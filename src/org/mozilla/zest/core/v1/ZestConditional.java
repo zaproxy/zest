@@ -413,4 +413,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		copy.ifStatements=ifList;
 		return copy;
 	}
+	
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
 }

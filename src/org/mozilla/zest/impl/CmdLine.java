@@ -173,7 +173,6 @@ public class CmdLine {
 					return;
 				}
 			}
-			zs.getTokens().addTokens(tokens);
 			
 			if (httpAuthSite != null) {
 				List<ZestAuthentication> authList = new ArrayList<ZestAuthentication>();
@@ -181,7 +180,7 @@ public class CmdLine {
 				zs.setAuthentication(authList );
 			}
 			
-			run(zs);
+			run(zs, tokens);
 			break;
 				
 		}
@@ -192,10 +191,11 @@ public class CmdLine {
 	}
 	
 
-	private static void run(ZestScript zs) {
+	private static void run(ZestScript zs, Map<String, String> parameters) {
 		ZestBasicRunner zbr = new ZestBasicRunner();
 		zbr.setOutputWriter(new OutputStreamWriter(System.out));
 		zbr.setStopOnAssertFail(false);
+		zbr.setVariables(parameters);
 		try {
 			zbr.run(zs);
 		} catch (Exception e) {

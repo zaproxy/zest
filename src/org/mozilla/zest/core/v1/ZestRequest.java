@@ -4,8 +4,10 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -312,12 +314,19 @@ public class ZestRequest extends ZestStatement {
 	 * @param str the str
 	 * @return the string
 	 */
-	private String replaceInString (ZestVariables tokens, String str) {
+	private String replaceInString (ZestVariables tokens, String str, boolean urlEncode) {
 		if (str == null) {
 			return null;
 		}
-		for (String [] nvPair : tokens.getTokens()) {
+		for (String [] nvPair : tokens.getVariable()) {
 			String tokenStr = tokens.getTokenStart() + nvPair[0] + tokens.getTokenEnd();
+			if (urlEncode) {
+				try {
+					tokenStr = URLEncoder.encode(tokenStr, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// Ignore
+				}
+			}
 			if (str.contains(tokenStr)) {
 				str = str.replace(tokenStr, nvPair[1]);
 			}
@@ -333,16 +342,21 @@ public class ZestRequest extends ZestStatement {
 	public void replaceTokens(ZestVariables tokens) {
 		if (this.url != null) {
 			try {
-				this.setUrl(new URL(replaceInString(tokens, this.url.toString())));
+				this.setUrl(new URL(replaceInString(tokens, this.url.toString(), false)));	// TODO Work in progress
 			} catch (MalformedURLException e) {
 				// Ignore
 			}
 		} else if (this.urlToken != null) {
-			this.setUrlToken(this.replaceInString(tokens, this.urlToken));
+			this.setUrlToken(this.replaceInString(tokens, this.urlToken, false));	// TODO Work in progress
+			try {
+				this.setUrl(new URL(this.getUrlToken()));
+			} catch (MalformedURLException e) {
+				// Ignore
+			}
 		}
-		this.setMethod(this.replaceInString(tokens, this.getMethod()));
-		this.setHeaders(this.replaceInString(tokens, this.getHeaders()));
-		this.setData(this.replaceInString(tokens, this.getData()));
+		this.setMethod(this.replaceInString(tokens, this.getMethod(), false));
+		this.setHeaders(this.replaceInString(tokens, this.getHeaders(), false));
+		this.setData(this.replaceInString(tokens, this.getData(), false));
 	}
 	
 	/* (non-Javadoc)
@@ -361,7 +375,6 @@ public class ZestRequest extends ZestStatement {
 		if (this.getUrl() != null && this.getUrl().toString().startsWith(oldPrefix)) {
 			String urlStr = newPrefix + getUrl().toString().substring(oldPrefix.length());
 			this.setUrl(new URL(urlStr));
-			// TODO handle urlToken in the same way?
 		} else {
 			throw new IllegalArgumentException("Request url " + getUrl() + " does not start with " + oldPrefix);
 		}
@@ -385,15 +398,20 @@ public class ZestRequest extends ZestStatement {
 		for (String tkn : tkns) {
 			System.out.println("Main Token: " + tkn);
 		}
-		tokens.setToken("token1", "A");
-		tokens.setToken("token2", "BBB");
-		tokens.setToken("token3", "CCCCCCC");
-		tokens.setToken("token4", "DD");
-		tokens.setToken("token5", "EEEEEEEEEE");
+		tokens.setVariable("token1", "A");
+		tokens.setVariable("token2", "BBB");
+		tokens.setVariable("token3", "CCCCCCC");
+		tokens.setVariable("token4", "DD");
+		tokens.setVariable("token5", "EEEEEEEEEE");
 		
 		req.replaceTokens(tokens );
 		System.out.println("Main header: " + req.getHeaders());
 		System.out.println("Main data  : " + req.getData());
+	}
+
+	@Override
+	public boolean isPassive() {
+		return false;
 	}
 
 }

@@ -11,28 +11,32 @@ import java.util.List;
 import java.util.Set;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestScript.
  */
 public class ZestScript extends ZestStatement implements ZestContainer {
 
-	/** The Constant VERSION. */
+	/** The Zest version implemented. */
 	public static final String VERSION = "0.2";
 
-	/** The Constant ZEST_URL. */
+	/** The URL for more info. */
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
 	
-	/** The Constant ABOUT. */
+	/** A standard 'about' message to be included in all scripts. */
 	public static final String ABOUT = "This is a Zest script. For more details about Zest visit " + ZEST_URL;
 
 	/**
-	 * The Enum Type.
+	 * The type of the script:
+	 *     Active     - the script will try to actively find vulnerabilities in the request/response passed into it,
+	 *     				ie it will perform attacks 
+	 *     Passive    - the script will try to passively find vulnerabilities in the request/response passed into it,
+	 *     				ie it will not make any additional requests
+	 *     StandAlone - the script acts on a target specified in the script (which can be overriden)
+	 *     				the script will make requests
+	 *     Targeted   - the script acts on a request passed into it - it may make additional requests and may
+	 *     				changes to that request before submitting it. It may also not submit the request at all.   
 	 */
-	public enum Type {/** The Targeted. */
-Targeted, /** The Active. */
- Active, /** The Passive. */
- Passive };
+	public enum Type {Active, Passive, StandAlone, Targeted };
 
 	/** The about. */
 	private String about = ABOUT;
@@ -58,17 +62,14 @@ Targeted, /** The Active. */
 	/** The type. */
 	private String type;
 	
-	/** The tokens. */
-	private ZestVariables tokens = new ZestVariables();
+	/** The parameters. */
+	private ZestVariables parameters = new ZestVariables();
 	
 	/** The statements. */
 	private List<ZestStatement> statements = new ArrayList<ZestStatement>();
 	
 	/** The authentication. */
 	private List<ZestAuthentication> authentication = new ArrayList<ZestAuthentication>();
-	
-	/** The common tests. */
-	private List<ZestStatement> commonTests = new ArrayList<ZestStatement>();
 	
 	/**
 	 * Instantiates a new zest script.
@@ -160,7 +161,7 @@ Targeted, /** The Active. */
 		script.title = this.title;
 		script.description = this.description;
 		script.prefix = this.prefix;
-		script.tokens = this.tokens.deepCopy();
+		script.parameters = this.parameters.deepCopy();
 		script.type = this.type;
 		
 		for (ZestStatement zr : this.getStatements()) {
@@ -169,42 +170,39 @@ Targeted, /** The Active. */
 		for (ZestAuthentication za : this.getAuthentication()) {
 			script.addAuthentication((ZestAuthentication)za.deepCopy());
 		}
-		for (ZestStatement zr : this.getCommonTests()) {
-			script.addCommonTest(zr.deepCopy());
-		}
-		script.setTokens(this.getTokens().deepCopy());
+		script.setParameters(this.getParameters().deepCopy());
 	}
 
 	/**
-	 * Adds the.
+	 * Adds the statement to the end of the script.
 	 *
-	 * @param req the req
+	 * @param stmt the statement to add
 	 */
-	public void add(ZestStatement req) {
-		this.add(this.statements.size(), req);
+	public void add(ZestStatement stmt) {
+		this.add(this.statements.size(), stmt);
 	}
 	
 	/**
-	 * Adds the.
+	 * Adds the statement in the specified index in the script.
 	 *
-	 * @param index the index
-	 * @param req the req
+	 *@param index the index at which the statement will be added
+	 * @param stmt the statement to add
 	 */
-	public void add(int index, ZestStatement req) {
+	public void add(int index, ZestStatement stmt) {
 		ZestStatement prev = this;
 		if (index == this.statements.size()) {
 			// Add at the end
-			this.statements.add(req);
+			this.statements.add(stmt);
 			
 		} else {
-			this.statements.add(index, req);
+			this.statements.add(index, stmt);
 		}
 		if (index > 0) {
 			prev = this.statements.get(index-1);
 		}
 		// This will wire everything up
-		req.insertAfter(prev);
-		updateTokens(req);
+		stmt.insertAfter(prev);
+		updateTokens(stmt);
 	}
 	
 	/* (non-Javadoc)
@@ -239,89 +237,6 @@ Targeted, /** The Active. */
 	 */
 	public ZestStatement getStatement (int index) {
 		for (ZestStatement zr : this.getStatements()) {
-			if (zr.getIndex() == index) {
-				return zr;
-			}
-			if (zr instanceof ZestContainer) {
-				ZestStatement stmt = ((ZestContainer)zr).getStatement(index);
-				if (stmt != null) {
-					return stmt;
-				}
-			}
-		}
-
-		return null;
-	}
-	
-	/**
-	 * Adds the common test.
-	 *
-	 * @param req the req
-	 */
-	public void addCommonTest(ZestStatement req) {
-		this.addCommonTest(this.commonTests.size(), req);
-	}
-	
-	/**
-	 * Adds the common test.
-	 *
-	 * @param index the index
-	 * @param req the req
-	 */
-	public void addCommonTest(int index, ZestStatement req) {
-		ZestStatement prev = this;
-		if (index == this.commonTests.size()) {
-			// Add at the end
-			this.commonTests.add(req);
-			
-		} else {
-			this.commonTests.add(index, req);
-		}
-		if (index > 0) {
-			prev = this.commonTests.get(index-1);
-		}
-		// This will wire everything up
-		req.insertAfter(prev);
-	}
-	
-	/**
-	 * Move common test.
-	 *
-	 * @param index the index
-	 * @param req the req
-	 */
-	public void moveCommonTest(int index, ZestStatement req) {
-		this.removeCommonTest(req);
-		this.addCommonTest(index, req);
-	}
-	
-	/**
-	 * Removes the common test.
-	 *
-	 * @param req the req
-	 */
-	public void removeCommonTest(ZestStatement req) {
-		this.commonTests.remove(req);
-		req.remove();
-	}
-	
-	/**
-	 * Removes the common test.
-	 *
-	 * @param index the index
-	 */
-	public void removeCommonTest(int index) {
-		this.remove(this.commonTests.get(index));
-	}
-	
-	/**
-	 * Gets the common test.
-	 *
-	 * @param index the index
-	 * @return the common test
-	 */
-	public ZestStatement getCommonTest (int index) {
-		for (ZestStatement zr : this.getCommonTests()) {
 			if (zr.getIndex() == index) {
 				return zr;
 			}
@@ -427,24 +342,6 @@ Targeted, /** The Active. */
 	}
 	
 	/**
-	 * Gets the common tests.
-	 *
-	 * @return the common tests
-	 */
-	public List<ZestStatement> getCommonTests() {
-		return commonTests;
-	}
-
-	/**
-	 * Sets the common tests.
-	 *
-	 * @param statements the new common tests
-	 */
-	public void setCommonTests(List<ZestStatement> statements) {
-		this.commonTests = statements;
-	}
-	
-	/**
 	 * Gets the prefix.
 	 *
 	 * @return the prefix
@@ -476,21 +373,21 @@ Targeted, /** The Active. */
 	}
 
 	/**
-	 * Gets the tokens.
+	 * Gets the parameters.
 	 *
-	 * @return the tokens
+	 * @return the parameters
 	 */
-	public ZestVariables getTokens() {
-		return this.tokens;
+	public ZestVariables getParameters() {
+		return this.parameters;
 	}
 
 	/**
-	 * Sets the tokens.
+	 * Sets the parameters.
 	 *
-	 * @param tokens the new tokens
+	 * @param tokens the new parameters
 	 */
-	public void setTokens(ZestVariables tokens) {
-		this.tokens = tokens;
+	public void setParameters(ZestVariables parameters) {
+		this.parameters = parameters;
 	}
 
 	/**
@@ -499,10 +396,10 @@ Targeted, /** The Active. */
 	 * @param statement the statement
 	 */
 	private void updateTokens(ZestStatement statement) {
-		Set<String> allTokens = statement.getTokens(this.tokens.getTokenStart(), this.tokens.getTokenEnd());
+		Set<String> allTokens = statement.getTokens(this.parameters.getTokenStart(), this.parameters.getTokenEnd());
 		for (String str : allTokens) {
 			// Will default if not present
-			this.tokens.addToken(str);
+			this.parameters.addVariable(str);
 		}
 	}
 
@@ -623,4 +520,9 @@ Targeted, /** The Active. */
 		return null;
 	}
 	
+	@Override
+	public boolean isPassive() {
+		return Type.Passive.equals(this.getType());
+	}
+
 }

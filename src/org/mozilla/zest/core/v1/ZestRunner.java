@@ -7,6 +7,7 @@ package org.mozilla.zest.core.v1;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Map;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -111,29 +112,6 @@ public interface ZestRunner {
 			throws ZestAssertFailException, ZestActionFailException;
 	
 	/**
-	 * Handle common tests.
-	 *
-	 * @param script the script
-	 * @param request the request
-	 * @param response the response
-	 * @throws ZestActionFailException the zest action fail exception
-	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
-	 */
-	void handleCommonTests (ZestScript script, ZestRequest request, ZestResponse response) 
-			throws ZestActionFailException, ZestInvalidCommonTestException;
-	
-	/**
-	 * Run common test.
-	 *
-	 * @param stmt the stmt
-	 * @param response the response
-	 * @throws ZestActionFailException the zest action fail exception
-	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
-	 */
-	void runCommonTest(ZestStatement stmt, ZestResponse response) 
-			throws ZestActionFailException, ZestInvalidCommonTestException;
-	
-	/**
 	 * Handle action.
 	 *
 	 * @param script the script
@@ -155,14 +133,6 @@ public interface ZestRunner {
 	 */
 	String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException;
 
-	/**
-	 * Gets the replacement value.
-	 *
-	 * @param defn the defn
-	 * @return the replacement value
-	 */
-	String getReplacementValue(ZestFieldDefinition defn);
-	
 	/**
 	 * Response passed.
 	 *
@@ -242,4 +212,9 @@ public interface ZestRunner {
 	 */
 	void setOutputWriter(Writer writer);
 
+	String getVariable(String name);
+	
+	void setVariable (String name, String value);
+
+	void setVariables (Map<String, String> variables);
 }

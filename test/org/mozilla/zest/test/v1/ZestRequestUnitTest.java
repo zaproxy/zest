@@ -37,10 +37,10 @@ public class ZestRequestUnitTest {
 		ZestVariables tokens = new ZestVariables();
 		tokens.setTokenStart("{{");
 		tokens.setTokenEnd("}}");
-		tokens.addToken("token", "ABC");
-		tokens.addToken("token1", "DEFG");
-		tokens.addToken("token2", "GHI");
-		tokens.addToken("token3", "JKL");
+		tokens.addVariable("token", "ABC");
+		tokens.addVariable("token1", "DEFG");
+		tokens.addVariable("token2", "GHI");
+		tokens.addVariable("token3", "JKL");
 		req2.replaceTokens(tokens);
 		
 		assertEquals ("http://www.example.com/app/DEFG", req2.getUrl().toString());

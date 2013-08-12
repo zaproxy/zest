@@ -75,4 +75,9 @@ public class ZestActionScan extends ZestAction {
 		throw new ZestActionFailException(this);
 	}
 
+	@Override
+	public boolean isPassive() {
+		return false;
+	}
+
 }

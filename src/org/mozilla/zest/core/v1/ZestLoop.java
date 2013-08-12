@@ -321,4 +321,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 		}
 		return statements;
 	}
+	
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
+
 }

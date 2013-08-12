@@ -164,12 +164,15 @@ public abstract class ZestStatement extends ZestElement {
 	 * @param tokenEnd the token end
 	 * @return the tokens
 	 */
+	// TODO remove
 	abstract Set<String> getTokens(String tokenStart, String tokenEnd);
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	public abstract ZestStatement deepCopy();
+	
+	public abstract boolean isPassive();
 
 	/* Useful when debuging ;)
 	public String toString () {

@@ -40,7 +40,7 @@ public class ZestVariables extends ZestElement {
 		zt.setTokenStart(this.tokenStart);
 		zt.setTokenEnd(this.tokenEnd);
 		for (Entry<String, String> entry : tokens.entrySet()) {
-			zt.setToken(entry.getKey(), entry.getValue());
+			zt.setVariable(entry.getKey(), entry.getValue());
 		}
 		return zt;
 	}
@@ -87,7 +87,7 @@ public class ZestVariables extends ZestElement {
 	 * @param name the name
 	 * @return the token
 	 */
-	public String getToken(String name) {
+	public String getVariable(String name) {
 		return tokens.get(name);
 	}
 
@@ -96,7 +96,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @param tokens the tokens
 	 */
-	public void setTokens(Map<String, String> tokens) {
+	public void setVariable(Map<String, String> tokens) {
 		this.tokens = tokens;
 	}
 	
@@ -105,7 +105,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @return the tokens
 	 */
-	public List<String[]> getTokens() {
+	public List<String[]> getVariable() {
 		List<String[]> list = new ArrayList<String[]>();
 		for (Entry<String, String> entry : tokens.entrySet()) {
 			list.add(new String[] {entry.getKey(), entry.getValue()});
@@ -119,7 +119,7 @@ public class ZestVariables extends ZestElement {
 	 * @param name the name
 	 * @param value the value
 	 */
-	public void addToken(String name, String value) {
+	public void addVariable(String name, String value) {
 		if (this.tokens.get(name) == null) {
 			if (value != null) {
 				this.tokens.put(name, value);
@@ -135,7 +135,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @param name the name
 	 */
-	public void addToken(String name) {
+	public void addVariable(String name) {
 		if (this.tokens.get(name) == null) {
 			// Dont know of it. so add it with a default of the same name
 			this.tokens.put(name, name);
@@ -147,7 +147,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @param tokens the tokens
 	 */
-	public void addTokens(Map<String, String> tokens) {
+	public void addVariable(Map<String, String> tokens) {
 		this.tokens.putAll(tokens);
 	}
 	
@@ -158,7 +158,7 @@ public class ZestVariables extends ZestElement {
 	 * @param name the name
 	 * @param value the value
 	 */
-	public void setToken(String name, String value) {
+	public void setVariable(String name, String value) {
 		this.tokens.put(name, value);
 	}
 
