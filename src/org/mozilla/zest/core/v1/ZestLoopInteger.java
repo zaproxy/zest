@@ -15,7 +15,12 @@ import java.util.List;
  * This class represent a loop through a set of integers.
  */
 public class ZestLoopInteger extends ZestLoop<Integer> {
-	
+	public ZestLoopInteger(){
+		this(0,0);
+	}
+	public ZestLoopInteger(List<ZestStatement> stmts){
+		this(0,0,stmts);
+	}
 	/**
 	 * main construptor (empty).
 	 *
@@ -63,6 +68,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param end the end
 	 */
 	public ZestLoopInteger(int start, int end){
+		this(start, end, new LinkedList<ZestStatement>());
 	}
 	@Override
 	public ZestLoopStateInteger getCurrentState(){
