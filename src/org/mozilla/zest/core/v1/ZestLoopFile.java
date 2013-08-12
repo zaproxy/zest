@@ -9,6 +9,7 @@ package org.mozilla.zest.core.v1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 // TODO: Auto-generated Javadoc
@@ -17,7 +18,12 @@ import java.util.List;
  * This class represent a loop through a list of strings given in input through a file.
  */
 public class ZestLoopFile extends ZestLoop<String>{
-	
+	public ZestLoopFile() throws FileNotFoundException, IOException{
+		this(File.createTempFile("emptyfile", ".txt"));
+	}
+	public ZestLoopFile(List<ZestStatement> stmts) throws FileNotFoundException, IOException{
+		this(File.createTempFile("emptyfile", ".txt"), stmts);
+	}
 	private ZestLoopFile(int index){
 		super(index);
 	}

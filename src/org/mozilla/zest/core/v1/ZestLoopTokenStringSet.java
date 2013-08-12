@@ -65,7 +65,12 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 	 */
 	@Override
 	public String getToken(int index) {
-		return tokens.get(index);
+		if(tokens==null || tokens.isEmpty()){
+			return null;
+		}
+		else{
+			return tokens.get(index);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +94,12 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 	 */
 	@Override
 	public String getLastToken() {
-		return this.tokens.get(tokens.size()-1);
+		if(tokens==null || tokens.isEmpty()){
+			return null;
+		}
+		else{
+			return this.tokens.get(tokens.size()-1);
+		}
 	}
 
 	/* (non-Javadoc)

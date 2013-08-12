@@ -19,8 +19,12 @@ public class ZestLoopString extends ZestLoop<String> {
 	/**
 	 * Instantiates a new zest loop string.
 	 */
-	protected ZestLoopString(){
-		super();
+	public ZestLoopString(){
+		this(new String[]{""});
+	}
+	
+	public ZestLoopString(List<ZestStatement> stmts){
+		this(new String[]{""}, stmts);
 	}
 	
 	/**
