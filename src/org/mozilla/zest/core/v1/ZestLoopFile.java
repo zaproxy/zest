@@ -21,6 +21,9 @@ public class ZestLoopFile extends ZestLoop<String>{
 	public ZestLoopFile() throws FileNotFoundException, IOException{
 		this(File.createTempFile("emptyfile", ".txt"));
 	}
+	public ZestLoopFile(List<ZestStatement> stmts) throws FileNotFoundException, IOException{
+		this(File.createTempFile("emptyfile", ".txt"), stmts);
+	}
 	private ZestLoopFile(int index){
 		super(index);
 	}

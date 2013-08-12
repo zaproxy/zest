@@ -23,6 +23,10 @@ public class ZestLoopString extends ZestLoop<String> {
 		this(new String[]{""});
 	}
 	
+	public ZestLoopString(List<ZestStatement> stmts){
+		this(new String[]{""}, stmts);
+	}
+	
 	/**
 	 * Instantiates a new zest loop string.
 	 *

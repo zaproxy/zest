@@ -18,6 +18,9 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public ZestLoopInteger(){
 		this(0,0);
 	}
+	public ZestLoopInteger(List<ZestStatement> stmts){
+		this(0,0,stmts);
+	}
 	/**
 	 * main construptor (empty).
 	 *
