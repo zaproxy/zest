@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestConditional;
+import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoopStateString;
 import org.mozilla.zest.core.v1.ZestLoopString;
 import org.mozilla.zest.core.v1.ZestStatement;
@@ -120,4 +121,21 @@ public class ZestLoopStringUnitTest {
 					+ valuesObtained[i], valuesObtained[i].equals(values[i]));
 		}
 	}
+
+	@Test
+	public void testSerialization() {
+		ZestLoopString loop = new ZestLoopString(values);
+		String str = ZestJSON.toString(loop);
+		System.out.println(str);
+		
+		ZestLoopString loop2 = (ZestLoopString) ZestJSON.fromString(str);
+		if (loop2.getValues().length != values.length) {
+			fail("The two arrays do not have same length!");
+		}
+		for (int i = 0; i < values.length; i++) {
+			assertTrue(i + " expected " + values[i] + " instead of "
+					+ loop2.getValues()[i], loop2.getValues()[i].equals(values[i]));
+		}
+	}
+
 }

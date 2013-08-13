@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
+import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
 
 
@@ -47,19 +48,19 @@ public class ZestAssignStringDelimitersUnitTest {
 	@Test
 	public void testRegexes() throws Exception {
 		ZestAssignStringDelimiters ast = new ZestAssignStringDelimiters();
-		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
+		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfixZ", "Body Prefix54321PostfixZ", 200, 0);
 
 		ast.setVariableName("aaa");
-		ast.setPrefix("^");
-		ast.setPostfix("$");
+		ast.setPrefix("H");
+		ast.setPostfix("Z");
 		ast.setLocation(ZestAssignStringDelimiters.LOC_HEAD);
-		assertEquals ("Header prefix12345postfix", ast.assign(resp));
+		assertEquals ("eader prefix12345postfix", ast.assign(resp));
 
 		ast.setVariableName("aaa");
-		ast.setPrefix("^");
-		ast.setPostfix("$");
+		ast.setPrefix("B");
+		ast.setPostfix("Z");
 		ast.setLocation(ZestAssignStringDelimiters.LOC_BODY);
-		assertEquals ("Body Prefix54321Postfix", ast.assign(resp));
+		assertEquals ("ody Prefix54321Postfix", ast.assign(resp));
 	}
 
 	/**
@@ -111,6 +112,21 @@ public class ZestAssignStringDelimitersUnitTest {
 			// Expected
 		}
 		
+	}
+
+	@Test
+	public void testSerialization() {
+		ZestAssignStringDelimiters assign = new ZestAssignStringDelimiters("var", "BODY", ">>", "<<");
+		
+		String str = ZestJSON.toString(assign);
+		System.out.println(str);
+		
+		ZestAssignStringDelimiters assign2 = (ZestAssignStringDelimiters) ZestJSON.fromString(str);
+		
+		assertEquals(assign.getElementType(), assign2.getElementType());
+		assertEquals(assign.getLocation(), assign2.getLocation());
+		assertEquals(assign.getPrefix(), assign2.getPrefix());
+		assertEquals(assign.getPostfix(), assign2.getPostfix());
 	}
 
 }
