@@ -10,10 +10,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -41,9 +37,6 @@ public class ZestRequest extends ZestStatement {
 	
 	/** The assertions. */
 	private List<ZestAssertion> assertions = new ArrayList<ZestAssertion>();
-	
-	/** The referers. */
-	private transient List<ZestRequestRef> referers = new ArrayList<ZestRequestRef>();
 	
 	/**
 	 * Instantiates a new zest request.
@@ -226,24 +219,6 @@ public class ZestRequest extends ZestStatement {
 	}
 	
 	/**
-	 * Adds the referer.
-	 *
-	 * @param ref the ref
-	 */
-	protected void addReferer(ZestRequestRef ref) {
-		this.referers.add(ref);
-	}
-	
-	/**
-	 * Removes the referer.
-	 *
-	 * @param ref the ref
-	 */
-	protected void removeReferer(ZestRequestRef ref) {
-		this.referers.remove(ref);
-	}
-
-	/**
 	 * Move up.
 	 *
 	 * @param ze the ze
@@ -281,32 +256,6 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public Set<String> getTokens(String tokenStart, String tokenEnd) {
-		Set<String> tokens = new TreeSet<String>();
-		// Note the .*? matches as little as possible
-		Pattern p = Pattern.compile(Pattern.quote(tokenStart) + ".*?" + Pattern.quote(tokenEnd));
-		String token;
-		if (this.getHeaders() != null) {
-			Matcher matcher = p.matcher(this.getHeaders());
-			while (matcher.find()) {
-				token = matcher.group();
-				tokens.add(token.substring(tokenStart.length(), token.length() - tokenEnd.length()));
-			}
-		}
-		if (this.getData() != null) {
-			Matcher matcher = p.matcher(this.getData());
-			while (matcher.find()) {
-				token = matcher.group();
-				tokens.add(token.substring(tokenStart.length(), token.length() - tokenEnd.length()));
-			}
-		}
-		return tokens;
-	}
-	
 	/**
 	 * Replace in string.
 	 *
@@ -378,35 +327,6 @@ public class ZestRequest extends ZestStatement {
 		} else {
 			throw new IllegalArgumentException("Request url " + getUrl() + " does not start with " + oldPrefix);
 		}
-	}
-
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 * @throws Exception the exception
-	 */
-	public static void main(String[] args) throws Exception {
-		ZestRequest req = new ZestRequest();
-		req.setHeaders("Testing tokens {{token1}} and {{token2}}");
-		req.setData("Testing tokens {{token3}} and {{token4}}");
-		
-		
-		ZestVariables tokens = new ZestVariables();
-
-		Set<String> tkns = req.getTokens(tokens.getTokenStart(), tokens.getTokenEnd());
-		for (String tkn : tkns) {
-			System.out.println("Main Token: " + tkn);
-		}
-		tokens.setVariable("token1", "A");
-		tokens.setVariable("token2", "BBB");
-		tokens.setVariable("token3", "CCCCCCC");
-		tokens.setVariable("token4", "DD");
-		tokens.setVariable("token5", "EEEEEEEEEE");
-		
-		req.replaceTokens(tokens );
-		System.out.println("Main header: " + req.getHeaders());
-		System.out.println("Main data  : " + req.getData());
 	}
 
 	@Override

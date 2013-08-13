@@ -48,7 +48,11 @@ public class ZestExpressionURL extends ZestExpression {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
-	public boolean isTrue(ZestResponse response) {
+	public boolean isTrue(ZestRuntime runtime) {
+		ZestResponse response = runtime.getLastResponse();
+		if (response == null) {
+			return false;
+		}
 		String url = response.getUrl().toString();
 		boolean inc = false;
 

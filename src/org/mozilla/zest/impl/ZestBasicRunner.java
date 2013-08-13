@@ -41,11 +41,12 @@ import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
+import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestVariables;
 
-public class ZestBasicRunner implements ZestRunner {
+public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	private HttpClient httpclient = new HttpClient();
 	private boolean stopOnAssertFail = true;
@@ -53,6 +54,7 @@ public class ZestBasicRunner implements ZestRunner {
 	private Writer outputWriter = null;
 	
 	private ZestVariables variables;
+	private ZestResponse lastResponse = null;
 
 	@Override
 	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
@@ -100,11 +102,13 @@ public class ZestBasicRunner implements ZestRunner {
 			}
 		}
 		
-		ZestResponse lastResponse = null;
 		if (target != null) {
 			// used in passive trests
 			lastResponse = target.getResponse();
+		} else {
+			lastResponse = null;
 		}
+		
 		for (ZestStatement stmt : script.getStatements()) {
 			lastResponse = this.runStatement(script, stmt, lastResponse);
 		}
@@ -113,7 +117,7 @@ public class ZestBasicRunner implements ZestRunner {
 	
 
 	@Override
-	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
+	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastRes) 
 			throws ZestAssertFailException, ZestActionFailException,  
 			ZestInvalidCommonTestException, IOException, ZestAssignFailException {
 		
@@ -126,14 +130,17 @@ public class ZestBasicRunner implements ZestRunner {
 			req2.replaceTokens(this.variables);
 			// TODO cope with more than one level of nested tokens
 			req2.replaceTokens(this.variables);
-			ZestResponse resp = send(req2);
-			handleResponse (req2, resp);
-			return resp;
+			this.lastResponse = send(req2);
+			
+			this.variables.setStandardVariables(req2);
+			this.variables.setStandardVariables(this.lastResponse);
+
+			handleResponse (req2, this.lastResponse);
+			return this.lastResponse;
 			
 		} else if (stmt instanceof ZestConditional) {
 			ZestConditional zc = (ZestConditional) stmt;
-			
-			if (zc.isTrue(lastResponse)) {
+			if (zc.isTrue(this)) {
 				this.output("Conditional TRUE: " + zc.getClass().getName());
 				for (ZestStatement ifStmt : zc.getIfStatements()) {
 					lastResponse = this.runStatement(script, ifStmt, lastResponse);
@@ -151,9 +158,8 @@ public class ZestBasicRunner implements ZestRunner {
 		}
 		else if (stmt instanceof ZestLoop){
 			ZestLoop<?> loop=(ZestLoop<?>) stmt;
-			ZestResponse tmpResponse=lastResponse;
 			while(loop.hasMoreElements()){
-				tmpResponse=this.runStatement(script, loop.nextElement(), tmpResponse);
+				lastResponse = this.runStatement(script, loop.nextElement(), lastResponse);
 			}
 		}
 		return lastResponse;
@@ -201,7 +207,7 @@ public class ZestBasicRunner implements ZestRunner {
 	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestActionFailException {
 		boolean passed = true;
 		for (ZestAssertion za : request.getAssertions()) {
-			if (za.isValid(response)) {
+			if (za.isValid(this)) {
 				this.responsePassed(request, response, za);
 			} else {
 				passed = false;
@@ -383,6 +389,11 @@ public class ZestBasicRunner implements ZestRunner {
 
 	public void setHttpClient(HttpClient httpclient) {
 		this.httpclient = httpclient;
+	}
+
+	@Override
+	public ZestResponse getLastResponse() {
+		return lastResponse;
 	}
 
 }

@@ -5,7 +5,6 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.Set;
 
 
 // TODO: Auto-generated Javadoc
@@ -156,16 +155,6 @@ public abstract class ZestStatement extends ZestElement {
 	 * @throws MalformedURLException the malformed url exception
 	 */
 	abstract void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException;
-
-	/**
-	 * Gets the tokens.
-	 *
-	 * @param tokenStart the token start
-	 * @param tokenEnd the token end
-	 * @return the tokens
-	 */
-	// TODO remove
-	abstract Set<String> getTokens(String tokenStart, String tokenEnd);
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()

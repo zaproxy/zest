@@ -5,17 +5,20 @@
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mozilla.zest.core.v1.ZestAssignFieldValue;
+import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestFieldDefinition;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
-import org.mozilla.zest.core.v1.ZestAssignFieldValue;
+import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
@@ -131,7 +134,7 @@ public class ZestScriptUnitTest {
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, null});
 		zc2.addIf(req2);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, null});
-		xfrm1.setFieldDefinition(new ZestFieldDefinition(req1, 1, "xxx"));
+		xfrm1.setFieldDefinition(new ZestFieldDefinition(1, "xxx"));
 		//assertEquals(req1.getIndex(), xfrm1.getRequestId());
 		//req2.addTransformation(xfrm1);
 
@@ -146,7 +149,7 @@ public class ZestScriptUnitTest {
 		zc2.addElse(zc4);
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, null});
 		zc4.addElse(req6);
-		xfrm2.setFieldDefinition(new ZestFieldDefinition(req4, 1, "xxx"));
+		xfrm2.setFieldDefinition(new ZestFieldDefinition(1, "xxx"));
 		//req6.addTransformation(xfrm2);
 		//assertEquals(req4.getIndex(), xfrm2.getRequestId());
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, zc3, req4, req5, zc4, req6, null});
@@ -239,6 +242,36 @@ public class ZestScriptUnitTest {
 				assertEquals(stmts[i].getNext(), stmts[i+1]);
 			}
 		}
+	}
+
+	/**
+	 * Method testSimpleIndexing.
+	 * @throws Exception
+	 */
+	@Test
+	public void testVariableNames() throws Exception {
+		ZestScript script = new ZestScript();
+		// Check the default ones
+		assertEquals(6, script.getVariableNames().size());
+		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_HEADER));
+		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_BODY));
+		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_URL));
+		assertTrue(script.getVariableNames().contains(ZestVariables.RESPONSE_HEADER));
+		assertTrue(script.getVariableNames().contains(ZestVariables.RESPONSE_BODY));
+		assertTrue(script.getVariableNames().contains(ZestVariables.RESPONSE_URL));
+		
+		script.add(new ZestRequest());
+		script.add(new ZestAssignStringDelimiters("test.var.1", ZestAssignStringDelimiters.LOC_HEAD, "AA", "BB"));
+		assertEquals(7, script.getVariableNames().size());
+		assertTrue(script.getVariableNames().contains("test.var.1"));
+		
+		ZestConditional c1 = new ZestConditional();
+		c1.addIf(new ZestAssignStringDelimiters("test.var.2", ZestAssignStringDelimiters.LOC_HEAD, "AA", "BB"));
+		script.add(c1);
+		assertEquals(8, script.getVariableNames().size());
+		assertTrue(script.getVariableNames().contains("test.var.2"));
+		
+		// TODO check more containers
 	}
 
 }

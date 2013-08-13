@@ -56,11 +56,11 @@ public class ZestAssertion extends ZestElement{
 	 * @param response the response
 	 * @return true, if is valid
 	 */
-	public boolean isValid (ZestResponse response) {
+	public boolean isValid (ZestRuntime runtime) {
 		if(rootExpression==null){
 			return false;//no condition to check!
 		}
-		return rootExpression.evaluate(response);
+		return rootExpression.evaluate(runtime);
 	}
 
 	/* (non-Javadoc)

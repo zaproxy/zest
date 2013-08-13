@@ -65,7 +65,7 @@ public class ZestExpressionURLUnitTest {
 		try {
 			ZestResponse response = new ZestResponse(new URL(
 					"http://www.PING1.com"), "", "", 200, 10);
-			assertTrue(urlExpr.isTrue(response));
+			assertTrue(urlExpr.isTrue(new TestRuntime(response)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +79,7 @@ public class ZestExpressionURLUnitTest {
 		try {
 			ZestResponse response = new ZestResponse(new URL(
 					"http://www.PONG1.com"), "", "", 200, 10);
-			assertFalse(urlExpr.isTrue(response));
+			assertFalse(urlExpr.isTrue(new TestRuntime(response)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -93,7 +93,7 @@ public class ZestExpressionURLUnitTest {
 		try {
 			ZestResponse response = new ZestResponse(new URL(
 					"http://www.asdf.com"), "", "", 200, 10);
-			assertFalse(urlExpr.isTrue(response));
+			assertFalse(urlExpr.isTrue(new TestRuntime(response)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -176,11 +176,10 @@ public class ZestExpressionURLUnitTest {
 					"http://www.PONG19874.com"), "", "", 200, 100);
 			ZestExpressionURL urlExpr = new ZestExpressionURL(includeStrings,
 					excludeStrings);
-			assertFalse(urlExpr.isTrue(response));
+			assertFalse(urlExpr.isTrue(new TestRuntime(response)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 
 	}
-
 }

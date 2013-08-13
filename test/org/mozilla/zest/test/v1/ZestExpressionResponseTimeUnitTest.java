@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestResponse;
+import org.mozilla.zest.core.v1.ZestRuntime;
 /**
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -47,14 +48,14 @@ public class ZestExpressionResponseTimeUnitTest {
 		ZestExpressionResponseTime timeExpr=new ZestExpressionResponseTime(1000);
 		timeExpr.setGreaterThan(false);
 		ZestResponse response=new ZestResponse(null, "", "", 100, 10);
-		assertTrue(timeExpr.evaluate(response));
+		assertTrue(timeExpr.evaluate(new TestRuntime(response)));
 	}
 	@Test
 	public void testIsTrueGreaterThan(){
 		ZestExpressionResponseTime timeExpr=new ZestExpressionResponseTime(0);
 		timeExpr.setGreaterThan(true);
 		ZestResponse response=new ZestResponse(null, "", "", 200, 100);
-		assertTrue(timeExpr.isTrue(response));
+		assertTrue(timeExpr.isTrue(new TestRuntime(response)));
 	}
 	
 	@Test
@@ -63,7 +64,7 @@ public class ZestExpressionResponseTimeUnitTest {
 		ZestResponse response=new ZestResponse(null, "", "", 200, 1000);
 		timeExpTime.setInverse(true);
 		timeExpTime.setGreaterThan(true);
-		assertTrue(timeExpTime.evaluate(response));
+		assertTrue(timeExpTime.evaluate(new TestRuntime(response)));
 	}
 	@Test
 	public void testDeepCopyNoPointer(){
@@ -76,7 +77,7 @@ public class ZestExpressionResponseTimeUnitTest {
 		ZestExpressionResponseTime timeExpr=new ZestExpressionResponseTime(1000);
 		ZestExpressionResponseTime copy=timeExpr.deepCopy();
 		timeExpr.setGreaterThan(false);
-		ZestResponse  response=new ZestResponse(null, "", "", 100, 10);
-		assertTrue(timeExpr.isTrue(response) && ! copy.isTrue(response));
+		ZestRuntime runtime = new TestRuntime(new ZestResponse(null, "", "", 100, 10));
+		assertTrue(timeExpr.isTrue(runtime) && ! copy.isTrue(runtime));
 	}
 }

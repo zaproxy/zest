@@ -14,6 +14,13 @@ import java.util.Map.Entry;
  * The Class ZestTokens.
  */
 public class ZestVariables extends ZestElement {
+	
+	public static final String REQUEST_URL 		= "request.url";
+	public static final String REQUEST_HEADER 	= "request.header";
+	public static final String REQUEST_BODY 	= "request.body";
+	public static final String RESPONSE_URL 	= "response.url";
+	public static final String RESPONSE_HEADER 	= "response.header";
+	public static final String RESPONSE_BODY 	= "response.body";
 
 	/** The token start. */
 	private String tokenStart = "{{";
@@ -160,6 +167,26 @@ public class ZestVariables extends ZestElement {
 	 */
 	public void setVariable(String name, String value) {
 		this.tokens.put(name, value);
+	}
+	
+	public void setStandardVariables(ZestRequest request) {
+		if (request != null) {
+			if (request.getUrl()!= null) {
+				this.setVariable(REQUEST_URL, request.getUrl().toString());
+			}
+			this.setVariable(REQUEST_HEADER, request.getHeaders());
+			this.setVariable(REQUEST_BODY, request.getData());
+		}
+	}
+
+	public void setStandardVariables(ZestResponse response) {
+		if (response != null) {
+			if (response.getUrl() != null) {
+				this.setVariable(RESPONSE_URL, response.getUrl().toString());
+			}
+			this.setVariable(RESPONSE_HEADER, response.getHeaders());
+			this.setVariable(RESPONSE_BODY, response.getBody());
+		}
 	}
 
 }

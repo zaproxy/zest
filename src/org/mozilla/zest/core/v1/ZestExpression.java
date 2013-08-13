@@ -46,8 +46,8 @@ public abstract class ZestExpression extends ZestElement implements
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#evaluate(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	@Override
-	public boolean evaluate(ZestResponse response) {
-		boolean toReturn = isTrue(response);
+	public boolean evaluate(ZestRuntime runtime) {
+		boolean toReturn = isTrue(runtime);
 		return isInverse() ? !toReturn : toReturn;
 	}
 

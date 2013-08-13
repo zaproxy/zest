@@ -4,31 +4,29 @@
 
 package org.mozilla.zest.core.v1;
 
-import java.util.regex.Pattern;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionRegex.
  */
-public class ZestExpressionRegex extends ZestExpression{
+public class ZestExpressionEquals extends ZestExpression{
 	
-	/** The regex. */
-	private String regex;
+	/** The value to compare with. */
+	private String value;
 	
-	/** The variableName. */
+	/** The variableName which will be assigned to. */
 	private String variableName;
 	
-	/** The inverse. */
-	private boolean inverse=false;
+	private boolean caseExact = false;
 	
-	/** The pattern. */
-	private transient Pattern pattern = null;
-
+	/** The inverse. */
+	private boolean inverse = false;
+	
 	/**
 	 * Instantiates a new zest expression regex.
 	 */
-	public ZestExpressionRegex(){
-		this("", null, false);
+	public ZestExpressionEquals(){
+		this("", null, false, false);
 	}
 	
 	/**
@@ -37,8 +35,8 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @param variableName the variableName
 	 * @param regex the regex
 	 */
-	public ZestExpressionRegex(String variableName, String regex) {
-		this(variableName, regex, false);
+	public ZestExpressionEquals(String variableName, String regex) {
+		this(variableName, regex, false, false);
 	}
 	
 	/**
@@ -48,14 +46,12 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @param regex the regex
 	 * @param inverse the inverse
 	 */
-	public ZestExpressionRegex(String variableName, String regex, boolean inverse) {
+	public ZestExpressionEquals(String variableName, String value, boolean caseExact, boolean inverse) {
 		super ();
 		this.inverse=inverse;
 		this.variableName = variableName;
-		this.regex = regex;
-		if (regex != null) {
-			this.pattern = Pattern.compile(regex);
-		}
+		this.value = value;
+		this.caseExact = caseExact;
 	}
 	
 	/* (non-Javadoc)
@@ -70,11 +66,12 @@ public class ZestExpressionRegex extends ZestExpression{
 		if (str == null) {
 			return false;
 		}
-		if (pattern == null && regex != null) {
-			this.pattern = Pattern.compile(regex);
-		}
 		
-		return pattern.matcher(str).find();
+		if (this.caseExact) {
+			return str.equals(value);
+		} else {
+			return str.equalsIgnoreCase(value);
+		}
 	}
 
 	public String getVariableName() {
@@ -85,23 +82,21 @@ public class ZestExpressionRegex extends ZestExpression{
 		this.variableName = variableName;
 	}
 
-	/**
-	 * Gets the regex.
-	 *
-	 * @return the regex
-	 */
-	public String getRegex() {
-		return regex;
+
+	public String getValue() {
+		return value;
 	}
 
-	/**
-	 * Sets the regex.
-	 *
-	 * @param regex the new regex
-	 */
-	public void setRegex(String regex) {
-		this.regex = regex;
-		this.pattern = Pattern.compile(regex);
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public boolean isCaseExact() {
+		return caseExact;
+	}
+
+	public void setCaseExact(boolean caseExact) {
+		this.caseExact = caseExact;
 	}
 
 	/* (non-Javadoc)
@@ -133,8 +128,8 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
-	public ZestExpressionRegex deepCopy() {
-		return new ZestExpressionRegex(this.getVariableName(), this.getRegex(), this.isInverse());
+	public ZestExpressionEquals deepCopy() {
+		return new ZestExpressionEquals(this.getVariableName(), this.getValue(), this.isCaseExact(), this.isInverse());
 	}
 	
 }

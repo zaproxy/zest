@@ -36,10 +36,10 @@ public class TestPrint {
 		System.out.println("ZestComplexExpression");
 		System.out.println("---------------------");
 		ZestExpressionOr or=new ZestExpressionOr();
-		or.addChildCondition(new ZestExpressionLength(10, 20));
+		or.addChildCondition(new ZestExpressionLength("response.body", 10, 20));
 		or.addChildCondition(new ZestExpressionStatusCode(200));
 		ZestExpressionAnd and=new ZestExpressionAnd();
-		and.addChildCondition(new ZestExpressionLength(100,200));
+		and.addChildCondition(new ZestExpressionLength("response.body", 100,200));
 		and.addChildCondition(new ZestExpressionResponseTime(1000));
 		and.addChildCondition(or);
 		and.addChildCondition(and.deepCopy());

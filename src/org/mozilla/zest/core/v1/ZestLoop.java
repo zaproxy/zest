@@ -246,10 +246,16 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Set<String> getTokens(String tokenStart, String tokenEnd) {
+	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
+		
 		for (ZestStatement stmt : this.statements) {
-			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
+			if (stmt instanceof ZestContainer) {
+				tokens.addAll(((ZestContainer)stmt).getVariableNames());
+				
+			} else if (stmt instanceof ZestAssignment) {
+				tokens.add(((ZestAssignment)stmt).getVariableName());
+			}
 		}
 		return tokens;
 	}

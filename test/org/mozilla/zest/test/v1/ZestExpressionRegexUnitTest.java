@@ -9,27 +9,25 @@ package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestResponse;
+import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
 public class ZestExpressionRegexUnitTest {
-	public static final String BODY = "BODY";
-	public static final String HEADER = "HEAD";
 
 	@Test
 	public void testIsLeaf() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "");
 		assertTrue(regex.isLeaf());
 	}
 
 	@Test
 	public void testIsInverse() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.REQUEST_HEADER, "");
 		ZestExpressionRegex copy = regex.deepCopy();
 		copy.setInverse(true);
 		regex.setInverse(false);
@@ -38,28 +36,28 @@ public class ZestExpressionRegexUnitTest {
 
 	@Test
 	public void testSetInverse() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "", false);
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "", false);
 		regex.setInverse(true);
 		assertTrue(regex.isInverse());
 	}
 
 	@Test
 	public void testDeepCopySameLocation() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "PING");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
 		ZestExpressionRegex copy = regex.deepCopy();
-		assertTrue(regex.getLocation().equals(copy.getLocation()));
+		assertTrue(regex.getVariableName().equals(copy.getVariableName()));
 	}
 
 	@Test
 	public void testDeepCopySameRegex() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "PING");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "PING");
 		ZestExpressionRegex copy = regex.deepCopy();
 		assertTrue(regex.getRegex().equals(copy.getRegex()));
 	}
 
 	@Test
 	public void testDeepCopySameNoPointersRegex() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "PING");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
 		ZestExpressionRegex copy = regex.deepCopy();
 		copy.setRegex("PONG");
 		assertFalse(regex.getRegex().equals(copy.getRegex()));
@@ -67,46 +65,39 @@ public class ZestExpressionRegexUnitTest {
 
 	@Test
 	public void testDeepCopySameNoPointersLocation() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "PING");
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
 		ZestExpressionRegex copy = regex.deepCopy();
-		copy.setLocation(BODY);
-		assertFalse(regex.getLocation().equals(copy.getLocation()));
+		copy.setVariableName(ZestVariables.RESPONSE_BODY);
+		assertFalse(regex.getVariableName().equals(copy.getVariableName()));
 	}
 
 	@Test
 	public void testIsTrueHeader() {
 		ZestResponse response = new ZestResponse(null, "123456header654321",
 				"987654body456789", 200, 100);
-		ZestExpressionRegex regexExpr = new ZestExpressionRegex(HEADER, "head");
-		assertTrue(regexExpr.isTrue(response));
+		ZestExpressionRegex regexExpr = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "head");
+		assertTrue(regexExpr.isTrue(new TestRuntime(response)));
 	}
 
 	@Test
 	public void testIsTrueBody() {
 		ZestResponse response = new ZestResponse(null, "123456header654321",
 				"987654body456789", 200, 100);
-		ZestExpressionRegex regexExpr = new ZestExpressionRegex(BODY, "body");
-		assertTrue(regexExpr.isTrue(response));
+		ZestExpressionRegex regexExpr = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "body");
+		assertTrue(regexExpr.isTrue(new TestRuntime(response)));
 	}
 
 	@Test
 	public void testIsTrueNullBody() {
 		ZestResponse response = new ZestResponse(null, null, null, 0, 0);
-		ZestExpressionRegex regexExpr = new ZestExpressionRegex(BODY, "");
-		assertFalse(regexExpr.isTrue(response));
+		ZestExpressionRegex regexExpr = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "");
+		assertFalse(regexExpr.isTrue(new TestRuntime(response)));
 	}
 
 	@Test
 	public void testIsTrueNullHeader() {
 		ZestResponse response = new ZestResponse(null, null, null, 0, 0);
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
-		assertFalse(regex.isTrue(response));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalArgumentExceptionWrongParams() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(HEADER, "");
-		regex.setLocation("My home");
-		fail();
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "");
+		assertFalse(regex.isTrue(new TestRuntime(response)));
 	}
 }

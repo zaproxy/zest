@@ -8,11 +8,8 @@ package org.mozilla.zest.core.v1;
 /**
  * The Class ZestFieldDefinition.
  */
-public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
+public class ZestFieldDefinition extends ZestElement {
 
-	/** The request id. */
-	private int requestId;
-	
 	/** The form index. */
 	private int formIndex;
 	
@@ -23,7 +20,7 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	private String fieldName;
 	
 	/** The request. */
-	private transient ZestRequest request = null;
+	//private transient ZestRequest request = null;
 
 	/**
 	 * Instantiates a new zest field definition.
@@ -35,13 +32,11 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	/**
 	 * Instantiates a new zest field definition.
 	 *
-	 * @param request the request
 	 * @param formIndex the form index
 	 * @param fieldName the field name
 	 */
-	public ZestFieldDefinition(ZestRequest request, int formIndex, String fieldName) {
+	public ZestFieldDefinition(int formIndex, String fieldName) {
 		super();
-		this.setRequest(request);
 		this.formIndex = formIndex;
 		this.fieldName = fieldName;
 	}
@@ -49,27 +44,11 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	/**
 	 * Instantiates a new zest field definition.
 	 *
-	 * @param request the request
 	 * @param formName the form name
 	 * @param fieldName the field name
 	 */
-	public ZestFieldDefinition(ZestRequest request, String formName, String fieldName) {
+	public ZestFieldDefinition(String formName, String fieldName) {
 		super();
-		this.setRequest(request);
-		this.formName = formName;
-		this.fieldName = fieldName;
-	}
-	
-	/**
-	 * Instantiates a new zest field definition.
-	 *
-	 * @param requestId the request id
-	 * @param formName the form name
-	 * @param fieldName the field name
-	 */
-	private ZestFieldDefinition(int requestId, String formName, String fieldName) {
-		super();
-		this.requestId = requestId;
 		this.formName = formName;
 		this.fieldName = fieldName;
 	}
@@ -78,29 +57,9 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	public ZestFieldDefinition deepCopy() {
-		ZestFieldDefinition ze = new ZestFieldDefinition(this.requestId, this.formName, this.fieldName);
+		ZestFieldDefinition ze = new ZestFieldDefinition(this.formName, this.fieldName);
 		ze.setFormIndex(this.getFormIndex());
 		return ze;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestRequestRef#getRequestId()
-	 */
-	public int getRequestId() {
-		if (this.request != null) {
-			// Always believe the request we're refering to
-			return this.request.getIndex();
-		}
-		return requestId;
-	}
-
-	/**
-	 * Sets the request id.
-	 *
-	 * @param requestId the new request id
-	 */
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
 	}
 
 	/**
@@ -164,29 +123,9 @@ public class ZestFieldDefinition extends ZestElement implements ZestRequestRef {
 	 */
 	public String getKey() {
 		if (this.formName != null) {
-			return this.getRequestId() + ":" + this.getFormName() + ":" + this.getFieldName();
+			return this.getFormName() + ":" + this.getFieldName();
 		} else {
-			return this.getRequestId() + ":" + this.getFormIndex() + ":" + this.getFieldName();
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestRequestRef#getRequest()
-	 */
-	@Override
-	public ZestRequest getRequest() {
-		return this.request;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestRequestRef#setRequest(org.mozilla.zest.core.v1.ZestRequest)
-	 */
-	@Override
-	public void setRequest(ZestRequest request) {
-		this.request = request;
-		if (request != null) {
-			this.request.addReferer(this);
-			this.requestId = request.getIndex();
+			return this.getFormIndex() + ":" + this.getFieldName();
 		}
 	}
 
