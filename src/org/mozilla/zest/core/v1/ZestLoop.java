@@ -24,29 +24,39 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	
 	/** contains all the statement inside the loop. */
 	private List<ZestStatement> statements=new LinkedList<>();
-	
+	private ZestLoopTokenSet<T> set=null;
+	/**
+	 * 
+	 */
+	private String variableName="";
 	/** contains the snapshot of the current state of the loop. */
-	private ZestLoopState<T> currentState;
+	private transient ZestLoopState<T> currentState;
 	/**
 	 * contains the index of the current statement considered.
 	 */
 	private int stmtIndex=0;
 	
+	private int step=1;
+	
+	private transient static int counter=0;
+	
 	/**
 	 * Instantiates a new zest loop.
 	 */
 	protected ZestLoop(){
-		this(null, new LinkedList<ZestStatement>());
+		super();
+		init(getName(), null, new LinkedList<ZestStatement>());
 	}
 	
-	/**
-	 * Instantiates a new zest loop.
-	 *
-	 * @param initializationState the initialization state
-	 */
-	protected ZestLoop(ZestLoopState<T> initializationState){
-		this(initializationState, new LinkedList<ZestStatement>());
-	}
+//	/**
+//	 * Instantiates a new zest loop.
+//	 *
+//	 * @param initializationState the initialization state
+//	 */
+//	protected ZestLoop(String name, ZestLoopTokenSet<T> set){
+//		super();
+//		init(name, set, new LinkedList<ZestStatement>());
+//	}
 	
 	/**
 	 * Instantiates a new zest loop.
@@ -54,21 +64,21 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	 * @param initializationState the initialization state
 	 * @param stmts the stmts
 	 */
-	protected ZestLoop(ZestLoopState<T> initializationState, List<ZestStatement> stmts){
+	protected ZestLoop(String name, ZestLoopTokenSet<T> set, List<ZestStatement> stmts){
 		super();
-		this.setState(initializationState);
-		this.statements=stmts;
+		init(name, set, stmts);
 	}
 
-/**
- * Main construptor with the initialization state.
- *
- * @param index the index
- * @param initializationState the initialization state (first value and the set of values)
- */
-	protected ZestLoop(int index, ZestLoopState<T> initializationState) {
-		this(index, initializationState, new LinkedList<ZestStatement>());
-	}
+///**
+// * Main construptor with the initialization state.
+// *
+// * @param index the index
+// * @param initializationState the initialization state (first value and the set of values)
+// */
+//	protected ZestLoop(int index, String name, ZestLoopTokenSet<T> set) {
+//		super(index);
+//		init(name, set, new LinkedList<ZestStatement>());
+//	}
 
 /**
  * Construptor with initialization state and the list of statement inside the loop.
@@ -77,29 +87,54 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
  * @param initializationState the initialization state (first value and the set of values)
  * @param statements all the statements inside the loop
  */
-	protected ZestLoop(int index, ZestLoopState<T> initializationState,
+	protected ZestLoop(int index,String name, ZestLoopTokenSet<T> set,
 			List<ZestStatement> statements) {
 		super(index);
-		this.currentState = initializationState;
-		this.statements = statements;
+		init(name, set, statements);
 	}
 
-/**
- * protected empty method for subclasses.
- *
- * @param index the index
- */
-	protected ZestLoop(int index) {
-		this(index, null, new LinkedList<ZestStatement>());
-	}
+///**
+// * protected empty method for subclasses.
+// *
+// * @param index the index
+// */
+//	protected ZestLoop(int index) {
+//		super(index);
+//		init(getName(), null, new LinkedList<ZestStatement>());
+//	}
+	
+//	/**
+//	 * protected empty method for subclasses.
+//	 *
+//	 * @param index the index
+//	 * @param name the name of the loop
+//	 */
+//		protected ZestLoop(int index, String name) {
+//			super(index);
+//			init(name, null, new LinkedList<ZestStatement>());
+//		}
+
+		private void init(String name, ZestLoopTokenSet<T> set, List<ZestStatement> statements){
+			this.set=set;
+			this.statements=statements;
+			this.variableName=name;
+			this.currentState=set.getFirstState();
+		}
+		private String getName(){
+			return "ZestLoop"+counter++;
+		}
 
 /**
  * sets the current state to the new one (for subclasses).
  *
  * @param newState the new state
  */
-	protected void setState(ZestLoopState<T> newState) {
-		this.currentState = newState;
+	protected void setSet(ZestLoopTokenSet<T> newSet) {
+		this.set = newSet;
+	}
+	
+	protected void setStep(int step){
+		this.step=step;
 	}
 	
 	/**
@@ -123,14 +158,14 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
  * @return the new state (of the following loop)
  */
 	public boolean loop() {
-		return this.currentState.increase();
+		return this.currentState.increase(this.step, this.set);
 	}
 
 /**
  * ends the loops and set the state to the final value.
  */
 	public void endLoop() {
-		this.currentState.toLastState();
+		this.currentState.toLastState(this.set);
 	}
 
 /**
@@ -150,6 +185,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	public ZestLoopState<T> getCurrentState() {
 		return this.currentState;
 	}
+	
+	public void setCurrentState(ZestLoopState<T> newState){
+		this.currentState=newState;
+	}
 
 /**
  * return the current token considered inside the loop.
@@ -163,7 +202,9 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	 * returns the set of the tokens in this loop
 	 * @return the set of the tokens in this loop
 	 */
-	public abstract ZestLoopTokenSet<T> getSet();
+	public ZestLoopTokenSet<T> getSet(){
+		return this.set;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
@@ -276,7 +317,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	 */
 	@Override
 	public boolean hasMoreElements() {
-		boolean isLastLoop=this.getCurrentState().isLastState();
+		boolean isLastLoop=this.getCurrentState().isLastState(this.set);
 		if(isLastLoop){
 			return false;
 		}
@@ -298,17 +339,17 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 		int currentStmt=stmtIndex;
 		++stmtIndex;
 		if(stmtIndex==statements.size()){
-			this.currentState.increase();
+			this.currentState.increase(step, set);
 			stmtIndex=0;
 		}
 		ZestStatement newStatement=statements.get(currentStmt);
 		if(newStatement instanceof ZestLoopBreak){
-			this.currentState.toLastState();
+			this.currentState.toLastState(this.set);
 			this.stmtIndex=statements.size();
 			return null;
 		}
 		else if(newStatement instanceof ZestLoopNext){
-			this.currentState.increase();
+			this.currentState.increase(step, set);
 			this.stmtIndex=0;
 			return statements.get(stmtIndex);
 		}
@@ -320,6 +361,20 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 			statements.add(stmt.deepCopy());
 		}
 		return statements;
+	}
+	
+	/**
+	 * Returns the variable name
+	 */
+	public String getVariableName() {
+		return variableName;
+	}
+
+	/**
+	 * Sets the variable name
+	 */
+	public void setVariableName(String name) {
+		this.variableName = name;
 	}
 	
 	@Override

@@ -60,7 +60,18 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 						.registerTypeAdapter(ZestElement.class, new ZestJSON())
 						.registerTypeAdapter(ZestStatement.class, new ZestJSON())
 						.registerTypeAdapter(ZestExpressionElement.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopInteger.class, new ZestJSON())
+						.registerTypeAdapter(ZestLoop.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopStateFile.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopStateInteger.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopStateString.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopTokenIntegerSet.class, new ZestJSON())
 						.registerTypeAdapter(ZestLoopState.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopTokenFileSet.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopFile.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopString.class, new ZestJSON())
+						.registerTypeAdapter(ZestLoopTokenSet.class, new ZestJSON())
+//						.registerTypeAdapter(ZestLoopTokenStringSet.class, new ZestJSON())
 						.setPrettyPrinting()
 						.create();
 			
@@ -74,7 +85,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 	@Override
 	public ZestElement deserialize(JsonElement element, Type rawType,
 			JsonDeserializationContext arg2) throws JsonParseException {
-		
 		if (element instanceof JsonObject) {
 			String elementType = ((JsonObject)element).get("elementType").getAsString();
 
@@ -82,7 +92,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 				try {
 					//Class<?> c = Class.forName(this.getClass().getPackage().getName()"org.mozilla.zest.core.v1." + elementType);
 					Class<?> c = Class.forName(this.getClass().getPackage().getName() + "." + elementType);
-					
 					return (ZestElement) getGson().fromJson(element, c);
 					
 				} catch (ClassNotFoundException e) {

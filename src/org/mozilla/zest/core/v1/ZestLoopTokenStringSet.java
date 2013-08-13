@@ -149,4 +149,10 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		return replaced;
 	}
 
+	@Override
+	public ZestLoopStateString getFirstState() {
+		ZestLoopStateString firstState=new ZestLoopStateString(this);
+		return firstState;
+	}
+
 }

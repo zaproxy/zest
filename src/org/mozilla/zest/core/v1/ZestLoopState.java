@@ -9,114 +9,133 @@ package org.mozilla.zest.core.v1;
 
 /**
  * This class represents a state of the loop.
- *
- * @param <T> the generic type
+ * 
+ * @param <T>
+ *            the generic type
  */
-public abstract class ZestLoopState<T> extends ZestElement{
-	
+public abstract class ZestLoopState<T> extends ZestElement {
+
 	/** the current token considered inside the loop. */
 	private T currentToken;
-	
+
 	/** The current index. */
-	private int currentIndex=0;
-	
+	private int currentIndex = 0;
+
 	/**
 	 * Instantiates a new zest loop state.
 	 */
-	public ZestLoopState(){
+	public ZestLoopState() {
 		super();
 	}
-	
+
 	/**
 	 * main construptor.
-	 *
-	 * @param initializationTokenSet the set of token and the fisrt value to consider inside the loop
+	 * 
+	 * @param initializationTokenSet
+	 *            the set of token and the fisrt value to consider inside the
+	 *            loop
 	 */
-	public ZestLoopState(ZestLoopTokenSet<T> initializationTokenSet){
-		if(initializationTokenSet==null){
-			throw new IllegalArgumentException("a null token set is not allowed");
+	public ZestLoopState(ZestLoopTokenSet<T> initializationTokenSet) {
+		if (initializationTokenSet == null) {
+			throw new IllegalArgumentException(
+					"a null token set is not allowed");
 		}
-		if(initializationTokenSet.size()>0){
-			this.currentToken=initializationTokenSet.getToken(0);
+		if (initializationTokenSet.size() > 0) {
+			this.currentToken = initializationTokenSet.getToken(0);
+			this.currentIndex = 0;
 		}
 	}
-	public abstract ZestLoopTokenSet<T> getSet();
-	
+
 	/**
 	 * returns the current token considered inside the loop.
-	 *
+	 * 
 	 * @return the current token considered inside the loop
 	 */
-	public T getCurrentToken(){
+	public T getCurrentToken() {
 		return this.currentToken;
 	}
-	
+
 	/**
 	 * Sets the current token.
-	 *
-	 * @param newToken the new token
+	 * 
+	 * @param newToken
+	 *            the new token
 	 * @return the t
 	 */
-	protected T setCurrentToken(T newToken){
-		T oldToken=this.getCurrentToken();
-		this.currentToken=newToken;
+	protected T setCurrentToken(T newToken) {
+		T oldToken = this.getCurrentToken();
+		this.currentToken = newToken;
 		return oldToken;
 	}
-	
+
 	/**
-	 * returns the current index of the current token considered inside the loop.
-	 *
+	 * returns the current index of the current token considered inside the
+	 * loop.
+	 * 
 	 * @return the index of the current token considered in the loop
 	 */
-	public int getCurrentIndex(){
+	public int getCurrentIndex() {
 		return this.currentIndex;
 	}
-	
+
 	/**
 	 * Increase index.
 	 */
-	protected void increaseIndex(){
-		++this.currentIndex;
+	protected void increaseIndex(int step) {
+		this.currentIndex += step;
 	}
-	
+
 	/**
 	 * Sets the index.
-	 *
-	 * @param newIndex the new index
+	 * 
+	 * @param newIndex
+	 *            the new index
 	 */
-	protected void setIndex(int newIndex){
-		this.currentIndex=newIndex;
+	protected void setIndex(int newIndex) {
+		this.currentIndex = newIndex;
 	}
-	
+
 	/**
 	 * this increase the state and goes to the next state.
-	 *
+	 * 
+	 * @param step
+	 *            The step of the counter for this loop
 	 * @return the new state
 	 */
-	public abstract boolean increase();
+	public abstract boolean increase(int step, ZestLoopTokenSet<T> set);
+
 	/**
 	 * this sets the state to the last state: i.e. the loop has finished
 	 */
-	public abstract void toLastState();
-	
-	/* (non-Javadoc)
+	public void toLastState(ZestLoopTokenSet<T> set) {
+		this.setIndex(set.size());
+		this.setCurrentToken(set.getLastToken());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	@Override
 	public abstract ZestLoopState<T> deepCopy();
-	
+
 	/**
 	 * Checks if is last state.
-	 *
+	 * 
 	 * @return true, if is last state
 	 */
-	public abstract boolean isLastState();
-	/**
-	 * true if the two states are equals
-	 * @param otherState the other state
-	 * @return true if the two states are equals
-	 */
-	public boolean equals(ZestLoopState<T> otherState){
-		return this.currentIndex==otherState.currentIndex && this.currentToken==otherState.currentToken;
+	public boolean isLastState(ZestLoopTokenSet<T> set) {
+		return (this.getCurrentIndex() >= set.size());
+	}
+
+	@Override
+	public boolean equals(Object otherObject) {
+		if (otherObject instanceof ZestLoopState<?>) {
+			ZestLoopState<?> otherState = (ZestLoopState<?>) otherObject;
+			return this.currentIndex == otherState.currentIndex
+					&& this.currentToken.equals(otherState.currentToken);
+		}
+		return false;
 	}
 }

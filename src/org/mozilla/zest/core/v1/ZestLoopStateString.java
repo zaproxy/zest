@@ -14,8 +14,8 @@ package org.mozilla.zest.core.v1;
  */
 public class ZestLoopStateString extends ZestLoopState<String> {
 	
-	/** The tokens. */
-	private ZestLoopTokenStringSet tokens;
+//	/** The tokens. */
+//	private ZestLoopTokenStringSet tokens;
 
 	/**
 	 * Instantiates a new zest loop state string.
@@ -31,7 +31,6 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 */
 	public ZestLoopStateString(ZestLoopTokenStringSet initializationTokenSet) {
 		super(initializationTokenSet);
-		this.tokens = initializationTokenSet;
 	}
 
 	/**
@@ -47,12 +46,12 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase()
 	 */
 	@Override
-	public boolean increase() {
-		if (this.tokens == null || this.getCurrentIndex() + 1 >= tokens.size()) {
+	public boolean increase(int step, ZestLoopTokenSet<String> set) {
+		if (this.getCurrentIndex() + 1 >= set.size()) {
 			return false;
 		} else {
-			this.increaseIndex();
-			this.setCurrentToken(tokens.getToken(getCurrentIndex()));
+			this.increaseIndex(1);
+			this.setCurrentToken(set.getToken(getCurrentIndex()));
 			return true;
 		}
 	}
@@ -61,12 +60,12 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 * @see org.mozilla.zest.core.v1.ZestLoopState#toLastState()
 	 */
 	@Override
-	public void toLastState() {
-		if (this.isLastState()) {
+	public void toLastState(ZestLoopTokenSet<String> set) {
+		if (this.isLastState(set)) {
 			return;
 		} else {
-			this.setCurrentToken(tokens.getLastToken());
-			this.setIndex(tokens.size()-1);
+			this.setCurrentToken(set.getLastToken());
+			this.setIndex(set.size()-1);
 		}
 	}
 
@@ -75,11 +74,11 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 */
 	@Override
 	public ZestLoopState<String> deepCopy() {
-		if(this.tokens==null){
-			return new ZestLoopStateString();
-		}
+//		if(this.tokens==null){
+//			return new ZestLoopStateString();
+//		}
 		ZestLoopStateString copy=new ZestLoopStateString();
-		copy.tokens=this.tokens.deepCopy();
+//		copy.tokens=this.tokens.deepCopy();
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setIndex(this.getCurrentIndex());
@@ -90,22 +89,22 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 * @see org.mozilla.zest.core.v1.ZestLoopState#isLastState()
 	 */
 	@Override
-	public boolean isLastState() {
-		return tokens==null || this.getCurrentIndex()+1>=tokens.size();
+	public boolean isLastState(ZestLoopTokenSet<String> set) {
+		return set==null || this.getCurrentIndex()+1>=set.size();
 	}
 
-	/**
-	 * Gets the token set.
-	 *
-	 * @return the token set
-	 */
-	public ZestLoopTokenStringSet getTokenSet() {
-		return this.tokens;
-	}
+//	/**
+//	 * Gets the token set.
+//	 *
+//	 * @return the token set
+//	 */
+//	public ZestLoopTokenStringSet getTokenSet() {
+//		return this.tokens;
+//	}
 
-	@Override
-	public ZestLoopTokenStringSet getSet() {
-		return this.tokens;
-	}
+//	@Override
+//	public ZestLoopTokenStringSet getSet() {
+//		return this.tokens;
+//	}
 
 }

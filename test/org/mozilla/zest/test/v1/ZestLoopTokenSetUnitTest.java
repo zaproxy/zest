@@ -9,10 +9,12 @@ package mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mozilla.zest.core.v1.ZestLoopStateString;
 import org.mozilla.zest.core.v1.ZestLoopTokenSet;
 import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 /**

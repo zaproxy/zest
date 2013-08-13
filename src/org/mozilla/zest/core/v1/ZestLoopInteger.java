@@ -15,11 +15,21 @@ import java.util.List;
  * This class represent a loop through a set of integers.
  */
 public class ZestLoopInteger extends ZestLoop<Integer> {
+	private static int counter=0;
 	public ZestLoopInteger(){
-		this(0,0);
+		super("LoopInteger"+counter++, new ZestLoopTokenIntegerSet(0, 0), new LinkedList<ZestStatement>());
+	}
+	public ZestLoopInteger(String name){
+		super(name, new ZestLoopTokenIntegerSet(0, 0), new LinkedList<ZestStatement>());
+	}
+	public ZestLoopInteger(String name, int start, int end){
+		super(name, new ZestLoopTokenIntegerSet(start, end), new LinkedList<ZestStatement>());
 	}
 	public ZestLoopInteger(List<ZestStatement> stmts){
-		this(0,0,stmts);
+		super("LoopInteger"+counter++, new ZestLoopTokenIntegerSet(0, 0), stmts);
+	}
+	public ZestLoopInteger(String name,List<ZestStatement> stmts){
+		super(name, new ZestLoopTokenIntegerSet(0, 0), stmts);
 	}
 	/**
 	 * main construptor (empty).
@@ -30,7 +40,10 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param statements the statements
 	 */
 	public ZestLoopInteger(int index, int start, int end, List<ZestStatement> statements){
-		super(index, new ZestLoopStateInteger(start, end), statements);
+		super(index,"LoopInteger"+counter++, new ZestLoopTokenIntegerSet(start, end), statements);
+	}
+	public ZestLoopInteger(int index,String name, int start, int end, List<ZestStatement> statements){
+		super(index,name, new ZestLoopTokenIntegerSet(start, end), statements);
 	}
 	
 	/**
@@ -41,7 +54,11 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param statements the statements
 	 */
 	public ZestLoopInteger(int start, int end, List<ZestStatement> statements){
-		super(new ZestLoopStateInteger(start, end),statements);
+		super("LoopInteger"+counter++,new ZestLoopTokenIntegerSet(start, end),statements);
+	}
+	
+	public ZestLoopInteger(String name,int start, int end, List<ZestStatement> statements){
+		super(name,new ZestLoopTokenIntegerSet(start, end),statements);
 	}
 	
 	/**
@@ -52,13 +69,13 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param end the end
 	 */
 	public ZestLoopInteger(int index, int start, int end){
-		this(index, start, end, new LinkedList<ZestStatement>());
+		super(index,"LoopInteger"+counter++, new ZestLoopTokenIntegerSet(start, end), new LinkedList<ZestStatement>());
 	}
 	public int getStart(){
-		return this.getCurrentState().getSet().getStart();
+		return this.getSet().getStart();
 	}
 	public int getEnd(){
-		return this.getCurrentState().getSet().getEnd();
+		return this.getSet().getEnd();
 	}
 	
 	/**
@@ -74,20 +91,24 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public ZestLoopStateInteger getCurrentState(){
 		return (ZestLoopStateInteger)super.getCurrentState();
 	}
+	
+	public void setStep(int step){
+		super.setStep(step);
+	}
 	@Override
 	public ZestLoopInteger deepCopy(){
 		ZestLoopStateInteger state=this.getCurrentState().deepCopy();
-		ZestLoopTokenIntegerSet set=state.getSet();
+		ZestLoopTokenIntegerSet set=this.getSet();
 		ZestLoopInteger copy=new ZestLoopInteger(set.getStart(), set.getEnd());
 		for(ZestStatement stmt:this.getStatements()){
 			copy.addStatement(stmt.deepCopy());
 		}
-		copy.setState(state);
+		copy.setCurrentState(state);
 		return copy;
 	}
 
 	@Override
 	public ZestLoopTokenIntegerSet getSet() {
-		return this.getCurrentState().getSet();
+		return (ZestLoopTokenIntegerSet) super.getSet();
 	}
 }

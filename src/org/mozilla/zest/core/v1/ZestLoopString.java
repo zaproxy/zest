@@ -15,16 +15,22 @@ import java.util.List;
  * this class represents a Loop through String values.
  */
 public class ZestLoopString extends ZestLoop<String> {
-	
+	private static int counter=0;
 	/**
 	 * Instantiates a new zest loop string.
 	 */
 	public ZestLoopString(){
-		this(new String[]{""});
+		super("LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
+	}
+	public ZestLoopString(String name, String[] values){
+		super(name, new ZestLoopTokenStringSet(values), new LinkedList<ZestStatement>());
 	}
 	
 	public ZestLoopString(List<ZestStatement> stmts){
-		this(new String[]{""}, stmts);
+		super("LoopString"+counter++, new ZestLoopTokenStringSet(), stmts);
+	}
+	public ZestLoopString(String name,String[] values, List<ZestStatement> stmts){
+		super(name, new ZestLoopTokenStringSet(values), stmts);
 	}
 	
 	/**
@@ -33,7 +39,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param values the values
 	 */
 	public ZestLoopString(String[] values){
-		super(new ZestLoopStateString(values));
+		super("LoopString"+counter++,new ZestLoopTokenStringSet(values), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -43,7 +49,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param statements the statements
 	 */
 	public ZestLoopString(String[] values, List<ZestStatement> statements){
-		super(new ZestLoopStateString(values), statements);
+		super("LoopString"+counter++,new ZestLoopTokenStringSet(values), statements);
 	}
 	
 	/**
@@ -51,8 +57,8 @@ public class ZestLoopString extends ZestLoop<String> {
 	 *
 	 * @param index the index
 	 */
-	protected ZestLoopString(int index){
-		super(index, new ZestLoopStateString());
+	public ZestLoopString(int index){
+		super(index,"LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -63,7 +69,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param statements the statements
 	 */
 	public ZestLoopString(int index, String[] values, List<ZestStatement> statements){
-		super(index, new ZestLoopStateString(values), statements);
+		super(index,"LoopString"+counter++, new ZestLoopTokenStringSet(values), statements);
 	}
 	
 	/**
@@ -73,10 +79,10 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param values the values
 	 */
 	public ZestLoopString(int index, String[] values){
-		this(index, values,new LinkedList<ZestStatement>());
+		super(index, "LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 	public String[] getValues(){
-		ZestLoopTokenStringSet set=(ZestLoopTokenStringSet) this.getCurrentState().getSet();
+		ZestLoopTokenStringSet set=this.getSet();
 		String[] array=new String[set.size()];
 		for(int i=0; i<array.length; i++){
 			array[i]=set.getToken(i);
@@ -86,7 +92,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	@Override
 	public ZestLoopString deepCopy(){
 		ZestLoopString copy=new ZestLoopString(this.getIndex());
-		copy.setState(this.getCurrentState().deepCopy());
+		copy.setCurrentState(this.getCurrentState().deepCopy());
 		copy.setStatements(this.copyStatements());
 		return copy;
 	}
@@ -95,7 +101,23 @@ public class ZestLoopString extends ZestLoop<String> {
 		return (ZestLoopStateString) super.getCurrentState();
 	}
 	@Override
-	public ZestLoopTokenSet<String> getSet() {
-		return this.getCurrentState().getSet();
+	public ZestLoopTokenStringSet getSet() {
+		return (ZestLoopTokenStringSet) super.getSet();
+	}
+	@Override
+	public void setSet(ZestLoopTokenSet<String> set){
+		if(set instanceof ZestLoopTokenStringSet){
+			super.setSet(set);
+		} else{
+			System.err.println("The given set is not a "+getSet().getClass().getName());
+			System.err.println("Trying an autofix");
+			if(set instanceof ZestLoopTokenFileSet){
+				ZestLoopTokenFileSet fileSet=(ZestLoopTokenFileSet) set;
+				super.setSet(fileSet.getConvertedSet());
+			}
+			else{
+				System.err.println("autofix failed! Nothing will be done!");
+			}
+		}
 	}
 }

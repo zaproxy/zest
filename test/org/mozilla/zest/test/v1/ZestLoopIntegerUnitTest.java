@@ -45,14 +45,14 @@ public class ZestLoopIntegerUnitTest {
 					iteration == loop.getCurrentToken());
 		}
 		assertTrue("right number of iterations",
-				loop.getCurrentToken() == maxIt);
+				loop.getCurrentToken() == maxIt-1);// start is inclusive, end is exclusive!
 	}
 
 	@Test
 	public void testEndLoop() {
 		ZestLoopInteger loop = new ZestLoopInteger(0, 10, statements);
 		loop.endLoop();
-		assertTrue(loop.getCurrentState().isLastState());// it recognize the
+		assertTrue(loop.getCurrentState().isLastState(loop.getSet()));// it recognize the
 															// last state
 		assertFalse(loop.loop());// it returs false if the method loop is called
 									// again
@@ -81,8 +81,8 @@ public class ZestLoopIntegerUnitTest {
 													// statements are equals
 			counter++;
 		}
-		assertTrue("right number of iteration ", counter == numOfToken
-				* statements.size());
+		assertTrue("right number of iteration ", counter == (numOfToken-1)
+				* statements.size());// include start, exclude end!
 	}
 	@Test
 	public void testZestLoopBreak(){
@@ -107,5 +107,17 @@ public class ZestLoopIntegerUnitTest {
 			assertTrue("iteration "+counter, tmp instanceof ZestLoopNext);
 			counter++;
 		}
+	}
+	@Test
+	public void testZestLoopDifferentStep(){
+		ZestLoopInteger loop=new ZestLoopInteger("with step = 7", 0, 100, statements);
+		loop.setStep(7);
+		int counter=0;
+		while(loop.hasMoreElements()){
+			loop.loop();
+			++counter;
+			assertTrue("step: "+counter,loop.getCurrentToken()==counter*7);
+		}
+		assertTrue("end at: ", loop.getCurrentToken()==105);
 	}
 }

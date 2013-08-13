@@ -22,6 +22,9 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	/** The end. */
 	private int end;
 	
+	public ZestLoopTokenIntegerSet(){
+		this(0,0);
+	}
 	/**
 	 * Instantiates a new zest loop token integer set.
 	 *
@@ -158,6 +161,12 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	}
 	public boolean equals(ZestLoopTokenIntegerSet otherSet){
 		return this.start==otherSet.start && this.end==otherSet.end;
+	}
+
+	@Override
+	public ZestLoopStateInteger getFirstState() {
+		ZestLoopStateInteger fisrtState=new ZestLoopStateInteger(this);
+		return fisrtState;
 	}
 
 }
