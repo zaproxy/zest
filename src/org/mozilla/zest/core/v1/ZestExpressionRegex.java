@@ -163,5 +163,10 @@ public class ZestExpressionRegex extends ZestExpression{
 	public ZestExpressionRegex deepCopy() {
 		return new ZestExpressionRegex(this.getLocation(), this.getRegex(), this.isInverse());
 	}
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+"REGEX: "+regex+" , Location: "+location;
+		return expression;
+	}
 	
 }

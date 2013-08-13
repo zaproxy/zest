@@ -65,5 +65,9 @@ public class ZestExpressionStatusCode extends ZestExpression {
 		copy.code = code;
 		return copy;
 	}
-	
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+"Status Code: "+code;
+		return expression;
+	}
 }

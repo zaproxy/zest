@@ -102,5 +102,11 @@ public class ZestExpressionLength extends ZestExpression {
 				* approx / 100;
 		return toReturn;
 	}
+	
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+ "Length: "+length+" +/- "+(((double)(length*approx))/100);
+		return expression;
+	}
 
 }

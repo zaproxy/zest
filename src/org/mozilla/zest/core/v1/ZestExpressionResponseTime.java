@@ -91,5 +91,10 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		copy.timeInMs = this.timeInMs;
 		return copy;
 	}
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+"Response Time "+(isGreaterThan()?"> ":"< ")+timeInMs;
+		return expression;
+	}
 	
 }

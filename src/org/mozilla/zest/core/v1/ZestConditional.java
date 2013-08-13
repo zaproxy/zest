@@ -413,4 +413,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		copy.ifStatements=ifList;
 		return copy;
 	}
+	@Override
+	public String toString(){
+		String expression="IF - "+getRootExpression().toString();
+		return expression;
+	}
 }
