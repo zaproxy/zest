@@ -53,6 +53,7 @@ public class ZestLoopSerializationUnitTest {
 		String loopString=ZestJSON.toString(loop);
 		ZestLoopFile copy=(ZestLoopFile) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
+		System.out.println(copyString);
 		assertTrue(loopString.equals(copyString));
 	}
 
