@@ -5,8 +5,6 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.HashSet;
-import java.util.Set;
 
 
 // TODO: Auto-generated Javadoc
@@ -45,14 +43,6 @@ public abstract class ZestAction extends ZestStatement {
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		// Ignore
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
-	@Override
-	Set<String> getTokens(String tokenStart, String tokenEnd) {
-		return new HashSet<String>();
 	}
 
 	/**

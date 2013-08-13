@@ -202,7 +202,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		}
 		// This will wire everything up
 		stmt.insertAfter(prev);
-		updateTokens(stmt);
 	}
 	
 	/* (non-Javadoc)
@@ -391,19 +390,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	}
 
 	/**
-	 * Update tokens.
-	 *
-	 * @param statement the statement
-	 */
-	private void updateTokens(ZestStatement statement) {
-		Set<String> allTokens = statement.getTokens(this.parameters.getTokenStart(), this.parameters.getTokenEnd());
-		for (String str : allTokens) {
-			// Will default if not present
-			this.parameters.addVariable(str);
-		}
-	}
-
-	/**
 	 * Gets the zest version.
 	 *
 	 * @return the zest version
@@ -482,10 +468,24 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Set<String> getTokens(String tokenStart, String tokenEnd) {
+	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
+		
+		// Add the 'standard' ones
+		tokens.add(ZestVariables.REQUEST_URL);
+		tokens.add(ZestVariables.REQUEST_HEADER);
+		tokens.add(ZestVariables.REQUEST_BODY);
+		tokens.add(ZestVariables.RESPONSE_URL);
+		tokens.add(ZestVariables.RESPONSE_HEADER);
+		tokens.add(ZestVariables.RESPONSE_BODY);
+		
 		for (ZestStatement stmt : this.statements) {
-			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
+			if (stmt instanceof ZestContainer) {
+				tokens.addAll(((ZestContainer)stmt).getVariableNames());
+				
+			} else if (stmt instanceof ZestAssignment) {
+				tokens.add(((ZestAssignment)stmt).getVariableName());
+			}
 		}
 		return tokens;
 	}

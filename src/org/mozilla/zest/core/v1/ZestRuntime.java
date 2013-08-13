@@ -4,8 +4,6 @@
 
 package org.mozilla.zest.core.v1;
 
-import java.io.File;
-import java.io.IOException;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -14,38 +12,16 @@ import java.io.IOException;
 public interface ZestRuntime {
 	
 	/**
-	 * Run.
-	 *
-	 * @param zest the zest
-	 * @throws ZestAssertFailException the zest assert fail exception
-	 * @throws ZestActionFailException the zest action fail exception
+	 * Get the current value of the specified variable
+	 * @param name
+	 * @return the current value of the specified variable
 	 */
-	void run(ZestScript zest) throws ZestAssertFailException, ZestActionFailException;
+	String getVariable(String name);
 	
 	/**
-	 * Load.
-	 *
-	 * @param file the file
-	 * @return the zest script
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * Get the last response
+	 * @return the last response
 	 */
-	ZestScript load(File file) throws IOException;
-	
-	/**
-	 * Save.
-	 *
-	 * @param zest the zest
-	 * @param file the file
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	void save(ZestScript zest, File file) throws IOException;
-		
-	/**
-	 * Make request.
-	 *
-	 * @param req the req
-	 * @return the zest response
-	 */
-	ZestResponse makeRequest(ZestRequest req);
+	ZestResponse getLastResponse();
 	
 }

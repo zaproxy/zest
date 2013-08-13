@@ -31,6 +31,8 @@ import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
 import org.mozilla.zest.core.v1.ZestExpressionURL;
 import org.mozilla.zest.core.v1.ZestResponse;
+import org.mozilla.zest.core.v1.ZestRuntime;
+import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
@@ -40,7 +42,7 @@ public class ZestStructuredExpressionUnitTest {
 	public void testDeepCopySingleAndSameChildrenSize() {
 		ZestExpressionAnd and = new ZestExpressionAnd();
 		and.addChildCondition(new ZestExpressionStatusCode(100));
-		and.addChildCondition(new ZestExpressionLength(1, 1));
+		and.addChildCondition(new ZestExpressionLength("response.body", 1, 1));
 		ZestExpressionAnd copy = and.deepCopy();
 		assertTrue(and.getChildrenCondition().size() == copy
 				.getChildrenCondition().size());
@@ -48,7 +50,7 @@ public class ZestStructuredExpressionUnitTest {
 	public void testOrDeepCopySingleAndSameChildrenSize() {
 		ZestExpressionOr or = new ZestExpressionOr();
 		or.addChildCondition(new ZestExpressionStatusCode(100));
-		or.addChildCondition(new ZestExpressionLength(1, 1));
+		or.addChildCondition(new ZestExpressionLength("response.body", 1, 1));
 		ZestExpressionOr copy = or.deepCopy();
 		assertTrue(or.getChildrenCondition().size() == copy
 				.getChildrenCondition().size());
@@ -233,10 +235,10 @@ public class ZestStructuredExpressionUnitTest {
 			ZestResponse resp = new ZestResponse(new URL(
 					"http://this.is.a.test"), "Header prefix12345postfix",
 					"Body Prefix54321Postfix", 200, 1000);
-			ZestExpressionLength length = new ZestExpressionLength(0, 1);
+			ZestExpressionLength length = new ZestExpressionLength(ZestVariables.RESPONSE_BODY, 0, 1);
 			length.setInverse(true);
 			ZestExpressionStatusCode code = new ZestExpressionStatusCode(200);
-			ZestExpressionRegex regex = new ZestExpressionRegex("BODY", "54321");
+			ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "54321");
 			ZestExpressionResponseTime time = new ZestExpressionResponseTime(
 					100);
 			LinkedList<String> includeRegex = new LinkedList<>();
@@ -254,8 +256,7 @@ public class ZestStructuredExpressionUnitTest {
 				}
 
 				@Override
-				public boolean isTrue(ZestResponse response) {
-					// TODO Auto-generated method stub
+				public boolean isTrue(ZestRuntime runtime) {
 					return false;
 				}
 			};
@@ -267,7 +268,7 @@ public class ZestStructuredExpressionUnitTest {
 			and.addChildCondition(url);
 			or.addChildCondition(and);
 			ZestConditional cond = new ZestConditional(or);
-			assertTrue(cond.isTrue(resp));
+			assertTrue(cond.isTrue(new TestRuntime(resp)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -277,7 +278,7 @@ public class ZestStructuredExpressionUnitTest {
 	public void testSetChildrenCondition() {
 		List<ZestExpressionElement> children = new LinkedList<>();
 		children.add(new ZestExpressionAnd());
-		children.add(new ZestExpressionLength(1, 2));
+		children.add(new ZestExpressionLength("response.body", 1, 2));
 		children.add(new ZestExpressionStatusCode(200));
 		ZestExpressionAnd root = new ZestExpressionAnd();
 		root.setChildrenCondition(children);
@@ -328,7 +329,7 @@ public class ZestStructuredExpressionUnitTest {
 	@Test
 	public void testRemoveChildCondition(){
 		ZestExpressionAnd and=new ZestExpressionAnd();
-		ZestExpressionLength lengthExpr=new ZestExpressionLength(10,20);
+		ZestExpressionLength lengthExpr=new ZestExpressionLength("response.body", 10,20);
 		and.addChildCondition(lengthExpr);
 		and.removeChildCondition(lengthExpr);
 		assertTrue(and.getChildrenCondition().isEmpty());
@@ -336,7 +337,7 @@ public class ZestStructuredExpressionUnitTest {
 	@Test
 	public void testRemoveChildConditionReturnValue(){
 		ZestExpressionAnd and=new ZestExpressionAnd();
-		ZestExpressionLength lengthExpr=new ZestExpressionLength(10,20);
+		ZestExpressionLength lengthExpr=new ZestExpressionLength("response.body", 10,20);
 		and.addChildCondition(lengthExpr);
 		assertTrue(and.removeChildCondition(lengthExpr).equals(lengthExpr));
 	}
@@ -348,11 +349,11 @@ public class ZestStructuredExpressionUnitTest {
 	@Test
 	public void testZestExpressionAndLazyEvaluation(){
 		ZestExpressionAnd and=new ZestExpressionAnd();
-		ZestExpressionLength lengthExpr=new ZestExpressionLength(100, 100, true);
+		ZestExpressionLength lengthExpr=new ZestExpressionLength("response.body", 100, 100, true);
 		ZestExpression expectException=new ZestExpression() {
 			
 			@Override
-			public boolean isTrue(ZestResponse response) {
+			public boolean isTrue(ZestRuntime runtime) {
 				throw new IllegalAccessError("This has not to be thrown cause of the Lazy evaluation!");
 			}
 			
@@ -364,16 +365,16 @@ public class ZestStructuredExpressionUnitTest {
 		and.addChildCondition(lengthExpr);
 		and.addChildCondition(expectException);
 		ZestResponse response=new ZestResponse(null, "", "", 200, 100);
-		assertFalse(and.evaluate(response));
+		assertFalse(and.evaluate(new TestRuntime(response)));
 	}
 	@Test
 	public void testZestExpressionOrLazyEvaluation(){
 		ZestExpressionOr or=new ZestExpressionOr();
-		ZestExpressionLength lengthExpr=new ZestExpressionLength(100, 100);
+		ZestExpressionLength lengthExpr=new ZestExpressionLength("response.body", 100, 100);
 		ZestExpression expectedException=new ZestExpression() {
 			
 			@Override
-			public boolean isTrue(ZestResponse response) {
+			public boolean isTrue(ZestRuntime runtime) {
 				throw new IllegalAccessError("This has not to be thrown cause of the Lazy evaluation!");
 			}
 			
@@ -385,6 +386,6 @@ public class ZestStructuredExpressionUnitTest {
 		or.addChildCondition(lengthExpr);
 		or.addChildCondition(expectedException);
 		ZestResponse response=new ZestResponse(null, "", "", 200, 100);
-		assertTrue(or.evaluate(response));
+		assertTrue(or.evaluate(new TestRuntime(response)));
 	}
 }

@@ -15,6 +15,7 @@ import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
+import org.mozilla.zest.core.v1.ZestExpressionEquals;
 import org.mozilla.zest.core.v1.ZestExpressionLength;
 import org.mozilla.zest.core.v1.ZestExpressionOr;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
@@ -187,11 +188,16 @@ public class ZestPrinter {
 		if (element.isLeaf()) {
 			if (element instanceof ZestExpressionLength) {
 				ZestExpressionLength lengthExpr = (ZestExpressionLength) element;
-				System.out.print("length: " + lengthExpr.getLength()
+				System.out.print("Length: " + lengthExpr.getVariableName() + " " + lengthExpr.getLength()
 						+ " approx: " + lengthExpr.getApprox());
+			} else if (element instanceof ZestExpressionEquals) {
+				ZestExpressionEquals eqExpr = (ZestExpressionEquals) element;
+				System.out.print("Regex: " + eqExpr.getVariableName() + " " + 
+						(eqExpr.isCaseExact() ? " caseExact " : " caseIgnore ") +
+						eqExpr.getValue());
 			} else if (element instanceof ZestExpressionRegex) {
 				ZestExpressionRegex regexExpr = (ZestExpressionRegex) element;
-				System.out.print("Regex: " + regexExpr.getLocation() + " "
+				System.out.print("Regex: " + regexExpr.getVariableName() + " "
 						+ regexExpr.getRegex());
 			} else if (element instanceof ZestExpressionResponseTime) {
 				ZestExpressionResponseTime timeExpr = (ZestExpressionResponseTime) element;

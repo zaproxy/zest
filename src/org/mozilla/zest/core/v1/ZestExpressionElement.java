@@ -31,7 +31,7 @@ public interface ZestExpressionElement{
 	 * @param response the response
 	 * @return the boolean value of the expression without inverse flag
 	 */
-	public boolean isTrue(ZestResponse response);
+	public boolean isTrue(ZestRuntime runtime);
 	
 	/**
 	 * the boolean value of the whole Conditional Element.
@@ -39,7 +39,7 @@ public interface ZestExpressionElement{
 	 * @param response the response
 	 * @return the boolean value of the whole Conditional Element
 	 */
-	public boolean evaluate(ZestResponse response);
+	public boolean evaluate(ZestRuntime runtime);
 	
 	/**
 	 * return true if the Conditional Element has a NOT clause.

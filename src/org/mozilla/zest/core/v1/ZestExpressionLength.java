@@ -4,7 +4,6 @@
 
 package org.mozilla.zest.core.v1;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionLength.
  */
@@ -15,12 +14,14 @@ public class ZestExpressionLength extends ZestExpression {
 	
 	/** The approx. */
 	private int approx;
+	
+	private String variableName;
 
 	/**
 	 * Instantiates a new zest expression length.
 	 */
 	public ZestExpressionLength() {
-		this(0, 0);
+		this(null, 0, 0);
 	}
 
 	/**
@@ -29,8 +30,9 @@ public class ZestExpressionLength extends ZestExpression {
 	 * @param length the length
 	 * @param approx the approx
 	 */
-	public ZestExpressionLength(int length, int approx) {
+	public ZestExpressionLength(String variableName, int length, int approx) {
 		super();
+		this.variableName = variableName;
 		this.length = length;
 		this.approx = approx;
 	}
@@ -42,8 +44,8 @@ public class ZestExpressionLength extends ZestExpression {
 	 * @param j the j
 	 * @param b the b
 	 */
-	public ZestExpressionLength(int length, int j, boolean b) {
-		this(length,j);
+	public ZestExpressionLength(String variableName, int length, int j, boolean b) {
+		this(variableName, length,j);
 		this.setInverse(b);
 	}
 
@@ -51,9 +53,17 @@ public class ZestExpressionLength extends ZestExpression {
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	public ZestExpressionLength deepCopy() {
-		return new ZestExpressionLength(this.length, this.approx);
+		return new ZestExpressionLength(this.variableName, this.length, this.approx);
 	}
 	
+	public String getVariableName() {
+		return variableName;
+	}
+
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
+	}
+
 	/**
 	 * Gets the length.
 	 *
@@ -94,11 +104,15 @@ public class ZestExpressionLength extends ZestExpression {
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	@Override
-	public boolean isTrue(ZestResponse response) {
-		if (response.getBody() == null) {
+	public boolean isTrue(ZestRuntime runtime) {
+		if (this.variableName == null) {
 			return false;
 		}
-		boolean toReturn = Math.abs(length - response.getBody().length()) <= length
+		String value = runtime.getVariable(variableName);
+		if (value == null) {
+			return false;
+		}
+		boolean toReturn = Math.abs(length - value.length()) <= length
 				* approx / 100;
 		return toReturn;
 	}

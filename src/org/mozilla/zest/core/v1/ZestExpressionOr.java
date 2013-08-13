@@ -38,10 +38,10 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 	 * .core.v1.ZestResponse)
 	 */
 	@Override
-	public boolean isTrue(ZestResponse response) {
+	public boolean isTrue(ZestRuntime runtime) {
 		boolean toReturn = false;
 		for (ZestExpressionElement con : getChildrenCondition()) {
-			toReturn = toReturn || con.evaluate(response);// compute OR for each
+			toReturn = toReturn || con.evaluate(runtime);// compute OR for each
 															// child
 			if (toReturn) {
 				break;// lazy evaluation

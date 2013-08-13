@@ -52,12 +52,12 @@ public interface ZestContainer {
 	public ZestStatement getChildBefore(ZestStatement child);
 	
 	/**
-	 * Gets the tokens.
+	 * Returns all of the variable names defined by this staement and its children
 	 *
 	 * @param tokenStart the token start
 	 * @param tokenEnd the token end
 	 * @return the tokens
 	 */
-	public Set<String> getTokens(String tokenStart, String tokenEnd);
+	abstract Set<String> getVariableNames();
 
 }

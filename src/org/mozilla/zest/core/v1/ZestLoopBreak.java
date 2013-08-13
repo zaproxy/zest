@@ -8,7 +8,6 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-import java.util.Set;
 // TODO: Auto-generated Javadoc
 
 /**
@@ -22,14 +21,6 @@ public class ZestLoopBreak extends ZestStatement {
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix)
 			throws MalformedURLException {		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
-	@Override
-	Set<String> getTokens(String tokenStart, String tokenEnd) {
-		return null;
 	}
 
 	/* (non-Javadoc)

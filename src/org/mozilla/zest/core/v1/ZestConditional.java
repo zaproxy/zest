@@ -282,18 +282,29 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 			stmt.setPrefix(oldPrefix, newPrefix);
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Set<String> getTokens(String tokenStart, String tokenEnd) {
+	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
+
 		for (ZestStatement stmt : this.ifStatements) {
-			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
+			if (stmt instanceof ZestContainer) {
+				tokens.addAll(((ZestContainer)stmt).getVariableNames());
+				
+			} else if (stmt instanceof ZestAssignment) {
+				tokens.add(((ZestAssignment)stmt).getVariableName());
+			}
 		}
 		for (ZestStatement stmt : this.elseStatements) {
-			tokens.addAll(stmt.getTokens(tokenStart, tokenEnd));
+			if (stmt instanceof ZestContainer) {
+				tokens.addAll(((ZestContainer)stmt).getVariableNames());
+				
+			} else if (stmt instanceof ZestAssignment) {
+				tokens.add(((ZestAssignment)stmt).getVariableName());
+			}
 		}
 		return tokens;
 	}
@@ -367,8 +378,8 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	 * @param response the response
 	 * @return true, if is true
 	 */
-	public boolean isTrue(ZestResponse response){
-		return getRootExpression().evaluate(response);
+	public boolean isTrue(ZestRuntime runtime){
+		return getRootExpression().evaluate(runtime);
 	}
 	
 	/**

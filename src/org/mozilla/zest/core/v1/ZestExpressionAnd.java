@@ -55,13 +55,13 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	@Override
-	public boolean isTrue(ZestResponse response) {
+	public boolean isTrue(ZestRuntime runtime) {
 		if(getChildrenCondition().isEmpty()){
 			return false;
 		}
 		boolean toReturn = true;
 		for (ZestExpressionElement con : getChildrenCondition()) {
-			toReturn = toReturn && con.evaluate(response);// compute AND for each child
+			toReturn = toReturn && con.evaluate(runtime);// compute AND for each child
 			if(!toReturn) {
 				break;//lazy evaluation
 			}
