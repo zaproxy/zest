@@ -10,6 +10,7 @@ package org.mozilla.zest.core.v1;
 import java.util.LinkedList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopTokenIntegerSet.
  */
@@ -22,6 +23,9 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	/** The end. */
 	private int end;
 	
+	/**
+	 * Instantiates a new zest loop token integer set.
+	 */
 	public ZestLoopTokenIntegerSet(){
 		this(0,0);
 	}
@@ -159,10 +163,20 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	public int size() {
 		return end-start;
 	}
-	public boolean equals(ZestLoopTokenIntegerSet otherSet){
-		return this.start==otherSet.start && this.end==otherSet.end;
+	
+
+	@Override
+	public boolean equals(Object otherObject){
+		if(otherObject instanceof ZestLoopTokenIntegerSet){
+			ZestLoopTokenIntegerSet otherSet=(ZestLoopTokenIntegerSet) otherObject;
+			return this.start==otherSet.start && this.end==otherSet.end;
+		}
+		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getFirstState()
+	 */
 	@Override
 	public ZestLoopStateInteger getFirstState() {
 		ZestLoopStateInteger fisrtState=new ZestLoopStateInteger(this);

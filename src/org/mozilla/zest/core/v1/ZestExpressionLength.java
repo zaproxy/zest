@@ -4,6 +4,7 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionLength.
  */
@@ -15,6 +16,7 @@ public class ZestExpressionLength extends ZestExpression {
 	/** The approx. */
 	private int approx;
 	
+	/** The variable name. */
 	private String variableName;
 
 	/**
@@ -27,6 +29,7 @@ public class ZestExpressionLength extends ZestExpression {
 	/**
 	 * Instantiates a new zest expression length.
 	 *
+	 * @param variableName the variable name
 	 * @param length the length
 	 * @param approx the approx
 	 */
@@ -40,6 +43,7 @@ public class ZestExpressionLength extends ZestExpression {
 	/**
 	 * Instantiates a new zest expression length.
 	 *
+	 * @param variableName the variable name
 	 * @param length the length
 	 * @param j the j
 	 * @param b the b
@@ -56,10 +60,20 @@ public class ZestExpressionLength extends ZestExpression {
 		return new ZestExpressionLength(this.variableName, this.length, this.approx);
 	}
 	
+	/**
+	 * Gets the variable name.
+	 *
+	 * @return the variable name
+	 */
 	public String getVariableName() {
 		return variableName;
 	}
 
+	/**
+	 * Sets the variable name.
+	 *
+	 * @param variableName the new variable name
+	 */
 	public void setVariableName(String variableName) {
 		this.variableName = variableName;
 	}
@@ -117,6 +131,9 @@ public class ZestExpressionLength extends ZestExpression {
 		return toReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+ "Length: "+length+" +/- "+(((double)(length*approx))/100);

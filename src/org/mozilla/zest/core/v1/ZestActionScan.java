@@ -75,6 +75,9 @@ public class ZestActionScan extends ZestAction {
 		throw new ZestActionFailException(this);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return false;

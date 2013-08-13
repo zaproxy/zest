@@ -15,6 +15,8 @@ import java.util.List;
  * this class represents a Loop through String values.
  */
 public class ZestLoopString extends ZestLoop<String> {
+	
+	/** The counter. */
 	private static int counter=0;
 	/**
 	 * Instantiates a new zest loop string.
@@ -22,13 +24,33 @@ public class ZestLoopString extends ZestLoop<String> {
 	public ZestLoopString(){
 		super("LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
+	
+	/**
+	 * Instantiates a new zest loop string.
+	 *
+	 * @param name the name
+	 * @param values the values
+	 */
 	public ZestLoopString(String name, String[] values){
 		super(name, new ZestLoopTokenStringSet(values), new LinkedList<ZestStatement>());
 	}
 	
+	/**
+	 * Instantiates a new zest loop string.
+	 *
+	 * @param stmts the stmts
+	 */
 	public ZestLoopString(List<ZestStatement> stmts){
 		super("LoopString"+counter++, new ZestLoopTokenStringSet(), stmts);
 	}
+	
+	/**
+	 * Instantiates a new zest loop string.
+	 *
+	 * @param name the name
+	 * @param values the values
+	 * @param stmts the stmts
+	 */
 	public ZestLoopString(String name,String[] values, List<ZestStatement> stmts){
 		super(name, new ZestLoopTokenStringSet(values), stmts);
 	}
@@ -81,6 +103,12 @@ public class ZestLoopString extends ZestLoop<String> {
 	public ZestLoopString(int index, String[] values){
 		super(index, "LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
+	
+	/**
+	 * Gets the values.
+	 *
+	 * @return the values
+	 */
 	public String[] getValues(){
 		ZestLoopTokenStringSet set=this.getSet();
 		String[] array=new String[set.size()];
@@ -89,6 +117,10 @@ public class ZestLoopString extends ZestLoop<String> {
 		}
 		return  array;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#deepCopy()
+	 */
 	@Override
 	public ZestLoopString deepCopy(){
 		ZestLoopString copy=new ZestLoopString(this.getIndex());
@@ -96,14 +128,26 @@ public class ZestLoopString extends ZestLoop<String> {
 		copy.setStatements(this.copyStatements());
 		return copy;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#getCurrentState()
+	 */
 	@Override
 	public ZestLoopStateString getCurrentState(){
 		return (ZestLoopStateString) super.getCurrentState();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#getSet()
+	 */
 	@Override
 	public ZestLoopTokenStringSet getSet() {
 		return (ZestLoopTokenStringSet) super.getSet();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#setSet(org.mozilla.zest.core.v1.ZestLoopTokenSet)
+	 */
 	@Override
 	public void setSet(ZestLoopTokenSet<String> set){
 		if(set instanceof ZestLoopTokenStringSet){

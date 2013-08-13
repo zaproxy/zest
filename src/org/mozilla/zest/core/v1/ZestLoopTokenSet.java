@@ -9,6 +9,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * this class represents a Set of loop tokens.
  *
@@ -67,5 +68,10 @@ public interface ZestLoopTokenSet<T>{
 	 */
 	public ZestLoopTokenSet<T> deepCopy();
 	
+	/**
+	 * Gets the first state.
+	 *
+	 * @return the first state
+	 */
 	public ZestLoopState<T> getFirstState();
 }

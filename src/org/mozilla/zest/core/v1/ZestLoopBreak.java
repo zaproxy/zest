@@ -31,6 +31,9 @@ public class ZestLoopBreak extends ZestStatement {
 		return new ZestLoopBreak();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return true;

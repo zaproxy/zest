@@ -20,17 +20,37 @@ import java.util.List;
  * a file.
  */
 public class ZestLoopFile extends ZestLoop<String> {
+	
+	/** The counter. */
 	private static int counter = 0;
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public ZestLoopFile() throws FileNotFoundException, IOException {
 		this(File.createTempFile("emptyfile", ".txt"));
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param stmts the stmts
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public ZestLoopFile(List<ZestStatement> stmts)
 			throws FileNotFoundException, IOException {
 		this(File.createTempFile("emptyfile", ".txt"), stmts);
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param index the index
+	 */
 	private ZestLoopFile(int index) {
 		super(index, "LoopFile" + counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
@@ -140,6 +160,15 @@ public class ZestLoopFile extends ZestLoop<String> {
 				statements);
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param index the index
+	 * @param name the name
+	 * @param pathToFile the path to file
+	 * @param statements the statements
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopFile(int index, String name, String pathToFile,
 			List<ZestStatement> statements) throws FileNotFoundException {
 		super(index, name, new ZestLoopTokenFileSet(pathToFile), statements);
@@ -163,21 +192,49 @@ public class ZestLoopFile extends ZestLoop<String> {
 				statements);
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param index the index
+	 * @param name the name
+	 * @param file the file
+	 * @param statements the statements
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopFile(int index, String name, File file,
 			List<ZestStatement> statements) throws FileNotFoundException {
 		super(index, name, new ZestLoopTokenFileSet(file.getAbsolutePath()), statements);
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param name the name
+	 * @param pathToFile the path to file
+	 * @param statements the statements
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopFile(String name, String pathToFile,
 			List<ZestStatement> statements) throws FileNotFoundException {
 		super(name, new ZestLoopTokenFileSet(pathToFile), statements);
 	}
 
+	/**
+	 * Instantiates a new zest loop file.
+	 *
+	 * @param name the name
+	 * @param file the file
+	 * @param statements the statements
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public ZestLoopFile(String name, File file, List<ZestStatement> statements)
 			throws FileNotFoundException {
 		super(name, new ZestLoopTokenFileSet(file.getAbsolutePath()), statements);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#deepCopy()
+	 */
 	@Override
 	public ZestLoopFile deepCopy() {
 		ZestLoopFile copy = new ZestLoopFile(this.getIndex());
@@ -188,23 +245,33 @@ public class ZestLoopFile extends ZestLoop<String> {
 	}
 
 	/**
-	 * returns the file of this loop
-	 * 
+	 * returns the file of this loop.
+	 *
 	 * @return the file of this loop
 	 */
 	public File getFile() {
 		return this.getSet().getFile();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#getCurrentState()
+	 */
 	@Override
 	public ZestLoopStateFile getCurrentState() {
 		return (ZestLoopStateFile) super.getCurrentState();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#getSet()
+	 */
 	@Override
 	public ZestLoopTokenFileSet getSet() {
 		return (ZestLoopTokenFileSet) super.getSet();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoop#setSet(org.mozilla.zest.core.v1.ZestLoopTokenSet)
+	 */
 	@Override
 	public void setSet(ZestLoopTokenSet<String> set){
 		if(set instanceof ZestLoopTokenFileSet){

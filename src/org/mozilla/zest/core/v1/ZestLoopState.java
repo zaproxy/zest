@@ -7,6 +7,7 @@
  */
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class represents a state of the loop.
  * 
@@ -80,6 +81,8 @@ public abstract class ZestLoopState<T> extends ZestElement {
 
 	/**
 	 * Increase index.
+	 *
+	 * @param step the step
 	 */
 	protected void increaseIndex(int step) {
 		this.currentIndex += step;
@@ -97,15 +100,17 @@ public abstract class ZestLoopState<T> extends ZestElement {
 
 	/**
 	 * this increase the state and goes to the next state.
-	 * 
-	 * @param step
-	 *            The step of the counter for this loop
+	 *
+	 * @param step The step of the counter for this loop
+	 * @param set the set
 	 * @return the new state
 	 */
 	public abstract boolean increase(int step, ZestLoopTokenSet<T> set);
 
 	/**
 	 * this sets the state to the last state: i.e. the loop has finished
+	 *
+	 * @param set the set
 	 */
 	public void toLastState(ZestLoopTokenSet<T> set) {
 		this.setIndex(set.size());
@@ -122,13 +127,17 @@ public abstract class ZestLoopState<T> extends ZestElement {
 
 	/**
 	 * Checks if is last state.
-	 * 
+	 *
+	 * @param set the set
 	 * @return true, if is last state
 	 */
 	public boolean isLastState(ZestLoopTokenSet<T> set) {
 		return (this.getCurrentIndex() >= set.size());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object otherObject) {
 		if (otherObject instanceof ZestLoopState<?>) {

@@ -375,7 +375,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	/**
 	 * Checks if is true.
 	 *
-	 * @param response the response
+	 * @param runtime the runtime
 	 * @return true, if is true
 	 */
 	public boolean isTrue(ZestRuntime runtime){
@@ -424,11 +424,19 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		copy.ifStatements=ifList;
 		return copy;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		String expression="IF - "+getRootExpression().toString();
 		return expression;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return true;

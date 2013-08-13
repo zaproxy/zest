@@ -149,6 +149,9 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		return replaced;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getFirstState()
+	 */
 	@Override
 	public ZestLoopStateString getFirstState() {
 		ZestLoopStateString firstState=new ZestLoopStateString(this);

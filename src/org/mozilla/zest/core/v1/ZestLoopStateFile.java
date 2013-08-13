@@ -7,21 +7,16 @@
  */
 package org.mozilla.zest.core.v1;
 
-import java.io.FileNotFoundException;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopStateFile.
  */
 public class ZestLoopStateFile extends ZestLoopState<String> {
 	
-//	/** The path to file. */
-//	private String pathToFile;
-	
 	/** The converted state. */
 	private transient ZestLoopStateString convertedState;
-	
-//	/** The file. */
-//	private transient File file;
+
 
 	/**
 	 * Instantiates a new zest loop state file.
@@ -33,27 +28,11 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 	/**
 	 * Instantiates a new zest loop state file.
 	 *
-	 * @param pathToFile the path to file
-	 * @throws FileNotFoundException the file not found exception
+	 * @param set the set
 	 */
 	public ZestLoopStateFile(ZestLoopTokenStringSet set){
 		super(set);
 	}
-
-	
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase()
-	 */
-	
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#toLastState()
-	 */
-//	@Override
-//	public void toLastState(ZestLoopTokenStringSet set) {
-//		convertedState.toLastState(set);
-//	}
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestLoopState#deepCopy()
@@ -68,46 +47,11 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 		return copy;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase(int, org.mozilla.zest.core.v1.ZestLoopTokenSet)
+	 */
 	@Override
 	public boolean increase(int step, ZestLoopTokenSet<String> set) {
 		return this.convertedState.increase(step, set);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#isLastState()
-	 */
-//	@Override
-//	public boolean isLastState(ZestLoopTokenStringSet set) {
-//		return convertedState.isLastState();
-//	}
-
-//	/**
-//	 * Gets the file.
-//	 *
-//	 * @return the file
-//	 */
-//	public File getFile() {
-//		return this.file;
-//	}
-
-//	/**
-//	 * Sets the file.
-//	 *
-//	 * @param newFile the new file
-//	 * @return the file
-//	 * @throws FileNotFoundException the file not found exception
-//	 */
-//	public File setFile(File newFile) throws FileNotFoundException {
-//		File oldFile = this.file;
-//		this.file = newFile;
-//		this.pathToFile = newFile.getAbsolutePath();
-//		this.convertedState = new ZestLoopStateString();
-//		init();
-//		return oldFile;
-//	}
-
-//	@Override
-//	public ZestLoopTokenStringSet getSet() {
-//		return this.convertedState.getSet();
-//	}
 }

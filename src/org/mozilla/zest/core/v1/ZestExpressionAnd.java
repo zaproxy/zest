@@ -68,6 +68,10 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		}
 		return toReturn;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT (":"(");

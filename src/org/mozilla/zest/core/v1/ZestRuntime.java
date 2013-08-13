@@ -12,14 +12,16 @@ package org.mozilla.zest.core.v1;
 public interface ZestRuntime {
 	
 	/**
-	 * Get the current value of the specified variable
-	 * @param name
+	 * Get the current value of the specified variable.
+	 *
+	 * @param name the name
 	 * @return the current value of the specified variable
 	 */
 	String getVariable(String name);
 	
 	/**
-	 * Get the last response
+	 * Get the last response.
+	 *
 	 * @return the last response
 	 */
 	ZestResponse getLastResponse();

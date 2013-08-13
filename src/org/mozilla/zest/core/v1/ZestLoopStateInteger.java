@@ -21,11 +21,8 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 
 	/**
 	 * Instantiates a new zest loop state integer.
-	 * 
-	 * @param start
-	 *            the start
-	 * @param end
-	 *            the end
+	 *
+	 * @param set the set
 	 */
 	public ZestLoopStateInteger(ZestLoopTokenIntegerSet set) {
 		super(set);
@@ -80,6 +77,9 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	// public ZestLoopTokenIntegerSet getSet() {
 	// return this.set;
 	// }
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestLoopState#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object otherObject) {
 		if (otherObject instanceof ZestLoopStateInteger) {
