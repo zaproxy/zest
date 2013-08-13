@@ -19,9 +19,6 @@ public class ZestExpressionEquals extends ZestExpression{
 	
 	private boolean caseExact = false;
 	
-	/** The inverse. */
-	private boolean inverse = false;
-	
 	/**
 	 * Instantiates a new zest expression regex.
 	 */
@@ -48,10 +45,10 @@ public class ZestExpressionEquals extends ZestExpression{
 	 */
 	public ZestExpressionEquals(String variableName, String value, boolean caseExact, boolean inverse) {
 		super ();
-		this.inverse=inverse;
 		this.variableName = variableName;
 		this.value = value;
 		this.caseExact = caseExact;
+		this.setInverse(inverse);
 	}
 	
 	/* (non-Javadoc)
@@ -105,23 +102,6 @@ public class ZestExpressionEquals extends ZestExpression{
 	@Override
 	public boolean isLeaf() {
 		return true;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isInverse()
-	 */
-	@Override
-	public boolean isInverse() {
-		return inverse;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#setInverse(boolean)
-	 */
-	@Override
-	public void setInverse(boolean not) {
-		inverse=not;
 	}
 	
 	/* (non-Javadoc)

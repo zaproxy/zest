@@ -18,9 +18,8 @@ public class ZestExpressionRegex extends ZestExpression{
 	/** The variableName. */
 	private String variableName;
 	
-	/** The inverse. */
-	private boolean inverse=false;
-	
+	private boolean caseExact = false;
+
 	/** The pattern. */
 	private transient Pattern pattern = null;
 
@@ -28,7 +27,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * Instantiates a new zest expression regex.
 	 */
 	public ZestExpressionRegex(){
-		this("", null, false);
+		this("", null, false, false);
 	}
 	
 	/**
@@ -38,7 +37,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @param regex the regex
 	 */
 	public ZestExpressionRegex(String variableName, String regex) {
-		this(variableName, regex, false);
+		this(variableName, regex, false, false);
 	}
 	
 	/**
@@ -48,13 +47,18 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @param regex the regex
 	 * @param inverse the inverse
 	 */
-	public ZestExpressionRegex(String variableName, String regex, boolean inverse) {
+	public ZestExpressionRegex(String variableName, String regex, boolean caseExact, boolean inverse) {
 		super ();
-		this.inverse=inverse;
 		this.variableName = variableName;
+		this.caseExact = caseExact;
+		this.setInverse(inverse);
 		this.regex = regex;
 		if (regex != null) {
-			this.pattern = Pattern.compile(regex);
+			if (caseExact) {
+				this.pattern = Pattern.compile(regex);
+			} else {
+				this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+			}
 		}
 	}
 	
@@ -71,7 +75,11 @@ public class ZestExpressionRegex extends ZestExpression{
 			return false;
 		}
 		if (pattern == null && regex != null) {
-			this.pattern = Pattern.compile(regex);
+			if (caseExact) {
+				this.pattern = Pattern.compile(regex);
+			} else {
+				this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+			}
 		}
 		
 		return pattern.matcher(str).find();
@@ -104,6 +112,15 @@ public class ZestExpressionRegex extends ZestExpression{
 		this.pattern = Pattern.compile(regex);
 	}
 
+
+	public boolean isCaseExact() {
+		return caseExact;
+	}
+
+	public void setCaseExact(boolean caseExact) {
+		this.caseExact = caseExact;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
 	 */
@@ -111,30 +128,13 @@ public class ZestExpressionRegex extends ZestExpression{
 	public boolean isLeaf() {
 		return true;
 	}
-
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isInverse()
-	 */
-	@Override
-	public boolean isInverse() {
-		return inverse;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#setInverse(boolean)
-	 */
-	@Override
-	public void setInverse(boolean not) {
-		inverse=not;
-	}
 	
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
 	public ZestExpressionRegex deepCopy() {
-		return new ZestExpressionRegex(this.getVariableName(), this.getRegex(), this.isInverse());
+		return new ZestExpressionRegex(this.getVariableName(), this.getRegex(), this.isCaseExact(), this.isInverse());
 	}
 	
 }

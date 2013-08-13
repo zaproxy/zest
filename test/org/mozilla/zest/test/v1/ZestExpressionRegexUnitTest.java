@@ -36,7 +36,7 @@ public class ZestExpressionRegexUnitTest {
 
 	@Test
 	public void testSetInverse() {
-		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "", false);
+		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "", false, false);
 		regex.setInverse(true);
 		assertTrue(regex.isInverse());
 	}
