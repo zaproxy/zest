@@ -6,7 +6,8 @@
 	<property name="lib" location="lib" />
 	<property name="src" location="src" />
 	<property name="src.version" value="1.7" />
-	<property name="zap.addon.dir" location="../zap-extensions-alpha/" />
+	<property name="test" location="test" />
+	<property name="zap.addon.dir" location="../zap-extensions-beta/" />
 	<property name="zest.version" value="0.2" />	<!-- Note that Zest v0.2 is work in progress" -->
 	<property name="zest.jar" value="mozilla-zest-${zest.version}.jar" />
 
@@ -32,8 +33,16 @@
 		
 		<!-- Compile the java code from ${src} into ${build} -->
 		<!--javac srcdir="${src}" destdir="${build}" classpath="zap.jar"/-->
-		<!--javac srcdir="${src}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="${debug}"-->
-		<javac srcdir="${src}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="true">
+		<javac srcdir="${src}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="${debug}">
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<!-- Compile the tests ${test} into ${build} -->
+		<javac srcdir="${test}" destdir="${build}" source="${src.version}" target="${src.version}" includeantruntime="false" debug="${debug}">
 			<classpath>
 				<fileset dir="${lib}">
 					<include name="**/*.jar" />
@@ -73,20 +82,53 @@
 		<jar jarfile="${dist}/${zest.jar}" update="true" compress="true">
 			<zipfileset dir="${build}" prefix="">
 				<include name="org/**"/>
+				<exclude name="org/mozilla/zest/test/**"/>
 			</zipfileset>
             <manifest>
                 <attribute name="Main-Class" value="org.mozilla.zest.impl.CmdLine" />
                 <attribute name="Class-Path" value="${dist.manifest.classpath}" />
                 <attribute name="Implementation-Version" value="${zest.version}" />
             </manifest>
-			<metainf  dir="${src}/META-INF"  includes="**/*" /> 
+			<metainf  dir="${src}/META-INF"  includes="**/*" />
+			<!--
 			<zipgroupfileset dir="${lib}" includes="*.jar" erroronmissingdir="false"/>
+			-->
 			<!--metainf>
                 <fileset dir="${src}/META-INF">
                     <include name="**/*" />
                 </fileset>
 			</metainf-->
 		</jar>
+	</target>
+
+	<target name="test" depends="compile">
+        <!-- Run the JUnit tests -->
+        <junit printsummary="yes" haltonerror="on">
+            <classpath>
+        		<fileset dir="lib">
+        			<include name="*.jar" />
+        		</fileset>
+        		<!--fileset dir="${zaproxy}/lib">
+        			<include name="*.jar" />
+        			<exclude name="ant*.jar" />
+        			<exclude name="junit*.jar" />
+        		</fileset>
+        		<fileset dir="${zaproxy}/build/zap">
+        			<include name="zap.jar" />
+        			<exclude name="ant*.jar" />
+        		</fileset-->
+            	
+        		<pathelement location="bin"/>		<!-- When running in Eclipse -->
+        		<pathelement location="build"/>		<!-- When running on build server -->
+            </classpath>
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="results">
+                <fileset dir="test">
+                    <include name="org/mozilla/zest/test/v1/ZestAllTestSuite.java"/>
+                </fileset>
+            </batchtest>
+		</junit>
 	</target>
 
 	<target name="deploy-to-zap-addon" depends="dist" description="deploy to the ZAP addon">

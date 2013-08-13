@@ -418,4 +418,8 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		String expression="IF - "+getRootExpression().toString();
 		return expression;
 	}
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
 }

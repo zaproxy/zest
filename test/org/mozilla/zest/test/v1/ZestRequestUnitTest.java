@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package mozilla.zest.core.v1;
+package mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,10 +37,10 @@ public class ZestRequestUnitTest {
 		ZestVariables tokens = new ZestVariables();
 		tokens.setTokenStart("{{");
 		tokens.setTokenEnd("}}");
-		tokens.addToken("token", "ABC");
-		tokens.addToken("token1", "DEFG");
-		tokens.addToken("token2", "GHI");
-		tokens.addToken("token3", "JKL");
+		tokens.addVariable("token", "ABC");
+		tokens.addVariable("token1", "DEFG");
+		tokens.addVariable("token2", "GHI");
+		tokens.addVariable("token3", "JKL");
 		req2.replaceTokens(tokens);
 		
 		assertEquals ("http://www.example.com/app/DEFG", req2.getUrl().toString());

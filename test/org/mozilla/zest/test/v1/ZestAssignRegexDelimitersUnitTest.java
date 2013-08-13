@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package mozilla.zest.core.v1;
+package mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -11,14 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
-import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
+import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
 import org.mozilla.zest.core.v1.ZestResponse;
 
 
 /**
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ZestAssignStringDelimitersUnitTest {
+public class ZestAssignRegexDelimitersUnitTest {
 
 	/**
 	 * Method testSimpleCase.
@@ -26,7 +26,7 @@ public class ZestAssignStringDelimitersUnitTest {
 	 */
 	@Test
 	public void testSimpleCase() throws Exception {
-		ZestAssignStringDelimiters ast = new ZestAssignStringDelimiters();
+		ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
 
 		ast.setVariableName("aaa");
@@ -46,19 +46,19 @@ public class ZestAssignStringDelimitersUnitTest {
 	 */
 	@Test
 	public void testRegexes() throws Exception {
-		ZestAssignStringDelimiters ast = new ZestAssignStringDelimiters();
+		ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
 
 		ast.setVariableName("aaa");
 		ast.setPrefix("^");
 		ast.setPostfix("$");
-		ast.setLocation(ZestAssignStringDelimiters.LOC_HEAD);
+		ast.setLocation(ZestAssignRegexDelimiters.LOC_HEAD);
 		assertEquals ("Header prefix12345postfix", ast.assign(resp));
 
 		ast.setVariableName("aaa");
 		ast.setPrefix("^");
 		ast.setPostfix("$");
-		ast.setLocation(ZestAssignStringDelimiters.LOC_BODY);
+		ast.setLocation(ZestAssignRegexDelimiters.LOC_BODY);
 		assertEquals ("Body Prefix54321Postfix", ast.assign(resp));
 	}
 
@@ -68,7 +68,7 @@ public class ZestAssignStringDelimitersUnitTest {
 	 */
 	@Test
 	public void testExceptions() throws Exception {
-		ZestAssignStringDelimiters ast = new ZestAssignStringDelimiters();
+		ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
 		ZestResponse resp = new ZestResponse(null, "aaaa", "bbbb", 200, 0);
 
 		ast.setVariableName("aaa");

@@ -152,4 +152,8 @@ INFO, /** The low. */
 		return copy;
 	}
 
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
 }

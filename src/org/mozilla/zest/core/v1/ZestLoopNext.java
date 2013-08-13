@@ -40,4 +40,9 @@ public class ZestLoopNext extends ZestStatement {
 		return new ZestLoopNext();
 	}
 
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
+
 }

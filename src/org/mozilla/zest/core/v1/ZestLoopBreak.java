@@ -39,5 +39,10 @@ public class ZestLoopBreak extends ZestStatement {
 	public ZestLoopBreak deepCopy() {
 		return new ZestLoopBreak();
 	}
+
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
 	
 }

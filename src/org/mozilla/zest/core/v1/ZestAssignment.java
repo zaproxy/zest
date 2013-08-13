@@ -77,6 +77,11 @@ public abstract class ZestAssignment extends ZestStatement {
 		this.variableName = name;
 	}
 
+	@Override
+	public boolean isPassive() {
+		return true;
+	}
+
 	/**
 	 * Invoke.
 	 *
