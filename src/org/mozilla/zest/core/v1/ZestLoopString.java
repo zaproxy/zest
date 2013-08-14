@@ -16,13 +16,11 @@ import java.util.List;
  */
 public class ZestLoopString extends ZestLoop<String> {
 	
-	/** The counter. */
-	private static int counter=0;
 	/**
 	 * Instantiates a new zest loop string.
 	 */
 	public ZestLoopString(){
-		super("LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
+		super( new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -41,7 +39,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param stmts the stmts
 	 */
 	public ZestLoopString(List<ZestStatement> stmts){
-		super("LoopString"+counter++, new ZestLoopTokenStringSet(), stmts);
+		super( new ZestLoopTokenStringSet(), stmts);
 	}
 	
 	/**
@@ -61,7 +59,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param values the values
 	 */
 	public ZestLoopString(String[] values){
-		super("LoopString"+counter++,new ZestLoopTokenStringSet(values), new LinkedList<ZestStatement>());
+		super(new ZestLoopTokenStringSet(values), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -71,7 +69,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param statements the statements
 	 */
 	public ZestLoopString(String[] values, List<ZestStatement> statements){
-		super("LoopString"+counter++,new ZestLoopTokenStringSet(values), statements);
+		super(new ZestLoopTokenStringSet(values), statements);
 	}
 	
 	/**
@@ -80,7 +78,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param index the index
 	 */
 	public ZestLoopString(int index){
-		super(index,"LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
+		super(index,new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -91,7 +89,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param statements the statements
 	 */
 	public ZestLoopString(int index, String[] values, List<ZestStatement> statements){
-		super(index,"LoopString"+counter++, new ZestLoopTokenStringSet(values), statements);
+		super(index,new ZestLoopTokenStringSet(values), statements);
 	}
 	
 	/**
@@ -101,7 +99,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * @param values the values
 	 */
 	public ZestLoopString(int index, String[] values){
-		super(index, "LoopString"+counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
+		super(index, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 	
 	/**

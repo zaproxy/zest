@@ -29,7 +29,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	private ZestLoopTokenSet<T> set=null;
 	
 	/** The variable name. */
-	private String variableName="";
+	private String variableName="Loop";
 	/** contains the snapshot of the current state of the loop. */
 	private transient ZestLoopState<T> currentState;
 	/**
@@ -40,15 +40,13 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	/** The step. */
 	private int step=1;
 	
-	/** The counter. */
-	private transient static int counter=0;
 	
 	/**
 	 * Instantiates a new zest loop.
 	 */
 	protected ZestLoop(){
 		super();
-		init(getName(), null, new LinkedList<ZestStatement>());
+		init(null, new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -60,7 +58,13 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
  */
 	protected ZestLoop(String name, ZestLoopTokenSet<T> set, List<ZestStatement> stmts){
 		super();
-		init(name, set, stmts);
+		this.variableName=name;
+		init( set, stmts);
+	}
+	
+	protected ZestLoop(ZestLoopTokenSet<T> set, List<ZestStatement> stmts){
+		super();
+		init(set, stmts);
 	}
 
 /**
@@ -74,7 +78,14 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
 	protected ZestLoop(int index,String name, ZestLoopTokenSet<T> set,
 			List<ZestStatement> statements) {
 		super(index);
-		init(name, set, statements);
+		this.variableName=name;
+		init(set, statements);
+	}
+	
+	protected ZestLoop(int index, ZestLoopTokenSet<T> set,
+			List<ZestStatement> statements) {
+		super(index);
+		init(set, statements);
 	}
 
 
@@ -85,20 +96,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer
  * @param set the set
  * @param statements the statements
  */
-private void init(String name, ZestLoopTokenSet<T> set, List<ZestStatement> statements){
+private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 			this.set=set;
 			this.statements=statements;
-			this.variableName=name;
 			this.currentState=set.getFirstState();
-		}
-		
-		/**
-		 * Gets the name.
-		 *
-		 * @return the name
-		 */
-		private String getName(){
-			return "ZestLoop"+counter++;
 		}
 
 /**

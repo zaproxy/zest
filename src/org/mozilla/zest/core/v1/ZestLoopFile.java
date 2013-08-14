@@ -21,9 +21,6 @@ import java.util.List;
  */
 public class ZestLoopFile extends ZestLoop<String> {
 	
-	/** The counter. */
-	private static int counter = 0;
-
 	/**
 	 * Instantiates a new zest loop file.
 	 *
@@ -52,7 +49,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 * @param index the index
 	 */
 	private ZestLoopFile(int index) {
-		super(index, "LoopFile" + counter++, new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
+		super(index , new ZestLoopTokenStringSet(), new LinkedList<ZestStatement>());
 	}
 
 	/**
@@ -64,7 +61,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 *             the file not found exception
 	 */
 	public ZestLoopFile(File file) throws FileNotFoundException {
-		this("LoopFile" + counter++, file, new LinkedList<ZestStatement>());
+		super(new ZestLoopTokenFileSet(file.getAbsolutePath()), new LinkedList<ZestStatement>());
 	}
 
 	/**
@@ -78,7 +75,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 *             the file not found exception
 	 */
 	public ZestLoopFile(int index, File file) throws FileNotFoundException {
-		this(index, "LoopFile" + counter++, file,
+		this(index, file,
 				new LinkedList<ZestStatement>());
 	}
 
@@ -91,7 +88,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 *             the file not found exception
 	 */
 	public ZestLoopFile(String pathToFile) throws FileNotFoundException {
-		this("LoopFile" + counter++, pathToFile,
+		this( pathToFile,
 				new LinkedList<ZestStatement>());
 	}
 
@@ -107,7 +104,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 */
 	public ZestLoopFile(int index, String pathToFile)
 			throws FileNotFoundException {
-		this(index, "LoopFile" + counter++, pathToFile,
+		this(index, pathToFile,
 				new LinkedList<ZestStatement>());
 	}
 
@@ -123,7 +120,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 */
 	public ZestLoopFile(String pathToFile, List<ZestStatement> statements)
 			throws FileNotFoundException {
-		super("LoopFile" + counter++, new ZestLoopTokenFileSet(pathToFile),
+		super( new ZestLoopTokenFileSet(pathToFile),
 				statements);
 	}
 
@@ -139,7 +136,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 */
 	public ZestLoopFile(File file, List<ZestStatement> statements)
 			throws FileNotFoundException {
-		super("LoopFile" + counter++, new ZestLoopTokenFileSet(file.getAbsolutePath()), statements);
+		super( new ZestLoopTokenFileSet(file.getAbsolutePath()), statements);
 	}
 
 	/**
@@ -156,7 +153,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 */
 	public ZestLoopFile(int index, String pathToFile,
 			List<ZestStatement> statements) throws FileNotFoundException {
-		super("LoopFile" + counter++, new ZestLoopTokenFileSet(pathToFile),
+		super( new ZestLoopTokenFileSet(pathToFile),
 				statements);
 	}
 
@@ -188,7 +185,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 */
 	public ZestLoopFile(int index, File file, List<ZestStatement> statements)
 			throws FileNotFoundException {
-		super(index, "LoopFile" + counter++, new ZestLoopTokenFileSet(file.getAbsolutePath()),
+		super(index, new ZestLoopTokenFileSet(file.getAbsolutePath()),
 				statements);
 	}
 

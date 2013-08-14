@@ -16,14 +16,11 @@ import java.util.List;
  */
 public class ZestLoopInteger extends ZestLoop<Integer> {
 	
-	/** The counter. */
-	private static int counter=0;
-	
 	/**
 	 * Instantiates a new zest loop integer.
 	 */
 	public ZestLoopInteger(){
-		super("LoopInteger"+counter++, new ZestLoopTokenIntegerSet(0, 0), new LinkedList<ZestStatement>());
+		super( new ZestLoopTokenIntegerSet(0, 0), new LinkedList<ZestStatement>());
 	}
 	
 	/**
@@ -52,7 +49,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param stmts the stmts
 	 */
 	public ZestLoopInteger(List<ZestStatement> stmts){
-		super("LoopInteger"+counter++, new ZestLoopTokenIntegerSet(0, 0), stmts);
+		super( new ZestLoopTokenIntegerSet(0, 0), stmts);
 	}
 	
 	/**
@@ -73,7 +70,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param statements the statements
 	 */
 	public ZestLoopInteger(int index, int start, int end, List<ZestStatement> statements){
-		super(index,"LoopInteger"+counter++, new ZestLoopTokenIntegerSet(start, end), statements);
+		super(index,new ZestLoopTokenIntegerSet(start, end), statements);
 	}
 	
 	/**
@@ -97,7 +94,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param statements the statements
 	 */
 	public ZestLoopInteger(int start, int end, List<ZestStatement> statements){
-		super("LoopInteger"+counter++,new ZestLoopTokenIntegerSet(start, end),statements);
+		super(new ZestLoopTokenIntegerSet(start, end),statements);
 	}
 	
 	/**
@@ -120,7 +117,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	 * @param end the end
 	 */
 	public ZestLoopInteger(int index, int start, int end){
-		super(index,"LoopInteger"+counter++, new ZestLoopTokenIntegerSet(start, end), new LinkedList<ZestStatement>());
+		super(index,new ZestLoopTokenIntegerSet(start, end), new LinkedList<ZestStatement>());
 	}
 	
 	/**
