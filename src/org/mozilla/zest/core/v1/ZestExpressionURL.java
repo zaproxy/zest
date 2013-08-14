@@ -138,5 +138,20 @@ public class ZestExpressionURL extends ZestExpression {
 		copy.excludeRegexes = copyExcludeRegex;
 		return copy;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+"URL: ACCEPT:";
+		for(String s:includeRegexes){
+			expression+=" "+s;
+		}
+		expression+=", EXCLUDE:";
+		for(String s:excludeRegexes){
+			expression+=s+" ";
+		}
+		return expression;
+	}
 }

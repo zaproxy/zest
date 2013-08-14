@@ -261,6 +261,7 @@ public class ZestRequest extends ZestStatement {
 	 *
 	 * @param tokens the tokens
 	 * @param str the str
+	 * @param urlEncode the url encode
 	 * @return the string
 	 */
 	private String replaceInString (ZestVariables tokens, String str, boolean urlEncode) {
@@ -329,6 +330,9 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return false;

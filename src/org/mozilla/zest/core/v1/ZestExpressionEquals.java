@@ -17,6 +17,7 @@ public class ZestExpressionEquals extends ZestExpression{
 	/** The variableName which will be assigned to. */
 	private String variableName;
 	
+	/** The case exact. */
 	private boolean caseExact = false;
 	
 	/**
@@ -40,7 +41,8 @@ public class ZestExpressionEquals extends ZestExpression{
 	 * Instantiates a new zest expression regex.
 	 *
 	 * @param variableName the variableName
-	 * @param regex the regex
+	 * @param value the value
+	 * @param caseExact the case exact
 	 * @param inverse the inverse
 	 */
 	public ZestExpressionEquals(String variableName, String value, boolean caseExact, boolean inverse) {
@@ -71,27 +73,57 @@ public class ZestExpressionEquals extends ZestExpression{
 		}
 	}
 
+	/**
+	 * Gets the variable name.
+	 *
+	 * @return the variable name
+	 */
 	public String getVariableName() {
 		return variableName;
 	}
 
+	/**
+	 * Sets the variable name.
+	 *
+	 * @param variableName the new variable name
+	 */
 	public void setVariableName(String variableName) {
 		this.variableName = variableName;
 	}
 
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
+	/**
+	 * Checks if is case exact.
+	 *
+	 * @return true, if is case exact
+	 */
 	public boolean isCaseExact() {
 		return caseExact;
 	}
 
+	/**
+	 * Sets the case exact.
+	 *
+	 * @param caseExact the new case exact
+	 */
 	public void setCaseExact(boolean caseExact) {
 		this.caseExact = caseExact;
 	}

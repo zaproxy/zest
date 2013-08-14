@@ -1,7 +1,5 @@
 package org.mozilla.zest.test.v1;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 

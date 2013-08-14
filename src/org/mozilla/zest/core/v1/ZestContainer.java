@@ -52,10 +52,8 @@ public interface ZestContainer {
 	public ZestStatement getChildBefore(ZestStatement child);
 	
 	/**
-	 * Returns all of the variable names defined by this staement and its children
+	 * Returns all of the variable names defined by this staement and its children.
 	 *
-	 * @param tokenStart the token start
-	 * @param tokenEnd the token end
 	 * @return the tokens
 	 */
 	abstract Set<String> getVariableNames();

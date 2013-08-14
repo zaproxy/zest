@@ -11,10 +11,10 @@ import java.util.List;
  * The Class ZestExpressionOr.
  */
 public class ZestExpressionOr extends ZestStructuredExpression {
-	
+
 	/**
 	 * Main construptor.
-	 *
+	 * 
 	 */
 	public ZestExpressionOr() {
 		super();
@@ -22,15 +22,20 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 
 	/**
 	 * Construptor.
-	 *
-	 * @param children the list of the OR clauses
+	 * 
+	 * @param children
+	 *            the list of the OR clauses
 	 */
 	public ZestExpressionOr(List<ZestExpressionElement> children) {
 		super(children);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
+	 * .core.v1.ZestResponse)
 	 */
 	@Override
 	public boolean isTrue(ZestRuntime runtime) {
@@ -45,18 +50,34 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return toReturn;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
 	public ZestExpressionOr deepCopy() {
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();
-		if (getChildrenCondition()!=null) {
+		if (getChildrenCondition() != null) {
 			for (int i = 0; i < getChildrenCondition().size(); i++) {
 				copyChildren.add(getChildrenCondition().get(i).deepCopy());
 			}
 		}
-		ZestExpressionOr copy=new ZestExpressionOr(copyChildren);
+		ZestExpressionOr copy = new ZestExpressionOr(copyChildren);
 		return copy;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String expression = (isInverse() ? "NOT (" : "(");
+		for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
+			expression += " " + this.getChild(i).toString() + " OR";
+		}
+		expression += this.getChild(this.getChildrenCondition().size() - 1)
+				.toString() + ")";
+		return expression;
 	}
 }

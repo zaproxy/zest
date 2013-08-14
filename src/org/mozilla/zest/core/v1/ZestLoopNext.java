@@ -31,6 +31,9 @@ public class ZestLoopNext extends ZestStatement {
 		return new ZestLoopNext();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return true;

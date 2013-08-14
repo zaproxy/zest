@@ -53,7 +53,7 @@ public class ZestAssertion extends ZestElement{
 	/**
 	 * Checks if is valid.
 	 *
-	 * @param response the response
+	 * @param runtime the runtime
 	 * @return true, if is valid
 	 */
 	public boolean isValid (ZestRuntime runtime) {

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestAssignStringDelimiters allows you to assign a string to the specified variable
  * from the last response received. The string is delimited by the strings specified.
@@ -23,10 +24,10 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 	/** The location. */
 	private String location;
 
-	/** The location constant which represents the Head of a response */
+	/** The location constant which represents the Head of a response. */
 	transient public static final String LOC_HEAD = "HEAD"; 
 	
-	/** The location constant which represents the Body of a response */
+	/** The location constant which represents the Body of a response. */
 	transient public static final String LOC_BODY = "BODY"; 
 
 	/** The set of valid locations. */
