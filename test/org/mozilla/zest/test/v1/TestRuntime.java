@@ -1,4 +1,4 @@
-package mozilla.zest.test.v1;
+package org.mozilla.zest.test.v1;
 
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRuntime;

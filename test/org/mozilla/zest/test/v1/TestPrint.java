@@ -5,7 +5,7 @@
  * 
  * @author Alessandro Secco: seccoale@gmail.com
  */
-package mozilla.zest.test.v1;
+package org.mozilla.zest.test.v1;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedList;

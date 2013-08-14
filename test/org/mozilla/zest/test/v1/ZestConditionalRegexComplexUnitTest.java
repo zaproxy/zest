@@ -1,4 +1,4 @@
-package mozilla.zest.test.v1;
+package org.mozilla.zest.test.v1;
 
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
