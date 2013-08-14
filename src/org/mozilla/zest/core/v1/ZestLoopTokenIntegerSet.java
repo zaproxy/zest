@@ -18,10 +18,10 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		ZestLoopTokenSet<Integer> {
 	
 	/** The start. */
-	private int start;
+	private int start=0;
 	
 	/** The end. */
-	private int end;
+	private int end=0;
 	
 	/**
 	 * Instantiates a new zest loop token integer set.

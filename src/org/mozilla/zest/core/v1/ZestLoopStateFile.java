@@ -32,6 +32,7 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 	 */
 	public ZestLoopStateFile(ZestLoopTokenStringSet set){
 		super(set);
+		this.convertedState=set.getFirstState();
 	}
 
 	/* (non-Javadoc)
@@ -40,10 +41,11 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 	@Override
 	public ZestLoopState<String> deepCopy() {
 		ZestLoopStateFile copy = new ZestLoopStateFile();
+		if(this.convertedState==null){
+		System.err.println("this converted state is null? ");
+		}
 		copy.convertedState = (ZestLoopStateString) this.convertedState
 				.deepCopy();
-//		copy.file = this.file;
-//		copy.pathToFile = this.pathToFile;
 		return copy;
 	}
 
