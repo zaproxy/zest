@@ -10,16 +10,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestTokens.
  */
 public class ZestVariables extends ZestElement {
 	
+	/** The Constant REQUEST_URL. */
 	public static final String REQUEST_URL 		= "request.url";
+	
+	/** The Constant REQUEST_HEADER. */
 	public static final String REQUEST_HEADER 	= "request.header";
+	
+	/** The Constant REQUEST_BODY. */
 	public static final String REQUEST_BODY 	= "request.body";
+	
+	/** The Constant RESPONSE_URL. */
 	public static final String RESPONSE_URL 	= "response.url";
+	
+	/** The Constant RESPONSE_HEADER. */
 	public static final String RESPONSE_HEADER 	= "response.header";
+	
+	/** The Constant RESPONSE_BODY. */
 	public static final String RESPONSE_BODY 	= "response.body";
 
 	/** The token start. */
@@ -169,6 +181,11 @@ public class ZestVariables extends ZestElement {
 		this.tokens.put(name, value);
 	}
 	
+	/**
+	 * Sets the standard variables.
+	 *
+	 * @param request the new standard variables
+	 */
 	public void setStandardVariables(ZestRequest request) {
 		if (request != null) {
 			if (request.getUrl()!= null) {
@@ -179,6 +196,11 @@ public class ZestVariables extends ZestElement {
 		}
 	}
 
+	/**
+	 * Sets the standard variables.
+	 *
+	 * @param response the new standard variables
+	 */
 	public void setStandardVariables(ZestResponse response) {
 		if (response != null) {
 			if (response.getUrl() != null) {

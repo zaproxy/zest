@@ -23,6 +23,11 @@ public abstract class ZestAssignment extends ZestStatement {
 		super();
 	}
 
+	/**
+	 * Instantiates a new zest assignment.
+	 *
+	 * @param variableName the variable name
+	 */
 	public ZestAssignment(String variableName) {
 		super();
 		this.variableName = variableName;
@@ -54,19 +59,26 @@ public abstract class ZestAssignment extends ZestStatement {
 	}
 
 	/**
-	 * Returns the variable name
+	 * Returns the variable name.
+	 *
+	 * @return the variable name
 	 */
 	public String getVariableName() {
 		return variableName;
 	}
 
 	/**
-	 * Sets the variable name
+	 * Sets the variable name.
+	 *
+	 * @param name the new variable name
 	 */
 	public void setVariableName(String name) {
 		this.variableName = name;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
+	 */
 	@Override
 	public boolean isPassive() {
 		return true;
@@ -77,7 +89,7 @@ public abstract class ZestAssignment extends ZestStatement {
 	 *
 	 * @param response the response
 	 * @return the string
-	 * @throws ZestActionFailException the zest action fail exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	public abstract String assign(ZestResponse response) throws ZestAssignFailException;
 	

@@ -68,4 +68,17 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		}
 		return toReturn;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT (":"(");
+		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
+			expression += " "+this.getChild(i).toString()+" AND";
+		}
+		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+")";
+		return expression;
+	}
 }

@@ -27,7 +27,7 @@ public class ZestLoopStateUnitTest {
 	@Test
 	public void testZestLoopState() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
-		assertFalse(state.isLastState());
+		assertFalse(state.isLastState(set));
 	}
 
 	// @Test(expected=IllegalArgumentException.class)
@@ -48,7 +48,7 @@ public class ZestLoopStateUnitTest {
 		int index = 3;
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		for (int i = 0; i < index; i++) {
-			state.increase();
+			state.increase(1, set);
 		}
 		assertTrue(state.getCurrentIndex() == index);
 	}
@@ -57,7 +57,7 @@ public class ZestLoopStateUnitTest {
 	public void testIncrease() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		int currentIndex = state.getCurrentIndex();
-		boolean increasable = state.increase();
+		boolean increasable = state.increase(1, set);
 		if (!increasable) {
 			fail();
 		}
@@ -69,32 +69,18 @@ public class ZestLoopStateUnitTest {
 	@Test
 	public void testToLastState() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
-		state.toLastState();
-		assertTrue(state.isLastState());
+		state.toLastState(set);
+		assertTrue(state.isLastState(set));
 	}
 
-	@Test
-	public void testDeepCopy() {
-		ZestLoopStateString state = new ZestLoopStateString(set);
-		ZestLoopStateString copy = (ZestLoopStateString) state.deepCopy();
-		if (state.getCurrentIndex() != copy.getCurrentIndex()) {
-			fail("Not same index!");
-		}
-		for (int i = 0; i < 0; i++) {
-			String expected = state.getTokenSet().getToken(i);
-			String obtained = copy.getTokenSet().getToken(i);
-			String msg = i + " obtained " + obtained + " instead of " + expected;
-			assertTrue(msg, expected.equals(obtained));
-		}
-	}
 
 	@Test
 	public void testIsLastState() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		for (int i = 0; i < 13; i++) {
-			state.increase();
+			state.increase(1, set);
 			if (state.getCurrentIndex() == set.size()) {
-				assertTrue(state.isLastState());
+				assertTrue(state.isLastState(set));
 				break;
 			}
 		}

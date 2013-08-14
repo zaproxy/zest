@@ -161,6 +161,11 @@ public abstract class ZestStatement extends ZestElement {
 	 */
 	public abstract ZestStatement deepCopy();
 	
+	/**
+	 * Checks if is passive.
+	 *
+	 * @return true, if is passive
+	 */
 	public abstract boolean isPassive();
 
 	/* Useful when debuging ;)

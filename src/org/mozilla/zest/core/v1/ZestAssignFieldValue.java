@@ -10,6 +10,7 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestTransformFieldReplace.
  */
@@ -27,7 +28,7 @@ public class ZestAssignFieldValue extends ZestAssignment {
 	/**
 	 * Instantiates a new zest transform field replace.
 	 *
-	 * @param requestString the variableName
+	 * @param variableName the variable name
 	 */
 	public ZestAssignFieldValue(String variableName) {
 		super(variableName);
@@ -36,7 +37,7 @@ public class ZestAssignFieldValue extends ZestAssignment {
 	/**
 	 * Instantiates a new zest transform field replace.
 	 *
-	 * @param requestString the request string
+	 * @param variableName the variable name
 	 * @param fieldDefinition the field definition
 	 */
 	public ZestAssignFieldValue(String variableName, ZestFieldDefinition fieldDefinition) {
@@ -70,6 +71,9 @@ public class ZestAssignFieldValue extends ZestAssignment {
 		this.fieldDefinition = fieldDefinition;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestAssignment#assign(org.mozilla.zest.core.v1.ZestResponse)
+	 */
 	@Override
 	public String assign(ZestResponse response) throws ZestAssignFailException {
 		Source src = new Source(response.getHeaders() + response.getBody());

@@ -19,11 +19,11 @@ public interface ZestRunner {
 	 * Run.
 	 *
 	 * @param script the script
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	void run (ZestScript script) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
@@ -33,11 +33,11 @@ public interface ZestRunner {
 	 * Run script.
 	 *
 	 * @param reader the reader
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	void runScript (Reader reader) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
@@ -47,11 +47,11 @@ public interface ZestRunner {
 	 * Run script.
 	 *
 	 * @param script the script
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	void runScript (String script) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
@@ -62,11 +62,11 @@ public interface ZestRunner {
 	 *
 	 * @param script the script
 	 * @param target the target
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	void run (ZestScript script, ZestRequest target) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
@@ -81,9 +81,9 @@ public interface ZestRunner {
 	 * @return the zest response
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
+	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
 	ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
@@ -94,7 +94,6 @@ public interface ZestRunner {
 	 *
 	 * @param request the request
 	 * @return the zest response
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	ZestResponse send (ZestRequest request) throws IOException;
@@ -104,7 +103,6 @@ public interface ZestRunner {
 	 *
 	 * @param request the request
 	 * @param response the response
-	 * @throws ZestTransformFailException the zest transform fail exception
 	 * @throws ZestAssertFailException the zest assert fail exception
 	 * @throws ZestActionFailException the zest action fail exception
 	 */
@@ -212,9 +210,26 @@ public interface ZestRunner {
 	 */
 	void setOutputWriter(Writer writer);
 
+	/**
+	 * Gets the variable.
+	 *
+	 * @param name the name
+	 * @return the variable
+	 */
 	String getVariable(String name);
 	
+	/**
+	 * Sets the variable.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	void setVariable (String name, String value);
 
+	/**
+	 * Sets the variables.
+	 *
+	 * @param variables the variables
+	 */
 	void setVariables (Map<String, String> variables);
 }

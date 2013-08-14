@@ -16,7 +16,7 @@ import org.mozilla.zest.core.v1.ZestLoopFile;
 /**
  */
 public class ZestLoopFileUnitTest {
-	public static final File file=new File("test/org/TestLoopFile.txt");
+	public static final File file=new File("test/TestLoopFile.txt");
 	/**
 	 * Method testOpenFile.
 	 * @throws IOException

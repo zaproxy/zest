@@ -18,6 +18,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	/** The variableName. */
 	private String variableName;
 	
+	/** The case exact. */
 	private boolean caseExact = false;
 
 	/** The pattern. */
@@ -45,6 +46,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 *
 	 * @param variableName the variableName
 	 * @param regex the regex
+	 * @param caseExact the case exact
 	 * @param inverse the inverse
 	 */
 	public ZestExpressionRegex(String variableName, String regex, boolean caseExact, boolean inverse) {
@@ -85,10 +87,20 @@ public class ZestExpressionRegex extends ZestExpression{
 		return pattern.matcher(str).find();
 	}
 
+	/**
+	 * Gets the variable name.
+	 *
+	 * @return the variable name
+	 */
 	public String getVariableName() {
 		return variableName;
 	}
 
+	/**
+	 * Sets the variable name.
+	 *
+	 * @param variableName the new variable name
+	 */
 	public void setVariableName(String variableName) {
 		this.variableName = variableName;
 	}
@@ -113,10 +125,20 @@ public class ZestExpressionRegex extends ZestExpression{
 	}
 
 
+	/**
+	 * Checks if is case exact.
+	 *
+	 * @return true, if is case exact
+	 */
 	public boolean isCaseExact() {
 		return caseExact;
 	}
 
+	/**
+	 * Sets the case exact.
+	 *
+	 * @param caseExact the new case exact
+	 */
 	public void setCaseExact(boolean caseExact) {
 		this.caseExact = caseExact;
 	}
@@ -135,6 +157,15 @@ public class ZestExpressionRegex extends ZestExpression{
 	@Override
 	public ZestExpressionRegex deepCopy() {
 		return new ZestExpressionRegex(this.getVariableName(), this.getRegex(), this.isCaseExact(), this.isInverse());
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+"REGEX: "+regex;
+		return expression;
 	}
 	
 }

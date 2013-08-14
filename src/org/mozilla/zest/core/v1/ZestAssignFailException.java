@@ -4,6 +4,7 @@
 
 package org.mozilla.zest.core.v1;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ZestActionFailException.
  */
@@ -18,7 +19,7 @@ public class ZestAssignFailException extends Exception {
 	/**
 	 * Instantiates a new zest action fail exception.
 	 *
-	 * @param action the action
+	 * @param assign the assign
 	 * @param message the message
 	 */
 	public ZestAssignFailException (ZestAssignment assign, String message) {
@@ -29,7 +30,7 @@ public class ZestAssignFailException extends Exception {
 	/**
 	 * Instantiates a new zest action fail exception.
 	 *
-	 * @param action the action
+	 * @param assign the assign
 	 */
 	public ZestAssignFailException (ZestAssignment assign) {
 		super();

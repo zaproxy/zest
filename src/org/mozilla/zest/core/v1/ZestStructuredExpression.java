@@ -6,6 +6,7 @@ package org.mozilla.zest.core.v1;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+// TODO: Auto-generated Javadoc
 //TODO: Auto-generated Javadoc
 /*
 * The Class ZestStructuredExpression.
