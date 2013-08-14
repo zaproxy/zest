@@ -15,7 +15,7 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 
 	/** The set. */
 	// private ZestLoopTokenIntegerSet set;
-	public ZestLoopStateInteger() {
+	private ZestLoopStateInteger() {
 		super();
 	}
 
@@ -26,6 +26,7 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 	 */
 	public ZestLoopStateInteger(ZestLoopTokenIntegerSet set) {
 		super(set);
+		this.setCurrentToken(set.getStart());
 	}
 
 	/*
