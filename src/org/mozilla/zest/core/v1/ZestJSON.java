@@ -60,18 +60,9 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 						.registerTypeAdapter(ZestElement.class, new ZestJSON())
 						.registerTypeAdapter(ZestStatement.class, new ZestJSON())
 						.registerTypeAdapter(ZestExpressionElement.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopInteger.class, new ZestJSON())
 						.registerTypeAdapter(ZestLoop.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopStateFile.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopStateInteger.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopStateString.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopTokenIntegerSet.class, new ZestJSON())
 						.registerTypeAdapter(ZestLoopState.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopTokenFileSet.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopFile.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopString.class, new ZestJSON())
 						.registerTypeAdapter(ZestLoopTokenSet.class, new ZestJSON())
-//						.registerTypeAdapter(ZestLoopTokenStringSet.class, new ZestJSON())
 						.setPrettyPrinting()
 						.create();
 			
