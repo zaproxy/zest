@@ -185,4 +185,8 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public ZestLoopTokenIntegerSet getSet() {
 		return (ZestLoopTokenIntegerSet) super.getSet();
 	}
+	@Override
+	public void setSet(ZestLoopTokenSet<Integer> newSet){
+		super.setSet(newSet);
+	}
 }

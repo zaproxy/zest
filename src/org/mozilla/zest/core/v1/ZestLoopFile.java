@@ -274,7 +274,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 		if(set instanceof ZestLoopTokenFileSet){
 			super.setSet(set);
 		} else{
-			System.err.println("The given set is not a "+this.getSet().getClass());
+			throw new IllegalArgumentException("Invelid set. It must be instance of "+ZestLoopTokenFileSet.class.getName());
 		}
 	}
 }
