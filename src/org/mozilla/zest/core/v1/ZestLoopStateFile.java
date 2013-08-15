@@ -41,9 +41,6 @@ public class ZestLoopStateFile extends ZestLoopState<String> {
 	@Override
 	public ZestLoopState<String> deepCopy() {
 		ZestLoopStateFile copy = new ZestLoopStateFile();
-		if(this.convertedState==null){
-		System.err.println("this converted state is null? ");
-		}
 		copy.convertedState = (ZestLoopStateString) this.convertedState
 				.deepCopy();
 		return copy;
