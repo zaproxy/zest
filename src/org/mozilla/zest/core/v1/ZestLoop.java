@@ -17,192 +17,213 @@ import java.util.Set;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoop.
- *
- * @param <T> the generic type
+ * 
+ * @param <T>
+ *            the generic type
  */
-public abstract class ZestLoop<T> extends ZestStatement implements ZestContainer, Enumeration<ZestStatement> {
-	
+public abstract class ZestLoop<T> extends ZestStatement implements
+		ZestContainer, Enumeration<ZestStatement> {
+
 	/** contains all the statement inside the loop. */
-	private List<ZestStatement> statements=new LinkedList<>();
-	
+	private List<ZestStatement> statements = new LinkedList<>();
+
 	/** The set. */
-	private ZestLoopTokenSet<T> set=null;
-	
+	private ZestLoopTokenSet<T> set = null;
+
 	/** The variable name. */
-	private String variableName="Loop";
+	private String variableName = "Loop";
 	/** contains the snapshot of the current state of the loop. */
 	private transient ZestLoopState<T> currentState;
 	/**
 	 * contains the index of the current statement considered.
 	 */
-	private int stmtIndex=0;
-	
+	private int stmtIndex = 0;
+
 	/** The step. */
-	private int step=1;
-	
-	
+	private int step = 1;
+
 	/**
 	 * Instantiates a new zest loop.
 	 */
-	protected ZestLoop(){
+	protected ZestLoop() {
 		super();
 		init(null, new LinkedList<ZestStatement>());
 	}
-	
+
 	/**
- * Instantiates a new zest loop.
- *
- * @param name the name
- * @param set the set
- * @param stmts the stmts
- */
-	protected ZestLoop(String name, ZestLoopTokenSet<T> set, List<ZestStatement> stmts){
+	 * Instantiates a new zest loop.
+	 * 
+	 * @param name
+	 *            the name
+	 * @param set
+	 *            the set
+	 * @param stmts
+	 *            the stmts
+	 */
+	protected ZestLoop(String name, ZestLoopTokenSet<T> set,
+			List<ZestStatement> stmts) {
 		super();
-		this.variableName=name;
-		init( set, stmts);
+		this.variableName = name;
+		init(set, stmts);
 	}
-	
-	protected ZestLoop(ZestLoopTokenSet<T> set, List<ZestStatement> stmts){
+
+	protected ZestLoop(ZestLoopTokenSet<T> set, List<ZestStatement> stmts) {
 		super();
 		init(set, stmts);
 	}
 
-/**
- * Construptor with initialization state and the list of statement inside the loop.
- *
- * @param index the index
- * @param name the name
- * @param set the set
- * @param statements all the statements inside the loop
- */
-	protected ZestLoop(int index,String name, ZestLoopTokenSet<T> set,
+	/**
+	 * Construptor with initialization state and the list of statement inside
+	 * the loop.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param name
+	 *            the name
+	 * @param set
+	 *            the set
+	 * @param statements
+	 *            all the statements inside the loop
+	 */
+	protected ZestLoop(int index, String name, ZestLoopTokenSet<T> set,
 			List<ZestStatement> statements) {
 		super(index);
-		this.variableName=name;
+		this.variableName = name;
 		init(set, statements);
 	}
-	
+
 	protected ZestLoop(int index, ZestLoopTokenSet<T> set,
 			List<ZestStatement> statements) {
 		super(index);
 		init(set, statements);
 	}
 
+	/**
+	 * Inits the.
+	 * 
+	 * @param name
+	 *            the name
+	 * @param set
+	 *            the set
+	 * @param statements
+	 *            the statements
+	 */
+	private void init(ZestLoopTokenSet<T> set, List<ZestStatement> statements) {
+		this.set = set;
+		this.statements = statements;
+		this.currentState = set.getFirstState();
+	}
 
-		/**
- * Inits the.
- *
- * @param name the name
- * @param set the set
- * @param statements the statements
- */
-private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
-			this.set=set;
-			this.statements=statements;
-			this.currentState=set.getFirstState();
-		}
-
-/**
- * sets the current state to the new one (for subclasses).
- *
- * @param newSet the new sets the
- */
+	/**
+	 * sets the current state to the new one (for subclasses).
+	 * 
+	 * @param newSet
+	 *            the new sets the
+	 */
 	protected void setSet(ZestLoopTokenSet<T> newSet) {
 		this.set = newSet;
+		this.setCurrentState(newSet.getFirstState());
 	}
-	
+
 	/**
 	 * Sets the step.
-	 *
-	 * @param step the new step
+	 * 
+	 * @param step
+	 *            the new step
 	 */
-	protected void setStep(int step){
-		this.step=step;
+	protected void setStep(int step) {
+		this.step = step;
 	}
-	
+
 	/**
 	 * Sets the statements.
-	 *
-	 * @param stmts the stmts
+	 * 
+	 * @param stmts
+	 *            the stmts
 	 * @return the list
 	 */
-	protected List<ZestStatement> setStatements(List<ZestStatement> stmts){
-		List<ZestStatement> oldStatements=this.statements;
-		this.statements=stmts;
+	protected List<ZestStatement> setStatements(List<ZestStatement> stmts) {
+		List<ZestStatement> oldStatements = this.statements;
+		this.statements = stmts;
 		return oldStatements;
 	}
-	
+
 	/**
 	 * Gets the statements.
-	 *
+	 * 
 	 * @return the statements
 	 */
-	public List<ZestStatement> getStatements(){
+	public List<ZestStatement> getStatements() {
 		return this.statements;
 	}
 
-/**
- * increase the current state (ignoring all the statements which are still to be computed for this loop: a new one starts).
- *
- * @return the new state (of the following loop)
- */
+	/**
+	 * increase the current state (ignoring all the statements which are still
+	 * to be computed for this loop: a new one starts).
+	 * 
+	 * @return the new state (of the following loop)
+	 */
 	public boolean loop() {
 		return this.currentState.increase(this.step, this.set);
 	}
 
-/**
- * ends the loops and set the state to the final value.
- */
+	/**
+	 * ends the loops and set the state to the final value.
+	 */
 	public void endLoop() {
 		this.currentState.toLastState(this.set);
 	}
 
-/**
- * adds a new statement inside the loop.
- *
- * @param stmt the new statement to add
- */
+	/**
+	 * adds a new statement inside the loop.
+	 * 
+	 * @param stmt
+	 *            the new statement to add
+	 */
 	public void addStatement(ZestStatement stmt) {
 		statements.add(stmt);
 	}
 
-/**
- * returns the current state of the loop.
- *
- * @return the current state
- */
+	/**
+	 * returns the current state of the loop.
+	 * 
+	 * @return the current state
+	 */
 	public ZestLoopState<T> getCurrentState() {
 		return this.currentState;
 	}
-	
+
 	/**
 	 * Sets the current state.
-	 *
-	 * @param newState the new current state
+	 * 
+	 * @param newState
+	 *            the new current state
 	 */
-	public void setCurrentState(ZestLoopState<T> newState){
-		this.currentState=newState;
+	public void setCurrentState(ZestLoopState<T> newState) {
+		this.currentState = newState;
 	}
 
-/**
- * return the current token considered inside the loop.
- *
- * @return the current token considered inside the loop
- */
+	/**
+	 * return the current token considered inside the loop.
+	 * 
+	 * @return the current token considered inside the loop
+	 */
 	public T getCurrentToken() {
 		return this.currentState.getCurrentToken();
 	}
-	
+
 	/**
 	 * returns the set of the tokens in this loop.
-	 *
+	 * 
 	 * @return the set of the tokens in this loop
 	 */
-	public ZestLoopTokenSet<T> getSet(){
+	public ZestLoopTokenSet<T> getSet() {
 		return this.set;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
 	 */
 	@Override
@@ -213,7 +234,9 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		return statements.get(statements.size() - 1);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
 	 */
 	@Override
@@ -232,8 +255,12 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core.v1.ZestStatement)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core
+	 * .v1.ZestStatement)
 	 */
 	@Override
 	public int getIndex(ZestStatement child) {
@@ -244,8 +271,11 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int,
+	 * org.mozilla.zest.core.v1.ZestStatement)
 	 */
 	@Override
 	public void move(int index, ZestStatement stmt) {
@@ -257,16 +287,24 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest
+	 * .core.v1.ZestElement)
 	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestLoop<?>;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest.core.v1.ZestStatement)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest
+	 * .core.v1.ZestStatement)
 	 */
 	@Override
 	public ZestStatement getChildBefore(ZestStatement child) {
@@ -279,26 +317,32 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
-		
+
 		for (ZestStatement stmt : this.statements) {
 			if (stmt instanceof ZestContainer) {
-				tokens.addAll(((ZestContainer)stmt).getVariableNames());
-				
+				tokens.addAll(((ZestContainer) stmt).getVariableNames());
+
 			} else if (stmt instanceof ZestAssignment) {
-				tokens.add(((ZestAssignment)stmt).getVariableName());
+				tokens.add(((ZestAssignment) stmt).getVariableName());
 			}
 		}
 		return tokens;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix)
@@ -308,72 +352,79 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
 	public abstract ZestLoop<T> deepCopy();
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Enumeration#hasMoreElements()
 	 */
 	@Override
 	public boolean hasMoreElements() {
-		boolean isLastLoop=this.getCurrentState().isLastState(this.set);
-		if(isLastLoop){
+		boolean isLastLoop = this.getCurrentState().isLastState(this.set);
+		if (isLastLoop) {
 			return false;
 		}
-		boolean isLastStmt=this.stmtIndex==statements.size();
-		if(isLastStmt){
+		boolean isLastStmt = this.stmtIndex == statements.size();
+		if (isLastStmt) {
 			return false;
 		}
-		if(this.statements.get(stmtIndex) instanceof ZestLoopBreak){
+		if (this.statements.get(stmtIndex) instanceof ZestLoopBreak) {
 			return false;
 		}
 		return true;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Enumeration#nextElement()
 	 */
 	@Override
 	public ZestStatement nextElement() {
-		int currentStmt=stmtIndex;
+		int currentStmt = stmtIndex;
 		++stmtIndex;
-		if(stmtIndex==statements.size()){
+		if (stmtIndex == statements.size()) {
 			this.currentState.increase(step, set);
-			stmtIndex=0;
+			stmtIndex = 0;
 		}
-		ZestStatement newStatement=statements.get(currentStmt);
-		if(newStatement instanceof ZestLoopBreak){
+		ZestStatement newStatement = statements.get(currentStmt);
+		if (newStatement instanceof ZestLoopBreak) {
 			this.currentState.toLastState(this.set);
-			this.stmtIndex=statements.size();
+			this.stmtIndex = statements.size();
 			return null;
-		}
-		else if(newStatement instanceof ZestLoopNext){
+		} else if (newStatement instanceof ZestLoopNext) {
 			this.currentState.increase(step, set);
-			this.stmtIndex=0;
+			this.stmtIndex = 0;
 			return statements.get(stmtIndex);
 		}
 		return statements.get(currentStmt);
 	}
-	
+
 	/**
 	 * Copy statements.
-	 *
+	 * 
 	 * @return the list
 	 */
-	public List<ZestStatement> copyStatements(){
-		List<ZestStatement> statements=new LinkedList<>();
-		for(ZestStatement stmt:this.getStatements()){
-			statements.add(stmt.deepCopy());
+	public List<ZestStatement> copyStatements() {
+		if (this.getStatements() != null) {
+			List<ZestStatement> statements = new LinkedList<>();
+			for (ZestStatement stmt : this.getStatements()) {
+				statements.add(stmt.deepCopy());
+			}
 		}
 		return statements;
 	}
-	
+
 	/**
 	 * Returns the variable name.
-	 *
+	 * 
 	 * @return the variable name
 	 */
 	public String getVariableName() {
@@ -382,14 +433,17 @@ private void init( ZestLoopTokenSet<T> set, List<ZestStatement> statements){
 
 	/**
 	 * Sets the variable name.
-	 *
-	 * @param name the new variable name
+	 * 
+	 * @param name
+	 *            the new variable name
 	 */
 	public void setVariableName(String name) {
 		this.variableName = name;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
 	 */
 	@Override

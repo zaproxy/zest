@@ -74,12 +74,7 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 	 */
 	@Override
 	public ZestLoopState<String> deepCopy() {
-//		if(this.tokens==null){
-//			return new ZestLoopStateString();
-//		}
 		ZestLoopStateString copy=new ZestLoopStateString();
-//		copy.tokens=this.tokens.deepCopy();
-		copy.setCurrentToken(this.getCurrentToken());
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setIndex(this.getCurrentIndex());
 		return copy;
