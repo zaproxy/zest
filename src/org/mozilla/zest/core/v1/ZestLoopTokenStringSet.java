@@ -49,10 +49,6 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#addToken(java.lang.Object)
-	 */
-	@Override
 	public void addToken(String token) {
 		if(tokens==null){
 			tokens=new LinkedList<>();
@@ -60,9 +56,6 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		tokens.add(token);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getToken(int)
-	 */
 	@Override
 	public String getToken(int index) {
 		if(tokens==null || tokens.isEmpty()){
@@ -73,25 +66,15 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getTokens()
-	 */
-	@Override
 	public List<String> getTokens() {
 		return this.tokens;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#indexOf(java.lang.Object)
-	 */
 	@Override
 	public int indexOf(String token) {
 		return tokens.indexOf(token);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastConsideredToken()
-	 */
 	@Override
 	public String getLastToken() {
 		if(tokens==null || tokens.isEmpty()){
@@ -102,23 +85,17 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#size()
-	 */
 	@Override
 	public int size() {
 		return tokens.size();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestLoopTokenStringSet deepCopy() {
 		if(this.tokens==null){
 			return new ZestLoopTokenStringSet();
 		}
-		ZestLoopTokenStringSet copy=new ZestLoopTokenStringSet(new LinkedList<String>());
+		ZestLoopTokenStringSet copy=new ZestLoopTokenStringSet();
 		for(String token:this.tokens){
 			copy.addToken(token);
 		}
@@ -149,9 +126,6 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 		return replaced;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getFirstState()
-	 */
 	@Override
 	public ZestLoopStateString getFirstState() {
 		ZestLoopStateString firstState=new ZestLoopStateString(this);

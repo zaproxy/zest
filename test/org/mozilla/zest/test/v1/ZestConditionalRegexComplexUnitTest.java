@@ -7,7 +7,7 @@ public class ZestConditionalRegexComplexUnitTest {
 
 	@Test
 	public void testEvaluateAlone() {
-		ZestExpressionRegex r=new ZestExpressionRegex();
+		new ZestExpressionRegex();
 	}
 
 }

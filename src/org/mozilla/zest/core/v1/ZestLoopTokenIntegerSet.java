@@ -7,10 +7,7 @@
  */
 package org.mozilla.zest.core.v1;
 
-import java.util.LinkedList;
-import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopTokenIntegerSet.
  */
@@ -24,10 +21,19 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	private int end=0;
 	
 	/**
-	 * Instantiates a new zest loop token integer set.
+	 * the step
+	 */
+	private int step=1;
+	
+	/**
+	 * Instantiates a new zest loop token integer set with default values:<br>
+	 * start=end=0. Note that this is a final state!
+	 * 
 	 */
 	public ZestLoopTokenIntegerSet(){
-		this(0,0);
+		super();
+		this.start=0;
+		this.end=0;
 	}
 	/**
 	 * Instantiates a new zest loop token integer set.
@@ -59,85 +65,22 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		return end;
 	}
 	
-	/**
-	 * Sets the start.
-	 *
-	 * @param newStart the new start
-	 * @return the int
-	 */
-	public int setStart(int newStart){
-		int oldStart=this.start;
-		this.start=newStart;
-		return oldStart;
-	}
-	
-	/**
-	 * Sets the end.
-	 *
-	 * @param newEnd the new end
-	 * @return the int
-	 */
-	public int setEnd(int newEnd){
-		int oldEnd=this.end;
-		this.end=newEnd;
-		return oldEnd;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestLoopTokenIntegerSet deepCopy() {
 		return new ZestLoopTokenIntegerSet(this.start, this.end);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#addToken(java.lang.Object)
-	 */
-	@Override//TODO remove from interface??
-	public void addToken(Integer token) {
-		int newTokenValue=token;
-		if(newTokenValue==end+1){
-			this.end=newTokenValue;
-		}
-		else if(newTokenValue==start-1){
-			this.start=newTokenValue;
-		}
-		else{
-			throw new IllegalArgumentException("Operation not allowed: the set must be a continue set of integers " +
-												"Start: "+getStart()+"; End: "+getEnd());
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getToken(int)
-	 */
-	@Override//TODO remove from interface?
+	@Override
 	public Integer getToken(int index) {
 		if(index<0){
 			throw new IllegalArgumentException("the index must be non negative.");
 		}
 		if(start+index<end){//restrictive
-			return (start+index);//???
+			return (start+index);
 		}
 		throw new IllegalArgumentException("the index given is not inside this set.");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getTokens()
-	 */
-	@Override//TODO remove from interface?
-	public List<Integer> getTokens() {
-		LinkedList<Integer> toReturn=new LinkedList<>();
-		for(int i=start; i<end; i++){
-			toReturn.addLast(i);
-		}
-		return toReturn;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#indexOf(java.lang.Object)
-	 */
 	@Override
 	public int indexOf(Integer token) {
 		int tokenValue=token;
@@ -148,17 +91,11 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 		return index;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastConsideredToken()
-	 */
 	@Override
 	public Integer getLastToken() {
-		return end;
+		return end-1;// restrictive
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#size()
-	 */
 	@Override
 	public int size() {
 		return end-start;
@@ -169,18 +106,23 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements
 	public boolean equals(Object otherObject){
 		if(otherObject instanceof ZestLoopTokenIntegerSet){
 			ZestLoopTokenIntegerSet otherSet=(ZestLoopTokenIntegerSet) otherObject;
-			return this.start==otherSet.start && this.end==otherSet.end;
+			return this.start==otherSet.start && this.end==otherSet.end && this.step==otherSet.step;
 		}
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getFirstState()
-	 */
 	@Override
 	public ZestLoopStateInteger getFirstState() {
 		ZestLoopStateInteger fisrtState=new ZestLoopStateInteger(this);
 		return fisrtState;
+	}
+	
+	protected void setStep(int newStep){
+		this.step=newStep;
+	}
+	
+	protected int getStep(){
+		return this.step;
 	}
 
 }

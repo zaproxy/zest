@@ -35,7 +35,10 @@ public class ZestLoopSerializationUnitTest {
 	}
 	@Test
 	public void testSerializationLoopString() {
-		ZestLoopString loop=new ZestLoopString(values, statements);
+		ZestLoopString loop=new ZestLoopString(values);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		String loopString=ZestJSON.toString(loop);
 		System.out.println(loopString);
 		ZestLoopString copy=(ZestLoopString) ZestJSON.fromString(loopString);
@@ -48,7 +51,10 @@ public class ZestLoopSerializationUnitTest {
 	}
 	@Test
 	public void testSerializationLoopInteger(){
-		ZestLoopInteger loop=new ZestLoopInteger(0, 1235, statements);
+		ZestLoopInteger loop=new ZestLoopInteger(0, 1235);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		String loopString=ZestJSON.toString(loop);
 		ZestLoopInteger copy=(ZestLoopInteger) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
@@ -60,7 +66,10 @@ public class ZestLoopSerializationUnitTest {
 	}
 	@Test
 	public void testSerializationLoopFile() throws FileNotFoundException{
-		ZestLoopFile loop=new ZestLoopFile(ZestLoopFileUnitTest.file, statements);
+		ZestLoopFile loop=new ZestLoopFile(ZestLoopFileUnitTest.file.getAbsolutePath());
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		String loopString=ZestJSON.toString(loop);
 		ZestLoopFile copy=(ZestLoopFile) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
