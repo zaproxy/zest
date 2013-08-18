@@ -7,15 +7,10 @@
  */
 package org.mozilla.zest.core.v1;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestLoopStateString.
  */
 public class ZestLoopStateString extends ZestLoopState<String> {
-	
-//	/** The tokens. */
-//	private ZestLoopTokenStringSet tokens;
 
 	/**
 	 * Instantiates a new zest loop state string.
@@ -26,8 +21,9 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 
 	/**
 	 * Instantiates a new zest loop state string.
-	 *
-	 * @param initializationTokenSet the initialization token set
+	 * 
+	 * @param initializationTokenSet
+	 *            the initialization token set
 	 */
 	public ZestLoopStateString(ZestLoopTokenStringSet initializationTokenSet) {
 		super(initializationTokenSet);
@@ -35,71 +31,31 @@ public class ZestLoopStateString extends ZestLoopState<String> {
 
 	/**
 	 * Instantiates a new zest loop state string.
-	 *
-	 * @param values the values
+	 * 
+	 * @param values
+	 *            the values
 	 */
 	public ZestLoopStateString(String[] values) {
 		this(new ZestLoopTokenStringSet(values));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#increase()
-	 */
 	@Override
-	public boolean increase(int step, ZestLoopTokenSet<String> set) {
-		if (this.getCurrentIndex() + 1 >= set.size()) {
-			return false;
+	public boolean increase(ZestLoopTokenSet<String> set) {
+		this.increaseIndex();
+		if (this.getCurrentIndex() >= set.size()) {
+			this.setCurrentToken(null);
 		} else {
-			this.increaseIndex(1);
 			this.setCurrentToken(set.getToken(getCurrentIndex()));
-			return true;
 		}
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#toLastState()
-	 */
-	@Override
-	public void toLastState(ZestLoopTokenSet<String> set) {
-		if (this.isLastState(set)) {
-			return;
-		} else {
-			this.setCurrentToken(set.getLastToken());
-			this.setIndex(set.size()-1);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#deepCopy()
-	 */
 	@Override
 	public ZestLoopState<String> deepCopy() {
-		ZestLoopStateString copy=new ZestLoopStateString();
+		ZestLoopStateString copy = new ZestLoopStateString();
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setIndex(this.getCurrentIndex());
 		return copy;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopState#isLastState()
-	 */
-	@Override
-	public boolean isLastState(ZestLoopTokenSet<String> set) {
-		return set==null || this.getCurrentIndex()+1>=set.size();
-	}
-
-//	/**
-//	 * Gets the token set.
-//	 *
-//	 * @return the token set
-//	 */
-//	public ZestLoopTokenStringSet getTokenSet() {
-//		return this.tokens;
-//	}
-
-//	@Override
-//	public ZestLoopTokenStringSet getSet() {
-//		return this.tokens;
-//	}
 
 }

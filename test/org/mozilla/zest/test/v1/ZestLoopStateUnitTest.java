@@ -30,12 +30,6 @@ public class ZestLoopStateUnitTest {
 		assertFalse(state.isLastState(set));
 	}
 
-	// @Test(expected=IllegalArgumentException.class)
-	// public void testZestLoopStateNull(){
-	// new ZestLoopStateString(null);
-	// fail();
-	// }
-
 	@Test
 	public void testGetCurrentToken() {
 		int index = 0;
@@ -48,7 +42,7 @@ public class ZestLoopStateUnitTest {
 		int index = 3;
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		for (int i = 0; i < index; i++) {
-			state.increase(1, set);
+			state.increase(set);
 		}
 		assertTrue(state.getCurrentIndex() == index);
 	}
@@ -57,7 +51,7 @@ public class ZestLoopStateUnitTest {
 	public void testIncrease() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		int currentIndex = state.getCurrentIndex();
-		boolean increasable = state.increase(1, set);
+		boolean increasable = state.increase(set);
 		if (!increasable) {
 			fail();
 		}
@@ -78,7 +72,7 @@ public class ZestLoopStateUnitTest {
 	public void testIsLastState() {
 		ZestLoopStateString state = new ZestLoopStateString(set);
 		for (int i = 0; i < 13; i++) {
-			state.increase(1, set);
+			state.increase(set);
 			if (state.getCurrentIndex() == set.size()) {
 				assertTrue(state.isLastState(set));
 				break;

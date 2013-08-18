@@ -9,12 +9,14 @@ package org.mozilla.zest.core.v1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ZestLoopTokenFileSet.
+ * The Class ZestLoopTokenFileSet.<br>
+ * This class does not override ZestLoopTokenStringSet because<br>
+ * the tokens inside the converted set must not be transient
  */
 public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSet<String> {
 	
@@ -33,7 +35,7 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
 	public ZestLoopTokenFileSet(String pathToFile) throws FileNotFoundException {
 		super();
 		this.pathToFile = pathToFile;
-		this.convertedSet = this.init(new File(pathToFile));
+		this.convertedSet = this.getConvertedSet(new File(pathToFile));
 	}
 
 	/**
@@ -43,77 +45,53 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
 	 * @return the zest loop token string set
 	 * @throws FileNotFoundException if the file does not exist
 	 */
-	private ZestLoopTokenStringSet init(File file) throws FileNotFoundException {
+	private ZestLoopTokenStringSet getConvertedSet(File file) throws FileNotFoundException {
+		if(this.convertedSet==null){
 		Scanner in = new Scanner(file);
 		ZestLoopTokenStringSet initializationSet = new ZestLoopTokenStringSet();
 		String line;
 		while (in.hasNextLine()) {
 			line = in.nextLine();
-			if (!line.startsWith("#")) {
+			if (!line.startsWith("#") && !line.isEmpty()) {//discards commented and empty line
 				initializationSet.addToken(line);
 			}
 		}
 		in.close();
-		return initializationSet;
+		this.convertedSet=initializationSet;
+		}
+		return convertedSet;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#addToken(java.lang.Object)
-	 */
-	@Override
-	public void addToken(String token) {
-		throw new IllegalArgumentException("Operation not allowed for "
-				+ this.getClass().getName());
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getToken(int)
-	 */
 	@Override
 	public String getToken(int index) {
-		return convertedSet.getToken(index);
+		return this.getConvertedSet().getToken(index);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getTokens()
-	 */
-	@Override
 	public List<String> getTokens() {
-		return convertedSet.getTokens();
+		List<String> listOfTokens=getConvertedSet().getTokens();
+		return Collections.unmodifiableList(listOfTokens);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#indexOf(java.lang.Object)
-	 */
 	@Override
 	public int indexOf(String token) {
-		return convertedSet.indexOf(token);
+		return getConvertedSet().indexOf(token);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getLastToken()
-	 */
 	@Override
 	public String getLastToken() {
-		return convertedSet.getLastToken();
+		return getConvertedSet().getLastToken();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#size()
-	 */
 	@Override
 	public int size() {
-		return convertedSet.size();
+		return this.getConvertedSet().size();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestLoopTokenFileSet deepCopy() {
 		try {
 			ZestLoopTokenFileSet copy = new ZestLoopTokenFileSet(pathToFile);
-			copy.convertedSet = convertedSet.deepCopy();
+			copy.convertedSet = this.getConvertedSet().deepCopy();
 			return copy;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -129,22 +107,28 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
 	public File getFile(){
 		return new File(pathToFile);
 	}
+	
+	public String getFilePath(){
+		return this.pathToFile;
+	}
 
 	/**
 	 * Gets the converted set.
 	 *
 	 * @return the converted set
 	 */
-	public ZestLoopTokenStringSet getConvertedSet() {
+	protected ZestLoopTokenStringSet getConvertedSet() {
+		try {
+			return this.getConvertedSet(new File(pathToFile));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		return this.convertedSet;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestLoopTokenSet#getFirstState()
-	 */
 	@Override
 	public ZestLoopStateFile getFirstState(){
-			ZestLoopStateFile stateFile=new ZestLoopStateFile(convertedSet);
+			ZestLoopStateFile stateFile=new ZestLoopStateFile(this);
 			return stateFile;
 	}
 

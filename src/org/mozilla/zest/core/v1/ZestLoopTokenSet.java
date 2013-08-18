@@ -7,7 +7,6 @@
  */
 package org.mozilla.zest.core.v1;
 
-import java.util.List;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -18,26 +17,12 @@ import java.util.List;
 public interface ZestLoopTokenSet<T>{
 	
 	/**
-	 * adds a new token.
-	 *
-	 * @param token the new token
-	 */
-	public void addToken(T token);
-	
-	/**
 	 * returns the token at a given index.
 	 *
 	 * @param index the index of the token
 	 * @return the token at the given index
 	 */
 	public T getToken(int index);
-	
-	/**
-	 * returns the list of tokens.
-	 *
-	 * @return the list of tokens
-	 */
-	public List<T> getTokens();//TODO really needed?
 	
 	/**
 	 * returns the index of a given token.

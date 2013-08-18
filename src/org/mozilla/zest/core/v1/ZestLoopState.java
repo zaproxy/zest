@@ -25,7 +25,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	/**
 	 * Instantiates a new zest loop state.
 	 */
-	public ZestLoopState() {
+	protected ZestLoopState() {
 		super();
 	}
 
@@ -36,7 +36,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	 *            the set of token and the fisrt value to consider inside the
 	 *            loop
 	 */
-	public ZestLoopState(ZestLoopTokenSet<T> initializationTokenSet) {
+	protected ZestLoopState(ZestLoopTokenSet<T> initializationTokenSet) {
 		if (initializationTokenSet == null) {
 			throw new IllegalArgumentException(
 					"a null token set is not allowed");
@@ -84,8 +84,8 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	 *
 	 * @param step the step
 	 */
-	protected void increaseIndex(int step) {
-		this.currentIndex += step;
+	protected void increaseIndex() {
+		this.currentIndex += 1;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	 * @param set the set
 	 * @return the new state
 	 */
-	public abstract boolean increase(int step, ZestLoopTokenSet<T> set);
+	protected abstract boolean increase(ZestLoopTokenSet<T> set);
 
 	/**
 	 * this sets the state to the last state: i.e. the loop has finished
@@ -113,15 +113,14 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	 * @param set the set
 	 */
 	public void toLastState(ZestLoopTokenSet<T> set) {
-		this.setIndex(set.size());
-		this.setCurrentToken(set.getLastToken());
+		if(set==null){
+			return;
+		} else{
+			this.setIndex(set.size());
+			this.setCurrentToken(null);
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public abstract ZestLoopState<T> deepCopy();
 
@@ -135,9 +134,6 @@ public abstract class ZestLoopState<T> extends ZestElement {
 		return (this.getCurrentIndex() >= set.size());
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object otherObject) {
 		if (otherObject instanceof ZestLoopState<?>) {

@@ -37,7 +37,10 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testLoop() {
 		int maxIt = 10;
-		ZestLoopInteger loop = new ZestLoopInteger(0, maxIt, statements);
+		ZestLoopInteger loop = new ZestLoopInteger(0, maxIt);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		int iteration = loop.getCurrentToken();
 		while (loop.loop()) {
 			++iteration;
@@ -45,22 +48,31 @@ public class ZestLoopIntegerUnitTest {
 					iteration == loop.getCurrentToken());
 		}
 		assertTrue("right number of iterations",
-				loop.getCurrentToken() == maxIt-1);// start is inclusive, end is exclusive!
+				loop.getCurrentToken() == maxIt - 1);// start is inclusive, end
+														// is exclusive!
 	}
 
 	@Test
 	public void testEndLoop() {
-		ZestLoopInteger loop = new ZestLoopInteger(0, 10, statements);
+		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		loop.endLoop();
-		assertTrue(loop.getCurrentState().isLastState(loop.getSet()));// it recognize the
-															// last state
+		assertTrue(loop.getCurrentState().isLastState(loop.getSet()));// it
+																		// recognize
+																		// the
+		// last state
 		assertFalse(loop.loop());// it returs false if the method loop is called
 									// again
 	}
 
 	@Test
 	public void testDeepCopy() {
-		ZestLoopInteger loop = new ZestLoopInteger(0, 10, statements);
+		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		loop.loop();
 		ZestLoopInteger copy = loop.deepCopy();
 		assertTrue(loop.getCurrentState().equals(copy.getCurrentState()));
@@ -69,7 +81,10 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testHasMoreElements() {
 		int numOfToken = 10;
-		ZestLoopInteger loop = new ZestLoopInteger(0, numOfToken, statements);
+		ZestLoopInteger loop = new ZestLoopInteger(0, numOfToken);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		int counter = 0;
 		while (loop.hasMoreElements()) {
 			ZestStatement stmt = loop.nextElement();
@@ -81,43 +96,58 @@ public class ZestLoopIntegerUnitTest {
 													// statements are equals
 			counter++;
 		}
-		assertTrue("right number of iteration ", counter == (numOfToken-1)
+		assertTrue("right number of iteration ", counter == (numOfToken)
 				* statements.size());// include start, exclude end!
 	}
+
 	@Test
-	public void testZestLoopBreak(){
-		List<ZestStatement> statements2=new LinkedList<>(statements);
+	public void testZestLoopBreak() {
+		List<ZestStatement> statements2 = new LinkedList<>(statements);
 		statements2.add(new ZestLoopBreak());
-		ZestLoopInteger loop=new ZestLoopInteger(0, 1000000, statements2);
-		int counterIteration=0;
-		while(loop.hasMoreElements()){
+		ZestLoopInteger loop = new ZestLoopInteger(0, 1000000);
+		for(ZestStatement stmt:statements2){
+			loop.addStatement(stmt);
+		}
+		int counterIteration = 0;
+		while (loop.hasMoreElements()) {
 			loop.nextElement();
 			counterIteration++;
 		}
-		assertTrue(counterIteration==statements2.size()-1);
+		assertTrue(counterIteration == statements2.size() - 1);
 	}
+
 	@Test
-	public void testZestLoopNext(){
-		LinkedList<ZestStatement> statements2=new LinkedList<>(statements);
-		statements2.add(0,new ZestLoopNext());
-		ZestLoopInteger loop=new ZestLoopInteger(0, 10, statements2);
-		int counter=0;
-		while(loop.hasMoreElements()){
-			ZestStatement tmp=loop.nextElement();
-			assertTrue("iteration "+counter, tmp instanceof ZestLoopNext);
+	public void testZestLoopNext() {
+		LinkedList<ZestStatement> statements2 = new LinkedList<>(statements);
+		statements2.add(0, new ZestLoopNext());
+		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
+		for(ZestStatement stmt:statements2){
+			loop.addStatement(stmt);
+		}
+		int counter = 0;
+		while (loop.hasMoreElements()) {
+			ZestStatement tmp = loop.nextElement();
+			assertTrue("iteration " + counter, tmp instanceof ZestLoopNext);
 			counter++;
 		}
 	}
+
 	@Test
-	public void testZestLoopDifferentStep(){
-		ZestLoopInteger loop=new ZestLoopInteger("with step = 7", 0, 100, statements);
-		loop.setStep(7);
-		int counter=0;
-		while(loop.hasMoreElements()){
-			loop.loop();
-			++counter;
-			assertTrue("step: "+counter,loop.getCurrentToken()==counter*7);
+	public void testZestLoopDifferentStep() {
+		ZestLoopInteger loop = new ZestLoopInteger("with step = 7", 0, 100);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
 		}
-		assertTrue("end at: ", loop.getCurrentToken()==105);
+		loop.setStep(7);
+		int counter = 0;
+		while (loop.hasMoreElements()) {
+			if (loop.loop()) {
+				++counter;
+				assertTrue("step: " + counter,
+						loop.getCurrentToken() == counter * 7);
+			} else{
+				assertTrue("Last Step", loop.getCurrentToken() == loop.getEnd()-1);
+			}
+		}
 	}
 }
