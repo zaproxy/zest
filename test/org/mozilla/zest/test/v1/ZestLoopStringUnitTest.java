@@ -44,7 +44,10 @@ public class ZestLoopStringUnitTest {
 			statements.add(new ZestConditional(i));
 		}
 		statements.add(new ZestLoopString(firstIndex, values));
-		ZestLoopString loop = new ZestLoopString(firstIndex, values, statements);
+		ZestLoopString loop = new ZestLoopString(firstIndex, values);
+		for(ZestStatement stmt:statements){
+			loop.addStatement(stmt);
+		}
 		boolean rightStmtPos = loop.getStatement(firstIndex).getClass()
 				.equals(ZestLoopString.class);
 		boolean rightSetSize = loop.getSet().size() == values.length;
@@ -56,7 +59,10 @@ public class ZestLoopStringUnitTest {
 	public void testLoop() {
 		List<ZestStatement> stmts = new LinkedList<>();
 		stmts.add(new ZestConditional());
-		ZestLoopString loop = new ZestLoopString(0, values, stmts);
+		ZestLoopString loop = new ZestLoopString(0, values);
+		for(ZestStatement stmt:stmts){
+			loop.addStatement(stmt);
+		}
 		int stopIndex = 4;
 		for (int i = 0; i < stopIndex; i++) {
 			loop.loop();
@@ -73,10 +79,8 @@ public class ZestLoopStringUnitTest {
 
 	@Test
 	public void testEndLoop() {
-		ZestLoopString loop = new ZestLoopString(0, values,
-				new LinkedList<ZestStatement>());
+		ZestLoopString loop = new ZestLoopString(0, values);
 		loop.endLoop();
-//		assertTrue(loop.getCurrentState()==null);
 		assertTrue(loop.getCurrentState().isLastState(loop.getSet()));
 	}
 

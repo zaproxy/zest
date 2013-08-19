@@ -51,17 +51,26 @@ public class TestPrint {
 		List<ZestStatement> statements=new LinkedList<>();
 		statements.add(new ZestConditional(or));
 		statements.add(new ZestConditional(and));
-		ZestLoopString loopString=new ZestLoopString(values,statements);
+		ZestLoopString loopString=new ZestLoopString(values);
+		for(ZestStatement stmt:statements){
+			loopString.addStatement(stmt);
+		}
 		ZestPrinter.list(loopString, -1);
 		System.out.println("---------------------");
 		System.out.println("    ZestLoopFile");
 		System.out.println("---------------------");
-		ZestLoopFile loopFile=new ZestLoopFile(ZestLoopFileUnitTest.file, statements);
+		ZestLoopFile loopFile=new ZestLoopFile(ZestLoopFileUnitTest.file.getAbsolutePath());
+		for(ZestStatement stmt:statements){
+			loopFile.addStatement(stmt);
+		}
 		ZestPrinter.list(loopFile, -1);
 		System.out.println("---------------------");
 		System.out.println("   ZestLoopInteger");
 		System.out.println("---------------------");
-		ZestLoopInteger loopInteger=new ZestLoopInteger(0, 1458, statements);
+		ZestLoopInteger loopInteger=new ZestLoopInteger(0, 1458);
+		for(ZestStatement stmt:statements){
+			loopInteger.addStatement(stmt);
+		}
 		ZestPrinter.list(loopInteger, -1);
 	}
 }

@@ -23,7 +23,7 @@ public class ZestLoopFileUnitTest {
 	 */
 	@Test
 	public void testOpenFile() throws IOException {
-		new ZestLoopFile(file);
+		new ZestLoopFile(file.getAbsolutePath());
 	}
 	
 }
