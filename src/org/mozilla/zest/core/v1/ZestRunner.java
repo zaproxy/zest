@@ -130,7 +130,9 @@ public interface ZestRunner {
 	 * @throws ZestAssignFailException the zest assignment fail exception
 	 */
 	String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException;
-
+	
+	ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse) throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException;
+	
 	/**
 	 * Response passed.
 	 *

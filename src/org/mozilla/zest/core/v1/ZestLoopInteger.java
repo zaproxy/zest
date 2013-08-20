@@ -140,6 +140,13 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public void toLastState() {
 		this.getCurrentState().toLastState(getSet());
 	}
+	@Override
+	public Integer getCurrentToken(){
+		if(super.getCurrentToken()==null){
+			super.init(getSet(), getStatements());
+		}
+		return super.getCurrentToken();
+	}
 	
 	public boolean loop(){
 		return super.loop(getSet());
