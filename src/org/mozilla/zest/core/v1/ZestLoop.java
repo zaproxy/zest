@@ -225,7 +225,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	@Override
 	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
-
+		tokens.add(this.getVariableName());
 		for (ZestStatement stmt : this.statements) {
 			if (stmt instanceof ZestContainer) {
 				tokens.addAll(((ZestContainer) stmt).getVariableNames());
