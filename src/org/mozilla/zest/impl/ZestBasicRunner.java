@@ -157,10 +157,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			handleAssignment(script, (ZestAssignment) stmt, lastResponse);
 		}
 		else if (stmt instanceof ZestLoop){
-			ZestLoop<?> loop=(ZestLoop<?>) stmt;
-			while(loop.hasMoreElements()){
-				lastResponse = this.runStatement(script, loop.nextElement(), lastResponse);
-			}
+			lastResponse=handleLoop(script, (ZestLoop<?>) stmt, lastResponse);
 		}
 		return lastResponse;
 	}
@@ -184,6 +181,22 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			this.output("Assignment result: " +result);
 		}
 		return result;
+	}
+	@Override
+	public ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse) throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException{
+		String token="";
+		this.setVariable(loop.getVariableName(), loop.getCurrentToken().toString());
+		while(loop.hasMoreElements()){
+			String loopOutput="Loop "+ loop.getVariableName()+ " iteration: "+loop.getCurrentIndex();
+			if(!token.equals(loop.getCurrentToken().toString())){
+				token=loop.getCurrentToken().toString();
+				loopOutput+=", Current Token: "+token;
+				this.setVariable(loop.getVariableName(), token);
+			}
+			this.output(loopOutput);
+			lastResponse = this.runStatement(script, loop.nextElement(), lastResponse);
+		}
+		return  lastResponse;
 	}
 
 	private void output(String str) {
