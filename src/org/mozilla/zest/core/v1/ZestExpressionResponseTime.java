@@ -10,7 +10,9 @@ package org.mozilla.zest.core.v1;
  * The Class ZestExpressionResponseTime.
  */
 public class ZestExpressionResponseTime extends ZestExpression {
-	
+
+	private final static String regexLiteral="(NOT\\s)?Response\\sTime\\s[<>]\\s\\d+";
+
 	/** The greater than. */
 	private boolean greaterThan = true;
 	
@@ -104,5 +106,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		String expression=(isInverse()?"NOT ":"")+"Response Time "+(isGreaterThan()?"> ":"< ")+timeInMs;
 		return expression;
 	}
-	
+	public static boolean isLiteralInstance(String literal){
+		return literal.matches(regexLiteral);
+	}
 }

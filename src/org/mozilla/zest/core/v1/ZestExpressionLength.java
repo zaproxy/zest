@@ -10,6 +10,7 @@ package org.mozilla.zest.core.v1;
  */
 public class ZestExpressionLength extends ZestExpression {
 
+	private final static String regexLiteral="(NOT\\s)?Length:\\s\\d+\\s(\\+/-)\\s\\d+.*\\d*";
 	/** The length. */
 	private int length;
 	
@@ -136,8 +137,11 @@ public class ZestExpressionLength extends ZestExpression {
 	 */
 	@Override
 	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+ "Length: "+length+" +/- "+(((double)(length*approx))/100);
+		String expression=(isInverse()?"NOT ":"")+ "Length: "+length+" +/- "+(((length*approx))/100);
 		return expression;
+	}
+	public static boolean isLiteralInstance(String s){
+		return s.matches(regexLiteral);
 	}
 
 }

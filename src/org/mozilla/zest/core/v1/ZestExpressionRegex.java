@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
  */
 public class ZestExpressionRegex extends ZestExpression{
 	
+	private final static String regexLiteral="(NOT\\s)?REGEX:\\s.*";
+
 	/** The regex. */
 	private String regex;
 	
@@ -166,6 +168,9 @@ public class ZestExpressionRegex extends ZestExpression{
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"REGEX: "+regex;
 		return expression;
+	}
+	public static boolean isLiteralInstance(String s){
+		return s.matches(regexLiteral);
 	}
 	
 }

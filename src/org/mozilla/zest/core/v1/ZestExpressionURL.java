@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class ZestExpressionURL extends ZestExpression {
 
+	private final static String regexLiteral="(NOT\\s)?URL:\\sACCEPT:.*,\\sEXCLUDE:.*";
+
 	/** The include regexes. */
 	private List<String> includeRegexes = new ArrayList<String>();
 	
@@ -150,8 +152,11 @@ public class ZestExpressionURL extends ZestExpression {
 		}
 		expression+=", EXCLUDE:";
 		for(String s:excludeRegexes){
-			expression+=s+" ";
+			expression+=" "+s;
 		}
 		return expression;
+	}
+	public static boolean isLiteralInstance(String s){
+		return s.matches(regexLiteral);
 	}
 }

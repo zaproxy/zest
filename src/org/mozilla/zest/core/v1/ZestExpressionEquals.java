@@ -5,11 +5,14 @@
 package org.mozilla.zest.core.v1;
 
 
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionRegex.
  */
 public class ZestExpressionEquals extends ZestExpression{
+	
+	private static final String regexLiteral="(NOT\\s)?(CASE\\sEXACT)?Value:\\s.*";
 	
 	/** The value to compare with. */
 	private String value;
@@ -142,6 +145,16 @@ public class ZestExpressionEquals extends ZestExpression{
 	@Override
 	public ZestExpressionEquals deepCopy() {
 		return new ZestExpressionEquals(this.getVariableName(), this.getValue(), this.isCaseExact(), this.isInverse());
+	}
+	
+	@Override
+	public String toString(){
+		String expression=(isInverse()?"NOT ":"")+(isCaseExact()?"CASE EXACT ":"")+ "Value: "+value;
+		return expression;
+	}
+	
+	public static boolean isLiteralInstance(String string){
+		return string.matches(regexLiteral);
 	}
 	
 }

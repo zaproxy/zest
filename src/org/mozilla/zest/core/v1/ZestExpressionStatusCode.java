@@ -10,7 +10,8 @@ package org.mozilla.zest.core.v1;
  * The Class ZestExpressionStatusCode.
  */
 public class ZestExpressionStatusCode extends ZestExpression {
-	
+	private final static String regexLiteral="(NOT\\s)?Status\\sCode:\\s\\d+";
+
 	/** The code. */
 	private int code;
 	
@@ -77,5 +78,9 @@ public class ZestExpressionStatusCode extends ZestExpression {
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"Status Code: "+code;
 		return expression;
+	}
+	
+	public static boolean isLiteralInstance(String literal){
+		return literal.matches(regexLiteral);
 	}
 }
