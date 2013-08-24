@@ -4,13 +4,16 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionLength.
  */
 public class ZestExpressionLength extends ZestExpression {
 
-	private final static String regexLiteral="(NOT\\s)?Length:\\s\\d+\\s(\\+/-)\\s\\d+.*\\d*";
+	private final static Pattern pattern=Pattern.compile("(NOT\\s)?Length:\\s\\d+\\s\\+/\\-\\s\\d+");
+	
 	/** The length. */
 	private int length;
 	
@@ -141,7 +144,9 @@ public class ZestExpressionLength extends ZestExpression {
 		return expression;
 	}
 	public static boolean isLiteralInstance(String s){
-		return s.matches(regexLiteral);
+		return pattern.matcher(s).matches();
 	}
-
+	public static Pattern getPattern(){
+		return pattern;
+	}
 }

@@ -4,13 +4,15 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionStatusCode.
  */
 public class ZestExpressionStatusCode extends ZestExpression {
-	private final static String regexLiteral="(NOT\\s)?Status\\sCode:\\s\\d+";
+	private final static Pattern pattern=Pattern.compile("(NOT\\s)?Status\\sCode:\\s\\d+");
 
 	/** The code. */
 	private int code;
@@ -81,6 +83,9 @@ public class ZestExpressionStatusCode extends ZestExpression {
 	}
 	
 	public static boolean isLiteralInstance(String literal){
-		return literal.matches(regexLiteral);
+		return pattern.matcher(literal).matches();
+	}
+	public static Pattern getPattern(){
+		return pattern;
 	}
 }

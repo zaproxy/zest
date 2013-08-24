@@ -5,6 +5,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  * @author Alessandro Secco: seccoale@gmail.com
  */
 public class ZestExpressionAnd extends ZestStructuredExpression{
-	
+	private static Pattern pattern=null;
 	/**
 	 * Main construptor.
 	 *
@@ -36,6 +37,12 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		super(andList);
 	}
 
+	public static Pattern getPattern(){
+		if(pattern==null){
+			pattern=Pattern.compile("(NOT\\s)?\\(.*([(AND)(and)(&&)(&)].*)*\\)");
+		}
+		return pattern;
+	}
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
@@ -76,9 +83,12 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 	public String toString(){
 		String expression=(isInverse()?"NOT (":"(");
 		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
-			expression += " "+this.getChild(i).toString()+" AND";
+			expression += this.getChild(i).toString()+") AND (";
 		}
 		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+")";
 		return expression;
+	}
+	public static boolean isLiteralInstance(String literal){
+		return getPattern().matcher(literal).matches();
 	}
 }

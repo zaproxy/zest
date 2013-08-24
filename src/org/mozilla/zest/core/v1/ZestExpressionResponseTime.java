@@ -4,6 +4,8 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -11,7 +13,7 @@ package org.mozilla.zest.core.v1;
  */
 public class ZestExpressionResponseTime extends ZestExpression {
 
-	private final static String regexLiteral="(NOT\\s)?Response\\sTime\\s[<>]\\s\\d+";
+	private final static Pattern pattern=Pattern.compile("(NOT\\s)?Response\\sTime\\s[<>]\\s\\d+");
 
 	/** The greater than. */
 	private boolean greaterThan = true;
@@ -107,6 +109,9 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		return expression;
 	}
 	public static boolean isLiteralInstance(String literal){
-		return literal.matches(regexLiteral);
+		return pattern.matcher(literal).matches();
+	}
+	public static Pattern getPattern(){
+		return pattern;
 	}
 }

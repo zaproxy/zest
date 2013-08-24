@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class ZestExpressionRegex extends ZestExpression{
 	
-	private final static String regexLiteral="(NOT\\s)?REGEX:\\s.*";
+	private final static Pattern patternLiteral=Pattern.compile("(NOT\\s)?REGEX:\\s\\S*");
 
 	/** The regex. */
 	private String regex;
@@ -170,7 +170,9 @@ public class ZestExpressionRegex extends ZestExpression{
 		return expression;
 	}
 	public static boolean isLiteralInstance(String s){
-		return s.matches(regexLiteral);
+		return patternLiteral.matcher(s).matches();
 	}
-	
+	public static Pattern getPattern(){
+		return patternLiteral;
+	}
 }

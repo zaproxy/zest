@@ -4,6 +4,8 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
 
 
 // TODO: Auto-generated Javadoc
@@ -11,8 +13,8 @@ package org.mozilla.zest.core.v1;
  * The Class ZestExpressionRegex.
  */
 public class ZestExpressionEquals extends ZestExpression{
-	
-	private static final String regexLiteral="(NOT\\s)?(CASE\\sEXACT)?Value:\\s.*";
+	//(isInverse()?"NOT ":"")+(isCaseExact()?"CASE EXACT ":"")+ "Value: "+value
+	private static final Pattern pattern=Pattern.compile("(NOT\\s)?(CASE\\sEXACT\\s)?Value:\\s.+");
 	
 	/** The value to compare with. */
 	private String value;
@@ -154,7 +156,10 @@ public class ZestExpressionEquals extends ZestExpression{
 	}
 	
 	public static boolean isLiteralInstance(String string){
-		return string.matches(regexLiteral);
+		return pattern.matcher(string).matches();
+	}
+	public static Pattern getPattern(){
+		return pattern;
 	}
 	
 }

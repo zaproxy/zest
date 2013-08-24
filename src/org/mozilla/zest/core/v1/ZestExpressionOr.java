@@ -5,6 +5,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public class ZestExpressionOr extends ZestStructuredExpression {
 
+	private static Pattern pattern=null;
 	/**
 	 * Main construptor.
 	 * 
@@ -74,10 +76,28 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 	public String toString() {
 		String expression = (isInverse() ? "NOT (" : "(");
 		for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
-			expression += " " + this.getChild(i).toString() + " OR";
+			expression += " " + this.getChild(i).toString() + " ) OR ( ";
 		}
 		expression += this.getChild(this.getChildrenCondition().size() - 1)
-				.toString() + ")";
+				.toString() + " )";
 		return expression;
+	}
+	public static boolean isLiteralInstance(String literal){
+		return getPattern().matcher(literal).matches();
+	}
+	public static Pattern getPattern(){
+		if(pattern==null){
+//			String equalsExpr="(\\s*\\(\\s*"+ZestExpressionEquals.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String lengthExpr="(\\s*\\(\\s*"+ZestExpressionLength.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String regexExpr="(\\s*\\(\\s*"+ZestExpressionRegex.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String timeExpr="(\\s*\\(\\s*"+ZestExpressionResponseTime.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String codeExpr="(\\s*\\(\\s*"+ZestExpressionStatusCode.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String urlExpr="(\\s*\\(\\s*"+ZestExpressionURL.getLiteralRegex()+"\\s*\\)\\s*)";
+//			String structuredExpr=".*\\([(AND)(OR)].*\\)*";
+//			String genericExpression="["+equalsExpr+lengthExpr+regexExpr+timeExpr+codeExpr+urlExpr+structuredExpr+"]";
+//			regexLiteral="(NOT\\s)?"+genericExpression+"(\\s*OR\\s*"+genericExpression+"\\s*)+";
+			pattern=Pattern.compile("\\s*(NOT\\s)?\\((.*[(OR)(or)(||)(|)].*)*\\)\\s*");
+		}
+		return pattern;
 	}
 }
