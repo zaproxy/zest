@@ -268,7 +268,7 @@ public class ZestRequest extends ZestStatement {
 		if (str == null) {
 			return null;
 		}
-		for (String [] nvPair : tokens.getVariable()) {
+		for (String [] nvPair : tokens.getVariables()) {
 			String tokenStr = tokens.getTokenStart() + nvPair[0] + tokens.getTokenEnd();
 			if (urlEncode) {
 				try {

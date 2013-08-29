@@ -124,7 +124,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @return the tokens
 	 */
-	public List<String[]> getVariable() {
+	public List<String[]> getVariables() {
 		List<String[]> list = new ArrayList<String[]>();
 		for (Entry<String, String> entry : tokens.entrySet()) {
 			list.add(new String[] {entry.getKey(), entry.getValue()});
