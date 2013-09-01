@@ -488,6 +488,11 @@ Active,
 		tokens.add(ZestVariables.RESPONSE_HEADER);
 		tokens.add(ZestVariables.RESPONSE_BODY);
 		
+		List<String[]> vars = this.getParameters().getVariables();
+		for (String[] var : vars) {
+			tokens.add(var[0]);
+		}
+		
 		for (ZestStatement stmt : this.statements) {
 			if (stmt instanceof ZestContainer) {
 				tokens.addAll(((ZestContainer)stmt).getVariableNames());

@@ -55,7 +55,7 @@ public class ZestPrinter {
 		System.out.println("Description:   " + cleanStr(zs.getDescription()));
 		System.out.println("Prefix:        " + cleanStr(zs.getPrefix()));
 		System.out.println("Parameters:");
-		for (String[] tokens : zs.getParameters().getVariable()) {
+		for (String[] tokens : zs.getParameters().getVariables()) {
 			System.out.println("    " + tokens[0] + "=" + tokens[1]);
 		}
 		for (ZestAuthentication za : zs.getAuthentication()) {
