@@ -34,6 +34,13 @@ public interface ZestRuntime {
 	ZestResponse getLastResponse();
 	
 	/**
+	 * Get the last request.
+	 *
+	 * @return the last request
+	 */
+	ZestRequest getLastRequest();
+	
+	/**
 	 * Replace any variables in the supplied string
 	 * @param str
 	 * @param urlEncode

@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestExpressionURL;
+import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 
 /**
@@ -63,9 +64,9 @@ public class ZestExpressionURLUnitTest {
 		urlExpr.setIncludeRegexes(includeStrings);
 		urlExpr.setExcludeRegexes(excludeStrings);
 		try {
-			ZestResponse response = new ZestResponse(new URL(
-					"http://www.PING1.com"), "", "", 200, 10);
-			assertTrue(urlExpr.isTrue(new TestRuntime(response)));
+			ZestRequest request = new ZestRequest();
+			request.setUrl(new URL("http://www.PING1.com"));
+			assertTrue(urlExpr.isTrue(new TestRuntime(request)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -77,9 +78,9 @@ public class ZestExpressionURLUnitTest {
 		urlExpr.setIncludeRegexes(includeStrings);
 		urlExpr.setExcludeRegexes(excludeStrings);
 		try {
-			ZestResponse response = new ZestResponse(new URL(
-					"http://www.PONG1.com"), "", "", 200, 10);
-			assertFalse(urlExpr.isTrue(new TestRuntime(response)));
+			ZestRequest request = new ZestRequest();
+			request.setUrl(new URL("http://www.PONG1.com"));
+			assertFalse(urlExpr.isTrue(new TestRuntime(request)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -91,9 +92,9 @@ public class ZestExpressionURLUnitTest {
 		urlExpr.setIncludeRegexes(includeStrings);
 		urlExpr.setExcludeRegexes(excludeStrings);
 		try {
-			ZestResponse response = new ZestResponse(new URL(
-					"http://www.asdf.com"), "", "", 200, 10);
-			assertFalse(urlExpr.isTrue(new TestRuntime(response)));
+			ZestRequest request = new ZestRequest();
+			request.setUrl(new URL("http://www.asdf.com"));
+			assertFalse(urlExpr.isTrue(new TestRuntime(request)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

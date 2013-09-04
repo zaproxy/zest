@@ -59,6 +59,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private Writer outputWriter = null;
 	
 	private ZestVariables variables;
+	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
 
 	@Override
@@ -114,6 +115,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			}
 		}
 		
+		lastRequest = target;
+		
 		if (target != null) {
 			// used in passive trests
 			lastResponse = target.getResponse();
@@ -138,14 +141,14 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		
 		if (stmt instanceof ZestRequest) {
-			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
-			req2.replaceTokens(this.variables);
-			this.lastResponse = send(req2);
+			this.lastRequest = ((ZestRequest)stmt).deepCopy();
+			this.lastRequest.replaceTokens(this.variables);
+			this.lastResponse = send(this.lastRequest);
 			
-			this.variables.setStandardVariables(req2);
+			this.variables.setStandardVariables(this.lastRequest);
 			this.variables.setStandardVariables(this.lastResponse);
 
-			handleResponse (req2, this.lastResponse);
+			handleResponse (this.lastRequest, this.lastResponse);
 			return this.lastResponse;
 			
 		} else if (stmt instanceof ZestConditional) {
@@ -429,6 +432,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public ZestResponse getLastResponse() {
 		return lastResponse;
+	}
+
+	@Override
+	public ZestRequest getLastRequest() {
+		return lastRequest;
 	}
 
 	@Override
