@@ -9,7 +9,7 @@ package org.mozilla.zest.core.v1;
  */
 public abstract class ZestExpression extends ZestElement implements
 		ZestExpressionElement {
-	
+//	private String variableName = "";
 	/** The not. */
 	private boolean not = false;
 
@@ -64,4 +64,12 @@ public abstract class ZestExpression extends ZestElement implements
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
 	public abstract ZestExpression deepCopy();
+//	@Override
+//	public void setVariableName(String variableName){
+//		this.variableName=variableName;
+//	}
+//	@Override
+//	public String getVariableName(){
+//		return this.variableName;
+//	}
 }

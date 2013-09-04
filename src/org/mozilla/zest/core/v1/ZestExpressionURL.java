@@ -8,23 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.mozilla.zest.impl.ZestUtils;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionURL.
  */
 public class ZestExpressionURL extends ZestExpression {
 
-	private final static Pattern pattern=Pattern.compile("(NOT\\s)?URL:\\sACCEPT:.*,\\sEXCLUDE:.*");
+	private final static Pattern pattern = Pattern
+			.compile("(NOT\\s)?URL:\\sACCEPT:\\s("
+					+ ZestUtils.START_VARIABLE_REGEX + "\\S*"
+					+ ZestUtils.END_VARIABLE_REGEX + "\\s?)*,\\sEXCLUDE:\\s("
+					+ ZestUtils.START_VARIABLE_REGEX + "\\S+"
+					+ ZestUtils.END_VARIABLE_REGEX + "\\s?)*");
 
 	/** The include regexes. */
 	private List<String> includeRegexes = new ArrayList<String>();
-	
+
 	/** The exclude regexes. */
 	private List<String> excludeRegexes = new ArrayList<String>();
 
 	/** The include patterns. */
 	private transient List<Pattern> includePatterns = new ArrayList<Pattern>();
-	
+
 	/** The exclude patterns. */
 	private transient List<Pattern> excludePatterns = new ArrayList<Pattern>();
 
@@ -37,9 +44,11 @@ public class ZestExpressionURL extends ZestExpression {
 
 	/**
 	 * Instantiates a new zest expression url.
-	 *
-	 * @param includeRegexes the include regexes
-	 * @param excludeRegexes the exclude regexes
+	 * 
+	 * @param includeRegexes
+	 *            the include regexes
+	 * @param excludeRegexes
+	 *            the exclude regexes
 	 */
 	public ZestExpressionURL(List<String> includeRegexes,
 			List<String> excludeRegexes) {
@@ -47,8 +56,12 @@ public class ZestExpressionURL extends ZestExpression {
 		this.setExcludeRegexes(excludeRegexes);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
+	 * .core.v1.ZestResponse)
 	 */
 	public boolean isTrue(ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
@@ -80,7 +93,7 @@ public class ZestExpressionURL extends ZestExpression {
 
 	/**
 	 * Gets the include regexes.
-	 *
+	 * 
 	 * @return the include regexes
 	 */
 	public List<String> getIncludeRegexes() {
@@ -89,7 +102,7 @@ public class ZestExpressionURL extends ZestExpression {
 
 	/**
 	 * Gets the exclude regexes.
-	 *
+	 * 
 	 * @return the exclude regexes
 	 */
 	public List<String> getExcludeRegexes() {
@@ -98,8 +111,9 @@ public class ZestExpressionURL extends ZestExpression {
 
 	/**
 	 * Sets the include regexes.
-	 *
-	 * @param includeRegexes the new include regexes
+	 * 
+	 * @param includeRegexes
+	 *            the new include regexes
 	 */
 	public void setIncludeRegexes(List<String> includeRegexes) {
 		this.includeRegexes = includeRegexes;
@@ -114,8 +128,9 @@ public class ZestExpressionURL extends ZestExpression {
 
 	/**
 	 * Sets the exclude regexes.
-	 *
-	 * @param excludeRegexes the new exclude regexes
+	 * 
+	 * @param excludeRegexes
+	 *            the new exclude regexes
 	 */
 	public void setExcludeRegexes(List<String> excludeRegexes) {
 		this.excludeRegexes = excludeRegexes;
@@ -128,7 +143,9 @@ public class ZestExpressionURL extends ZestExpression {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
@@ -140,26 +157,35 @@ public class ZestExpressionURL extends ZestExpression {
 		copy.excludeRegexes = copyExcludeRegex;
 		return copy;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+"URL: ACCEPT:";
-		for(String s:includeRegexes){
-			expression+=" "+s;
+	public String toString() {
+		String expression = (isInverse() ? "NOT " : "") + "URL: ACCEPT:";
+		for (String s : includeRegexes) {
+			expression += " " + ZestUtils.START_VARIABLE + s
+					+ ZestUtils.END_VARIABLE;
 		}
-		expression+=", EXCLUDE:";
-		for(String s:excludeRegexes){
-			expression+=" "+s;
+		expression += ", EXCLUDE:";
+		for (String s : excludeRegexes) {
+			expression += " " + ZestUtils.START_VARIABLE + s
+					+ ZestUtils.END_VARIABLE;
 		}
 		return expression;
 	}
-	public static boolean isLiteralInstance(String s){
+
+	public static boolean isLiteralInstance(String s) {
+		if (s == null || s.isEmpty()) {
+			return false;
+		}
 		return pattern.matcher(s).matches();
 	}
-	public static Pattern getPattern(){
+
+	public static Pattern getPattern() {
 		return pattern;
 	}
 }

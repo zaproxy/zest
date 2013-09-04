@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
  */
 public class ZestExpressionOr extends ZestStructuredExpression {
 
-	private static Pattern pattern=null;
+	private static Pattern pattern = null;
+
 	/**
 	 * Main construptor.
 	 * 
@@ -69,34 +70,33 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return copy;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		String expression = (isInverse() ? "NOT (" : "(");
-		for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
-			expression += " " + this.getChild(i).toString() + " ) OR ( ";
+		if (this.getChildrenCondition().isEmpty()) {
+			return "Empty OR";
+		} else {
+			String expression = (isInverse() ? "NOT ( " : "( ");
+			for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
+				expression += " " + this.getChild(i).toString() + " ) OR ( ";
+			}
+			expression += this.getChild(this.getChildrenCondition().size() - 1)
+					.toString() + " )";
+			return expression;
 		}
-		expression += this.getChild(this.getChildrenCondition().size() - 1)
-				.toString() + " )";
-		return expression;
 	}
-	public static boolean isLiteralInstance(String literal){
+
+	public static boolean isLiteralInstance(String literal) {
 		return getPattern().matcher(literal).matches();
 	}
-	public static Pattern getPattern(){
-		if(pattern==null){
-//			String equalsExpr="(\\s*\\(\\s*"+ZestExpressionEquals.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String lengthExpr="(\\s*\\(\\s*"+ZestExpressionLength.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String regexExpr="(\\s*\\(\\s*"+ZestExpressionRegex.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String timeExpr="(\\s*\\(\\s*"+ZestExpressionResponseTime.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String codeExpr="(\\s*\\(\\s*"+ZestExpressionStatusCode.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String urlExpr="(\\s*\\(\\s*"+ZestExpressionURL.getLiteralRegex()+"\\s*\\)\\s*)";
-//			String structuredExpr=".*\\([(AND)(OR)].*\\)*";
-//			String genericExpression="["+equalsExpr+lengthExpr+regexExpr+timeExpr+codeExpr+urlExpr+structuredExpr+"]";
-//			regexLiteral="(NOT\\s)?"+genericExpression+"(\\s*OR\\s*"+genericExpression+"\\s*)+";
-			pattern=Pattern.compile("\\s*(NOT\\s)?\\((.*[(OR)(or)(||)(|)].*)*\\)\\s*");
+
+	public static Pattern getPattern() {
+		if (pattern == null) {
+			pattern=Pattern.compile("(((NOT\\s)?.*(OR.*)+)|(Empty\\sOR))");
 		}
 		return pattern;
 	}

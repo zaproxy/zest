@@ -7,7 +7,6 @@
  */
 package org.mozilla.zest.impl;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import net.astesana.javaluator.AbstractEvaluator;
@@ -20,14 +19,12 @@ import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
 import org.mozilla.zest.core.v1.ZestExpressionOr;
-import org.mozilla.zest.core.v1.ZestStructuredExpression;
 
 public class ZestExpressionEvaluator extends AbstractEvaluator<ZestExpression> {
 	private static final Parameters PARAMETERS = new Parameters();
 	private final static Operator AND;
 	private static final Operator OR;
 	private static final Operator NOT;
-	private final Hashtable<ZestExpression, ZestStructuredExpression> table = new Hashtable<>();
 	static {
 		AND = new Operator("AND", 2, Operator.Associativity.LEFT, 2);
 		OR = new Operator("OR", 2, Operator.Associativity.LEFT, 1);
@@ -61,8 +58,10 @@ public class ZestExpressionEvaluator extends AbstractEvaluator<ZestExpression> {
 	@Override
 	protected ZestExpression toValue(String literal, Object arg1) {
 		try {
+			System.out.println("TO VALUE: [["+literal+"]]");
 			return ZestUtils.parseSimpleExpression(literal);
 		} catch (NoSuchExpressionException e) {
+			System.err.println("this crashes!");
 			e.printStackTrace();
 		}
 		return null;
@@ -73,11 +72,14 @@ public class ZestExpressionEvaluator extends AbstractEvaluator<ZestExpression> {
 			Iterator<ZestExpression> operands, Object evaluationContext) {
 		ZestExpression toReturn=null;
 		ZestExpression exp1=operands.next();
+		System.out.print(operator.getSymbol()+"(");
 		if(operator==NOT){
+			System.out.println(exp1+")");
 			exp1.setInverse(!exp1.isInverse());
 			toReturn=exp1;
 		} else{
 			ZestExpression exp2=operands.next();
+			System.out.println(exp1+","+exp2+")");
 			if(operator==AND){
 				if(exp1 instanceof ZestExpressionAnd && exp2 instanceof ZestExpressionAnd){
 					for(ZestExpressionElement exp:((ZestExpressionAnd)exp2).getChildrenCondition()){

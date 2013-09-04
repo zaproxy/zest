@@ -39,7 +39,10 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 
 	public static Pattern getPattern(){
 		if(pattern==null){
-			pattern=Pattern.compile("(NOT\\s)?\\(.*([(AND)(and)(&&)(&)].*)*\\)");
+			pattern=Pattern.compile("(((NOT\\s)?.*(AND.*)+)|(Empty\\sAND))");
+//			System.out.println("--------------------");
+//			System.out.println(pattern.toString());
+//			System.exit(0);
 		}
 		return pattern;
 	}
@@ -81,14 +84,19 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 	 */
 	@Override
 	public String toString(){
-		String expression=(isInverse()?"NOT (":"(");
-		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
-			expression += this.getChild(i).toString()+") AND (";
+		if(getChildrenCondition().isEmpty()){
+			return "Empty AND";
 		}
-		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+")";
+		String expression=(isInverse()?"NOT ( ":"( ");
+		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
+			expression += this.getChild(i).toString()+" ) AND ( ";
+		}
+		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+" )";
 		return expression;
 	}
 	public static boolean isLiteralInstance(String literal){
+		if(literal==null || literal.isEmpty())
+			return false;
 		return getPattern().matcher(literal).matches();
 	}
 }

@@ -36,21 +36,21 @@ public class ZestExpressionLiteralRegexesUnitTest {
 	}
 	@Test
 	public void testZestExpressionEqualsLiteralRegex() {
-		ZestExpressionEquals equals=new ZestExpressionEquals("", "Sample string\\");
+		ZestExpressionEquals equals=new ZestExpressionEquals("location", "Sample string");
 		assertTrue(ZestExpressionEquals.isLiteralInstance(equals.toString()));
 		equals.setInverse(true);
 		assertTrue(ZestExpressionEquals.isLiteralInstance(equals.toString()));
 	}
 	@Test
 	public void testZestExpressionLengthLiteralRegex() {
-		ZestExpressionLength length=new ZestExpressionLength("", 10,20);
+		ZestExpressionLength length=new ZestExpressionLength("location", 10,20);
 		assertTrue(ZestExpressionLength.isLiteralInstance(length.toString()));
 		length.setInverse(true);
 		assertTrue(ZestExpressionLength.isLiteralInstance(length.toString()));
 	}
 	@Test
 	public void testZestExpressionRegexLiteralRegex(){
-		ZestExpressionRegex regex=new ZestExpressionRegex("", "brugboil");
+		ZestExpressionRegex regex=new ZestExpressionRegex("location", "brugboil");
 		assertTrue(ZestExpressionRegex.isLiteralInstance(regex.toString()));
 		regex.setInverse(true);
 		assertTrue(ZestExpressionRegex.isLiteralInstance(regex.toString()));
@@ -91,7 +91,7 @@ public class ZestExpressionLiteralRegexesUnitTest {
 	}
 	@Test
 	public void testZestExpressionEqualsParsing(){
-		ZestExpressionEquals equals=new ZestExpressionEquals("", "Sample string\\");
+		ZestExpressionEquals equals=new ZestExpressionEquals("location", "Sample string\\");
 		String equalsString=equals.toString();
 		ZestExpressionEquals equalsCopy;
 		try {
@@ -100,13 +100,12 @@ public class ZestExpressionLiteralRegexesUnitTest {
 			assertTrue("same isInverse", equals.isInverse()==equalsCopy.isInverse());
 			assertTrue("same case exact:", equals.isCaseExact()==equalsCopy.isCaseExact());
 		} catch (NoSuchExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	@Test
 	public void testZestExpressionLengthParsing(){
-		ZestExpressionLength length=new ZestExpressionLength("", 10,20);
+		ZestExpressionLength length=new ZestExpressionLength("location", 10,20);
 		String lengthString=length.toString();
 		ZestExpressionLength lengthCopy;
 		try {
@@ -114,21 +113,20 @@ public class ZestExpressionLiteralRegexesUnitTest {
 			assertTrue("Same Approx", length.getApprox()==lengthCopy.getApprox());
 			assertTrue("same length", length.getLength()==lengthCopy.getLength());
 		} catch (NoSuchExpressionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	@Test
 	public void testZestExpressionRegexParsing(){
-		ZestExpressionRegex regex=new ZestExpressionRegex("", "brugboil");
+		ZestExpressionRegex regex=new ZestExpressionRegex("location", "brugboil");
 		String regexString=regex.toString();
 		ZestExpressionRegex regexCopy;
 		try {
 			regexCopy = (ZestExpressionRegex)ZestUtils.parseSimpleExpression(regexString);
 			assertTrue("same regex", regex.getRegex().equals(regexCopy.getRegex()));
 		} catch (NoSuchExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	@Test
@@ -140,8 +138,7 @@ public class ZestExpressionLiteralRegexesUnitTest {
 			timeCopy = (ZestExpressionResponseTime) ZestUtils.parseSimpleExpression(timeString);
 			assertTrue("same time", time.getTimeInMs()==timeCopy.getTimeInMs());
 		} catch (NoSuchExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	@Test
@@ -174,8 +171,7 @@ public class ZestExpressionLiteralRegexesUnitTest {
 				assertTrue(message, expected.equals(obtained));
 			}
 		} catch (NoSuchExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	@Test
@@ -185,9 +181,9 @@ public class ZestExpressionLiteralRegexesUnitTest {
 		ZestExpression[] expressions=new ZestExpression[6];
 		int i=0;
 		expressions[i++]=new ZestExpressionStatusCode(100);
-		expressions[i++]=new ZestExpressionEquals("", "Sample string\\");
-		expressions[i++]=new ZestExpressionLength("", 10,20);
-		expressions[i++]=new ZestExpressionRegex("", "brugboil");
+		expressions[i++]=new ZestExpressionEquals("location", "Sample string\\");
+		expressions[i++]=new ZestExpressionLength("location.body", 10,20);
+		expressions[i++]=new ZestExpressionRegex("location.header", "brugboil");
 		ZestExpressionResponseTime time=new ZestExpressionResponseTime(1357835);
 		ZestExpressionURL url=new ZestExpressionURL();
 		for(int j=0; j<10; j++){
@@ -205,6 +201,9 @@ public class ZestExpressionLiteralRegexesUnitTest {
 		}
 		and.addChildCondition(or);
 		String andString=and.toString();
+		System.out.println("-------------");
+		System.out.println(andString);
+//		System.exit(0);
 		assertTrue("AND:",ZestExpressionAnd.isLiteralInstance(andString));
 		String orString=or.toString();
 		assertTrue("OR:", ZestExpressionOr.isLiteralInstance(orString));
@@ -217,9 +216,9 @@ public class ZestExpressionLiteralRegexesUnitTest {
 		ZestExpression[] expressions=new ZestExpression[6];
 		int i=0;
 		expressions[i++]=new ZestExpressionStatusCode(100);
-		expressions[i++]=new ZestExpressionEquals("", "Sample string\\");
-		expressions[i++]=new ZestExpressionLength("", 10,20);
-		expressions[i++]=new ZestExpressionRegex("", "brugboil");
+		expressions[i++]=new ZestExpressionEquals("location", "Sample string\\");
+		expressions[i++]=new ZestExpressionLength("any.location", 10,20);
+		expressions[i++]=new ZestExpressionRegex("some.location", "brugboil");
 		ZestExpressionResponseTime time=new ZestExpressionResponseTime(1357835);
 		ZestExpressionURL url=new ZestExpressionURL();
 		for(int j=0; j<10; j++){
@@ -247,14 +246,28 @@ public class ZestExpressionLiteralRegexesUnitTest {
 	}
 	@Test
 	public void testZestExpressionInverseParsing(){
-		ZestExpressionEquals equals=new ZestExpressionEquals("", "gnruweomc");
+		ZestExpressionEquals equals=new ZestExpressionEquals("location", "gnruweomc");
 		equals.setInverse(true);
 		ZestExpressionEquals copy;
 		try {
 			copy = (ZestExpressionEquals)ZestUtils.parseSimpleExpression(equals.toString());
 			assertTrue(copy.isInverse());
 		} catch (NoSuchExpressionException e) {
-			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+	@Test
+	public void testZestExpressionRegexCaseExactParsing(){
+		ZestExpressionRegex regex=new ZestExpressionRegex();
+		regex.setCaseExact(true);
+		regex.setRegex("newoiu4pgn4p");
+		regex.setVariableName("$£$£ n3owiue in nin   q03wh");
+		String regexString=regex.toString();
+		try{
+		ZestExpression parsedExpression=ZestUtils.parseSimpleExpression(regexString);
+		assertTrue(parsedExpression.toString().equals(regexString));
+		} catch(NoSuchExpressionException e){
+			fail(e.getMessage());
 		}
 	}
 }

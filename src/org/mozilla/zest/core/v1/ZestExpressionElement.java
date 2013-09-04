@@ -62,4 +62,7 @@ public interface ZestExpressionElement{
 	 * @see ZestElement
 	 */
 	public ZestExpressionElement deepCopy();
+	
+//	public String getVariableName();
+//	public void setVariableName(String variableName);
 }
