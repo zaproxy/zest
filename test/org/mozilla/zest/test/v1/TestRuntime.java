@@ -8,19 +8,36 @@ public class TestRuntime implements ZestRuntime{
 	private ZestResponse response;
 	private ZestVariables vars = new ZestVariables();
 	
-	TestRuntime(ZestResponse resp) {
+	public TestRuntime() {
+	}
+
+	public TestRuntime(ZestResponse resp) {
 		this.response = resp;
 		vars.setStandardVariables(resp);
 	}
 
 	@Override
 	public String getVariable(String name) {
-		String val = vars.getVariable(name);
-		return val;
+		return vars.getVariable(name);
+	}
+
+	@Override
+	public void setVariable(String name, String value) {
+		vars.setVariable(name, value);
 	}
 
 	@Override
 	public ZestResponse getLastResponse() {
 		return response;
+	}
+
+	@Override
+	public String replaceVariablesInString(String str, boolean urlEncode) {
+		return vars.replaceInString(str, urlEncode);
+	}
+
+	@Override
+	public void output(String str) {
+		System.out.println(str);
 	}
 }

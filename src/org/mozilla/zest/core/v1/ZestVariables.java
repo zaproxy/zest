@@ -4,6 +4,8 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,22 +18,25 @@ import java.util.Map.Entry;
  */
 public class ZestVariables extends ZestElement {
 	
-	/** The Constant REQUEST_URL. */
+	/** The Request URL. */
 	public static final String REQUEST_URL 		= "request.url";
 	
-	/** The Constant REQUEST_HEADER. */
+	/** The Request URL. */
+	public static final String REQUEST_METHOD 	= "request.method";
+	
+	/** The Request Headers. */
 	public static final String REQUEST_HEADER 	= "request.header";
 	
-	/** The Constant REQUEST_BODY. */
+	/** The Request Body. */
 	public static final String REQUEST_BODY 	= "request.body";
 	
-	/** The Constant RESPONSE_URL. */
+	/** The Response URL. */
 	public static final String RESPONSE_URL 	= "response.url";
 	
-	/** The Constant RESPONSE_HEADER. */
+	/** The Response Headers. */
 	public static final String RESPONSE_HEADER 	= "response.header";
 	
-	/** The Constant RESPONSE_BODY. */
+	/** The Response Body. */
 	public static final String RESPONSE_BODY 	= "response.body";
 
 	/** The token start. */
@@ -166,7 +171,7 @@ public class ZestVariables extends ZestElement {
 	 *
 	 * @param tokens the tokens
 	 */
-	public void addVariable(Map<String, String> tokens) {
+	public void addVariables(Map<String, String> tokens) {
 		this.tokens.putAll(tokens);
 	}
 	
@@ -192,6 +197,7 @@ public class ZestVariables extends ZestElement {
 				this.setVariable(REQUEST_URL, request.getUrl().toString());
 			}
 			this.setVariable(REQUEST_HEADER, request.getHeaders());
+			this.setVariable(REQUEST_METHOD, request.getMethod());
 			this.setVariable(REQUEST_BODY, request.getData());
 		}
 	}
@@ -209,6 +215,42 @@ public class ZestVariables extends ZestElement {
 			this.setVariable(RESPONSE_HEADER, response.getHeaders());
 			this.setVariable(RESPONSE_BODY, response.getBody());
 		}
+	}
+
+	private String replaceInString (String str, boolean urlEncode, List<String> previous) {
+		if (str == null) {
+			return null;
+		}
+		boolean changed = false;
+		for (String [] nvPair : getVariables()) {
+			String tokenStr = getTokenStart() + nvPair[0] + getTokenEnd();
+			if (urlEncode) {
+				try {
+					tokenStr = URLEncoder.encode(tokenStr, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// Ignore
+				}
+			}
+			if (str.contains(tokenStr)) {
+				if (! previous.contains(nvPair[0])) {
+					// To prevent loops
+					previous.add(nvPair[0]);
+					changed = true;
+					str = str.replace(tokenStr, nvPair[1]);
+				}
+			}
+		}
+		if (changed) {
+			// keep going to handle tokens in tokens
+			return this.replaceInString(str, urlEncode, previous);
+		}
+		return str;
+		
+	}
+
+	public String replaceInString (String str, boolean urlEncode) {
+		List<String> prev = new ArrayList<String>();
+		return this.replaceInString(str, urlEncode, prev);
 	}
 
 }

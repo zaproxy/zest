@@ -21,6 +21,8 @@ import org.mozilla.zest.core.v1.ZestResponse;
 @RunWith(MockitoJUnitRunner.class)
 public class ZestAssignStringDelimitersUnitTest {
 
+	private TestRuntime rt = new TestRuntime();
+
 	/**
 	 * Method testSimpleCase.
 	 * @throws Exception
@@ -33,12 +35,12 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setVariableName("aaa");
 		ast.setPrefix("prefix");
 		ast.setPostfix("postfix");
-		assertEquals ("12345", ast.assign(resp));
+		assertEquals ("12345", ast.assign(resp, rt));
 
 		ast.setVariableName("aaa");
 		ast.setPrefix("Prefix");
 		ast.setPostfix("Postfix");
-		assertEquals ("54321", ast.assign(resp));
+		assertEquals ("54321", ast.assign(resp, rt));
 	}
 
 	/**
@@ -54,13 +56,13 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setPrefix("H");
 		ast.setPostfix("Z");
 		ast.setLocation(ZestAssignStringDelimiters.LOC_HEAD);
-		assertEquals ("eader prefix12345postfix", ast.assign(resp));
+		assertEquals ("eader prefix12345postfix", ast.assign(resp, rt));
 
 		ast.setVariableName("aaa");
 		ast.setPrefix("B");
 		ast.setPostfix("Z");
 		ast.setLocation(ZestAssignStringDelimiters.LOC_BODY);
-		assertEquals ("ody Prefix54321Postfix", ast.assign(resp));
+		assertEquals ("ody Prefix54321Postfix", ast.assign(resp, rt));
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setPrefix("bbb");
 		ast.setPostfix("ccc");
 		try {
-			ast.assign(null);
+			ast.assign(null, rt);
 			fail("Should have caused an exception");
 		} catch (ZestAssignFailException e) {
 			// Expected
@@ -86,7 +88,7 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setPrefix(null);
 		ast.setPostfix("ccc");
 		try {
-			ast.assign(resp);
+			ast.assign(resp, rt);
 			fail("Should have caused an exception");
 		} catch (ZestAssignFailException e) {
 			// Expected
@@ -96,7 +98,7 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setPrefix("bbb");
 		ast.setPostfix(null);
 		try {
-			ast.assign(resp);
+			ast.assign(resp, rt);
 			fail("Should have caused an exception");
 		} catch (ZestAssignFailException e) {
 			// Expected
@@ -106,7 +108,7 @@ public class ZestAssignStringDelimitersUnitTest {
 		ast.setPrefix("xxx");
 		ast.setPostfix("yyy");
 		try {
-			ast.assign(resp);
+			ast.assign(resp, rt);
 			fail("Should have caused an exception");
 		} catch (ZestAssignFailException e) {
 			// Expected

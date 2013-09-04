@@ -53,7 +53,7 @@ public class ZestAssignRandomInteger extends ZestAssignment {
 	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
 	 */
 	@Override
-	public String assign (ZestResponse response) throws ZestAssignFailException {
+	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		int val = minInt + rnd.nextInt(maxInt - minInt);
 		return Integer.toString(val);
 	}

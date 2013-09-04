@@ -252,9 +252,11 @@ public class ZestScriptUnitTest {
 	public void testVariableNames() throws Exception {
 		ZestScript script = new ZestScript();
 		// Check the default ones
-		assertEquals(6, script.getVariableNames().size());
+		int size = script.getVariableNames().size();
+		assertEquals(script.getVariableNames().size(), size);
 		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_HEADER));
 		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_BODY));
+		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_METHOD));
 		assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_URL));
 		assertTrue(script.getVariableNames().contains(ZestVariables.RESPONSE_HEADER));
 		assertTrue(script.getVariableNames().contains(ZestVariables.RESPONSE_BODY));
@@ -262,13 +264,13 @@ public class ZestScriptUnitTest {
 		
 		script.add(new ZestRequest());
 		script.add(new ZestAssignStringDelimiters("test.var.1", ZestAssignStringDelimiters.LOC_HEAD, "AA", "BB"));
-		assertEquals(7, script.getVariableNames().size());
+		assertEquals(8, script.getVariableNames().size());
 		assertTrue(script.getVariableNames().contains("test.var.1"));
 		
 		ZestConditional c1 = new ZestConditional();
 		c1.addIf(new ZestAssignStringDelimiters("test.var.2", ZestAssignStringDelimiters.LOC_HEAD, "AA", "BB"));
 		script.add(c1);
-		assertEquals(8, script.getVariableNames().size());
+		assertEquals(9, script.getVariableNames().size());
 		assertTrue(script.getVariableNames().contains("test.var.2"));
 		
 		// TODO check more containers

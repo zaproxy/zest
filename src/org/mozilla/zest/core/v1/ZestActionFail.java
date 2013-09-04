@@ -14,11 +14,7 @@ public class ZestActionFail extends ZestAction {
 	/**
 	 * The Enum Priority.
 	 */
-	public enum Priority {/** The info. */
-INFO, /** The low. */
- LOW, /** The medium. */
- MEDIUM, /** The high. */
- HIGH};
+	public enum Priority {INFO, LOW, MEDIUM, HIGH};
 
 	/** The message. */
 	private String message;
@@ -87,8 +83,8 @@ INFO, /** The low. */
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
 	 */
-	public String invoke(ZestResponse response) throws ZestActionFailException {
-		throw new ZestActionFailException(this, this.message);
+	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
+		throw new ZestActionFailException(this, runtime.replaceVariablesInString(this.message, false));
 	}
 
 	/**

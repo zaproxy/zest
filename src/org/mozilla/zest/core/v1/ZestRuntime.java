@@ -20,10 +20,31 @@ public interface ZestRuntime {
 	String getVariable(String name);
 	
 	/**
+	 * Set the value of the specified variable.
+	 * @param name
+	 * @param value
+	 */
+	void setVariable(String name, String value);
+
+	/**
 	 * Get the last response.
 	 *
 	 * @return the last response
 	 */
 	ZestResponse getLastResponse();
 	
+	/**
+	 * Replace any variables in the supplied string
+	 * @param str
+	 * @param urlEncode
+	 * @return the string with the variables replaces
+	 */
+	String replaceVariablesInString (String str, boolean urlEncode);
+
+	/**
+	 * Outputs the specified string
+	 * @param str
+	 */
+	void output(String str);
+
 }
