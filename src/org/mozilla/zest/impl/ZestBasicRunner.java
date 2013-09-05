@@ -297,7 +297,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		HttpMethod method;
 		
 		switch (req.getMethod()) {
-		case "GET":		method = new GetMethod(req.getUrl().toString()); 
+		case "GET":		method = new GetMethod(req.getUrl().toString());
+						// Can only redirect on GETs
+						method.setFollowRedirects(req.isFollowRedirects());
 						break;
 		case "POST": 	method = new PostMethod(req.getUrl().toString());
 						break;
@@ -316,7 +318,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		method.setURI(new URI(req.getUrl().toString(), true));
 		setHeaders(method, req.getHeaders());
 		method.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
-		method.setFollowRedirects(req.isFollowRedirects());
 		
 		if (req.getMethod().equals("POST")) {
 			// Do this after setting the headers so the length is corrected
