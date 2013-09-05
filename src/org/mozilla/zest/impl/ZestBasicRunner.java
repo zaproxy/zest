@@ -61,7 +61,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private ZestVariables variables;
 	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
-
+	
 	@Override
 	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
 			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
@@ -316,6 +316,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		method.setURI(new URI(req.getUrl().toString(), true));
 		setHeaders(method, req.getHeaders());
 		method.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
+		method.setFollowRedirects(req.isFollowRedirects());
 		
 		if (req.getMethod().equals("POST")) {
 			// Do this after setting the headers so the length is corrected
@@ -333,10 +334,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		    
 		    responseHeader = method.getStatusLine().toString() + "\n" + arrayToStr(method.getResponseHeaders());
 		    responseBody = method.getResponseBodyAsString();
-		} catch (Exception e) { 
-			// TODO
-		    System.err.println(e);
-		    e.printStackTrace();
+
 		} finally { 
 		    method.releaseConnection(); 
 		}
