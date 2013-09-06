@@ -195,9 +195,8 @@ public class CmdLine {
 		ZestBasicRunner zbr = new ZestBasicRunner();
 		zbr.setOutputWriter(new OutputStreamWriter(System.out));
 		zbr.setStopOnAssertFail(false);
-		zbr.setVariables(parameters);
 		try {
-			zbr.run(zs);
+			zbr.run(zs, parameters);
 		} catch (Exception e) {
 			System.out.println("Error running script: " + e);
 			e.printStackTrace();

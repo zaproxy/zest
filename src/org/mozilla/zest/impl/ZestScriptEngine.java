@@ -4,12 +4,16 @@
 package org.mozilla.zest.impl;
 
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.script.AbstractScriptEngine;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
+import javax.script.SimpleBindings;
 
 import org.mozilla.zest.core.v1.ZestRunner;
 
@@ -26,40 +30,55 @@ public class ZestScriptEngine extends AbstractScriptEngine {
 	@Override
 	public Object eval(String script, ScriptContext context)
 			throws ScriptException {
+		Map<String, String> params = new HashMap<String, String>();
+		
 		if (context != null) {
 			this.runner.setOutputWriter(context.getWriter());
+			
+			Bindings bindings = context.getBindings(ScriptContext.ENGINE_SCOPE);
+			
+			if (bindings != null) {
+				for (Entry<String, Object> entry :  bindings.entrySet()) {
+					params.put(entry.getKey(), entry.getValue().toString());
+				}
+			}
+
 		}
 		
 		try {
-			runner.runScript(script);
+			return runner.runScript(script, params);
 		} catch (Exception e) {
 			throw new ScriptException(e);
 		}
-		// Dont support returning objects yet
-		return null;
 	}
 
 	@Override
 	public Object eval(Reader reader, ScriptContext context)
 			throws ScriptException {
+		Map<String, String> params = new HashMap<String, String>();
 		
 		if (context != null) {
 			this.runner.setOutputWriter(context.getWriter());
+			Bindings bindings = context.getBindings(ScriptContext.ENGINE_SCOPE);
+			
+			if (bindings != null) {
+				for (Entry<String, Object> entry :  bindings.entrySet()) {
+					params.put(entry.getKey(), entry.getValue().toString());
+				}
+			}
+
 		}
 		
 		try {
-			runner.runScript(reader);
+			return runner.runScript(reader, params);
 		} catch (Exception e) {
 			throw new ScriptException(e);
 		}
-		// Dont support returning objects yet
-		return null;
 	}
 
 	@Override
 	public Bindings createBindings() {
-		// Not supported yet
-		return null;
+		return new SimpleBindings();
 	}
 
 	@Override

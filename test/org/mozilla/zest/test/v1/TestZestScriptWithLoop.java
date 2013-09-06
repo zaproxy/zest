@@ -58,7 +58,7 @@ public class TestZestScriptWithLoop {
 		 
 		 ZestBasicRunner runner=new ZestBasicRunner();
 		 System.out.println("start "+i);
-		 runner.run(script);
+		 runner.run(script, null);
 		 System.out.println("done");
 		}
 	}

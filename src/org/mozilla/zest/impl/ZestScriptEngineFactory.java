@@ -18,7 +18,7 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
 	public static final String NAME = "Mozilla Zest";
 	
-	private ZestRunner runner = new ZestBasicRunner();
+	private ZestRunner runner = new ZestBasicRunner(this);
 	
 	public String getEngineName () {
 		return NAME;
@@ -101,6 +101,7 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
 	public void setRunner(ZestRunner runner) {
 		this.runner = runner;
+		this.runner.setScriptEngineFactory(this);
 	}
 	
 }

@@ -16,23 +16,30 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ 
-	ZestAssignRegexDelimitersUnitTest.class, 
-	ZestAssignStringDelimitersUnitTest.class,
+	ZestActionInvokeUnitTest.class,
+	ZestActionSleepUnitTest.class,
 	ZestAssertBodyRegexUnitTest.class,
-	ZestConditionalRegexUnitTest.class,
+	ZestAssignRegexDelimitersUnitTest.class,
+	ZestAssignReplaceUnitTest.class,
+	ZestAssignStringDelimitersUnitTest.class,
+	ZestAssignStringUnitTest.class,
+	ZestConditionalRegexComplexUnitTest.class,
 	ZestConditionalRegexExprUnitTest.class,
-	ZestRequestUnitTest.class,
-	ZestScriptUnitTest.class,
-	ZestStructuredExpressionUnitTest.class,
+	ZestConditionalRegexUnitTest.class,
+	ZestExpressionAndUnitTest.class,
 	ZestExpressionLengthUnitTest.class,
 	ZestExpressionRegexUnitTest.class,
 	ZestExpressionResponseTimeUnitTest.class,
 	ZestExpressionURLUnitTest.class,
-	ZestLoopTokenSetUnitTest.class,
+	ZestLoopFileUnitTest.class,
+	ZestLoopIntegerUnitTest.class,
+	ZestLoopSerializationUnitTest.class,
 	ZestLoopStateUnitTest.class,
 	ZestLoopStringUnitTest.class,
-	ZestLoopIntegerUnitTest.class,
-	ZestLoopSerializationUnitTest.class
+	ZestLoopTokenSetUnitTest.class,
+	ZestRequestUnitTest.class,
+	ZestScriptUnitTest.class,
+	ZestStructuredExpressionUnitTest.class
 })
 
 public final class ZestAllTestSuite {
