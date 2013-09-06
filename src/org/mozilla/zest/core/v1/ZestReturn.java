@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 /**
  * Exits the script returning a string.
  */
-public class ZestReturn extends ZestStatement {
+public class ZestReturn extends ZestControl {
 	
 	private String value;
 	

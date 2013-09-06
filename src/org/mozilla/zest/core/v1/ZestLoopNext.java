@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 /**
  * This class represents a NEXT statement for a loop.
  */
-public class ZestLoopNext extends ZestStatement {
+public class ZestLoopNext extends ZestControl {
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
