@@ -99,7 +99,9 @@ public abstract class ZestStatement extends ZestElement {
 		}
 		if (nxt != null) {
 			nxt.previous = previous;
-			nxt.setIndex(previous.getIndex()+1, true);
+			if (previous != null) {
+				nxt.setIndex(previous.getIndex()+1, true);
+			}
 		}
 	}
 

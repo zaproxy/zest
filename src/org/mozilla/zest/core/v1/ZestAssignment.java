@@ -91,6 +91,6 @@ public abstract class ZestAssignment extends ZestStatement {
 	 * @return the string
 	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
-	public abstract String assign(ZestResponse response) throws ZestAssignFailException;
+	public abstract String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException;
 	
 }

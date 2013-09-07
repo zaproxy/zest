@@ -64,11 +64,11 @@ public class ZestExpressionURL extends ZestExpression {
 	 * .core.v1.ZestResponse)
 	 */
 	public boolean isTrue(ZestRuntime runtime) {
-		ZestResponse response = runtime.getLastResponse();
-		if (response == null) {
+		ZestRequest req = runtime.getLastRequest();
+		if (req == null) {
 			return false;
 		}
-		String url = response.getUrl().toString();
+		String url = req.getUrl().toString();
 		boolean inc = false;
 
 		for (Pattern pattern : includePatterns) {

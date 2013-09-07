@@ -4,10 +4,8 @@
 
 package org.mozilla.zest.core.v1;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,34 +255,6 @@ public class ZestRequest extends ZestStatement {
 	}
 
 	/**
-	 * Replace in string.
-	 *
-	 * @param tokens the tokens
-	 * @param str the str
-	 * @param urlEncode the url encode
-	 * @return the string
-	 */
-	private String replaceInString (ZestVariables tokens, String str, boolean urlEncode) {
-		if (str == null) {
-			return null;
-		}
-		for (String [] nvPair : tokens.getVariables()) {
-			String tokenStr = tokens.getTokenStart() + nvPair[0] + tokens.getTokenEnd();
-			if (urlEncode) {
-				try {
-					tokenStr = URLEncoder.encode(tokenStr, "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// Ignore
-				}
-			}
-			if (str.contains(tokenStr)) {
-				str = str.replace(tokenStr, nvPair[1]);
-			}
-		}
-		return str;
-	}
-
-	/**
 	 * Replace tokens.
 	 *
 	 * @param tokens the tokens
@@ -292,21 +262,21 @@ public class ZestRequest extends ZestStatement {
 	public void replaceTokens(ZestVariables tokens) {
 		if (this.url != null) {
 			try {
-				this.setUrl(new URL(replaceInString(tokens, this.url.toString(), false)));	// TODO Work in progress
+				this.setUrl(new URL(tokens.replaceInString(this.url.toString(), false)));	// TODO Work in progress
 			} catch (MalformedURLException e) {
 				// Ignore
 			}
 		} else if (this.urlToken != null) {
-			this.setUrlToken(this.replaceInString(tokens, this.urlToken, false));	// TODO Work in progress
+			this.setUrlToken(tokens.replaceInString(this.urlToken, false));	// TODO Work in progress
 			try {
 				this.setUrl(new URL(this.getUrlToken()));
 			} catch (MalformedURLException e) {
 				// Ignore
 			}
 		}
-		this.setMethod(this.replaceInString(tokens, this.getMethod(), false));
-		this.setHeaders(this.replaceInString(tokens, this.getHeaders(), false));
-		this.setData(this.replaceInString(tokens, this.getData(), false));
+		this.setMethod(tokens.replaceInString(this.getMethod(), false));
+		this.setHeaders(tokens.replaceInString(this.getHeaders(), false));
+		this.setData(tokens.replaceInString(this.getData(), false));
 	}
 	
 	/* (non-Javadoc)

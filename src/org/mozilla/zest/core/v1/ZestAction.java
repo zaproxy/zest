@@ -52,6 +52,6 @@ public abstract class ZestAction extends ZestStatement {
 	 * @return the string
 	 * @throws ZestActionFailException the zest action fail exception
 	 */
-	public abstract String invoke(ZestResponse response) throws ZestActionFailException;
+	public abstract String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException;
 
 }

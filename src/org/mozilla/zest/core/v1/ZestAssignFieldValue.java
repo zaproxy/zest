@@ -75,7 +75,7 @@ public class ZestAssignFieldValue extends ZestAssignment {
 	 * @see org.mozilla.zest.core.v1.ZestAssignment#assign(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	@Override
-	public String assign(ZestResponse response) throws ZestAssignFailException {
+	public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		Source src = new Source(response.getHeaders() + response.getBody());
 		List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
 

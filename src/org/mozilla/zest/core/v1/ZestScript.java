@@ -37,15 +37,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 *     Targeted   - the script acts on a request passed into it - it may make additional requests and may
 	 *     				changes to that request before submitting it. It may also not submit the request at all.   
 	 */
-	public enum Type {
-/** The Active. */
-Active, 
- /** The Passive. */
- Passive, 
- /** The Stand alone. */
- StandAlone, 
- /** The Targeted. */
- Targeted };
+	public enum Type {Active, Passive, StandAlone,  Targeted };
 
 	/** The about. */
 	private String about = ABOUT;
@@ -482,6 +474,7 @@ Active,
 		
 		// Add the 'standard' ones
 		tokens.add(ZestVariables.REQUEST_URL);
+		tokens.add(ZestVariables.REQUEST_METHOD);
 		tokens.add(ZestVariables.REQUEST_HEADER);
 		tokens.add(ZestVariables.REQUEST_BODY);
 		tokens.add(ZestVariables.RESPONSE_URL);

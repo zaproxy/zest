@@ -80,13 +80,8 @@ public class ZestExpressionEquals extends ZestExpression {
 	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
 	 * .core.v1.ZestResponse)
 	 */
-	public boolean isTrue(ZestRuntime runtime) {
-		ZestResponse response = runtime.getLastResponse();
-		if (response == null) {
-			return false;
-		}
-		String str = runtime.getVariable(getVariableName());
-		// String str = runtime.getVariable(variableName);
+	public boolean isTrue (ZestRuntime runtime) {
+		String str = runtime.getVariable(variableName);		
 		if (str == null) {
 			return false;
 		}

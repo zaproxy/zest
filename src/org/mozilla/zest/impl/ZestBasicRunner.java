@@ -22,10 +22,15 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.HeadMethod;
+import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.methods.TraceMethod;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
@@ -54,6 +59,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private Writer outputWriter = null;
 	
 	private ZestVariables variables;
+	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
 
 	@Override
@@ -72,10 +78,17 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			throw new InvalidParameterException("Null target supplied");
 		}
 		HashMap<String, String> initialValues = new HashMap<String, String>();
-		initialValues.put("target.method", target.getMethod());
-		initialValues.put("target.url", target.getUrl().toString());
-		initialValues.put("target.headers", target.getHeaders());
-		initialValues.put("target.body", target.getData());
+		initialValues.put(ZestVariables.REQUEST_METHOD, target.getMethod());
+		initialValues.put(ZestVariables.REQUEST_URL, target.getUrl().toString());
+		initialValues.put(ZestVariables.REQUEST_HEADER, target.getHeaders());
+		initialValues.put(ZestVariables.REQUEST_BODY, target.getData());
+		
+		if (target.getResponse() != null) {
+			initialValues.put(ZestVariables.RESPONSE_URL, target.getResponse().getUrl().toString());
+			initialValues.put(ZestVariables.RESPONSE_HEADER, target.getResponse().getHeaders());
+			initialValues.put(ZestVariables.RESPONSE_BODY, target.getResponse().getBody());
+			
+		}
 		
 		this.run(script, target, initialValues);
 	}
@@ -102,6 +115,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			}
 		}
 		
+		lastRequest = target;
+		
 		if (target != null) {
 			// used in passive trests
 			lastResponse = target.getResponse();
@@ -126,16 +141,14 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		
 		if (stmt instanceof ZestRequest) {
-			ZestRequest req2 = ((ZestRequest)stmt).deepCopy();
-			req2.replaceTokens(this.variables);
-			// TODO cope with more than one level of nested tokens
-			req2.replaceTokens(this.variables);
-			this.lastResponse = send(req2);
+			this.lastRequest = ((ZestRequest)stmt).deepCopy();
+			this.lastRequest.replaceTokens(this.variables);
+			this.lastResponse = send(this.lastRequest);
 			
-			this.variables.setStandardVariables(req2);
+			this.variables.setStandardVariables(this.lastRequest);
 			this.variables.setStandardVariables(this.lastResponse);
 
-			handleResponse (req2, this.lastResponse);
+			handleResponse (this.lastRequest, this.lastResponse);
 			return this.lastResponse;
 			
 		} else if (stmt instanceof ZestConditional) {
@@ -165,7 +178,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException {
 		this.output("Action invoke: " + action.getClass().getName());
-		String result = action.invoke(lastResponse);
+		String result = action.invoke(lastResponse, this);
 		if (result != null) {
 			this.output("Action result: " +result);
 		}
@@ -175,7 +188,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException {
 		this.output("Assign: " + assign.getClass().getName());
-		String result = assign.assign(lastResponse);
+		String result = assign.assign(lastResponse, this);
 		this.setVariable(assign.getVariableName(), result);
 		if (result != null) {
 			this.output("Assignment result: " +result);
@@ -199,7 +212,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		return  lastResponse;
 	}
 
-	private void output(String str) {
+	public void output(String str) {
 		if (this.outputWriter != null) {
 			try {
 				this.outputWriter.append(str);
@@ -288,6 +301,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 						break;
 		case "POST": 	method = new PostMethod(req.getUrl().toString());
 						break;
+		case "OPTIONS": method = new OptionsMethod(req.getUrl().toString());
+						break;
+		case "HEAD": 	method = new HeadMethod(req.getUrl().toString());
+						break;
+		case "PUT": 	method = new PutMethod(req.getUrl().toString());
+						break;
+		case "DELETE": 	method = new DeleteMethod(req.getUrl().toString());
+						break;
+		case "TRACE": 	method = new TraceMethod(req.getUrl().toString());
+						break;
 		default:		throw new IllegalArgumentException("Method not supported: " + req.getMethod());
 		}
 		method.setURI(new URI(req.getUrl().toString(), true));
@@ -311,7 +334,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		    responseHeader = method.getStatusLine().toString() + "\n" + arrayToStr(method.getResponseHeaders());
 		    responseBody = method.getResponseBodyAsString();
 		} catch (Exception e) { 
-		    System.err.println(e); 
+			// TODO
+		    System.err.println(e);
+		    e.printStackTrace();
 		} finally { 
 		    method.releaseConnection(); 
 		}
@@ -407,6 +432,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public ZestResponse getLastResponse() {
 		return lastResponse;
+	}
+
+	@Override
+	public ZestRequest getLastRequest() {
+		return lastRequest;
+	}
+
+	@Override
+	public String replaceVariablesInString(String str, boolean urlEncode) {
+		return this.variables.replaceInString(str, urlEncode);
 	}
 
 }
