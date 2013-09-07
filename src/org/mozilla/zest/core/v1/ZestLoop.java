@@ -258,7 +258,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		if (isLastStmt) {
 			return false;
 		}
-		if (this.statements.get(stmtIndex) instanceof ZestLoopBreak) {
+		if (this.statements.get(stmtIndex) instanceof ZestControlLoopBreak) {
 			return false;
 		}
 		return true;
@@ -279,11 +279,11 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 			stmtIndex = 0;
 		}
 		ZestStatement newStatement = statements.get(currentStmt);
-		if (newStatement instanceof ZestLoopBreak) {
+		if (newStatement instanceof ZestControlLoopBreak) {
 			toLastState();
 			this.stmtIndex = statements.size();
 			return null;
-		} else if (newStatement instanceof ZestLoopNext) {
+		} else if (newStatement instanceof ZestControlLoopNext) {
 			increase();
 			this.stmtIndex = 0;
 			return statements.get(stmtIndex);
