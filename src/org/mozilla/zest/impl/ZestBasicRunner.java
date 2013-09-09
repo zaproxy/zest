@@ -60,6 +60,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private boolean stopOnAssertFail = true;
 	private boolean stopOnTestFail = true;
 	private Writer outputWriter = null;
+	private boolean debug = false;
 	
 	private ZestVariables variables;
 	private ZestRequest lastRequest = null;
@@ -148,12 +149,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		} else if (stmt instanceof ZestConditional) {
 			ZestConditional zc = (ZestConditional) stmt;
 			if (zc.isTrue(this)) {
-				this.output("Conditional TRUE: " + zc.getClass().getName());
+				this.debug("Conditional TRUE: " + zc.getClass().getName());
 				for (ZestStatement ifStmt : zc.getIfStatements()) {
 					lastResponse = this.runStatement(script, ifStmt, lastResponse);
 				}
 			} else {
-				this.output("Conditional FALSE: " + zc.getClass().getName());
+				this.debug("Conditional FALSE: " + zc.getClass().getName());
 				for (ZestStatement elseStmt : zc.getElseStatements()) {
 					lastResponse = this.runStatement(script, elseStmt, lastResponse);
 				}
@@ -177,21 +178,20 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	
 	@Override
 	public String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException {
-		this.output("Action invoke: " + action.getClass().getName());
+		this.debug("Action invoke: " + action.getClass().getName());
 		String result = action.invoke(lastResponse, this);
 		if (result != null) {
-			this.output("Action result: " +result);
+			this.debug("Action result: " +result);
 		}
 		return result;
 	}
 	
 	@Override
 	public String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException {
-		this.output("Assign: " + assign.getClass().getName());
 		String result = assign.assign(lastResponse, this);
 		this.setVariable(assign.getVariableName(), result);
 		if (result != null) {
-			this.output("Assignment result: " +result);
+			this.debug("Assign: " + assign.getVariableName() + " = " + result);
 		}
 		return result;
 	}
@@ -206,7 +206,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 				loopOutput+=", Current Token: "+token;
 				this.setVariable(loop.getVariableName(), token);
 			}
-			this.output(loopOutput);
+			this.debug(loopOutput);
 			lastResponse = this.runStatement(script, loop.nextElement(), lastResponse);
 		}
 		return  lastResponse;
@@ -214,6 +214,18 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	public void output(String str) {
 		if (this.outputWriter != null) {
+			try {
+				this.outputWriter.append(str);
+				this.outputWriter.append("\n");
+				this.outputWriter.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void debug(String str) {
+		if (debug && this.outputWriter != null) {
 			try {
 				this.outputWriter.append(str);
 				this.outputWriter.append("\n");
@@ -251,13 +263,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	@Override
 	public void responsePassed(ZestRequest request, ZestResponse response, ZestAssertion assertion) {
-		this.output("Assertion PASSED: " + assertion.getClass().getName());
+		this.debug("Assertion PASSED: " + assertion.getClass().getName());
 	}
 
 	@Override
 	public void responseFailed(ZestRequest request, ZestResponse response, ZestAssertion assertion)
 			throws ZestAssertFailException {
-		this.output("Assertion FAILED: " + assertion.getClass().getName());
+		this.debug("Assertion FAILED: " + assertion.getClass().getName());
 		if (this.getStopOnAssertFail()) {
 			throw new ZestAssertFailException(assertion);
 		}
@@ -265,13 +277,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	@Override
 	public void responsePassed(ZestRequest request, ZestResponse response) {
-		//this.output("Response PASSED");
+		this.debug("Response PASSED");
 	}
 
 	@Override
 	public void responseFailed(ZestRequest request, ZestResponse response)
 			throws ZestAssertFailException {
-		this.output("Response FAILED");
+		this.debug("Response FAILED");
 	}
 
 	@Override
@@ -330,7 +342,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		String responseBody = null;
 		Date start = new Date();
 		try {
-			this.output(req.getMethod() + " : " + req.getUrl());
+			this.debug(req.getMethod() + " : " + req.getUrl());
 		    code = httpclient.executeMethod(method);
 		    
 		    responseHeader = method.getStatusLine().toString() + "\n" + arrayToStr(method.getResponseHeaders());
@@ -444,6 +456,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			this.scriptEngineFactory = new ZestScriptEngineFactory();
 		}
 		return this.scriptEngineFactory;
+	}
+
+	@Override
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+
+	@Override
+	public boolean isDebug() {
+		return debug;
 	}
 
 }
