@@ -5,7 +5,9 @@
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +48,9 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript("test/data/param-script.js");
-		inv.setParameters(new String[]{"param=PQRST"});
+		List<String[]> params = new ArrayList<String[]>();
+		params.add(new String [] {"param", "PQRST"});
+		inv.setParameters(params);
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -98,7 +102,9 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript("test/data/param-script.zest");
-		inv.setParameters(new String[]{"param=ZYXWV"});
+		List<String[]> params = new ArrayList<String[]>();
+		params.add(new String [] {"param", "ZYXWV"});
+		inv.setParameters(params);
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -109,32 +115,14 @@ public class ZestActionInvokeUnitTest {
 		
 	}
 
-	/**
-	 * Method testBadParamZestScript.
-	 * @throws Exception
-	 */
-	@Test
-	public void testBadParamZestScript() throws Exception {
-		ZestActionInvoke inv = new ZestActionInvoke();
-		inv.setVariableName("test");
-		inv.setScript("test/data/param-script.zest");
-		inv.setParameters(new String[]{"paramZYXWV"});
-		TestRuntime rt = new TestRuntime();
-		
-		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
-		try {
-			inv.invoke(resp, rt);
-			fail("Expected an exception");
-		} catch (Exception e) {
-			// Expected
-		}
-	}
-
 	@Test
 	public void testSerialization() {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
-		inv.setParameters(new String[]{"first=AAA", "second=BBB"});
+		List<String[]> params = new ArrayList<String[]>();
+		params.add(new String [] {"first", "AAA"});
+		params.add(new String [] {"second", "BBB"});
+		inv.setParameters(params);
 		
 		inv.setScript("test/data/simple-script.js");
 		
@@ -145,9 +133,12 @@ public class ZestActionInvokeUnitTest {
 		assertEquals(inv.getElementType(), inv2.getElementType());
 		assertEquals(inv.getVariableName(), inv2.getVariableName());
 		assertEquals(inv.getScript(), inv2.getScript());
-		assertEquals(inv.getParameters().length, inv2.getParameters().length);
-		for (int i=0; i < inv.getParameters().length; i++) {
-			assertEquals(inv.getParameters()[i], inv2.getParameters()[i]);
+		assertEquals(inv.getParameters().size(), inv2.getParameters().size());
+		for (int i=0; i < inv.getParameters().size(); i++) {
+			assertEquals(inv.getParameters().get(i).length, inv2.getParameters().get(i).length);
+			for (int j=0; j < inv.getParameters().get(i).length; j++) {
+				assertEquals(inv.getParameters().get(i)[j], inv2.getParameters().get(i)[j]);
+			}
 		}
 	}
 

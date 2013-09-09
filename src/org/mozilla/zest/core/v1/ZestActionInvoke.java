@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -25,7 +27,7 @@ public class ZestActionInvoke extends ZestAction {
 	/** The path to the script - can be relative or absolute. */
 	private String script;
 	
-	private String[] parameters = new String[]{};
+	private List<String[]> parameters = new ArrayList<String[]>();
 
 	/**
 	 * Instantiates a new zest action invoke.
@@ -48,7 +50,7 @@ public class ZestActionInvoke extends ZestAction {
 	 *
 	 * @param message the message
 	 */
-	public ZestActionInvoke(String script, String variableName, String[] parameters) {
+	public ZestActionInvoke(String script, String variableName, List<String[]> parameters) {
 		super();
 		this.script = script;
 		this.parameters = parameters;
@@ -84,9 +86,12 @@ public class ZestActionInvoke extends ZestAction {
 					cmdarray = new String[1];
 					cmdarray[0] = f.getAbsolutePath();
 				} else {
-					cmdarray = new String[this.parameters.length + 1];
+					cmdarray = new String[this.parameters.size() + 1];
 					cmdarray[0] = f.getAbsolutePath();
-					System.arraycopy(this.parameters, 0, cmdarray, 1, this.parameters.length);
+					int i=1;
+					for (String[] kvPair : this.parameters) {
+						cmdarray[i] = kvPair[0] + "=" + kvPair[1];
+					}
 				}
 				Process p = Runtime.getRuntime().exec(cmdarray);
 				p.waitFor();
@@ -133,12 +138,8 @@ public class ZestActionInvoke extends ZestAction {
 		try {
 			Bindings bindings = engine.createBindings();
 			if (this.parameters != null) {
-				for (String kvPair : this.parameters) {
-					int eqIndex = kvPair.indexOf("=");
-					if (eqIndex < 0) {
-						throw new ZestActionFailException(this, "Parameters must be of the form key=value, illegal parameter: " + kvPair);
-					}
-					bindings.put(kvPair.substring(0, eqIndex), kvPair.substring(eqIndex+1));
+				for (String[] kvPair : this.parameters) {
+					bindings.put(kvPair[0], kvPair[1]);
 				}
 			}
 
@@ -170,11 +171,11 @@ public class ZestActionInvoke extends ZestAction {
 		this.script = script;
 	}
 
-	public String[] getParameters() {
+	public List<String[]> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(String[] parameters) {
+	public void setParameters(List<String[]> parameters) {
 		this.parameters = parameters;
 	}
 
@@ -186,7 +187,10 @@ public class ZestActionInvoke extends ZestAction {
 		ZestActionInvoke copy = new ZestActionInvoke(this.getIndex());
 		copy.script = script;
 		copy.variableName = variableName;
-		System.arraycopy(this.parameters, 0, copy.parameters, 0, this.parameters.length);
+		copy.parameters = new ArrayList<String[]>();
+		for (String[] kvPair : this.parameters) {
+			copy.parameters.add(new String[] {kvPair[0], kvPair[1]});
+		}
 		return copy;
 	}
 
