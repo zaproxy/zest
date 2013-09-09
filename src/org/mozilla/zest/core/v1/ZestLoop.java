@@ -121,6 +121,28 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	}
 
 	/**
+	 * Adds the statement in the specified index in the script.
+	 *
+	 *@param index the index at which the statement will be added
+	 * @param stmt the statement to add
+	 */
+	public void add(int index, ZestStatement stmt) {
+		ZestStatement prev = this;
+		if (index == this.statements.size()) {
+			// Add at the end
+			this.statements.add(stmt);
+			
+		} else {
+			this.statements.add(index, stmt);
+		}
+		if (index > 0) {
+			prev = this.statements.get(index-1);
+		}
+		// This will wire everything up
+		stmt.insertAfter(prev);
+	}
+
+	/**
 	 * returns the current state of the loop.
 	 * 
 	 * @return the current state
@@ -258,7 +280,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		if (isLastStmt) {
 			return false;
 		}
-		if (this.statements.get(stmtIndex) instanceof ZestLoopBreak) {
+		if (this.statements.get(stmtIndex) instanceof ZestControlLoopBreak) {
 			return false;
 		}
 		return true;
@@ -279,11 +301,11 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 			stmtIndex = 0;
 		}
 		ZestStatement newStatement = statements.get(currentStmt);
-		if (newStatement instanceof ZestLoopBreak) {
+		if (newStatement instanceof ZestControlLoopBreak) {
 			toLastState();
 			this.stmtIndex = statements.size();
 			return null;
-		} else if (newStatement instanceof ZestLoopNext) {
+		} else if (newStatement instanceof ZestControlLoopNext) {
 			increase();
 			this.stmtIndex = 0;
 			return statements.get(stmtIndex);

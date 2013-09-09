@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 /**
  * empty class: represents a BREAK inside the loop.
  */
-public class ZestLoopBreak extends ZestControl {
+public class ZestControlLoopBreak extends ZestControl {
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
@@ -27,8 +27,8 @@ public class ZestLoopBreak extends ZestControl {
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
-	public ZestLoopBreak deepCopy() {
-		return new ZestLoopBreak();
+	public ZestControlLoopBreak deepCopy() {
+		return new ZestControlLoopBreak();
 	}
 
 	/* (non-Javadoc)

@@ -46,7 +46,7 @@ import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
-import org.mozilla.zest.core.v1.ZestReturn;
+import org.mozilla.zest.core.v1.ZestControlReturn;
 import org.mozilla.zest.core.v1.ZestRunner;
 import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestScript;
@@ -162,11 +162,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			handleAction(script, (ZestAction) stmt, lastResponse);
 		} else if (stmt instanceof ZestAssignment) {
 			handleAssignment(script, (ZestAssignment) stmt, lastResponse);
-		} else if (stmt instanceof ZestLoop<?>){
-			handleLoop(script, (ZestLoop<?>) stmt, lastResponse);//TODO
-		} else if (stmt instanceof ZestReturn) {
+	    } else if (stmt instanceof ZestLoop){
+		      lastResponse=handleLoop(script, (ZestLoop<?>) stmt, lastResponse); 
+		} else if (stmt instanceof ZestControlReturn) {
 			// Exits the script
-			ZestReturn zr = (ZestReturn) stmt;
+			ZestControlReturn zr = (ZestControlReturn) stmt;
 			result = this.variables.replaceInString(zr.getValue(), false);
 			return null;
 		} else if (stmt instanceof ZestComment) {

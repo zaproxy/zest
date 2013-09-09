@@ -12,18 +12,18 @@ import java.net.MalformedURLException;
 /**
  * Exits the script returning a string.
  */
-public class ZestReturn extends ZestControl {
+public class ZestControlReturn extends ZestControl {
 	
 	private String value;
 	
-	public ZestReturn () {
+	public ZestControlReturn () {
 	}
 	
-	public ZestReturn (int index) {
+	public ZestControlReturn (int index) {
 		super(index);
 	}
 	
-	public ZestReturn (String value) {
+	public ZestControlReturn (String value) {
 		this.value = value;
 	}
 
@@ -39,8 +39,8 @@ public class ZestReturn extends ZestControl {
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
-	public ZestReturn deepCopy() {
-		return new ZestReturn(value);
+	public ZestControlReturn deepCopy() {
+		return new ZestControlReturn(value);
 	}
 
 	/* (non-Javadoc)

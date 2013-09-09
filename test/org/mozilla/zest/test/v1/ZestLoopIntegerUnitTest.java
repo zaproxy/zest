@@ -17,9 +17,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
-import org.mozilla.zest.core.v1.ZestLoopBreak;
+import org.mozilla.zest.core.v1.ZestControlLoopBreak;
 import org.mozilla.zest.core.v1.ZestLoopInteger;
-import org.mozilla.zest.core.v1.ZestLoopNext;
+import org.mozilla.zest.core.v1.ZestControlLoopNext;
 import org.mozilla.zest.core.v1.ZestLoopString;
 import org.mozilla.zest.core.v1.ZestStatement;
 
@@ -103,7 +103,7 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testZestLoopBreak() {
 		List<ZestStatement> statements2 = new LinkedList<>(statements);
-		statements2.add(new ZestLoopBreak());
+		statements2.add(new ZestControlLoopBreak());
 		ZestLoopInteger loop = new ZestLoopInteger(0, 1000000);
 		for(ZestStatement stmt:statements2){
 			loop.addStatement(stmt);
@@ -119,7 +119,7 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testZestLoopNext() {
 		LinkedList<ZestStatement> statements2 = new LinkedList<>(statements);
-		statements2.add(0, new ZestLoopNext());
+		statements2.add(0, new ZestControlLoopNext());
 		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
 		for(ZestStatement stmt:statements2){
 			loop.addStatement(stmt);
@@ -127,7 +127,7 @@ public class ZestLoopIntegerUnitTest {
 		int counter = 0;
 		while (loop.hasMoreElements()) {
 			ZestStatement tmp = loop.nextElement();
-			assertTrue("iteration " + counter, tmp instanceof ZestLoopNext);
+			assertTrue("iteration " + counter, tmp instanceof ZestControlLoopNext);
 			counter++;
 		}
 	}

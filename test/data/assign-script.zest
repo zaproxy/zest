@@ -21,7 +21,7 @@
     {
       "value": "{{test}}",
       "index": 2,
-      "elementType": "ZestReturn"
+      "elementType": "ZestControlReturn"
     }
   ],
   "authentication": [],
