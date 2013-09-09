@@ -4,8 +4,9 @@
 
 package org.mozilla.zest.core.v1;
 
+import javax.script.ScriptEngineFactory;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ZestRuntime.
  */
@@ -54,4 +55,5 @@ public interface ZestRuntime {
 	 */
 	void output(String str);
 
+	ScriptEngineFactory getScriptEngineFactory();
 }

@@ -8,12 +8,24 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
-// TODO: Auto-generated Javadoc
 
 /**
- * empty class: represents a BREAK inside the loop.
+ * Exits the script returning a string.
  */
-public class ZestLoopBreak extends ZestControl {
+public class ZestReturn extends ZestControl {
+	
+	private String value;
+	
+	public ZestReturn () {
+	}
+	
+	public ZestReturn (int index) {
+		super(index);
+	}
+	
+	public ZestReturn (String value) {
+		this.value = value;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
@@ -27,8 +39,8 @@ public class ZestLoopBreak extends ZestControl {
 	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
 	 */
 	@Override
-	public ZestLoopBreak deepCopy() {
-		return new ZestLoopBreak();
+	public ZestReturn deepCopy() {
+		return new ZestReturn(value);
 	}
 
 	/* (non-Javadoc)
@@ -37,6 +49,14 @@ public class ZestLoopBreak extends ZestControl {
 	@Override
 	public boolean isPassive() {
 		return true;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 }

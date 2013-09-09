@@ -31,6 +31,17 @@ public class ZestActionFailException extends Exception {
 	 * Instantiates a new zest action fail exception.
 	 *
 	 * @param action the action
+	 * @param message the message
+	 */
+	public ZestActionFailException (ZestAction action, Throwable cause) {
+		super(cause);
+		this.action = action;
+	}
+
+	/**
+	 * Instantiates a new zest action fail exception.
+	 *
+	 * @param action the action
 	 */
 	public ZestActionFailException (ZestAction action) {
 		super();

@@ -1,9 +1,12 @@
 package org.mozilla.zest.test.v1;
 
+import javax.script.ScriptEngineFactory;
+
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestVariables;
+import org.mozilla.zest.impl.ZestScriptEngineFactory;
 
 public class TestRuntime implements ZestRuntime{
 	private ZestRequest request;
@@ -56,5 +59,10 @@ public class TestRuntime implements ZestRuntime{
 	@Override
 	public ZestRequest getLastRequest() {
 		return this.request;
+	}
+
+	@Override
+	public ScriptEngineFactory getScriptEngineFactory() {
+		return  new ZestScriptEngineFactory();
 	}
 }

@@ -36,6 +36,9 @@ public class ZestRequest extends ZestStatement {
 	/** The assertions. */
 	private List<ZestAssertion> assertions = new ArrayList<ZestAssertion>();
 	
+	/** If true follow redirects, otherwise do not */
+	private boolean followRedirects = true;
+	
 	/**
 	 * Instantiates a new zest request.
 	 *
@@ -63,6 +66,7 @@ public class ZestRequest extends ZestStatement {
 		zr.setData(this.data);
 		zr.setMethod(this.method);
 		zr.setHeaders(this.headers);
+		zr.setFollowRedirects(this.followRedirects);
 		
 		if (this.getResponse()!= null) {
 			zr.setResponse(this.getResponse().deepCopy());
@@ -216,6 +220,14 @@ public class ZestRequest extends ZestStatement {
 		this.response = response;
 	}
 	
+	public boolean isFollowRedirects() {
+		return followRedirects;
+	}
+
+	public void setFollowRedirects(boolean followRedirects) {
+		this.followRedirects = followRedirects;
+	}
+
 	/**
 	 * Move up.
 	 *

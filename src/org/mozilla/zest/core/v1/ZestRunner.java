@@ -9,7 +9,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+import javax.script.ScriptEngineFactory;
+
 /**
  * The Interface ZestRunner.
  */
@@ -25,7 +26,7 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
-	void run (ZestScript script) 
+	String run (ZestScript script, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException, ZestAssignFailException;
 
@@ -39,7 +40,7 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
-	void runScript (Reader reader) 
+	String runScript (Reader reader, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException, ZestAssignFailException;
 	
@@ -53,7 +54,7 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
-	void runScript (String script) 
+	String runScript (String script, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException, ZestAssignFailException;
 	
@@ -68,7 +69,7 @@ public interface ZestRunner {
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
 	 */
-	void run (ZestScript script, ZestRequest target) 
+	String run (ZestScript script, ZestRequest target, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
 			ZestInvalidCommonTestException, ZestAssignFailException;
 
@@ -227,11 +228,7 @@ public interface ZestRunner {
 	 * @param value the value
 	 */
 	void setVariable (String name, String value);
+	
+	void setScriptEngineFactory (ScriptEngineFactory factory);
 
-	/**
-	 * Sets the variables.
-	 *
-	 * @param variables the variables
-	 */
-	void setVariables (Map<String, String> variables);
 }

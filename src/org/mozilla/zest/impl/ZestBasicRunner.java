@@ -8,11 +8,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.security.InvalidParameterException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.script.ScriptEngineFactory;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -38,6 +38,7 @@ import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
+import org.mozilla.zest.core.v1.ZestComment;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
@@ -45,6 +46,7 @@ import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
+import org.mozilla.zest.core.v1.ZestReturn;
 import org.mozilla.zest.core.v1.ZestRunner;
 import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestScript;
@@ -53,6 +55,7 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
+	private ScriptEngineFactory scriptEngineFactory = null;
 	private HttpClient httpclient = new HttpClient();
 	private boolean stopOnAssertFail = true;
 	private boolean stopOnTestFail = true;
@@ -61,39 +64,24 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private ZestVariables variables;
 	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
-
+	private String result = null;
+	
+	public ZestBasicRunner() {
+	}
+	
+	public ZestBasicRunner(ScriptEngineFactory factory) {
+		this.scriptEngineFactory = factory;
+	}
+	
 	@Override
-	public void run(ZestScript script) throws ZestAssertFailException, ZestActionFailException, 
+	public String run(ZestScript script, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
 			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
 		
-		this.run(script, null, new HashMap<String, String>());
+		return this.run(script, null, params);
 	}
 
 	@Override
-	public void run (ZestScript script, ZestRequest target) 
-			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException {
-		
-		if (target == null) {
-			throw new InvalidParameterException("Null target supplied");
-		}
-		HashMap<String, String> initialValues = new HashMap<String, String>();
-		initialValues.put(ZestVariables.REQUEST_METHOD, target.getMethod());
-		initialValues.put(ZestVariables.REQUEST_URL, target.getUrl().toString());
-		initialValues.put(ZestVariables.REQUEST_HEADER, target.getHeaders());
-		initialValues.put(ZestVariables.REQUEST_BODY, target.getData());
-		
-		if (target.getResponse() != null) {
-			initialValues.put(ZestVariables.RESPONSE_URL, target.getResponse().getUrl().toString());
-			initialValues.put(ZestVariables.RESPONSE_HEADER, target.getResponse().getHeaders());
-			initialValues.put(ZestVariables.RESPONSE_BODY, target.getResponse().getBody());
-			
-		}
-		
-		this.run(script, target, initialValues);
-	}
-
-	private void run (ZestScript script, ZestRequest target, HashMap<String, String> tokens) throws ZestAssertFailException,
+	public String run (ZestScript script, ZestRequest target, Map<String, String> tokens) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
@@ -126,7 +114,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		
 		for (ZestStatement stmt : script.getStatements()) {
 			lastResponse = this.runStatement(script, stmt, lastResponse);
+			if (result != null) {
+				// A return statement has been used, return the value it set
+				return result;
+			}
 		}
+		
+		return null;
 
 	}
 	
@@ -168,9 +162,15 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			handleAction(script, (ZestAction) stmt, lastResponse);
 		} else if (stmt instanceof ZestAssignment) {
 			handleAssignment(script, (ZestAssignment) stmt, lastResponse);
-		}
-		else if (stmt instanceof ZestLoop){
-			lastResponse=handleLoop(script, (ZestLoop<?>) stmt, lastResponse);
+		} else if (stmt instanceof ZestLoop<?>){
+			handleLoop(script, (ZestLoop<?>) stmt, lastResponse);//TODO
+		} else if (stmt instanceof ZestReturn) {
+			// Exits the script
+			ZestReturn zr = (ZestReturn) stmt;
+			result = this.variables.replaceInString(zr.getValue(), false);
+			return null;
+		} else if (stmt instanceof ZestComment) {
+			// Nothing to do
 		}
 		return lastResponse;
 	}
@@ -275,7 +275,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	}
 
 	@Override
-	public void runScript(Reader reader) throws ZestAssertFailException, ZestActionFailException, 
+	public String runScript(Reader reader, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
 			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
 	    BufferedReader fr = new BufferedReader(reader);
 	    StringBuilder sb = new StringBuilder();
@@ -284,20 +284,22 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
             sb.append(line);
         }
         fr.close();
-	    run ((ZestScript) ZestJSON.fromString(sb.toString()));
+	    return run ((ZestScript) ZestJSON.fromString(sb.toString()), params);
 	}
 
 	@Override
-	public void runScript(String  script) throws ZestAssertFailException, ZestActionFailException, 
+	public String runScript(String  script, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
 			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
-	    run ((ZestScript) ZestJSON.fromString(script));
+	    return run ((ZestScript) ZestJSON.fromString(script), params);
 	}
 
 	private ZestResponse send(HttpClient httpclient, ZestRequest req) throws IOException {
 		HttpMethod method;
 		
 		switch (req.getMethod()) {
-		case "GET":		method = new GetMethod(req.getUrl().toString()); 
+		case "GET":		method = new GetMethod(req.getUrl().toString());
+						// Can only redirect on GETs
+						method.setFollowRedirects(req.isFollowRedirects());
 						break;
 		case "POST": 	method = new PostMethod(req.getUrl().toString());
 						break;
@@ -333,10 +335,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		    
 		    responseHeader = method.getStatusLine().toString() + "\n" + arrayToStr(method.getResponseHeaders());
 		    responseBody = method.getResponseBodyAsString();
-		} catch (Exception e) { 
-			// TODO
-		    System.err.println(e);
-		    e.printStackTrace();
+
 		} finally { 
 		    method.releaseConnection(); 
 		}
@@ -416,15 +415,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		this.variables.setVariable(name, value);
 	}
 
-	@Override
-	public void setVariables(Map<String, String> variables) {
-		if (variables != null) {
-			for (Map.Entry<String, String>var : variables.entrySet()) {
-				this.setVariable(var.getKey(), var.getValue());
-			}
-		}
-	}
-
 	public void setHttpClient(HttpClient httpclient) {
 		this.httpclient = httpclient;
 	}
@@ -442,6 +432,18 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public String replaceVariablesInString(String str, boolean urlEncode) {
 		return this.variables.replaceInString(str, urlEncode);
+	}
+
+	public void setScriptEngineFactory (ScriptEngineFactory factory) {
+		this.scriptEngineFactory = factory;
+	}
+	
+	@Override
+	public ScriptEngineFactory getScriptEngineFactory() {
+		if (this.scriptEngineFactory == null) {
+			this.scriptEngineFactory = new ZestScriptEngineFactory();
+		}
+		return this.scriptEngineFactory;
 	}
 
 }
