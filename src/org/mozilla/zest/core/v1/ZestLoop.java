@@ -60,7 +60,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		this.statements = statements;
 		this.currentState = set.getFirstState();
 	}
-
+	
+	public void init(){
+		this.currentState=this.getSet().getFirstState();
+	}
 	/**
 	 * sets the current state to the new one (for subclasses).
 	 * 
@@ -302,15 +305,21 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		}
 		ZestStatement newStatement = statements.get(currentStmt);
 		if (newStatement instanceof ZestControlLoopBreak) {
-			toLastState();
-			this.stmtIndex = statements.size();
+			onControlBreak();
 			return null;
 		} else if (newStatement instanceof ZestControlLoopNext) {
-			increase();
-			this.stmtIndex = 0;
+			onControlNext();
 			return statements.get(stmtIndex);
 		}
 		return statements.get(currentStmt);
+	}
+	public void onControlBreak(){
+		toLastState();
+		this.stmtIndex = statements.size();
+	}
+	public void onControlNext(){
+		increase();
+		this.stmtIndex = 0;
 	}
 
 	/**
