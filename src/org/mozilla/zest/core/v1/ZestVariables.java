@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestTokens.
  */
@@ -185,37 +184,6 @@ public class ZestVariables extends ZestElement {
 	public void setVariable(String name, String value) {
 		this.tokens.put(name, value);
 	}
-	
-	/**
-	 * Sets the standard variables.
-	 *
-	 * @param request the new standard variables
-	 */
-	public void setStandardVariables(ZestRequest request) {
-		if (request != null) {
-			if (request.getUrl()!= null) {
-				this.setVariable(REQUEST_URL, request.getUrl().toString());
-			}
-			this.setVariable(REQUEST_HEADER, request.getHeaders());
-			this.setVariable(REQUEST_METHOD, request.getMethod());
-			this.setVariable(REQUEST_BODY, request.getData());
-		}
-	}
-
-	/**
-	 * Sets the standard variables.
-	 *
-	 * @param response the new standard variables
-	 */
-	public void setStandardVariables(ZestResponse response) {
-		if (response != null) {
-			if (response.getUrl() != null) {
-				this.setVariable(RESPONSE_URL, response.getUrl().toString());
-			}
-			this.setVariable(RESPONSE_HEADER, response.getHeaders());
-			this.setVariable(RESPONSE_BODY, response.getBody());
-		}
-	}
 
 	private String replaceInString (String str, boolean urlEncode, List<String> previous) {
 		if (str == null) {
@@ -224,19 +192,28 @@ public class ZestVariables extends ZestElement {
 		boolean changed = false;
 		for (String [] nvPair : getVariables()) {
 			String tokenStr = getTokenStart() + nvPair[0] + getTokenEnd();
-			if (urlEncode) {
-				try {
-					tokenStr = URLEncoder.encode(tokenStr, "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// Ignore
-				}
-			}
 			if (str.contains(tokenStr)) {
 				if (! previous.contains(nvPair[0])) {
 					// To prevent loops
 					previous.add(nvPair[0]);
 					changed = true;
 					str = str.replace(tokenStr, nvPair[1]);
+				}
+			}
+			if (! changed && urlEncode) {
+				// Try again with encoded value
+				try {
+					tokenStr = URLEncoder.encode(tokenStr, "UTF-8");
+					if (str.contains(tokenStr)) {
+						if (! previous.contains(nvPair[0])) {
+							// To prevent loops
+							previous.add(nvPair[0]);
+							changed = true;
+							str = str.replace(tokenStr, nvPair[1]);
+						}
+					}
+				} catch (UnsupportedEncodingException e) {
+					// Ignore
 				}
 			}
 		}

@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestRequest.
  */
@@ -272,16 +271,16 @@ public class ZestRequest extends ZestStatement {
 	 * @param tokens the tokens
 	 */
 	public void replaceTokens(ZestVariables tokens) {
-		if (this.url != null) {
+		if (this.urlToken != null) {
+			this.setUrlToken(tokens.replaceInString(this.urlToken, true));
 			try {
-				this.setUrl(new URL(tokens.replaceInString(this.url.toString(), false)));	// TODO Work in progress
+				this.setUrl(new URL(this.getUrlToken()));
 			} catch (MalformedURLException e) {
 				// Ignore
 			}
-		} else if (this.urlToken != null) {
-			this.setUrlToken(tokens.replaceInString(this.urlToken, false));	// TODO Work in progress
+		} else if (this.url != null) {
 			try {
-				this.setUrl(new URL(this.getUrlToken()));
+				this.setUrl(new URL(tokens.replaceInString(this.url.toString(), true)));
 			} catch (MalformedURLException e) {
 				// Ignore
 			}

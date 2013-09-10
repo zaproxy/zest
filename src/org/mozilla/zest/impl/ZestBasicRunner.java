@@ -118,10 +118,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 
 		lastRequest = target;
+		this.setStandardVariables(lastRequest);
 
 		if (target != null) {
 			// used in passive trests
 			lastResponse = target.getResponse();
+			this.setStandardVariables(lastResponse);
 		} else {
 			lastResponse = null;
 		}
@@ -156,10 +158,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			this.lastRequest = ((ZestRequest) stmt).deepCopy();
 			this.lastRequest.replaceTokens(this.variables);
 			this.lastResponse = send(this.lastRequest);
-
-			this.variables.setStandardVariables(this.lastRequest);
-			this.variables.setStandardVariables(this.lastResponse);
-
+			// Set up the 'standard' variables
+			this.setStandardVariables(lastRequest);
+			this.setStandardVariables(lastResponse);
 			handleResponse(this.lastRequest, this.lastResponse);
 			return this.lastResponse;
 
@@ -281,6 +282,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public void debug(String str) {
 		if (debug && this.outputWriter != null) {
 			try {
+				this.outputWriter.append("DEBUG: ");
 				this.outputWriter.append(str);
 				this.outputWriter.append("\n");
 				this.outputWriter.flush();
@@ -497,7 +499,54 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	@Override
 	public void setVariable(String name, String value) {
+		if (this.debug) {
+			String val = value;
+			if (val != null) {
+				if ( val.length() > 80) {
+					val = val.substring(0, 80) + "...";
+				}
+				// Put on one line and strip duplicate whitespace - this is just for basic debuging
+				val = val.replace("\n", "\\n");
+				val = val.replace("\r", "\\r");
+				val = val.replaceAll("\\s", " ");
+			}
+			this.debug("Set " + name + " = " + val);
+		}
 		this.variables.setVariable(name, value);
+	}
+
+	
+	/**
+	 * Sets the standard variables for a request.
+	 *
+	 * @param request the new standard variables
+	 */
+	@Override
+	public void setStandardVariables(ZestRequest request) {
+		if (request != null) {
+			if (request.getUrl()!= null) {
+				this.setVariable(ZestVariables.REQUEST_URL, request.getUrl().toString());
+			}
+			this.setVariable(ZestVariables.REQUEST_HEADER, request.getHeaders());
+			this.setVariable(ZestVariables.REQUEST_METHOD, request.getMethod());
+			this.setVariable(ZestVariables.REQUEST_BODY, request.getData());
+		}
+	}
+
+	/**
+	 * Sets the standard variables for a response.
+	 *
+	 * @param response the new standard variables
+	 */
+	@Override
+	public void setStandardVariables(ZestResponse response) {
+		if (response != null) {
+			if (response.getUrl() != null) {
+				this.setVariable(ZestVariables.RESPONSE_URL, response.getUrl().toString());
+			}
+			this.setVariable(ZestVariables.RESPONSE_HEADER, response.getHeaders());
+			this.setVariable(ZestVariables.RESPONSE_BODY, response.getBody());
+		}
 	}
 
 	public void setHttpClient(HttpClient httpclient) {

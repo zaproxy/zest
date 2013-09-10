@@ -56,4 +56,20 @@ public interface ZestRuntime {
 	void output(String str);
 
 	ScriptEngineFactory getScriptEngineFactory();
+
+	/**
+	 * Sets the standard variables for a request.
+	 *
+	 * @param request the new standard variables
+	 */
+
+	void setStandardVariables(ZestRequest request);
+
+	/**
+	 * Sets the standard variables for a response.
+	 *
+	 * @param response the new standard variables
+	 */
+
+	void setStandardVariables(ZestResponse response);
 }

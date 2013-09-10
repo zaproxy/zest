@@ -28,7 +28,8 @@ public class TestRuntime implements ZestRuntime{
 	public TestRuntime(ZestRequest req, ZestResponse resp) {
 		this.request = req;
 		this.response = resp;
-		vars.setStandardVariables(resp);
+		this.setStandardVariables(req);
+		this.setStandardVariables(resp);
 	}
 
 	@Override
@@ -64,5 +65,28 @@ public class TestRuntime implements ZestRuntime{
 	@Override
 	public ScriptEngineFactory getScriptEngineFactory() {
 		return  new ZestScriptEngineFactory();
+	}
+
+	@Override
+	public void setStandardVariables(ZestRequest request) {
+		if (request != null) {
+			if (request.getUrl()!= null) {
+				this.setVariable(ZestVariables.REQUEST_URL, request.getUrl().toString());
+			}
+			this.setVariable(ZestVariables.REQUEST_HEADER, request.getHeaders());
+			this.setVariable(ZestVariables.REQUEST_METHOD, request.getMethod());
+			this.setVariable(ZestVariables.REQUEST_BODY, request.getData());
+		}
+	}
+
+	@Override
+	public void setStandardVariables(ZestResponse response) {
+		if (response != null) {
+			if (response.getUrl() != null) {
+				this.setVariable(ZestVariables.RESPONSE_URL, response.getUrl().toString());
+			}
+			this.setVariable(ZestVariables.RESPONSE_HEADER, response.getHeaders());
+			this.setVariable(ZestVariables.RESPONSE_BODY, response.getBody());
+		}
 	}
 }
