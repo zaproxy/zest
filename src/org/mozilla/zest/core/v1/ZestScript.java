@@ -11,14 +11,13 @@ import java.util.List;
 import java.util.Set;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestScript.
  */
 public class ZestScript extends ZestStatement implements ZestContainer {
 
 	/** The Zest version implemented. */
-	public static final String VERSION = "0.2";
+	public static final String VERSION = "0.3";
 
 	/** The URL for more info. */
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";

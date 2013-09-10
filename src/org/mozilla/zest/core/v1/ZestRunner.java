@@ -214,6 +214,18 @@ public interface ZestRunner {
 	void setOutputWriter(Writer writer);
 
 	/**
+	 * Turns debugging on or off
+	 * @param debug
+	 */
+	void setDebug (boolean debug);
+	
+	/**
+	 * Reports if debugging is enabled
+	 * @return
+	 */
+	boolean isDebug ();
+	
+	/**
 	 * Gets the variable.
 	 *
 	 * @param name the name
