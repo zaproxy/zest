@@ -4,40 +4,53 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
+import org.mozilla.zest.impl.ZestUtils;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionResponseTime.
  */
 public class ZestExpressionResponseTime extends ZestExpression {
-	
+
+	private final static Pattern pattern = Pattern
+			.compile("(NOT\\s)?Response\\sTime\\s[<>]\\s"
+					+ ZestUtils.START_VARIABLE_REGEX + "\\d+"
+					+ ZestUtils.END_VARIABLE_REGEX);
+
 	/** The greater than. */
 	private boolean greaterThan = true;
-	
+
 	/** The time in ms. */
 	private long timeInMs;
-	
+
 	/**
 	 * Instantiates a new zest expression response time.
 	 */
 	public ZestExpressionResponseTime() {
 		super();
 	}
-	
+
 	/**
 	 * Instantiates a new zest expression response time.
-	 *
-	 * @param time the time
+	 * 
+	 * @param time
+	 *            the time
 	 */
 	public ZestExpressionResponseTime(long time) {
 		super();
-		this.timeInMs=time;
+		this.timeInMs = time;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
+	 * .core.v1.ZestResponse)
 	 */
-	public boolean isTrue (ZestRuntime runtime) {
+	public boolean isTrue(ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
 		if (response == null) {
 			return false;
@@ -51,7 +64,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 
 	/**
 	 * Checks if is greater than.
-	 *
+	 * 
 	 * @return true, if is greater than
 	 */
 	public boolean isGreaterThan() {
@@ -60,8 +73,9 @@ public class ZestExpressionResponseTime extends ZestExpression {
 
 	/**
 	 * Sets the greater than.
-	 *
-	 * @param greaterThan the new greater than
+	 * 
+	 * @param greaterThan
+	 *            the new greater than
 	 */
 	public void setGreaterThan(boolean greaterThan) {
 		this.greaterThan = greaterThan;
@@ -69,7 +83,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 
 	/**
 	 * Gets the time in ms.
-	 *
+	 * 
 	 * @return the time in ms
 	 */
 	public long getTimeInMs() {
@@ -78,14 +92,17 @@ public class ZestExpressionResponseTime extends ZestExpression {
 
 	/**
 	 * Sets the time in ms.
-	 *
-	 * @param timeInMs the new time in ms
+	 * 
+	 * @param timeInMs
+	 *            the new time in ms
 	 */
 	public void setTimeInMs(long timeInMs) {
 		this.timeInMs = timeInMs;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
@@ -95,14 +112,28 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		copy.timeInMs = this.timeInMs;
 		return copy;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+"Response Time "+(isGreaterThan()?"> ":"< ")+timeInMs;
+	public String toString() {
+		String expression = (isInverse() ? "NOT " : "") + "Response Time "
+				+ (isGreaterThan() ? "> " : "< ") + ZestUtils.START_VARIABLE
+				+ timeInMs + ZestUtils.END_VARIABLE;
 		return expression;
 	}
-	
+
+	public static boolean isLiteralInstance(String literal) {
+		if (literal == null || literal.isEmpty()) {
+			return false;
+		}
+		return pattern.matcher(literal).matches();
+	}
+
+	public static Pattern getPattern() {
+		return pattern;
+	}
 }

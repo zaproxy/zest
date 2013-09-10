@@ -5,12 +5,15 @@ package org.mozilla.zest.core.v1;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionOr.
  */
 public class ZestExpressionOr extends ZestStructuredExpression {
+
+	private static Pattern pattern = null;
 
 	/**
 	 * Main construptor.
@@ -67,17 +70,34 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return copy;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		String expression = (isInverse() ? "NOT (" : "(");
-		for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
-			expression += " " + this.getChild(i).toString() + " OR";
+		if (this.getChildrenCondition().isEmpty()) {
+			return "Empty OR";
+		} else {
+			String expression = (isInverse() ? "NOT ( " : "( ");
+			for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
+				expression += " " + this.getChild(i).toString() + " ) OR ( ";
+			}
+			expression += this.getChild(this.getChildrenCondition().size() - 1)
+					.toString() + " )";
+			return expression;
 		}
-		expression += this.getChild(this.getChildrenCondition().size() - 1)
-				.toString() + ")";
-		return expression;
+	}
+
+	public static boolean isLiteralInstance(String literal) {
+		return getPattern().matcher(literal).matches();
+	}
+
+	public static Pattern getPattern() {
+		if (pattern == null) {
+			pattern=Pattern.compile("(((NOT\\s)?.*(OR.*)+)|(Empty\\sOR))");
+		}
+		return pattern;
 	}
 }

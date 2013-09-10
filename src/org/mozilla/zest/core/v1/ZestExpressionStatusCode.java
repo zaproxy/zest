@@ -4,37 +4,48 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
+import org.mozilla.zest.impl.ZestUtils;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionStatusCode.
  */
 public class ZestExpressionStatusCode extends ZestExpression {
-	
+	private final static Pattern pattern = Pattern
+			.compile("(NOT\\s)?Status\\sCode:\\s" + ZestUtils.START_VARIABLE_REGEX
+					+ "\\d+" + ZestUtils.END_VARIABLE_REGEX);
+
 	/** The code. */
 	private int code;
-	
+
 	/**
 	 * Instantiates a new zest expression status code.
 	 */
 	public ZestExpressionStatusCode() {
 		super();
 	}
-	
+
 	/**
 	 * Instantiates a new zest expression status code.
-	 *
-	 * @param code the code
+	 * 
+	 * @param code
+	 *            the code
 	 */
 	public ZestExpressionStatusCode(int code) {
 		super();
-		this.code=code;
+		this.code = code;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
+	 * .core.v1.ZestResponse)
 	 */
-	public boolean isTrue (ZestRuntime runtime) {
+	public boolean isTrue(ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
 		if (response == null) {
 			return false;
@@ -44,7 +55,7 @@ public class ZestExpressionStatusCode extends ZestExpression {
 
 	/**
 	 * Gets the code.
-	 *
+	 * 
 	 * @return the code
 	 */
 	public int getCode() {
@@ -53,14 +64,17 @@ public class ZestExpressionStatusCode extends ZestExpression {
 
 	/**
 	 * Sets the code.
-	 *
-	 * @param code the new code
+	 * 
+	 * @param code
+	 *            the new code
 	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
 	@Override
@@ -69,13 +83,27 @@ public class ZestExpressionStatusCode extends ZestExpression {
 		copy.code = code;
 		return copy;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+"Status Code: "+code;
+	public String toString() {
+		String expression = (isInverse() ? "NOT " : "") + "Status Code: "
+				+ ZestUtils.START_VARIABLE + code + ZestUtils.END_VARIABLE;
 		return expression;
+	}
+
+	public static boolean isLiteralInstance(String literal) {
+		if (literal == null || literal.isEmpty()) {
+			return false;
+		}
+		return pattern.matcher(literal).matches();
+	}
+
+	public static Pattern getPattern() {
+		return pattern;
 	}
 }
