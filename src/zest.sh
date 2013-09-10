@@ -9,11 +9,11 @@
 #Check the java version (min java 7)
 JAVAV=`java -version 2>&1 |awk 'NR==1{ gsub(/"/,""); print $3 }'`
 
-if [[ $JAVAV == 1.7* ]]; then
+if [[ $JAVAV == 1.[78]* ]]; then
     # OK
     echo "Using Java version: $JAVAV"
 else
-    echo "Exiting: ZAP 2.0.0 requires a minimum of Java 7 to run."
+    echo "Exiting: Zest requires a minimum of Java 7 to run."
     exit 1
 fi
 
