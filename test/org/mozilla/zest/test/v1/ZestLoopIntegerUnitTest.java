@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mozilla.zest.core.v1.ZestActionPrint;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestControlLoopBreak;
 import org.mozilla.zest.core.v1.ZestLoopInteger;
@@ -38,7 +39,7 @@ public class ZestLoopIntegerUnitTest {
 	public void testLoop() {
 		int maxIt = 10;
 		ZestLoopInteger loop = new ZestLoopInteger(0, maxIt);
-		for(ZestStatement stmt:statements){
+		for (ZestStatement stmt : statements) {
 			loop.addStatement(stmt);
 		}
 		int iteration = loop.getCurrentToken();
@@ -55,7 +56,7 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testEndLoop() {
 		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
-		for(ZestStatement stmt:statements){
+		for (ZestStatement stmt : statements) {
 			loop.addStatement(stmt);
 		}
 		loop.endLoop();
@@ -70,7 +71,7 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testDeepCopy() {
 		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
-		for(ZestStatement stmt:statements){
+		for (ZestStatement stmt : statements) {
 			loop.addStatement(stmt);
 		}
 		loop.loop();
@@ -82,7 +83,7 @@ public class ZestLoopIntegerUnitTest {
 	public void testHasMoreElements() {
 		int numOfToken = 10;
 		ZestLoopInteger loop = new ZestLoopInteger(0, numOfToken);
-		for(ZestStatement stmt:statements){
+		for (ZestStatement stmt : statements) {
 			loop.addStatement(stmt);
 		}
 		int counter = 0;
@@ -102,15 +103,19 @@ public class ZestLoopIntegerUnitTest {
 
 	@Test
 	public void testZestLoopBreak() {
+		statements.clear();
+		for (int i = 0; i < 10; i++) {
+			statements.add(new ZestActionPrint("" + i));
+		}
 		List<ZestStatement> statements2 = new LinkedList<>(statements);
 		statements2.add(new ZestControlLoopBreak());
 		ZestLoopInteger loop = new ZestLoopInteger(0, 1000000);
-		for(ZestStatement stmt:statements2){
+		for (ZestStatement stmt : statements2) {
 			loop.addStatement(stmt);
 		}
 		int counterIteration = 0;
 		while (loop.hasMoreElements()) {
-			loop.nextElement();
+			loop.nextElement().getElementType();
 			counterIteration++;
 		}
 		assertTrue(counterIteration == statements2.size() - 1);
@@ -121,13 +126,14 @@ public class ZestLoopIntegerUnitTest {
 		LinkedList<ZestStatement> statements2 = new LinkedList<>(statements);
 		statements2.add(0, new ZestControlLoopNext());
 		ZestLoopInteger loop = new ZestLoopInteger(0, 10);
-		for(ZestStatement stmt:statements2){
+		for (ZestStatement stmt : statements2) {
 			loop.addStatement(stmt);
 		}
 		int counter = 0;
 		while (loop.hasMoreElements()) {
 			ZestStatement tmp = loop.nextElement();
-			assertTrue("iteration " + counter, tmp instanceof ZestControlLoopNext);
+			assertTrue("iteration " + counter,
+					tmp instanceof ZestControlLoopNext);
 			counter++;
 		}
 	}
@@ -135,7 +141,7 @@ public class ZestLoopIntegerUnitTest {
 	@Test
 	public void testZestLoopDifferentStep() {
 		ZestLoopInteger loop = new ZestLoopInteger("with step = 7", 0, 100);
-		for(ZestStatement stmt:statements){
+		for (ZestStatement stmt : statements) {
 			loop.addStatement(stmt);
 		}
 		loop.setStep(7);
@@ -145,8 +151,9 @@ public class ZestLoopIntegerUnitTest {
 				++counter;
 				assertTrue("step: " + counter,
 						loop.getCurrentToken() == counter * 7);
-			} else{
-				assertTrue("Last Step", loop.getCurrentToken() == loop.getEnd()-1);
+			} else {
+				assertTrue("Last Step",
+						loop.getCurrentToken() == loop.getEnd() - 1);
 			}
 		}
 	}
