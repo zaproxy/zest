@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.script.ScriptEngineFactory;
 
@@ -40,6 +41,8 @@ import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
 import org.mozilla.zest.core.v1.ZestComment;
 import org.mozilla.zest.core.v1.ZestConditional;
+import org.mozilla.zest.core.v1.ZestControlLoopBreak;
+import org.mozilla.zest.core.v1.ZestControlLoopNext;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
@@ -61,58 +64,68 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private boolean stopOnTestFail = true;
 	private Writer outputWriter = null;
 	private boolean debug = false;
-	
+
 	private ZestVariables variables;
 	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
 	private String result = null;
-	
+
+	private Stack<ZestLoop<?>> loops = new Stack<>();
+	private boolean skipStatements = false;
+
 	public ZestBasicRunner() {
 	}
-	
+
 	public ZestBasicRunner(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
 	}
-	
+
 	@Override
-	public String run(ZestScript script, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
-			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
-		
+	public String run(ZestScript script, Map<String, String> params)
+			throws ZestAssertFailException, ZestActionFailException,
+			IOException, ZestInvalidCommonTestException,
+			ZestAssignFailException {
+
 		return this.run(script, null, params);
 	}
 
 	@Override
-	public String run (ZestScript script, ZestRequest target, Map<String, String> tokens) throws ZestAssertFailException,
-			ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException {
+	public String run(ZestScript script, ZestRequest target,
+			Map<String, String> tokens) throws ZestAssertFailException,
+			ZestActionFailException, ZestInvalidCommonTestException,
+			IOException, ZestAssignFailException {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
 			for (ZestAuthentication za : auth) {
 				if (za instanceof ZestHttpAuthentication) {
 					ZestHttpAuthentication zha = (ZestHttpAuthentication) za;
-					
-					Credentials defaultcreds = new UsernamePasswordCredentials(zha.getUsername(), zha.getPassword());
-					httpclient.getState().setCredentials(new AuthScope(zha.getSite(), 80, AuthScope.ANY_REALM), defaultcreds);
+
+					Credentials defaultcreds = new UsernamePasswordCredentials(
+							zha.getUsername(), zha.getPassword());
+					httpclient.getState().setCredentials(
+							new AuthScope(zha.getSite(), 80,
+									AuthScope.ANY_REALM), defaultcreds);
 				}
 			}
 		}
-		
+
 		variables = script.getParameters().deepCopy();
-		
+
 		if (tokens != null) {
 			for (Map.Entry<String, String> token : tokens.entrySet()) {
 				this.setVariable(token.getKey(), token.getValue());
 			}
 		}
-		
+
 		lastRequest = target;
-		
+
 		if (target != null) {
 			// used in passive trests
 			lastResponse = target.getResponse();
 		} else {
 			lastResponse = null;
 		}
-		
+
 		for (ZestStatement stmt : script.getStatements()) {
 			lastResponse = this.runStatement(script, stmt, lastResponse);
 			if (result != null) {
@@ -120,51 +133,63 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 				return result;
 			}
 		}
-		
+
 		return null;
 
 	}
-	
 
 	@Override
-	public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastRes) 
-			throws ZestAssertFailException, ZestActionFailException,  
-			ZestInvalidCommonTestException, IOException, ZestAssignFailException {
-		
-		if (ZestScript.Type.Passive.equals(script.getType()) && !stmt.isPassive()) {
-			throw new IllegalArgumentException(stmt.getElementType() + " not allowed in passive scripts");
+	public ZestResponse runStatement(ZestScript script, ZestStatement stmt,
+			ZestResponse lastRes) throws ZestAssertFailException,
+			ZestActionFailException, ZestInvalidCommonTestException,
+			IOException, ZestAssignFailException {
+		if (skipStatements) {
+			return lastRes;
 		}
-		
+		if (ZestScript.Type.Passive.equals(script.getType())
+				&& !stmt.isPassive()) {
+			throw new IllegalArgumentException(stmt.getElementType()
+					+ " not allowed in passive scripts");
+		}
+
 		if (stmt instanceof ZestRequest) {
-			this.lastRequest = ((ZestRequest)stmt).deepCopy();
+			this.lastRequest = ((ZestRequest) stmt).deepCopy();
 			this.lastRequest.replaceTokens(this.variables);
 			this.lastResponse = send(this.lastRequest);
-			
+
 			this.variables.setStandardVariables(this.lastRequest);
 			this.variables.setStandardVariables(this.lastResponse);
 
-			handleResponse (this.lastRequest, this.lastResponse);
+			handleResponse(this.lastRequest, this.lastResponse);
 			return this.lastResponse;
-			
+
 		} else if (stmt instanceof ZestConditional) {
 			ZestConditional zc = (ZestConditional) stmt;
 			if (zc.isTrue(this)) {
 				this.debug("Conditional TRUE: " + zc.getClass().getName());
 				for (ZestStatement ifStmt : zc.getIfStatements()) {
-					lastResponse = this.runStatement(script, ifStmt, lastResponse);
+					lastResponse = this.runStatement(script, ifStmt,
+							lastResponse);
 				}
 			} else {
 				this.debug("Conditional FALSE: " + zc.getClass().getName());
 				for (ZestStatement elseStmt : zc.getElseStatements()) {
-					lastResponse = this.runStatement(script, elseStmt, lastResponse);
+					lastResponse = this.runStatement(script, elseStmt,
+							lastResponse);
 				}
 			}
 		} else if (stmt instanceof ZestAction) {
 			handleAction(script, (ZestAction) stmt, lastResponse);
 		} else if (stmt instanceof ZestAssignment) {
 			handleAssignment(script, (ZestAssignment) stmt, lastResponse);
-	    } else if (stmt instanceof ZestLoop){
-		      lastResponse=handleLoop(script, (ZestLoop<?>) stmt, lastResponse); 
+		} else if (stmt instanceof ZestLoop) {
+			lastResponse = handleLoop(script, (ZestLoop<?>) stmt, lastResponse);
+		} else if (stmt instanceof ZestControlLoopBreak) {
+			debug("found break");
+			handleControlLoopBreak();
+		} else if (stmt instanceof ZestControlLoopNext) {
+			debug("found next");
+			handleControlLoopNext();
 		} else if (stmt instanceof ZestControlReturn) {
 			// Exits the script
 			ZestControlReturn zr = (ZestControlReturn) stmt;
@@ -175,19 +200,21 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		return lastResponse;
 	}
-	
+
 	@Override
-	public String handleAction(ZestScript script, ZestAction action, ZestResponse lastResponse) throws ZestActionFailException {
+	public String handleAction(ZestScript script, ZestAction action,
+			ZestResponse lastResponse) throws ZestActionFailException {
 		this.debug("Action invoke: " + action.getClass().getName());
 		String result = action.invoke(lastResponse, this);
 		if (result != null) {
-			this.debug("Action result: " +result);
+			this.debug("Action result: " + result);
 		}
 		return result;
 	}
-	
+
 	@Override
-	public String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException {
+	public String handleAssignment(ZestScript script, ZestAssignment assign,
+			ZestResponse lastResponse) throws ZestAssignFailException {
 		String result = assign.assign(lastResponse, this);
 		this.setVariable(assign.getVariableName(), result);
 		if (result != null) {
@@ -195,21 +222,48 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		return result;
 	}
+
 	@Override
-	public ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse) throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException{
-		String token="";
-		this.setVariable(loop.getVariableName(), loop.getCurrentToken().toString());
-		while(loop.hasMoreElements()){
-			String loopOutput="Loop "+ loop.getVariableName()+ " iteration: "+loop.getCurrentIndex();
-			if(!token.equals(loop.getCurrentToken().toString())){
-				token=loop.getCurrentToken().toString();
-				loopOutput+=", Current Token: "+token;
+	public ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop,
+			ZestResponse lastResponse) throws ZestAssertFailException,
+			ZestActionFailException, ZestInvalidCommonTestException,
+			IOException, ZestAssignFailException {
+		loop.init();
+		String token = "";
+		this.setVariable(loop.getVariableName(), loop.getCurrentToken()
+				.toString());
+		loops.push(loop);
+		while (loop.hasMoreElements()) {
+			String loopOutput = "Loop " + loop.getVariableName()
+					+ " iteration: " + loop.getCurrentIndex();
+			if (!token.equals(loop.getCurrentToken().toString())) {
+				token = loop.getCurrentToken().toString();
+				loopOutput += ", Current Token: " + token;
 				this.setVariable(loop.getVariableName(), token);
 			}
 			this.debug(loopOutput);
-			lastResponse = this.runStatement(script, loop.nextElement(), lastResponse);
+			lastResponse = this.runStatement(script, loop.nextElement(),
+					lastResponse);
+			if (skipStatements) {// a LoopControl occurred
+				skipStatements = false;
+			}
 		}
-		return  lastResponse;
+		if (!loops.isEmpty() && loops.peek().equals(loop)) {
+			loops.pop();
+		}
+		this.setVariable(loop.getVariableName(), "");
+		return lastResponse;
+	}
+
+	public void handleControlLoopBreak() {
+		ZestLoop<?> lastLoop = loops.pop();
+		lastLoop.onControlBreak();
+		this.skipStatements = true;
+	}
+
+	public void handleControlLoopNext() {
+		loops.peek().onControlNext();
+		this.skipStatements = true;
 	}
 
 	public void output(String str) {
@@ -223,7 +277,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			}
 		}
 	}
-	
+
 	public void debug(String str) {
 		if (debug && this.outputWriter != null) {
 			try {
@@ -235,14 +289,15 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			}
 		}
 	}
-	
+
 	@Override
 	public ZestResponse send(ZestRequest request) throws IOException {
 		return send(httpclient, request);
 	}
-	
+
 	@Override
-	public void handleResponse(ZestRequest request, ZestResponse response) throws ZestAssertFailException, ZestActionFailException {
+	public void handleResponse(ZestRequest request, ZestResponse response)
+			throws ZestAssertFailException, ZestActionFailException {
 		boolean passed = true;
 		for (ZestAssertion za : request.getAssertions()) {
 			if (za.isValid(this)) {
@@ -252,23 +307,24 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 				this.responseFailed(request, response, za);
 			}
 		}
-		
+
 		if (passed) {
 			this.responsePassed(request, response);
 		} else {
 			this.responseFailed(request, response);
 		}
-		
+
 	}
 
 	@Override
-	public void responsePassed(ZestRequest request, ZestResponse response, ZestAssertion assertion) {
+	public void responsePassed(ZestRequest request, ZestResponse response,
+			ZestAssertion assertion) {
 		this.debug("Assertion PASSED: " + assertion.getClass().getName());
 	}
 
 	@Override
-	public void responseFailed(ZestRequest request, ZestResponse response, ZestAssertion assertion)
-			throws ZestAssertFailException {
+	public void responseFailed(ZestRequest request, ZestResponse response,
+			ZestAssertion assertion) throws ZestAssertFailException {
 		this.debug("Assertion FAILED: " + assertion.getClass().getName());
 		if (this.getStopOnAssertFail()) {
 			throw new ZestAssertFailException(assertion);
@@ -287,54 +343,69 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	}
 
 	@Override
-	public String runScript(Reader reader, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
-			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
-	    BufferedReader fr = new BufferedReader(reader);
-	    StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = fr.readLine()) != null) {
-            sb.append(line);
-        }
-        fr.close();
-	    return run ((ZestScript) ZestJSON.fromString(sb.toString()), params);
+	public String runScript(Reader reader, Map<String, String> params)
+			throws ZestAssertFailException, ZestActionFailException,
+			IOException, ZestInvalidCommonTestException,
+			ZestAssignFailException {
+		BufferedReader fr = new BufferedReader(reader);
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = fr.readLine()) != null) {
+			sb.append(line);
+		}
+		fr.close();
+		return run((ZestScript) ZestJSON.fromString(sb.toString()), params);
 	}
 
 	@Override
-	public String runScript(String  script, Map<String,String> params) throws ZestAssertFailException, ZestActionFailException, 
-			IOException, ZestInvalidCommonTestException, ZestAssignFailException {
-	    return run ((ZestScript) ZestJSON.fromString(script), params);
+	public String runScript(String script, Map<String, String> params)
+			throws ZestAssertFailException, ZestActionFailException,
+			IOException, ZestInvalidCommonTestException,
+			ZestAssignFailException {
+		return run((ZestScript) ZestJSON.fromString(script), params);
 	}
 
-	private ZestResponse send(HttpClient httpclient, ZestRequest req) throws IOException {
+	private ZestResponse send(HttpClient httpclient, ZestRequest req)
+			throws IOException {
 		HttpMethod method;
-		
+
 		switch (req.getMethod()) {
-		case "GET":		method = new GetMethod(req.getUrl().toString());
-						// Can only redirect on GETs
-						method.setFollowRedirects(req.isFollowRedirects());
-						break;
-		case "POST": 	method = new PostMethod(req.getUrl().toString());
-						break;
-		case "OPTIONS": method = new OptionsMethod(req.getUrl().toString());
-						break;
-		case "HEAD": 	method = new HeadMethod(req.getUrl().toString());
-						break;
-		case "PUT": 	method = new PutMethod(req.getUrl().toString());
-						break;
-		case "DELETE": 	method = new DeleteMethod(req.getUrl().toString());
-						break;
-		case "TRACE": 	method = new TraceMethod(req.getUrl().toString());
-						break;
-		default:		throw new IllegalArgumentException("Method not supported: " + req.getMethod());
+		case "GET":
+			method = new GetMethod(req.getUrl().toString());
+			// Can only redirect on GETs
+			method.setFollowRedirects(req.isFollowRedirects());
+			break;
+		case "POST":
+			method = new PostMethod(req.getUrl().toString());
+			break;
+		case "OPTIONS":
+			method = new OptionsMethod(req.getUrl().toString());
+			break;
+		case "HEAD":
+			method = new HeadMethod(req.getUrl().toString());
+			break;
+		case "PUT":
+			method = new PutMethod(req.getUrl().toString());
+			break;
+		case "DELETE":
+			method = new DeleteMethod(req.getUrl().toString());
+			break;
+		case "TRACE":
+			method = new TraceMethod(req.getUrl().toString());
+			break;
+		default:
+			throw new IllegalArgumentException("Method not supported: "
+					+ req.getMethod());
 		}
 		method.setURI(new URI(req.getUrl().toString(), true));
 		setHeaders(method, req.getHeaders());
 		method.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
-		
+
 		if (req.getMethod().equals("POST")) {
 			// Do this after setting the headers so the length is corrected
-			RequestEntity requestEntity = new StringRequestEntity(req.getData(), null, null);
-			((PostMethod)method).setRequestEntity(requestEntity);
+			RequestEntity requestEntity = new StringRequestEntity(
+					req.getData(), null, null);
+			((PostMethod) method).setRequestEntity(requestEntity);
 		}
 
 		int code = 0;
@@ -343,25 +414,27 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		Date start = new Date();
 		try {
 			this.debug(req.getMethod() + " : " + req.getUrl());
-		    code = httpclient.executeMethod(method);
-		    
-		    responseHeader = method.getStatusLine().toString() + "\n" + arrayToStr(method.getResponseHeaders());
-		    responseBody = method.getResponseBodyAsString();
+			code = httpclient.executeMethod(method);
 
-		} finally { 
-		    method.releaseConnection(); 
+			responseHeader = method.getStatusLine().toString() + "\n"
+					+ arrayToStr(method.getResponseHeaders());
+			responseBody = method.getResponseBodyAsString();
+
+		} finally {
+			method.releaseConnection();
 		}
 		// Update the headers with the ones actually sent
 		req.setHeaders(arrayToStr(method.getRequestHeaders()));
-		
-		return new ZestResponse(req.getUrl(), responseHeader, responseBody, code, new Date().getTime() - start.getTime());
+
+		return new ZestResponse(req.getUrl(), responseHeader, responseBody,
+				code, new Date().getTime() - start.getTime());
 	}
 
 	private void setHeaders(HttpMethod method, String headers) {
-	if (headers == null) {
+		if (headers == null) {
 			return;
 		}
-		String [] headerArray = headers.split("\r\n");
+		String[] headerArray = headers.split("\r\n");
 		String header;
 		String value;
 		for (String line : headerArray) {
@@ -369,31 +442,31 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			if (colonIndex > 0) {
 				header = line.substring(0, colonIndex);
 				value = line.substring(colonIndex + 1).trim();
-				if (! header.toLowerCase().startsWith("cookie") && 
-						! header.toLowerCase().startsWith("content-length")) {
+				if (!header.toLowerCase().startsWith("cookie")
+						&& !header.toLowerCase().startsWith("content-length")) {
 					method.addRequestHeader(new Header(header, value));
 				}
 			}
 		}
-		
+
 	}
 
 	private String arrayToStr(Header[] headers) {
-	    StringBuilder sb = new StringBuilder();
-	    for (Header header : headers) {
-	    	sb.append(header.toString());
-	    }
+		StringBuilder sb = new StringBuilder();
+		for (Header header : headers) {
+			sb.append(header.toString());
+		}
 		return sb.toString();
 	}
 
 	@Override
 	public void setStopOnAssertFail(boolean stop) {
-		stopOnAssertFail = stop;		
+		stopOnAssertFail = stop;
 	}
 
 	@Override
 	public void setStopOnTestFail(boolean stop) {
-		stopOnTestFail = stop;		
+		stopOnTestFail = stop;
 	}
 
 	@Override
@@ -414,7 +487,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public void setProxy(String host, int port) {
 		// TODO support credentials
-		httpclient.getHostConfiguration().setProxy(host, port);		
+		httpclient.getHostConfiguration().setProxy(host, port);
 	}
 
 	@Override
@@ -446,10 +519,10 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		return this.variables.replaceInString(str, urlEncode);
 	}
 
-	public void setScriptEngineFactory (ScriptEngineFactory factory) {
+	public void setScriptEngineFactory(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
 	}
-	
+
 	@Override
 	public ScriptEngineFactory getScriptEngineFactory() {
 		if (this.scriptEngineFactory == null) {
