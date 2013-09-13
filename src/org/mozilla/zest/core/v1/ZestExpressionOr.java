@@ -72,6 +72,9 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 	 */
 	@Override
 	public String toString() {
+		if(this.getChildrenCondition()==null || this.getChildrenCondition().isEmpty()){
+			return "Empty OR";
+		}
 		String expression = (isInverse() ? "NOT (" : "(");
 		for (int i = 0; i < this.getChildrenCondition().size() - 1; i++) {
 			expression += " " + this.getChild(i).toString() + " OR";
