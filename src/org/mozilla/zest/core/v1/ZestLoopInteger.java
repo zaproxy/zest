@@ -27,7 +27,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	/**
 	 * Instantiates a new zest loop integer.
 	 *
-	 * @param name the name
+	 * @param name the name of the loop
 	 */
 	public ZestLoopInteger(String name){
 		super();
@@ -39,9 +39,9 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	/**
 	 * Instantiates a new zest loop integer.
 	 *
-	 * @param name the name
-	 * @param start the start
-	 * @param end the end
+	 * @param name the name of the loop
+	 * @param start the start index
+	 * @param end the end index
 	 */
 	public ZestLoopInteger(String name, int start, int end){
 		super();
@@ -53,9 +53,9 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	/**
 	 * Instantiates a new zest loop integer.
 	 *
-	 * @param index the index
-	 * @param start the start
-	 * @param end the end
+	 * @param index the index of the statement
+	 * @param start the start index
+	 * @param end the end index
 	 */
 	public ZestLoopInteger(int index, int start, int end){
 		super(index);
@@ -64,18 +64,18 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	}
 	
 	/**
-	 * Gets the start.
+	 * Gets the start index.
 	 *
-	 * @return the start
+	 * @return the start index
 	 */
 	public int getStart(){
 		return this.getSet().getStart();
 	}
 	
 	/**
-	 * Gets the end.
+	 * Gets the end index.
 	 *
-	 * @return the end
+	 * @return the end index
 	 */
 	public int getEnd(){
 		return this.getSet().getEnd();
@@ -84,8 +84,8 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	/**
 	 * Instantiates a new zest loop integer.
 	 *
-	 * @param start the start
-	 * @param end the end
+	 * @param start the start index
+	 * @param end the end index
 	 */
 	public ZestLoopInteger(int start, int end){
 		this("", start, end);
@@ -95,11 +95,17 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public ZestLoopStateInteger getCurrentState(){
 		return (ZestLoopStateInteger)super.getCurrentState();
 	}
-	
+	/**
+	 * sets the step for the loop
+	 * @param step the step for this loop
+	 */
 	public void setStep(int step){
 		this.getSet().setStep(step);
 	}
-	
+	/**
+	 * returns the step of this loop
+	 * @return the step of this loop
+	 */
 	public int getStep(){
 		return this.getSet().getStep();
 	}
@@ -154,9 +160,17 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 	public void endLoop(){
 		this.endLoop(getSet());
 	}
+	/**
+	 * sets a new start index
+	 * @param newStart the new start index
+	 */
 	public void setStart(int newStart){
 		this.setSet(new ZestLoopTokenIntegerSet(newStart, getEnd()));
 	}
+	/**
+	 * sets the new end index
+	 * @param newEnd the new end index
+	 */
 	public void setEnd(int newEnd){
 		this.setSet(new ZestLoopTokenIntegerSet(this.getStart(), newEnd));
 	}

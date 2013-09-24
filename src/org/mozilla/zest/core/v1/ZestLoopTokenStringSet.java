@@ -65,7 +65,10 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
 			return tokens.get(index);
 		}
 	}
-
+	/**
+	 * returns the tokens of this Set
+	 * @return the tokens of this set
+	 */
 	public List<String> getTokens() {
 		return this.tokens;
 	}

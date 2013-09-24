@@ -55,7 +55,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * Instantiates a new zest loop string.
 	 * 
 	 * @param index
-	 *            the index
+	 *            the index of the statement loop.
 	 */
 	public ZestLoopString(int index) {
 		super(index);
@@ -67,7 +67,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	 * Instantiates a new zest loop string.
 	 * 
 	 * @param index
-	 *            the index
+	 *            the index of the statement
 	 * @param values
 	 *            the values
 	 */

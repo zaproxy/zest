@@ -33,7 +33,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	/**
 	 * Instantiates a new zest loop file.
 	 *
-	 * @param index the index
+	 * @param index the index of the statement
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
@@ -47,7 +47,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 * Instantiates a new zest loop file.
 	 * 
 	 * @param file
-	 *            the file
+	 *            the file containing the loop values
 	 * @throws FileNotFoundException
 	 *             the file not found exception
 	 */
@@ -61,7 +61,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 * Instantiates a new zest loop file.
 	 * 
 	 * @param pathToFile
-	 *            the path to file
+	 *            the path to the file which contains the loop values
 	 * @throws FileNotFoundException
 	 *             the file not found exception
 	 */
@@ -75,9 +75,9 @@ public class ZestLoopFile extends ZestLoop<String> {
 	 * Instantiates a new zest loop file.
 	 * 
 	 * @param index
-	 *            the index
+	 *            the index of the statement
 	 * @param pathToFile
-	 *            the path to file
+	 *            the path to the file which contains the loop values
 	 * @throws FileNotFoundException
 	 *             the file not found exception
 	 */
