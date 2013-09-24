@@ -45,8 +45,8 @@ public class ZestExpressionLength extends ZestExpression {
 	 *
 	 * @param variableName the variable name
 	 * @param length the length
-	 * @param j the j
-	 * @param b the b
+	 * @param j the approximation
+	 * @param b is inverse?
 	 */
 	public ZestExpressionLength(String variableName, int length, int j, boolean b) {
 		this(variableName, length,j);

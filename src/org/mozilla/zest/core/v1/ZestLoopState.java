@@ -61,7 +61,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	 * 
 	 * @param newToken
 	 *            the new token
-	 * @return the t
+	 * @return the previous token
 	 */
 	protected T setCurrentToken(T newToken) {
 		T oldToken = this.getCurrentToken();
@@ -80,9 +80,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	}
 
 	/**
-	 * Increase index.
-	 *
-	 * @param step the step
+	 * Increase loops indexes.
 	 */
 	protected void increaseIndex() {
 		this.currentIndex += 1;
@@ -101,9 +99,7 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	/**
 	 * this increase the state and goes to the next state.
 	 *
-	 * @param step The step of the counter for this loop
 	 * @param set the set
-	 * @return the new state
 	 */
 	protected abstract boolean increase(ZestLoopTokenSet<T> set);
 

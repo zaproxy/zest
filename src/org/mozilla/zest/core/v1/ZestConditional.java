@@ -43,7 +43,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 
 	/**
-	 * Instantiates a new zest conditional.
+	 * Instantiates a new zest conditional with a statement index.
 	 *
 	 * @param index the index
 	 */
@@ -63,19 +63,19 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Adds the if.
+	 * Adds an if statement.
 	 *
-	 * @param req the req
+	 * @param req the Statement to add as If
 	 */
 	public void addIf(ZestStatement req) {
 		this.addIf(this.ifStatements.size(), req);
 	}
 	
 	/**
-	 * Adds the if.
+	 * Adds an if.
 	 *
-	 * @param index the index
-	 * @param req the req
+	 * @param index the index of the new statement in the if list
+	 * @param req the statement to add as If at position index
 	 */
 	public void addIf(int index, ZestStatement req) {
 		ZestStatement prev = this;
@@ -97,10 +97,10 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Move if.
+	 * Moves if.
 	 *
-	 * @param index the index
-	 * @param req the req
+	 * @param index the new index
+	 * @param req the statement to move
 	 */
 	public void moveIf(int index, ZestStatement req) {
 		this.removeIf(req);
@@ -108,9 +108,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Removes the if.
+	 * Removes an if.
 	 *
-	 * @param req the req
+	 * @param req the if statement to remove
 	 */
 	public void removeIf(ZestStatement req) {
 		this.ifStatements.remove(req);
@@ -118,9 +118,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Removes the if statement.
+	 * Removes an if statement.
 	 *
-	 * @param index the index
+	 * @param index the index of the statement to remove
 	 */
 	public void removeIfStatement(int index) {
 		this.removeIf(this.ifStatements.get(index));
@@ -130,7 +130,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	 * Gets the if statement.
 	 *
 	 * @param index the index
-	 * @return the if statement
+	 * @return the if statement at index
 	 * @throws IndexOutOfBoundsException the index out of bounds exception
 	 */
 	public ZestStatement getIfStatement (int index) throws IndexOutOfBoundsException {
@@ -138,28 +138,28 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Gets the if statements.
+	 * Gets the if statements list.
 	 *
-	 * @return the if statements
+	 * @return the if statements list
 	 */
 	public List<ZestStatement> getIfStatements() {
 		return ifStatements;
 	}
 
 	/**
-	 * Adds the else.
+	 * Adds an else.
 	 *
-	 * @param req the req
+	 * @param req the statement to add as else
 	 */
 	public void addElse(ZestStatement req) {
 		this.addElse(this.elseStatements.size(), req);
 	}
 	
 	/**
-	 * Adds the else.
+	 * Adds an else.
 	 *
-	 * @param index the index
-	 * @param req the req
+	 * @param index the index where to add the else statement
+	 * @param req the new else statement
 	 */
 	public void addElse(int index, ZestStatement req) {
 		ZestStatement prev = this;
@@ -187,10 +187,10 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 
 	/**
-	 * Move else.
+	 * Moves an else.
 	 *
-	 * @param index the index
-	 * @param req the req
+	 * @param index the destination of the else statement
+	 * @param req the else statement to move
 	 */
 	public void moveElse(int index, ZestStatement req) {
 		this.removeElse(req);
@@ -198,9 +198,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Removes the else.
+	 * Removes an else.
 	 *
-	 * @param req the req
+	 * @param req the else statement to remove
 	 */
 	public void removeElse(ZestStatement req) {
 		this.elseStatements.remove(req);
@@ -208,19 +208,19 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Removes the else statement.
+	 * Removes an else statement.
 	 *
-	 * @param index the index
+	 * @param index the index of the else statement to remove
 	 */
 	public void removeElseStatement(int index) {
 		this.removeElse(this.elseStatements.get(index));
 	}
 	
 	/**
-	 * Gets the else statement.
+	 * Gets the else statement in a given index.
 	 *
 	 * @param index the index
-	 * @return the else statement
+	 * @return the else statement at the given index
 	 * @throws IndexOutOfBoundsException the index out of bounds exception
 	 */
 	public ZestStatement getElseStatement (int index) throws IndexOutOfBoundsException {
@@ -228,9 +228,9 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Gets the else statements.
+	 * Gets the else statements list.
 	 *
-	 * @return the else statements
+	 * @return the else statements list
 	 */
 	public List<ZestStatement> getElseStatements() {
 		return elseStatements;
@@ -373,10 +373,10 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/**
-	 * Checks if is true.
+	 * Checks if the conditional is true.
 	 *
 	 * @param runtime the runtime
-	 * @return true, if is true
+	 * @return true, if the condition is true
 	 */
 	public boolean isTrue(ZestRuntime runtime){
 		return getRootExpression().evaluate(runtime);
@@ -394,8 +394,8 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	/**
 	 * Sets the root expression.
 	 *
-	 * @param new_root the new_root
-	 * @return the zest expression element
+	 * @param new_root the new_root expression
+	 * @return the zest previous root expression
 	 */
 	public ZestExpressionElement setRootExpression(ZestExpressionElement new_root){
 		ZestExpressionElement old_root=this.getRootExpression();
