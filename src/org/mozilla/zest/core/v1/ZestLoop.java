@@ -50,17 +50,19 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 * Inits the Loop.
 	 * 
 	 * @param name
-	 *            the name
+	 *            the name of the variable
 	 * @param set
-	 *            the set
+	 *            the initialization token set
 	 * @param statements
-	 *            the statements
+	 *            the list of statements inside the loop
 	 */
 	protected void init(ZestLoopTokenSet<T> set, List<ZestStatement> statements) {
 		this.statements = statements;
 		this.currentState = set.getFirstState();
 	}
-	
+	/**
+	 * inits the loop refreshing the current state to the first considered state
+	 */
 	public void init(){
 		this.currentState=this.getSet().getFirstState();
 	}
@@ -75,11 +77,11 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	}
 
 	/**
-	 * Sets the statements.
+	 * Sets the statements list.
 	 * 
 	 * @param stmts
-	 *            the stmts
-	 * @return the list
+	 *            the stmts list
+	 * @return the previous statement list
 	 */
 	public List<ZestStatement> setStatements(List<ZestStatement> stmts) {
 		List<ZestStatement> oldStatements = this.statements;
@@ -90,7 +92,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	/**
 	 * Gets the statements.
 	 * 
-	 * @return the statements
+	 * @return the statements list
 	 */
 	public List<ZestStatement> getStatements() {
 		return this.statements;
@@ -107,7 +109,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	}
 
 	/**
-	 * ends the loops and set the state to the final value.
+	 * ends the loop and set the state to the final value.
 	 */
 	protected void endLoop(ZestLoopTokenSet<T> set) {
 		this.currentState.toLastState(set);
@@ -172,11 +174,17 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	public T getCurrentToken() {
 		return this.currentState.getCurrentToken();
 	}
-	
+	/**
+	 * returns the current index (related to the current token) of the loop
+	 * @return the current index (related to the current token)
+	 */
 	public int getCurrentIndex(){
 		return this.currentState.getCurrentIndex();
 	}
-	
+	/**
+	 * returns the current statement index
+	 * @return the index of the statement currently considered
+	 */
 	public int getCurrentStatementIndex(){
 		return this.stmtIndex;
 	}
@@ -288,11 +296,18 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		}
 		return true;
 	}
-	
+	/**
+	 * checks if the loop is on its last state
+	 * @return true if the loop is over
+	 */
 	public abstract boolean isLastState();
-	
+	/**
+	 * increase the loop indexes
+	 */
 	protected abstract void increase();
-	
+	/**
+	 * ends the loop taking its current state to the last state
+	 */
 	public abstract void toLastState();
 
 	@Override
@@ -313,10 +328,16 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		}
 		return statements.get(currentStmt);
 	}
+	/**
+	 * act as a BREAK
+	 */
 	public void onControlBreak(){
 		toLastState();
 		this.stmtIndex = statements.size();
 	}
+	/**
+	 * act as a NEXT
+	 */
 	public void onControlNext(){
 		increase();
 		this.stmtIndex = 0;
@@ -325,7 +346,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	/**
 	 * Copy statements.
 	 * 
-	 * @return the list
+	 * @return the list of copied statements
 	 */
 	public List<ZestStatement> copyStatements() {
 		if (this.getStatements() != null) {
