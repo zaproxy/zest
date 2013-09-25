@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestConditional.
  */
@@ -412,16 +411,12 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		if(this.rootExpression!=null){
 			copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
 		}
-		ArrayList<ZestStatement> ifList=new ArrayList<>();
 		for(ZestStatement stmt:ifStatements){
 			copy.ifStatements.add(stmt.deepCopy());
 		}
-		ArrayList<ZestStatement> elseList=new ArrayList<>();
 		for(ZestStatement stmt:elseStatements){
 			copy.elseStatements.add(stmt.deepCopy());
 		}
-		copy.elseStatements=elseList;
-		copy.ifStatements=ifList;
 		return copy;
 	}
 	
