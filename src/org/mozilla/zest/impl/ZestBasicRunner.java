@@ -22,7 +22,6 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.HeadMethod;
@@ -403,7 +402,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		method.setURI(new URI(req.getUrl().toString(), true));
 		setHeaders(method, req.getHeaders());
-		method.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
 
 		if (req.getMethod().equals("POST")) {
 			// Do this after setting the headers so the length is corrected
