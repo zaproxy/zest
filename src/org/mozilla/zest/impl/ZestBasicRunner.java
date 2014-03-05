@@ -371,36 +371,36 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private ZestResponse send(HttpClient httpclient, ZestRequest req)
 			throws IOException {
 		HttpMethod method;
+		URI uri = new URI(req.getUrl().toString(), false);
 
 		switch (req.getMethod()) {
 		case "GET":
-			method = new GetMethod(req.getUrl().toString());
+			method = new GetMethod(uri.toString());
 			// Can only redirect on GETs
 			method.setFollowRedirects(req.isFollowRedirects());
 			break;
 		case "POST":
-			method = new PostMethod(req.getUrl().toString());
+			method = new PostMethod(uri.toString());
 			break;
 		case "OPTIONS":
-			method = new OptionsMethod(req.getUrl().toString());
+			method = new OptionsMethod(uri.toString());
 			break;
 		case "HEAD":
-			method = new HeadMethod(req.getUrl().toString());
+			method = new HeadMethod(uri.toString());
 			break;
 		case "PUT":
-			method = new PutMethod(req.getUrl().toString());
+			method = new PutMethod(uri.toString());
 			break;
 		case "DELETE":
-			method = new DeleteMethod(req.getUrl().toString());
+			method = new DeleteMethod(uri.toString());
 			break;
 		case "TRACE":
-			method = new TraceMethod(req.getUrl().toString());
+			method = new TraceMethod(uri.toString());
 			break;
 		default:
 			throw new IllegalArgumentException("Method not supported: "
 					+ req.getMethod());
 		}
-		method.setURI(new URI(req.getUrl().toString(), true));
 		setHeaders(method, req.getHeaders());
 
 		if (req.getMethod().equals("POST")) {
