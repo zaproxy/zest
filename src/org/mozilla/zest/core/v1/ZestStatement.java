@@ -163,6 +163,20 @@ public abstract class ZestStatement extends ZestElement {
 	 */
 	public abstract ZestStatement deepCopy();
 	
+	protected void init() {
+		this.setPrev(this);
+	}
+	
+	protected ZestStatement setPrev(ZestStatement prev) {
+		if (this instanceof ZestContainer) {
+			// Containers should override this method
+			throw new IllegalArgumentException();
+		}
+		this.previous = prev;
+		return this;
+		
+	}
+	
 	/**
 	 * Checks if is passive.
 	 *
@@ -175,4 +189,5 @@ public abstract class ZestStatement extends ZestElement {
 		return this.index + ":" + this.getElementType() + "-" + this.hashCode();
 	}
 	*/
+
 }

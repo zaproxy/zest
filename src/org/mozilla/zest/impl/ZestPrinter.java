@@ -12,6 +12,7 @@ import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
 import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
+import org.mozilla.zest.core.v1.ZestComment;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
 import org.mozilla.zest.core.v1.ZestExpressionElement;
@@ -115,6 +116,7 @@ public class ZestPrinter {
 			printIndent(indent, stmt.getIndex());
 			System.out.print("IF ");
 			printExpression(zc.getRootExpression(), 0);
+			System.out.println();
 			for (ZestStatement ifStmt : zc.getIfStatements()) {
 				list(ifStmt, indent + 1);
 			}
@@ -174,6 +176,10 @@ public class ZestPrinter {
 			for (ZestStatement stmtInLoop : loop.getStatements()) {
 				list(stmtInLoop, indent + 1);
 			}
+		} else if (stmt instanceof ZestComment) {
+			ZestComment zc = (ZestComment) stmt;
+			printIndent(indent, stmt.getIndex());
+			System.out.println("Comment: " + zc.getComment());
 
 		} else {
 			printIndent(indent, stmt.getIndex());

@@ -42,7 +42,11 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 	 * @return the zest element
 	 */
 	public static ZestElement fromString(String str) {
-		return getGson().fromJson(str, ZestElement.class);
+		ZestElement ze = getGson().fromJson(str, ZestElement.class);
+		if (ze != null && ze instanceof ZestStatement) {
+			((ZestStatement)ze).init();
+		}
+		return ze;
 	}
 	
 	/**

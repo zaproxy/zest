@@ -123,6 +123,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 */
 	public void addStatement(ZestStatement stmt) {
 		statements.add(stmt);
+		this.add(this.statements.size(), stmt);
 	}
 
 	/**
@@ -382,4 +383,14 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		return true;
 	}
 
+	@Override
+	protected ZestStatement setPrev(ZestStatement prev) {
+		for (ZestStatement statement : statements) {
+			if (prev != null) {
+				prev.setNext(statement);
+			}
+			prev = statement.setPrev(prev);
+		}
+		return prev;
+	}
 }

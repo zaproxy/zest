@@ -6,8 +6,10 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -202,6 +204,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		}
 		// This will wire everything up
 		stmt.insertAfter(prev);
+		checkStatementIndexes();
 	}
 	
 	/* (non-Javadoc)
@@ -210,6 +213,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	public void move(int index, ZestStatement req) {
 		this.remove(req);
 		this.add(index, req);
+		checkStatementIndexes();
 	}
 	
 	/**
@@ -220,6 +224,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	public void remove(ZestStatement req) {
 		this.statements.remove(req);
 		req.remove();
+		checkStatementIndexes();
 	}
 	
 	/**
@@ -229,12 +234,14 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 */
 	public void removeStatement(int index) {
 		this.remove(this.statements.get(index));
+		checkStatementIndexes();
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
 	 */
 	public ZestStatement getStatement (int index) {
+		checkStatementIndexes();
 		for (ZestStatement zr : this.getStatements()) {
 			if (zr.getIndex() == index) {
 				return zr;
@@ -534,4 +541,27 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return Type.Passive.equals(this.getType());
 	}
 
+	private void checkStatementIndexes() {
+		/* Only use when debugging index issues
+		Map<Integer, ZestStatement>  map = new HashMap<Integer, ZestStatement>();
+		for (ZestStatement statement : statements) {
+			ZestStatement stmt = map.put(statement.getIndex(), statement);
+			if (stmt != null) {
+				System.out.println("2 statements with the same index:( " + stmt.getIndex());
+				(new Exception()).printStackTrace();
+			}
+		}
+		*/
+	}
+	
+	@Override
+	protected ZestStatement setPrev(ZestStatement prev) {
+		for (ZestStatement statement : statements) {
+			if (prev != null) {
+				prev.setNext(statement);
+			}
+			prev = statement.setPrev(prev);
+		}
+		return prev;
+	}
 }

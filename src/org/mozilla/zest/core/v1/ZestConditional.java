@@ -436,4 +436,21 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	public boolean isPassive() {
 		return true;
 	}
+	
+	@Override
+	protected ZestStatement setPrev(ZestStatement prev) {
+		for (ZestStatement statement : ifStatements) {
+			if (prev != null) {
+				prev.setNext(statement);
+			}
+			prev = statement.setPrev(prev);
+		}
+		for (ZestStatement statement : elseStatements) {
+			if (prev != null) {
+				prev.setNext(statement);
+			}
+			prev = statement.setPrev(prev);
+		}
+		return prev;
+	}
 }
