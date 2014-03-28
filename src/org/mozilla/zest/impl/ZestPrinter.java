@@ -6,7 +6,10 @@ package org.mozilla.zest.impl;
 
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFail;
+import org.mozilla.zest.core.v1.ZestActionIntercept;
+import org.mozilla.zest.core.v1.ZestActionInvoke;
 import org.mozilla.zest.core.v1.ZestActionScan;
+import org.mozilla.zest.core.v1.ZestActionSleep;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
@@ -135,6 +138,19 @@ public class ZestPrinter {
 			} else if (za instanceof ZestActionScan) {
 				ZestActionScan zas = (ZestActionScan) za;
 				System.out.println("Action Scan: " + zas.getTargetParameter());
+			} else if (za instanceof ZestActionIntercept) {
+				System.out.println("Action Intercept");
+			} else if (za instanceof ZestActionInvoke) {
+				ZestActionInvoke zas = (ZestActionInvoke) za;
+				System.out.print("Action Invoke: "+ zas.getVariableName() + " = " + zas.getScript() + "(");
+				for (String [] param : zas.getParameters()) {
+					System.out.print(param[0] + "=" + param[1] + " ");
+				}
+				System.out.println(")");
+				
+			} else if (za instanceof ZestActionSleep) {
+				ZestActionSleep zas = (ZestActionSleep) za;
+				System.out.println("Action Sleep: " + zas.getMilliseconds());
 			} else {
 				System.out.println("(Unknown action: " + stmt.getElementType() + ")");
 			}
