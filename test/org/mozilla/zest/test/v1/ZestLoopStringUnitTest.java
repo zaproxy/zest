@@ -45,10 +45,12 @@ public class ZestLoopStringUnitTest {
 		}
 		statements.add(new ZestLoopString(firstIndex, values));
 		ZestLoopString loop = new ZestLoopString(firstIndex, values);
+		int idx = 0;
 		for(ZestStatement stmt:statements){
 			loop.addStatement(stmt);
+			idx = stmt.getIndex();
 		}
-		boolean rightStmtPos = loop.getStatement(firstIndex).getClass()
+		boolean rightStmtPos = loop.getStatement(idx).getClass()
 				.equals(ZestLoopString.class);
 		boolean rightSetSize = loop.getSet().size() == values.length;
 		assertTrue("right statements position", rightStmtPos);
@@ -86,9 +88,10 @@ public class ZestLoopStringUnitTest {
 
 	@Test
 	public void testAddStatement() {
-		ZestLoopString loop = new ZestLoopString(values);
-		loop.addStatement(new ZestLoopString(values));
-		assertTrue(loop.getStatement(0).getClass().equals(ZestLoopString.class));
+		ZestLoopString loop1 = new ZestLoopString(values);
+		ZestLoopString loop2 = new ZestLoopString(values);
+		loop1.addStatement(loop2);
+		assertTrue(loop1.getStatement(1).getClass().equals(ZestLoopString.class));
 	}
 
 	@Test

@@ -121,7 +121,7 @@ public class ZestAssignStringDelimitersUnitTest {
 		ZestAssignStringDelimiters assign = new ZestAssignStringDelimiters("var", "BODY", ">>", "<<");
 		
 		String str = ZestJSON.toString(assign);
-		System.out.println(str);
+		//System.out.println(str);
 		
 		ZestAssignStringDelimiters assign2 = (ZestAssignStringDelimiters) ZestJSON.fromString(str);
 		

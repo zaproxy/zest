@@ -122,7 +122,6 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 *            the new statement to add
 	 */
 	public void addStatement(ZestStatement stmt) {
-		statements.add(stmt);
 		this.add(this.statements.size(), stmt);
 	}
 

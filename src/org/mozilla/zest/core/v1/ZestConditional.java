@@ -421,15 +421,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	}
 	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString(){
-		String expression="IF - "+getRootExpression().toString();
-		return expression;
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
 	 */
 	@Override

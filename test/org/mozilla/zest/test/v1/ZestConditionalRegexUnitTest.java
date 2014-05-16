@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestRequest;
+import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
 
 /**
@@ -389,6 +390,45 @@ public class ZestConditionalRegexUnitTest {
 		checkOrder(new ZestStatement[]{zc1, req1, zc2, req2, req3, req5, zc4, req6, null});
 	}
 
+	/**
+	 * Method testMovingIfStatements.
+	 * @throws Exception
+	 */
+	@Test
+	public void testMovingIfStatements() throws Exception {
+		ZestScript zs = new ZestScript();
+		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestRequest req1 = new ZestRequest();
+		ZestRequest req2 = new ZestRequest();
+
+		zs.add(zc1);
+		zc1.addIf(req1);
+		zc1.addIf(req2);
+		
+		zc1.moveIf(0, req2);
+		
+		checkOrder(new ZestStatement[]{zs, zc1, req2, req1, null});
+
+	}
+
+	/**
+	 * Method testMovingElseStatements.
+	 * @throws Exception
+	 */
+	@Test
+	public void testMovingElseStatements() throws Exception {
+		ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY",""));
+		ZestRequest req1 = new ZestRequest();
+		ZestRequest req2 = new ZestRequest();
+
+		zc1.addElse(req1);
+		zc1.addElse(req2);
+		
+		zc1.moveElse(0, req2);
+		
+		checkOrder(new ZestStatement[]{zc1, req2, req1, null});
+
+	}
 		/*
 	@Test
 	public void testDepthIndexing() throws Exception {

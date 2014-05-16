@@ -221,7 +221,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String handleAssignment(ZestScript script, ZestAssignment assign,
 			ZestResponse lastResponse) throws ZestAssignFailException {
 		String result = assign.assign(lastResponse, this);
-		this.setVariable(assign.getVariableName(), result);
+		// Replace any variables
+		this.setVariable(assign.getVariableName(), this.replaceVariablesInString(result, false));
 		if (result != null) {
 			this.debug(assign.getIndex() + " Assign: " + assign.getVariableName() + " = " + result);
 		}
