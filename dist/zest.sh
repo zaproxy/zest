@@ -34,5 +34,5 @@ cd "$BASEDIR"
 
 #Start Zest command line
 
-exec java -jar "${BASEDIR}/mozilla-zest-0.5.jar" $*
+exec java -jar "${BASEDIR}/mozilla-zest-0.6.jar" $*
 
