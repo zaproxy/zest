@@ -1,5 +1,7 @@
 package org.mozilla.zest.test.v1;
 
+import java.util.List;
+
 import javax.script.ScriptEngineFactory;
 
 import org.mozilla.zest.core.v1.ZestRequest;
@@ -7,6 +9,7 @@ import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestVariables;
 import org.mozilla.zest.impl.ZestScriptEngineFactory;
+import org.openqa.selenium.WebDriver;
 
 public class TestRuntime implements ZestRuntime{
 	private ZestRequest request;
@@ -88,5 +91,41 @@ public class TestRuntime implements ZestRuntime{
 			this.setVariable(ZestVariables.RESPONSE_HEADER, response.getHeaders());
 			this.setVariable(ZestVariables.RESPONSE_BODY, response.getBody());
 		}
+	}
+
+	@Override
+	public void setProxy(String host, int port) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getProxy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addWebDriver(String id, WebDriver wd) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeWebDriver(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public WebDriver getWebDriver(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<WebDriver> getWebDrivers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

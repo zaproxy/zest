@@ -40,13 +40,13 @@ public class ZestLoopSerializationUnitTest {
 			loop.addStatement(stmt);
 		}
 		String loopString=ZestJSON.toString(loop);
-		System.out.println(loopString);
+		//System.out.println(loopString);
 		ZestLoopString copy=(ZestLoopString) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
-		System.out.println("===============================");
-		System.out.println("          LOOP STRING");
-		System.out.println("===============================");
-		System.out.println(copyString);
+		//System.out.println("===============================");
+		//System.out.println("          LOOP STRING");
+		//System.out.println("===============================");
+		//System.out.println(copyString);
 		assertTrue(copyString.equals(loopString));
 	}
 	@Test
@@ -58,10 +58,10 @@ public class ZestLoopSerializationUnitTest {
 		String loopString=ZestJSON.toString(loop);
 		ZestLoopInteger copy=(ZestLoopInteger) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
-		System.out.println("===============================");
-		System.out.println("          LOOP INTEGER");
-		System.out.println("===============================");
-		System.out.println(copyString);
+		//System.out.println("===============================");
+		//System.out.println("          LOOP INTEGER");
+		//System.out.println("===============================");
+		//System.out.println(copyString);
 		assertTrue(copyString.equals(loopString));
 	}
 	@Test
@@ -73,10 +73,10 @@ public class ZestLoopSerializationUnitTest {
 		String loopString=ZestJSON.toString(loop);
 		ZestLoopFile copy=(ZestLoopFile) ZestJSON.fromString(loopString);
 		String copyString=ZestJSON.toString(copy);
-		System.out.println("===============================");
-		System.out.println("           LOOP FILE");
-		System.out.println("===============================");
-		System.out.println(copyString);
+		//System.out.println("===============================");
+		//System.out.println("           LOOP FILE");
+		//System.out.println("===============================");
+		//System.out.println(copyString);
 		assertTrue(loopString.equals(copyString));
 	}
 

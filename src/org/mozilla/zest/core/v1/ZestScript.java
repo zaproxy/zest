@@ -6,10 +6,8 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -19,7 +17,7 @@ import java.util.Set;
 public class ZestScript extends ZestStatement implements ZestContainer {
 
 	/** The Zest version implemented. */
-	public static final String VERSION = "0.3";
+	public static final String VERSION = "0.7";
 
 	/** The URL for more info. */
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";
@@ -492,15 +490,37 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 			tokens.add(var[0]);
 		}
 		
-		for (ZestStatement stmt : this.statements) {
-			if (stmt instanceof ZestContainer) {
-				tokens.addAll(((ZestContainer)stmt).getVariableNames());
-				
-			} else if (stmt instanceof ZestAssignment) {
-				tokens.add(((ZestAssignment)stmt).getVariableName());
+		ZestStatement next = this.getNext();
+		while (next != null) {
+			if (next instanceof ZestAssignment) {
+				tokens.add(((ZestAssignment)next).getVariableName());
+			} else if (next instanceof ZestClientAssignCookie) {
+				tokens.add(((ZestClientAssignCookie)next).getVariableName());
+			} else if (next instanceof ZestClientElementAssign) {
+				tokens.add(((ZestClientElementAssign)next).getVariableName());
 			}
+			next = next.getNext();
 		}
+		
 		return tokens;
+	}
+	
+	/**
+	 * Returns a set containing all of the window handles defined in this script
+	 * @return
+	 */
+	public Set<String> getClientWindowHandles() {
+		Set<String> ids = new HashSet<String>();
+		ZestStatement next = this.getNext();
+		while (next != null) {
+			if (next instanceof ZestClientLaunch) {
+				ids.add(((ZestClientLaunch)next).getWindowHandle());
+			} else if (next instanceof ZestClientWindowHandle) {
+				ids.add(((ZestClientWindowHandle)next).getWindowHandle());
+			}
+			next = next.getNext();
+		}
+		return ids;
 	}
 
 	/* (non-Javadoc)

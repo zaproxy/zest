@@ -13,6 +13,7 @@ import java.net.URL;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
+import org.mozilla.zest.core.v1.ZestClientFailException;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestLoopInteger;
 import org.mozilla.zest.core.v1.ZestRequest;
@@ -20,7 +21,8 @@ import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.impl.ZestBasicRunner;
 
 public class TestZestScriptWithLoop {
-	public static void main(String[] args) throws ZestAssertFailException, ZestActionFailException, IOException, ZestInvalidCommonTestException, ZestAssignFailException {
+	public static void main(String[] args) throws ZestAssertFailException, ZestActionFailException, 
+			IOException, ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException {
 		for(int i=1; i<9; i++){
 		ZestScript script = new ZestScript("Test Zest Script with loop",
 				"this tests a Zest Script with a loop",

@@ -8,10 +8,12 @@ import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestActionIntercept;
 import org.mozilla.zest.core.v1.ZestActionInvoke;
+import org.mozilla.zest.core.v1.ZestActionPrint;
 import org.mozilla.zest.core.v1.ZestActionScan;
 import org.mozilla.zest.core.v1.ZestActionSleep;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
+import org.mozilla.zest.core.v1.ZestAssignReplace;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
 import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
@@ -151,6 +153,9 @@ public class ZestPrinter {
 			} else if (za instanceof ZestActionSleep) {
 				ZestActionSleep zas = (ZestActionSleep) za;
 				System.out.println("Action Sleep: " + zas.getMilliseconds());
+			} else if (za instanceof ZestActionPrint) {
+				ZestActionPrint zas = (ZestActionPrint) za;
+				System.out.println("Action Print: " + zas.getMessage());
 			} else {
 				System.out.println("(Unknown action: " + stmt.getElementType() + ")");
 			}
@@ -163,6 +168,10 @@ public class ZestPrinter {
 			} else if (za instanceof ZestAssignStringDelimiters) {
 				ZestAssignStringDelimiters zas = (ZestAssignStringDelimiters) za;
 				System.out.println("Set Variable: " + zas.getVariableName());
+			} else if (za instanceof ZestAssignReplace) {
+				ZestAssignReplace zas = (ZestAssignReplace) za;
+				System.out.println("Set Variable: " + zas.getVariableName() + 
+						" Replace " + zas.getReplace() + " With " + zas.getReplace());
 			} else {
 				System.out.println("(Unknown assignment: " + stmt.getElementType() + ")");
 			}

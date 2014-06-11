@@ -6,7 +6,6 @@ package org.mozilla.zest.core.v1;
 
 import java.net.URL;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestResponse.
  */
@@ -81,6 +80,22 @@ public class ZestResponse extends ZestElement {
 	}
 
 	/**
+	 * Set the headers returned
+	 * @param headers
+	 */
+	public void setHeaders(String headers) {
+		this.headers = headers;
+	}
+
+	/**
+	 * Set the body returned
+	 * @param body
+	 */
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	/**
 	 * Gets the status code.
 	 *
 	 * @return the status code
@@ -96,6 +111,18 @@ public class ZestResponse extends ZestElement {
 	 */
 	public long getResponseTimeInMs() {
 		return responseTimeInMs;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public void setResponseTimeInMs(long responseTimeInMs) {
+		this.responseTimeInMs = responseTimeInMs;
 	}
 
 }

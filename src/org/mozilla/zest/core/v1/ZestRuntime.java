@@ -4,7 +4,11 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.List;
+
 import javax.script.ScriptEngineFactory;
+
+import org.openqa.selenium.WebDriver;
 
 
 /**
@@ -72,4 +76,44 @@ public interface ZestRuntime {
 	 */
 
 	void setStandardVariables(ZestResponse response);
+	
+	/**
+	 * Sets the proxy.
+	 *
+	 * @param host the host
+	 * @param port the port
+	 */
+	void setProxy(String host, int port);
+
+	/**
+	 * Gets the proxy, as host:port
+	 */
+	String getProxy();
+
+	/**
+	 * Add a handle associated with a WebDriver
+	 * @param handle
+	 * @param wd
+	 */
+	void addWebDriver(String handle, WebDriver wd);
+	
+	/**
+	 * Remove a handle associated with a WebDriver
+	 * @param handle
+	 */
+	void removeWebDriver(String handle);
+
+	/**
+	 * Get the WebDriver assicated with the handle
+	 * @param handle
+	 * @return
+	 */
+	WebDriver getWebDriver(String handle);
+	
+	/**
+	 * Return all of the WebDrivers
+	 * @return
+	 */
+	List<WebDriver> getWebDrivers();
+	
 }

@@ -7,7 +7,11 @@ package org.mozilla.zest.core.v1;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.httpclient.Cookie;
+
 
 /**
  * The Class ZestRequest.
@@ -37,6 +41,9 @@ public class ZestRequest extends ZestStatement {
 	
 	/** If true follow redirects, otherwise do not */
 	private boolean followRedirects = true;
+	
+	/** Cookie to add to the request */
+	private List<Cookie> cookies = new ArrayList<Cookie>();
 	
 	/**
 	 * Instantiates a new zest request.
@@ -73,6 +80,13 @@ public class ZestRequest extends ZestStatement {
 		for (ZestAssertion zt : this.getAssertions()) {
 			zr.addAssertion((ZestAssertion)zt.deepCopy());
 		}
+		
+		for (Cookie cookie : this.cookies) {
+			zr.addCookie(new Cookie(cookie.getDomain(), cookie.getName(), cookie.getValue(),
+					cookie.getPath(), cookie.getExpiryDate(), cookie.getSecure()));
+		}
+		zr.cookies = this.cookies;
+		
 		return zr;
 	}
 	
@@ -317,6 +331,22 @@ public class ZestRequest extends ZestStatement {
 	@Override
 	public boolean isPassive() {
 		return false;
+	}
+
+	public void clearCookies() {
+		this.cookies.clear();
+	}
+	
+	public void addCookie(String domain, String name, String value, String path, Date expiry, boolean secure) {
+		this.addCookie(new Cookie(domain, name, value, path, expiry, secure));
+	}
+	
+	public void addCookie(Cookie cookie) {
+		this.cookies.add(cookie);
+	}
+
+	public List<Cookie> getCookies() {
+		return cookies;
 	}
 
 }

@@ -8,13 +8,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 import javax.script.ScriptEngineFactory;
 
+import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -38,22 +42,25 @@ import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 import org.mozilla.zest.core.v1.ZestAssignment;
 import org.mozilla.zest.core.v1.ZestAuthentication;
+import org.mozilla.zest.core.v1.ZestClient;
+import org.mozilla.zest.core.v1.ZestClientFailException;
 import org.mozilla.zest.core.v1.ZestComment;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestControlLoopBreak;
 import org.mozilla.zest.core.v1.ZestControlLoopNext;
+import org.mozilla.zest.core.v1.ZestControlReturn;
 import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
-import org.mozilla.zest.core.v1.ZestControlReturn;
 import org.mozilla.zest.core.v1.ZestRunner;
 import org.mozilla.zest.core.v1.ZestRuntime;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestVariables;
+import org.openqa.selenium.WebDriver;
 
 public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
@@ -68,9 +75,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private ZestRequest lastRequest = null;
 	private ZestResponse lastResponse = null;
 	private String result = null;
+	private String proxyStr = "";
 
 	private Stack<ZestLoop<?>> loops = new Stack<>();
 	private boolean skipStatements = false;
+
+	private Map<String, WebDriver> webDriverMap = new HashMap<String, WebDriver>();
 
 	public ZestBasicRunner() {
 	}
@@ -83,7 +93,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String run(ZestScript script, Map<String, String> params)
 			throws ZestAssertFailException, ZestActionFailException,
 			IOException, ZestInvalidCommonTestException,
-			ZestAssignFailException {
+			ZestAssignFailException, ZestClientFailException {
 
 		return this.run(script, null, params);
 	}
@@ -92,7 +102,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String run(ZestScript script, ZestRequest target,
 			Map<String, String> tokens) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
-			IOException, ZestAssignFailException {
+			IOException, ZestAssignFailException, ZestClientFailException {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
 			for (ZestAuthentication za : auth) {
@@ -144,7 +154,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public ZestResponse runStatement(ZestScript script, ZestStatement stmt,
 			ZestResponse lastRes) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
-			IOException, ZestAssignFailException {
+			IOException, ZestAssignFailException, ZestClientFailException {
 		if (skipStatements) {
 			return lastRes;
 		}
@@ -202,6 +212,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		} else if (stmt instanceof ZestComment) {
 			// Nothing to do
 			debug(stmt.getIndex() + " Comment " + ((ZestComment)stmt).getComment());
+		} else if (stmt instanceof ZestClient) {
+			ZestClient zc = (ZestClient) stmt;
+			this.handleClient(script, zc);
 		}
 		return lastResponse;
 	}
@@ -233,8 +246,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop,
 			ZestResponse lastResponse) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
-			IOException, ZestAssignFailException {
-		loop.init();
+			IOException, ZestAssignFailException, ZestClientFailException {
+		loop.init(this);
 		String token = "";
 		this.setVariable(loop.getVariableName(), loop.getCurrentToken()
 				.toString());
@@ -271,6 +284,17 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		loops.peek().onControlNext();
 		this.skipStatements = true;
 	}
+
+	@Override
+	public String handleClient(ZestScript script, ZestClient client) throws ZestClientFailException {
+		this.debug(client.getIndex() + " Client invoke: " + client.getClass().getName());
+		String result = client.invoke(this);
+		if (result != null) {
+			this.debug(client.getIndex() + " Client result: " + result);
+		}
+		return result;
+	}
+
 
 	public void output(String str) {
 		if (this.outputWriter != null) {
@@ -353,7 +377,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String runScript(Reader reader, Map<String, String> params)
 			throws ZestAssertFailException, ZestActionFailException,
 			IOException, ZestInvalidCommonTestException,
-			ZestAssignFailException {
+			ZestAssignFailException, ZestClientFailException {
 		BufferedReader fr = new BufferedReader(reader);
 		StringBuilder sb = new StringBuilder();
 		String line;
@@ -368,7 +392,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String runScript(String script, Map<String, String> params)
 			throws ZestAssertFailException, ZestActionFailException,
 			IOException, ZestInvalidCommonTestException,
-			ZestAssignFailException {
+			ZestAssignFailException, ZestClientFailException {
 		return run((ZestScript) ZestJSON.fromString(script), params);
 	}
 
@@ -405,7 +429,14 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			throw new IllegalArgumentException("Method not supported: "
 					+ req.getMethod());
 		}
+		
 		setHeaders(method, req.getHeaders());
+		
+		for (Cookie cookie : req.getCookies()) {
+			// Replace any Zest variables in the value
+			cookie.setValue(this.replaceVariablesInString(cookie.getValue(), false));
+			httpclient.getState().addCookie(cookie);
+		}
 
 		if (req.getMethod().equals("POST")) {
 			// Do this after setting the headers so the length is corrected
@@ -413,7 +444,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 					req.getData(), null, null);
 			((PostMethod) method).setRequestEntity(requestEntity);
 		}
-
+		
 		int code = 0;
 		String responseHeader = null;
 		String responseBody = null;
@@ -454,9 +485,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 				}
 			}
 		}
-
 	}
-
+	
 	private String arrayToStr(Header[] headers) {
 		StringBuilder sb = new StringBuilder();
 		for (Header header : headers) {
@@ -494,6 +524,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public void setProxy(String host, int port) {
 		// TODO support credentials
 		httpclient.getHostConfiguration().setProxy(host, port);
+		if (host == null) {
+			this.proxyStr = "";
+		} else {
+			this.proxyStr = host + ":" + port;
+		}
+	}
+	
+	@Override
+	public String getProxy() {
+		return this.proxyStr;
 	}
 
 	@Override
@@ -592,6 +632,31 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public boolean isDebug() {
 		return debug;
+	}
+	
+	@Override
+	public void addWebDriver(String handle, WebDriver wd) {
+		webDriverMap.put(handle, wd);
+		wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
+	
+	@Override
+	public void removeWebDriver(String handle) {
+		webDriverMap.remove(handle);
+	}
+
+	@Override
+	public WebDriver getWebDriver(String handle) {
+		return webDriverMap.get(handle);
+	}
+
+	@Override
+	public List<WebDriver> getWebDrivers() {
+		List<WebDriver> list = new ArrayList<WebDriver>();
+		for (WebDriver wd : this.webDriverMap.values()) {
+			list.add(wd);
+		}
+		return list;
 	}
 
 }

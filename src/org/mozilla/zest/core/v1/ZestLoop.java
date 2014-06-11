@@ -34,6 +34,8 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 * contains the index of the current statement considered.
 	 */
 	private transient int stmtIndex = 0;
+	
+	private transient ZestRuntime runtime = null;
 
 	/**
 	 * Instantiates a new zest loop.
@@ -44,6 +46,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	
 	protected ZestLoop(int index){
 		super(index);
+	}
+
+	public ZestLoop(String variableName) {
+		this.variableName = variableName;
 	}
 
 	/**
@@ -62,8 +68,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	}
 	/**
 	 * inits the loop refreshing the current state to the first considered state
+	 * @param zestBasicRunner 
 	 */
-	public void init(){
+	public void init(ZestRuntime runtime){
+		this.runtime = runtime;
 		this.currentState=this.getSet().getFirstState();
 	}
 	/**
@@ -191,6 +199,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 
 	/**
 	 * returns the set of the tokens in this loop.
+	 * @param runtime 
 	 * 
 	 * @return the set of the tokens in this loop
 	 */
@@ -392,4 +401,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 		}
 		return prev;
 	}
+
+	protected ZestRuntime getRuntime() {
+		return runtime;
+	}
+	
+	
 }

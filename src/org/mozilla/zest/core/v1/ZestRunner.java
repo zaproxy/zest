@@ -25,10 +25,11 @@ public interface ZestRunner {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
+	 * @throws ZestClientFailException 
 	 */
 	String run (ZestScript script, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException;
+			ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException;
 
 	/**
 	 * Run script.
@@ -39,10 +40,11 @@ public interface ZestRunner {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
+	 * @throws ZestClientFailException 
 	 */
 	String runScript (Reader reader, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException;
+			ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException;
 	
 	/**
 	 * Run script.
@@ -53,10 +55,11 @@ public interface ZestRunner {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
+	 * @throws ZestClientFailException 
 	 */
 	String runScript (String script, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException;
+			ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException;
 	
 	/**
 	 * Run.
@@ -68,10 +71,11 @@ public interface ZestRunner {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
+	 * @throws ZestClientFailException 
 	 */
 	String run (ZestScript script, ZestRequest target, Map<String,String> params) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException;
+			ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException;
 
 	/**
 	 * Run statement.
@@ -85,10 +89,11 @@ public interface ZestRunner {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws ZestInvalidCommonTestException the zest invalid common test exception
 	 * @throws ZestAssignFailException the zest assign fail exception
+	 * @throws ZestClientFailException 
 	 */
 	ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse) 
 			throws ZestAssertFailException, ZestActionFailException, IOException,
-			ZestInvalidCommonTestException, ZestAssignFailException;
+			ZestInvalidCommonTestException, ZestAssignFailException, ZestClientFailException;
 
 	/**
 	 * Send.
@@ -132,8 +137,11 @@ public interface ZestRunner {
 	 */
 	String handleAssignment(ZestScript script, ZestAssignment assign, ZestResponse lastResponse) throws ZestAssignFailException;
 	
-	ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse) throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException;
+	ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse) throws ZestAssertFailException, 
+		ZestActionFailException, ZestInvalidCommonTestException, IOException, ZestAssignFailException, ZestClientFailException;
 	
+	String handleClient(ZestScript script, ZestClient client) throws ZestClientFailException;
+
 	/**
 	 * Response passed.
 	 *
@@ -198,14 +206,6 @@ public interface ZestRunner {
 	 */
 	boolean getStopOnTestFail();
 	
-	/**
-	 * Sets the proxy.
-	 *
-	 * @param host the host
-	 * @param port the port
-	 */
-	void setProxy(String host, int port);
-
 	/**
 	 * Sets the output writer.
 	 *
