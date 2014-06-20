@@ -167,6 +167,22 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 		this.element = element;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
+	}
+
 	public void setConvertedSet(ZestLoopTokenStringSet convertedSet) {
 		this.convertedSet = convertedSet;
 	}
