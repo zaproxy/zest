@@ -115,5 +115,10 @@ public interface ZestRuntime {
 	 * @return
 	 */
 	List<WebDriver> getWebDrivers();
-	
+
+	/**
+	 * Outputs the supplied message if debugging is turned on
+	 * @param str
+	 */
+	void debug(String str);
 }

@@ -23,9 +23,9 @@ public class ZestClientElementSendKeys extends ZestClientElement {
 	
 	@Override
 	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-		this.getWebElement(runtime).sendKeys(value);
-
-		return null;
+		String str = runtime.replaceVariablesInString(value, false);
+		this.getWebElement(runtime).sendKeys(str);
+		return str;
 	}
 	
 	public String getValue() {

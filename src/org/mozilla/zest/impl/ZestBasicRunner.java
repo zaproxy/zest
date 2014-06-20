@@ -308,6 +308,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 	}
 
+	@Override
 	public void debug(String str) {
 		if (debug && this.outputWriter != null) {
 			try {

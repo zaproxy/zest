@@ -128,4 +128,9 @@ public class TestRuntime implements ZestRuntime{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void debug(String str) {
+		System.out.println(str);
+	}
 }

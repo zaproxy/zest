@@ -17,7 +17,7 @@ import java.util.Set;
 public class ZestScript extends ZestStatement implements ZestContainer {
 
 	/** The Zest version implemented. */
-	public static final String VERSION = "0.7";
+	public static final String VERSION = "0.8";
 
 	/** The URL for more info. */
 	public static final String ZEST_URL = "https://developer.mozilla.org/en-US/docs/Zest";

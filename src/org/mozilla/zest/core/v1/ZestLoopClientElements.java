@@ -55,8 +55,8 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 	}
 
 	@Override
-	public ZestLoopStateFile getCurrentState() {
-		return (ZestLoopStateFile) super.getCurrentState();
+	public ZestLoopStateClientElements getCurrentState() {
+		return (ZestLoopStateClientElements) super.getCurrentState();
 	}
 
 	@Override
@@ -89,6 +89,7 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 	public boolean loop(){
 		return super.loop(getSet());
 	}
+	
 	public void endLoop(){
 		super.endLoop(getSet());
 	}

@@ -27,7 +27,7 @@ public class ZestClientElementSubmit extends ZestClientElement {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientElementSubmit(this.getWindowHandle(), this.getElementType(), this.getElement());
+		return new ZestClientElementSubmit(this.getWindowHandle(), this.getType(), this.getElement());
 	}
 
 	@Override

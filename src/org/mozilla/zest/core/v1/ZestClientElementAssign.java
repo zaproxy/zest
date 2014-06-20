@@ -59,7 +59,7 @@ public class ZestClientElementAssign extends ZestClientElement {
 	@Override
 	public ZestStatement deepCopy() {
 		return new ZestClientElementAssign(this.getVariableName(), this.getWindowHandle(),
-				this.getElementType(), this.getElement(), this.getAttribute());
+				this.getType(), this.getElement(), this.getAttribute());
 	}
 
 	@Override

@@ -1,33 +1,40 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.mozilla.zest.core.v1;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 /**
- * An abstract class representing an action on a client element.
+ * The Class ZestExpressionStatusCode.
  */
-
-public abstract class ZestClientElement extends ZestClient {
-
+public class ZestExpressionClientElementExists extends ZestExpression {
+	
 	private String windowHandle = null;
 	private String type = null;
 	private String element = null;
 	
-	public ZestClientElement(String windowHandle, String type, String element) {
+	/**
+	 * Instantiates a new zest expression status code.
+	 */
+	public ZestExpressionClientElementExists() {
+		super();
+	}
+	
+	/**
+	 * Instantiates a new zest expression status code.
+	 *
+	 * @param code the code
+	 */
+	public ZestExpressionClientElementExists(String windowHandle, String type, String element) {
 		super();
 		this.windowHandle = windowHandle;
 		this.type = type;
 		this.element = element;
 	}
 
-	public ZestClientElement() {
-		super();
-	}
-	
 	public String getWindowHandle() {
 		return windowHandle;
 	}
@@ -52,33 +59,47 @@ public abstract class ZestClientElement extends ZestClient {
 		this.element = element;
 	}
 
-	protected WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
-		
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
+	 */
+	public boolean isTrue (ZestRuntime runtime) {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 		
 		if (wd == null) {
-			throw new ZestClientFailException(this, "No client: " + runtime.getVariable(getWindowHandle()));
+			return false;
 		}
 		String elem = runtime.replaceVariablesInString(this.getElement(), false);
+		By by = null;
 
 		if ("className".equalsIgnoreCase(type)) {
-			return wd.findElement(By.className(elem));
+			by =By.className(elem);
 		} else if ("cssSelector".equalsIgnoreCase(type)) {
-			return wd.findElement(By.cssSelector(elem));
+			by = By.cssSelector(elem);
 		} else if ("id".equalsIgnoreCase(type)) {
-			return wd.findElement(By.id(elem));
+			by = By.id(elem);
 		} else if ("linkText".equalsIgnoreCase(type)) {
-			return wd.findElement(By.linkText(elem));
+			by = By.linkText(elem);
 		} else if ("name".equalsIgnoreCase(type)) {
-			return wd.findElement(By.name(elem));
+			by = By.name(elem);
 		} else if ("partialLinkText".equalsIgnoreCase(type)) {
-			return wd.findElement(By.partialLinkText(elem));
+			by = By.partialLinkText(elem);
 		} else if ("tagName".equalsIgnoreCase(type)) {
-			return wd.findElement(By.tagName(elem));
+			by = By.tagName(elem);
 		} else if ("xpath".equalsIgnoreCase(type)) {
-			return wd.findElement(By.xpath(elem));
+			by = By.xpath(elem);
+		} else {
+			return false;
 		}
-		throw new ZestClientFailException(this, "Unsupported type: " + type);
+		
+		return wd.findElements(by).size() > 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
+	 */
+	@Override
+	public ZestExpressionClientElementExists deepCopy() {
+		return new ZestExpressionClientElementExists(this.windowHandle, this.getType(), this.getElement());
+	}
+	
 }
