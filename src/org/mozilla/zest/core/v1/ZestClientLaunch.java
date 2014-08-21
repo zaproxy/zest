@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
@@ -28,8 +29,13 @@ public class ZestClientLaunch extends ZestClient {
 	private String windowHandle = null;
 	private String browserType = null;
 	private String url = null;
-	
+	private String capabilities = null;
+
 	public ZestClientLaunch(String windowHandle, String browserType, String url) {
+		this(windowHandle, browserType, url, null);
+	}
+
+	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities) {
 		super();
 		this.windowHandle = windowHandle;
 		this.browserType = browserType;
@@ -64,6 +70,14 @@ public class ZestClientLaunch extends ZestClient {
 		this.url = url;
 	}
 
+	public String getCapabilities() {
+		return capabilities;
+	}
+
+	public void setCapabilities(String capabilities) {
+		this.capabilities = capabilities;
+	}
+
 	@Override
 	public ZestStatement deepCopy() {
 		return new ZestClientLaunch(this.getWindowHandle(), this.getBrowserType(), this.getUrl());
@@ -76,52 +90,68 @@ public class ZestClientLaunch extends ZestClient {
 
 	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-		WebDriver driver = null;
-		DesiredCapabilities cap = new DesiredCapabilities();
-		// TODO add option to set other capabilities?
-		String httpProxy = runtime.getProxy();
-		if (httpProxy.length() > 0) {
-			Proxy proxy = new Proxy();
-			proxy.setHttpProxy(httpProxy);
-			cap.setCapability(CapabilityType.PROXY, proxy);
-		}
+		try {
+			WebDriver driver = null;
+			DesiredCapabilities cap = new DesiredCapabilities();
 
-		if ("Firefox".equalsIgnoreCase(this.browserType)) {
-			driver = new FirefoxDriver(cap);
-		} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
-			driver = new ChromeDriver(cap); 
-		} else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
-			driver = new HtmlUnitDriver(cap); 
-		} else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
-			driver = new InternetExplorerDriver(cap); 
-		} else if ("Opera".equalsIgnoreCase(this.browserType)) {
-			driver = new OperaDriver(cap);
-		} else if ("Safari".equalsIgnoreCase(this.browserType)) {
-			driver = new SafariDriver(cap);
-		} else {
-			// See if its a class name
-			try {
-				Class<?> browserClass = this.getClass().getClassLoader().loadClass(this.browserType);
-				Constructor<?> cons = browserClass.getConstructor(Capabilities.class);
-				if (cons != null) {
-					driver = (WebDriver) cons.newInstance(cap);
-				} else {
+			String httpProxy = runtime.getProxy();
+			if (httpProxy.length() > 0) {
+				Proxy proxy = new Proxy();
+				proxy.setHttpProxy(httpProxy);
+				cap.setCapability(CapabilityType.PROXY, proxy);
+			}
+			if (capabilities != null) {
+				for (String capability : capabilities.split("\n")) {
+					if (capability != null) {
+						String [] typeValue = capability.split("=");
+						if (typeValue.length != 2) {
+							throw new ZestClientFailException(this, "Invalid capability, expected type=value : " + capability);
+						}
+						cap.setCapability(typeValue[0], typeValue[1]);
+					}
+				}
+			}
+
+			if ("Firefox".equalsIgnoreCase(this.browserType)) {
+				driver = new FirefoxDriver(cap);
+			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
+				driver = new ChromeDriver(cap); 
+			} else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
+				driver = new HtmlUnitDriver(cap); 
+			} else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
+				driver = new InternetExplorerDriver(cap); 
+			} else if ("Opera".equalsIgnoreCase(this.browserType)) {
+				driver = new OperaDriver(cap);
+			} else if ("PhantomJS".equalsIgnoreCase(this.browserType)) {
+				driver = new PhantomJSDriver(cap);
+			} else if ("Safari".equalsIgnoreCase(this.browserType)) {
+				driver = new SafariDriver(cap);
+			} else {
+				// See if its a class name
+				try {
+					Class<?> browserClass = this.getClass().getClassLoader().loadClass(this.browserType);
+					Constructor<?> cons = browserClass.getConstructor(Capabilities.class);
+					if (cons != null) {
+						driver = (WebDriver) cons.newInstance(cap);
+					} else {
+						throw new ZestClientFailException(this, "Unsupported browser type: " + this.getBrowserType());
+					}
+				} catch (ClassNotFoundException e) {
 					throw new ZestClientFailException(this, "Unsupported browser type: " + this.getBrowserType());
 				}
-			} catch (ClassNotFoundException e) {
-				throw new ZestClientFailException(this, "Unsupported browser type: " + this.getBrowserType());
-			} catch (Exception e) {
-				throw new ZestClientFailException(this, e);
 			}
+			
+			runtime.addWebDriver(getWindowHandle(), driver);
+			
+			if (this.url != null) {
+				driver.get(runtime.replaceVariablesInString(this.url, true));
+			}
+			
+			return getWindowHandle();
+			
+		} catch (Exception e) {
+			throw new ZestClientFailException(this, e);
 		}
-		
-		runtime.addWebDriver(getWindowHandle(), driver);
-		
-		if (this.url != null) {
-			driver.get(runtime.replaceVariablesInString(this.url, true));
-		}
-		
-		return getWindowHandle();
 	}
 
 }

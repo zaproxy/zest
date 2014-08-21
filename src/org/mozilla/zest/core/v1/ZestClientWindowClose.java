@@ -79,6 +79,8 @@ public class ZestClientWindowClose extends ZestClient {
 		if (wd != null) {
 			try {
 				wd.close();
+				// PhantomJS driver doesnt exit if we dont do this
+				wd.quit();
 			} catch (Exception e) {
 				// Ignore, it might have already closed
 			}
