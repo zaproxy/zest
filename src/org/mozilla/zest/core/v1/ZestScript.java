@@ -498,6 +498,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 				tokens.add(((ZestClientAssignCookie)next).getVariableName());
 			} else if (next instanceof ZestClientElementAssign) {
 				tokens.add(((ZestClientElementAssign)next).getVariableName());
+			} else if (next instanceof ZestLoop) {
+				tokens.add(((ZestLoop<?>)next).getVariableName());
 			}
 			next = next.getNext();
 		}
