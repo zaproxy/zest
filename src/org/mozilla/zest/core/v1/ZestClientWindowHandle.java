@@ -66,8 +66,9 @@ public class ZestClientWindowHandle extends ZestClient {
 	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 		WebDriver window;
 		Pattern p = null;
+		String runUrl = runtime.replaceVariablesInString(this.url, true);
 		if (this.isRegex()) {
-			p = Pattern.compile(this.url);
+			p = Pattern.compile(runUrl);
 		}
 		boolean found = false;
 		for (WebDriver wd : runtime.getWebDrivers()) {
@@ -83,7 +84,7 @@ public class ZestClientWindowHandle extends ZestClient {
 						runtime.debug("Didnt match window " + window.getWindowHandle() + " url: " + window.getCurrentUrl());
 					}
 				} else {
-					if (window.getCurrentUrl().equals(url)) {
+					if (window.getCurrentUrl().equals(runUrl)) {
 						runtime.addWebDriver(this.windowHandle, wd);
 						runtime.debug("Matched window " + window.getWindowHandle() + " url: " + window.getCurrentUrl());
 						found = true;
@@ -95,6 +96,7 @@ public class ZestClientWindowHandle extends ZestClient {
 			}
 		}
 		if (!found) {
+			runtime.output("Failed to find window " + this.getUrl() + " regex=" + this.isRegex());
 			throw new ZestClientFailException(this, "Failed to find window " + this.getUrl() + " regex=" + this.isRegex());
 		}
 		

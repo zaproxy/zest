@@ -102,7 +102,7 @@ public class ZestClientLaunch extends ZestClient {
 			}
 			if (capabilities != null) {
 				for (String capability : capabilities.split("\n")) {
-					if (capability != null) {
+					if (capability != null && capability.trim().length() > 0) {
 						String [] typeValue = capability.split("=");
 						if (typeValue.length != 2) {
 							throw new ZestClientFailException(this, "Invalid capability, expected type=value : " + capability);
