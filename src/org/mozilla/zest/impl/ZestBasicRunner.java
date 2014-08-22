@@ -223,23 +223,33 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public String handleAction(ZestScript script, ZestAction action,
 			ZestResponse lastResponse) throws ZestActionFailException {
 		this.debug(action.getIndex() + " Action invoke: " + action.getClass().getName());
-		String result = action.invoke(lastResponse, this);
-		if (result != null) {
-			this.debug(action.getIndex() + " Action result: " + result);
+		try {
+			String result = action.invoke(lastResponse, this);
+			if (result != null) {
+				this.debug(action.getIndex() + " Action result: " + result);
+			}
+			return result;
+		} catch (ZestActionFailException e) {
+			this.output(e.getMessage());
+			throw e;
 		}
-		return result;
 	}
 
 	@Override
 	public String handleAssignment(ZestScript script, ZestAssignment assign,
 			ZestResponse lastResponse) throws ZestAssignFailException {
-		String result = assign.assign(lastResponse, this);
-		// Replace any variables
-		this.setVariable(assign.getVariableName(), this.replaceVariablesInString(result, false));
-		if (result != null) {
-			this.debug(assign.getIndex() + " Assign: " + assign.getVariableName() + " = " + result);
+		try {
+			String result = assign.assign(lastResponse, this);
+			// Replace any variables
+			this.setVariable(assign.getVariableName(), this.replaceVariablesInString(result, false));
+			if (result != null) {
+				this.debug(assign.getIndex() + " Assign: " + assign.getVariableName() + " = " + result);
+			}
+			return result;
+		} catch (ZestAssignFailException e) {
+			this.output(e.getMessage());
+			throw e;
 		}
-		return result;
 	}
 
 	@Override
@@ -247,31 +257,51 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			ZestResponse lastResponse) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
 			IOException, ZestAssignFailException, ZestClientFailException {
-		loop.init(this);
-		String token = "";
-		this.setVariable(loop.getVariableName(), loop.getCurrentToken()
-				.toString());
-		loops.push(loop);
-		while (loop.hasMoreElements()) {
-			String loopOutput = loop.getIndex() + " Loop " + loop.getVariableName()
-					+ " iteration: " + loop.getCurrentIndex();
-			if (!token.equals(loop.getCurrentToken().toString())) {
-				token = loop.getCurrentToken().toString();
-				loopOutput += ", Current Token: " + token;
-				this.setVariable(loop.getVariableName(), token);
+		try {
+			loop.init(this);
+			String token = "";
+			this.setVariable(loop.getVariableName(), loop.getCurrentToken()
+					.toString());
+			loops.push(loop);
+			while (loop.hasMoreElements()) {
+				String loopOutput = loop.getIndex() + " Loop " + loop.getVariableName()
+						+ " iteration: " + loop.getCurrentIndex();
+				if (!token.equals(loop.getCurrentToken().toString())) {
+					token = loop.getCurrentToken().toString();
+					loopOutput += ", Current Token: " + token;
+					this.setVariable(loop.getVariableName(), token);
+				}
+				this.debug(loopOutput);
+				lastResponse = this.runStatement(script, loop.nextElement(),
+						lastResponse);
+				if (skipStatements) {// a LoopControl occurred
+					skipStatements = false;
+				}
 			}
-			this.debug(loopOutput);
-			lastResponse = this.runStatement(script, loop.nextElement(),
-					lastResponse);
-			if (skipStatements) {// a LoopControl occurred
-				skipStatements = false;
+			if (!loops.isEmpty() && loops.peek().equals(loop)) {
+				loops.pop();
 			}
+			this.setVariable(loop.getVariableName(), "");
+			return lastResponse;
+		} catch (ZestAssertFailException e) {
+			this.output(e.getMessage());
+			throw e;
+		} catch (ZestActionFailException e) {
+			this.output(e.getMessage());
+			throw e;
+		} catch (ZestInvalidCommonTestException e) {
+			this.output(e.getMessage());
+			throw e;
+		} catch (IOException e) {
+			this.output(e.getMessage());
+			throw e;
+		} catch (ZestAssignFailException e) {
+			this.output(e.getMessage());
+			throw e;
+		} catch (ZestClientFailException e) {
+			this.output(e.getMessage());
+			throw e;
 		}
-		if (!loops.isEmpty() && loops.peek().equals(loop)) {
-			loops.pop();
-		}
-		this.setVariable(loop.getVariableName(), "");
-		return lastResponse;
 	}
 
 	public void handleControlLoopBreak() {
@@ -288,11 +318,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public String handleClient(ZestScript script, ZestClient client) throws ZestClientFailException {
 		this.debug(client.getIndex() + " Client invoke: " + client.getClass().getName());
-		String result = client.invoke(this);
-		if (result != null) {
-			this.debug(client.getIndex() + " Client result: " + result);
+		try {
+			String result = client.invoke(this);
+			if (result != null) {
+				this.debug(client.getIndex() + " Client result: " + result);
+			}
+			return result;
+		} catch (ZestClientFailException e) {
+			this.output(e.getMessage());
+			throw e;
 		}
-		return result;
 	}
 
 
