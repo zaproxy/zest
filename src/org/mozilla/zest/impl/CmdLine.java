@@ -22,7 +22,7 @@ import org.mozilla.zest.core.v1.ZestScript;
 public class CmdLine {
 
 	private static final String USAGE = 
-			"Usage: -script <file> [-summary | -list] [-prefix <http://prefix>] [-token <name>=<value>]...\n" +
+			"Usage: -script <file> [-summary | -list] [-debug] [-prefix <http://prefix>] [-token <name>=<value>]...\n" +
 			"    [-http-auth-site <site> -http-auth-realm <realm> -http-auth-user <user> -http-auth-password <password>] \n" +
 			"    For more information about Zest visit " + ZestScript.ZEST_URL;
 	
@@ -46,6 +46,7 @@ public class CmdLine {
 		String httpAuthRealm = null;
 		String httpAuthUser = null;
 		String httpAuthPassword = null;
+		boolean debug = false;
 		
 		for (int i=0; i < args.length; i++) {
 			if (args[i].equals("-summary")) {
@@ -60,6 +61,8 @@ public class CmdLine {
 					return;
 				}
 				mode = Mode.list;
+			} else if (args[i].equals("-debug")) {
+				debug = true;
 			} else if (args[i].equals("-prefix")) {
 				if (i >= args.length-1) {
 					error(USAGE);
@@ -180,7 +183,7 @@ public class CmdLine {
 				zs.setAuthentication(authList );
 			}
 			
-			run(zs, tokens);
+			run(zs, tokens, debug);
 			break;
 				
 		}
@@ -191,10 +194,11 @@ public class CmdLine {
 	}
 	
 
-	private static void run(ZestScript zs, Map<String, String> parameters) {
+	private static void run(ZestScript zs, Map<String, String> parameters, boolean debug) {
 		ZestBasicRunner zbr = new ZestBasicRunner();
 		zbr.setOutputWriter(new OutputStreamWriter(System.out));
 		zbr.setStopOnAssertFail(false);
+		zbr.setDebug(debug);
 		try {
 			zbr.run(zs, parameters);
 		} catch (Exception e) {
