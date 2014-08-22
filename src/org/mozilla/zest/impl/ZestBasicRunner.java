@@ -103,50 +103,58 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			Map<String, String> tokens) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
 			IOException, ZestAssignFailException, ZestClientFailException {
-		List<ZestAuthentication> auth = script.getAuthentication();
-		if (auth != null) {
-			for (ZestAuthentication za : auth) {
-				if (za instanceof ZestHttpAuthentication) {
-					ZestHttpAuthentication zha = (ZestHttpAuthentication) za;
+		try {
+			List<ZestAuthentication> auth = script.getAuthentication();
+			if (auth != null) {
+				for (ZestAuthentication za : auth) {
+					if (za instanceof ZestHttpAuthentication) {
+						ZestHttpAuthentication zha = (ZestHttpAuthentication) za;
 
-					Credentials defaultcreds = new UsernamePasswordCredentials(
-							zha.getUsername(), zha.getPassword());
-					httpclient.getState().setCredentials(
-							new AuthScope(zha.getSite(), 80,
-									AuthScope.ANY_REALM), defaultcreds);
+						Credentials defaultcreds = new UsernamePasswordCredentials(
+								zha.getUsername(), zha.getPassword());
+						httpclient.getState().setCredentials(
+								new AuthScope(zha.getSite(), 80,
+										AuthScope.ANY_REALM), defaultcreds);
+					}
 				}
 			}
-		}
 
-		variables = script.getParameters().deepCopy();
+			variables = script.getParameters().deepCopy();
 
-		lastRequest = target;
+			lastRequest = target;
 
-		if (target != null) {
-			this.setStandardVariables(lastRequest);
+			if (target != null) {
+				this.setStandardVariables(lastRequest);
 
-			// used in passive tests
-			lastResponse = target.getResponse();
-			this.setStandardVariables(lastResponse);
-		} else {
-			lastResponse = null;
-		}
+				// used in passive tests
+				lastResponse = target.getResponse();
+				this.setStandardVariables(lastResponse);
+			} else {
+				lastResponse = null;
+			}
 
-		if (tokens != null) {
-			for (Map.Entry<String, String> token : tokens.entrySet()) {
-				this.setVariable(token.getKey(), token.getValue());
+			if (tokens != null) {
+				for (Map.Entry<String, String> token : tokens.entrySet()) {
+					this.setVariable(token.getKey(), token.getValue());
+				}
+			}
+
+			for (ZestStatement stmt : script.getStatements()) {
+				lastResponse = this.runStatement(script, stmt, lastResponse);
+				if (result != null) {
+					// A return statement has been used, return the value it set
+					return result;
+				}
+			}
+
+			return null;
+		} finally {
+			// Currently needed for the phantomjs driver, otherwise it never returns :/
+			List<WebDriver> wds = this.getWebDrivers();
+			if (wds != null && wds.size() > 0) {
+				wds.get(0).quit();
 			}
 		}
-
-		for (ZestStatement stmt : script.getStatements()) {
-			lastResponse = this.runStatement(script, stmt, lastResponse);
-			if (result != null) {
-				// A return statement has been used, return the value it set
-				return result;
-			}
-		}
-
-		return null;
 
 	}
 
