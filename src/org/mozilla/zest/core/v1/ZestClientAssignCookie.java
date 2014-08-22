@@ -57,12 +57,25 @@ public class ZestClientAssignCookie extends ZestClient {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 		String val = "";
 		
-		Cookie cookie = wd.manage().getCookieNamed(cookieName);
-		if (cookie != null) {
-			val = cookie.getValue();
-			runtime.setVariable(this.variableName, val);
+		if (cookieName != null && cookieName.length() > 0) {
+			// A named cookie
+			Cookie cookie = wd.manage().getCookieNamed(cookieName);
+			if (cookie != null) {
+				val = cookie.getValue();
+			}
+		} else {
+			// return all of them
+			StringBuilder sb = new StringBuilder();
+			for (Cookie cookie : wd.manage().getCookies()) {
+				sb.append(cookie.getName());
+				sb.append("=");
+				sb.append(cookie.getValue());
+				sb.append("; ");
+			}
+			val = sb.toString();
 		}
 
+		runtime.setVariable(this.variableName, val);
 		return val;
 	}
 
