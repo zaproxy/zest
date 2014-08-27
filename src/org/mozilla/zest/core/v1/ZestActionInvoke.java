@@ -135,6 +135,9 @@ public class ZestActionInvoke extends ZestAction {
 			throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
 		}
 		
+		// Set the same writer so that output not lost
+		engine.getContext().setWriter(runtime.getScriptEngineFactory().getScriptEngine().getContext().getWriter());
+		
 		try {
 			Bindings bindings = engine.createBindings();
 			if (this.parameters != null) {
