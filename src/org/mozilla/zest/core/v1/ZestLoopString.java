@@ -94,6 +94,7 @@ public class ZestLoopString extends ZestLoop<String> {
 	@Override
 	public ZestLoopString deepCopy() {
 		ZestLoopString copy = new ZestLoopString(this.getIndex());
+		copy.setVariableName(this.getVariableName());
 		copy.set = this.set.deepCopy();
 		copy.setCurrentState(this.getCurrentState().deepCopy());
 		copy.setStatements(this.copyStatements());

@@ -93,6 +93,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 		ZestLoopFile copy;
 		try {
 			copy = new ZestLoopFile(this.getIndex());
+			copy.setVariableName(this.getVariableName());
 			copy.setCurrentState(this.getCurrentState().deepCopy());
 			copy.setStatements(this.copyStatements());
 			copy.setSet(this.getSet().deepCopy());

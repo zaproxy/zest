@@ -115,6 +115,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 		ZestLoopStateInteger state=this.getCurrentState().deepCopy();
 		ZestLoopTokenIntegerSet set=this.getSet();
 		ZestLoopInteger copy=new ZestLoopInteger(set.getStart(), set.getEnd());
+		copy.setVariableName(this.getVariableName());
 		for(ZestStatement stmt:this.getStatements()){
 			copy.addStatement(stmt.deepCopy());
 		}
