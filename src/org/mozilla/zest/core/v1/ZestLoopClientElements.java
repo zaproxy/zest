@@ -94,7 +94,6 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 		super.endLoop(getSet());
 	}
 	
-
 	public String getWindowHandle() {
 		return getSet().getWindowHandle();
 	}
@@ -109,6 +108,22 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 
 	public String getAttribute() {
 		return getSet().getAttribute();
+	}
+
+	public void setWindowHandle(String windowHandle) {
+		getSet().setWindowHandle(windowHandle);
+	}
+
+	public void setElement(String element) {
+		getSet().setElement(element);
+	}
+
+	public void setType(String type) {
+		getSet().setType(type);
+	}
+
+	public void setAttribute(String attribute) {
+		getSet().setAttribute(attribute);
 	}
 
 }
