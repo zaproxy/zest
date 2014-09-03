@@ -83,6 +83,12 @@ public class ZestClientWindowClose extends ZestClient {
 				// Ignore, it might have already closed
 			}
 			runtime.removeWebDriver(getWindowHandle());
+			
+			if (runtime.getWebDrivers().size() == 0 && this.getNext() == null) {
+				// We've closed all of the windows and this is the last statement
+				// Explicitly quit - currently needed for the phantomjs driver, otherwise it never returns :/
+				wd.quit();
+			}
 		}
 		
 		return null;
