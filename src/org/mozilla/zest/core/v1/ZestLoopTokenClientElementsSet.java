@@ -58,6 +58,10 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 	 */
 	protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
 		if(this.convertedSet==null){
+			if (loop == null) {
+				// Not yet initialized
+				return null;
+			}
 			ZestLoopTokenStringSet set = new ZestLoopTokenStringSet();
 			
 			WebDriver wd = this.loop.getRuntime().getWebDriver(getWindowHandle());

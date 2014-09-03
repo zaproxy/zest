@@ -30,6 +30,7 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public ZestLoopClientElements() {
+		this.set = new ZestLoopTokenClientElementsSet(this, "", "", "", "");
 	}
 
 	/**
