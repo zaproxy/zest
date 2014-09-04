@@ -55,7 +55,9 @@ public class ZestClientWindowHandle extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientWindowHandle(this.getWindowHandle(), this.getUrl(), this.isRegex());
+		ZestClientWindowHandle copy = new ZestClientWindowHandle(this.getWindowHandle(), this.getUrl(), this.isRegex());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

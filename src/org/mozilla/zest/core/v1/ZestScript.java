@@ -6,6 +6,7 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -298,6 +299,10 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 */
 	public List<ZestStatement> getStatements() {
 		return statements;
+	}
+
+	public List<ZestStatement> getChildren() {
+		return Collections.unmodifiableList(this.getStatements());
 	}
 
 	/**

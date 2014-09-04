@@ -43,7 +43,9 @@ public class ZestClientWindowClose extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientWindowClose(this.getWindowHandle(), this.getSleepInSeconds());
+		ZestClientWindowClose copy = new ZestClientWindowClose(this.getWindowHandle(), this.getSleepInSeconds());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

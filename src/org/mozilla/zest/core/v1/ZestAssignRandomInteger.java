@@ -63,7 +63,9 @@ public class ZestAssignRandomInteger extends ZestAssignment {
 	 */
 	@Override
 	public ZestAssignRandomInteger deepCopy() {
-		return new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);
+		ZestAssignRandomInteger copy = new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	/**

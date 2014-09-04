@@ -71,7 +71,9 @@ public class ZestAssignReplace extends ZestAssignment {
 	 */
 	@Override
 	public ZestAssignReplace deepCopy() {
-		return new ZestAssignReplace(this.getVariableName(), this.replace, this.replacement, this.regex, this.caseExact);
+		ZestAssignReplace copy = new ZestAssignReplace(this.getVariableName(), this.replace, this.replacement, this.regex, this.caseExact);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	public String getReplace() {

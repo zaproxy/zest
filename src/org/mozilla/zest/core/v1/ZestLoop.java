@@ -8,6 +8,7 @@
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -104,6 +105,10 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 */
 	public List<ZestStatement> getStatements() {
 		return this.statements;
+	}
+	
+	public List<ZestStatement> getChildren() {
+		return Collections.unmodifiableList(this.getStatements());
 	}
 
 	/**

@@ -27,7 +27,9 @@ public class ZestClientElementClear extends ZestClientElement {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientElementClear(this.getWindowHandle(), this.getType(), this.getElement());
+		ZestClientElementClear copy = new ZestClientElementClear(this.getWindowHandle(), this.getType(), this.getElement());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

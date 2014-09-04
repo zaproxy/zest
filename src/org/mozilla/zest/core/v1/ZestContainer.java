@@ -4,6 +4,7 @@
 
 package org.mozilla.zest.core.v1;
 
+import java.util.List;
 import java.util.Set;
 
 // TODO: Auto-generated Javadoc
@@ -50,6 +51,13 @@ public interface ZestContainer {
 	 * @return the child before
 	 */
 	public ZestStatement getChildBefore(ZestStatement child);
+	
+	
+	/**
+	 * Returns all of the containers immediate children
+	 * @return
+	 */
+	public List<ZestStatement> getChildren();
 	
 	/**
 	 * Returns all of the variable names defined by this staement and its children.

@@ -97,6 +97,7 @@ public class ZestLoopFile extends ZestLoop<String> {
 			copy.setCurrentState(this.getCurrentState().deepCopy());
 			copy.setStatements(this.copyStatements());
 			copy.setSet(this.getSet().deepCopy());
+			copy.setEnabled(this.isEnabled());
 			return copy;
 		} catch (IOException e) {
 			e.printStackTrace();

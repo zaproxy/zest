@@ -46,7 +46,9 @@ public class ZestClientSwitchToFrame extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientSwitchToFrame(windowHandle, frameIndex, frameName, parent);
+		ZestClientSwitchToFrame copy = new ZestClientSwitchToFrame(windowHandle, frameIndex, frameName, parent);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	public int getFrameIndex() {

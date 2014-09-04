@@ -86,7 +86,8 @@ public class ZestRequest extends ZestStatement {
 					cookie.getPath(), cookie.getExpiryDate(), cookie.getSecure()));
 		}
 		zr.cookies = this.cookies;
-		
+		zr.setEnabled(this.isEnabled());
+
 		return zr;
 	}
 	

@@ -81,7 +81,9 @@ public class ZestClientAssignCookie extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientAssignCookie(windowHandle, variableName, cookieName);
+		ZestClientAssignCookie copy = new ZestClientAssignCookie(windowHandle, variableName, cookieName);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

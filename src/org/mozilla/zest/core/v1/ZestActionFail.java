@@ -145,6 +145,7 @@ public class ZestActionFail extends ZestAction {
 		ZestActionFail copy = new ZestActionFail(this.getIndex());
 		copy.message = message;
 		copy.priority = priority;
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

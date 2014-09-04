@@ -6,6 +6,7 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -154,6 +155,13 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		this.addElse(this.elseStatements.size(), req);
 	}
 	
+	public List<ZestStatement> getChildren() {
+		List<ZestStatement> children = new ArrayList<ZestStatement>();
+		children.addAll(this.getIfStatements());
+		children.addAll(this.getElseStatements());
+		return Collections.unmodifiableList(children);
+	}
+
 	/**
 	 * Adds an else.
 	 *
@@ -417,6 +425,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		for(ZestStatement stmt:elseStatements){
 			copy.elseStatements.add(stmt.deepCopy());
 		}
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 	

@@ -28,7 +28,9 @@ public class ZestClientElementClick extends ZestClientElement {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientElementClick(this.getWindowHandle(), this.getType(), this.getElement());
+		ZestClientElementClick copy = new ZestClientElementClick(this.getWindowHandle(), this.getType(), this.getElement());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

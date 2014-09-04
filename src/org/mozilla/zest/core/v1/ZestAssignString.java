@@ -51,7 +51,9 @@ public class ZestAssignString extends ZestAssignment {
 	 */
 	@Override
 	public ZestAssignString deepCopy() {
-		return new ZestAssignString(this.getVariableName(), this.string);
+		ZestAssignString copy = new ZestAssignString(this.getVariableName(), this.string);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	public String getString() {

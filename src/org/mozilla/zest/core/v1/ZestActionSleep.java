@@ -75,6 +75,7 @@ public class ZestActionSleep extends ZestAction {
 	public ZestActionSleep deepCopy() {
 		ZestActionSleep copy = new ZestActionSleep(this.getIndex());
 		copy.milliseconds = milliseconds;
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

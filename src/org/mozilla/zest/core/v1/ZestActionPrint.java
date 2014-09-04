@@ -82,6 +82,7 @@ public class ZestActionPrint extends ZestAction {
 	public ZestActionPrint deepCopy() {
 		ZestActionPrint copy = new ZestActionPrint(this.getIndex());
 		copy.message = message;
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

@@ -52,6 +52,7 @@ public class ZestLoopClientElements extends ZestLoop<String> {
 		copy.setCurrentState(this.getCurrentState().deepCopy());
 		copy.setStatements(this.copyStatements());
 		copy.setSet(this.getSet().deepCopy());
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

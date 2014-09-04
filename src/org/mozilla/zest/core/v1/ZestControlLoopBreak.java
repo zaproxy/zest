@@ -28,7 +28,9 @@ public class ZestControlLoopBreak extends ZestControl {
 	 */
 	@Override
 	public ZestControlLoopBreak deepCopy() {
-		return new ZestControlLoopBreak();
+		ZestControlLoopBreak copy = new ZestControlLoopBreak();
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	/* (non-Javadoc)

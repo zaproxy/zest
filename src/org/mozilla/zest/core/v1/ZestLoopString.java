@@ -98,6 +98,7 @@ public class ZestLoopString extends ZestLoop<String> {
 		copy.set = this.set.deepCopy();
 		copy.setCurrentState(this.getCurrentState().deepCopy());
 		copy.setStatements(this.copyStatements());
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

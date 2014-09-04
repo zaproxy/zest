@@ -120,6 +120,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
 			copy.addStatement(stmt.deepCopy());
 		}
 		copy.setCurrentState(state);
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

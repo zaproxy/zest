@@ -28,7 +28,9 @@ public class ZestControlLoopNext extends ZestControl {
 	 */
 	@Override
 	public ZestControlLoopNext deepCopy() {
-		return new ZestControlLoopNext();
+		ZestControlLoopNext copy = new ZestControlLoopNext();
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	/* (non-Javadoc)

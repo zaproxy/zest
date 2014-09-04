@@ -40,7 +40,9 @@ public class ZestControlReturn extends ZestControl {
 	 */
 	@Override
 	public ZestControlReturn deepCopy() {
-		return new ZestControlReturn(value);
+		ZestControlReturn copy = new ZestControlReturn(value);
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	/* (non-Javadoc)

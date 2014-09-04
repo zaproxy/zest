@@ -32,6 +32,7 @@ public class ZestActionIntercept extends ZestAction {
 	@Override
 	public ZestActionIntercept deepCopy() {
 		ZestActionIntercept copy = new ZestActionIntercept(this.getIndex());
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

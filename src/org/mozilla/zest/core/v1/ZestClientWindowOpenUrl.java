@@ -43,7 +43,9 @@ public class ZestClientWindowOpenUrl extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientWindowOpenUrl(this.getWindowHandle(), this.getUrl());
+		ZestClientWindowOpenUrl copy = new ZestClientWindowOpenUrl(this.getWindowHandle(), this.getUrl());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

@@ -194,6 +194,7 @@ public class ZestActionInvoke extends ZestAction {
 		for (String[] kvPair : this.parameters) {
 			copy.parameters.add(new String[] {kvPair[0], kvPair[1]});
 		}
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 

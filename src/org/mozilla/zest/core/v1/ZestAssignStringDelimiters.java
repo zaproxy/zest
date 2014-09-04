@@ -132,6 +132,7 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 		copy.location = this.location;
 		copy.setPrefix(this.prefix);
 		copy.setPostfix(this.postfix);
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 	

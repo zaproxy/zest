@@ -38,7 +38,9 @@ public class ZestClientElementSendKeys extends ZestClientElement {
 
 	@Override
 	public ZestStatement deepCopy() {
-		return new ZestClientElementSendKeys(this.getWindowHandle(), this.getType(), this.getElement(), this.getValue());
+		ZestClientElementSendKeys copy = new ZestClientElementSendKeys(this.getWindowHandle(), this.getType(), this.getElement(), this.getValue());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	@Override

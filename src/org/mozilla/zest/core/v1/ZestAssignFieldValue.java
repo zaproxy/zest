@@ -50,7 +50,9 @@ public class ZestAssignFieldValue extends ZestAssignment {
 	 */
 	@Override
 	public ZestAssignFieldValue deepCopy() {
-		return new ZestAssignFieldValue(this.getVariableName(), this.fieldDefinition.deepCopy());
+		ZestAssignFieldValue copy = new ZestAssignFieldValue(this.getVariableName(), this.fieldDefinition.deepCopy());
+		copy.setEnabled(this.isEnabled());
+		return copy;
 	}
 
 	/**

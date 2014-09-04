@@ -7,10 +7,12 @@
  */
 package org.mozilla.zest.test.v1;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,11 +20,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionFail;
+import org.mozilla.zest.core.v1.ZestActionFailException;
+import org.mozilla.zest.core.v1.ZestAssertFailException;
+import org.mozilla.zest.core.v1.ZestAssignFailException;
+import org.mozilla.zest.core.v1.ZestAssignString;
+import org.mozilla.zest.core.v1.ZestClientFailException;
 import org.mozilla.zest.core.v1.ZestConditional;
+import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoopStateString;
 import org.mozilla.zest.core.v1.ZestLoopString;
+import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.core.v1.ZestStatement;
+import org.mozilla.zest.impl.ZestBasicRunner;
 
 /**
  */
@@ -142,6 +152,47 @@ public class ZestLoopStringUnitTest {
 			assertTrue(i + " expected " + values[i] + " instead of "
 					+ loop2.getValues()[i], loop2.getValues()[i].equals(values[i]));
 		}
+	}
+	
+	@Test
+	public void testDisable() throws Exception {
+		ZestScript script = new ZestScript();
+		ZestAssignString zaInit = new ZestAssignString("res", "");
+		ZestLoopString loop = new ZestLoopString("var", values);
+		ZestAssignString zaAppendVar = new ZestAssignString("res", "{{res}} {{var}}");
+		ZestAssignString zaAppendComma = new ZestAssignString("res", "{{res}},");
+		
+		script.add(zaInit);
+		script.add(loop);
+		loop.addStatement(zaAppendVar);
+		loop.addStatement(zaAppendComma);
+
+		ZestBasicRunner runner = new ZestBasicRunner();
+
+		// All enabled
+		runner.run(script, null);
+		assertEquals(" 1, 2, 3, 4, 5, 6, 7,", runner.getVariable("res"));
+
+		// Disable appending the var
+		zaAppendVar.setEnabled(false);
+		runner.run(script, null);
+		assertEquals(",,,,,,,", runner.getVariable("res"));
+
+		// Disable appending the comma
+		zaAppendVar.setEnabled(true);
+		zaAppendComma.setEnabled(false);
+		runner.run(script, null);
+		assertEquals(" 1 2 3 4 5 6 7", runner.getVariable("res"));
+
+		// Disable the loop
+		zaAppendVar.setEnabled(true);
+		zaAppendComma.setEnabled(true);
+		loop.setEnabled(false);
+		
+		runner.run(script, null);
+		assertEquals("", runner.getVariable("res"));
+		
+
 	}
 
 }

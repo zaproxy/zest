@@ -155,7 +155,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			ZestResponse lastRes) throws ZestAssertFailException,
 			ZestActionFailException, ZestInvalidCommonTestException,
 			IOException, ZestAssignFailException, ZestClientFailException {
-		if (skipStatements) {
+		if (skipStatements || ! stmt.isEnabled()) {
 			return lastRes;
 		}
 		if (ZestScript.Type.Passive.equals(script.getType())

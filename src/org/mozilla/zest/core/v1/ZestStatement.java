@@ -7,20 +7,24 @@ package org.mozilla.zest.core.v1;
 import java.net.MalformedURLException;
 
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ZestStatement.
+ * The base abstract class that all Zest statements must extend.
  */
 public abstract class ZestStatement extends ZestElement {
 
 	/** The index. */
 	private int index;
 	
-	/** The previous. */
+	/** The previous statement. */
 	private transient ZestStatement previous = null;
 	
-	/** The next. */
+	/** The next statement. */
 	private transient ZestStatement next = null;
+	
+	/**
+	 * If false then this statement
+	 */
+	private boolean enabled = true;
 
 	/**
 	 * Instantiates a new zest statement.
@@ -177,6 +181,14 @@ public abstract class ZestStatement extends ZestElement {
 		
 	}
 	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	/**
 	 * Checks if is passive.
 	 *

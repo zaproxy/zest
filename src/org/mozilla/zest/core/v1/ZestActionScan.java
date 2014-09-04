@@ -64,6 +64,7 @@ public class ZestActionScan extends ZestAction {
 	public ZestActionScan deepCopy() {
 		ZestActionScan copy = new ZestActionScan(this.getIndex());
 		copy.targetParameter = this.targetParameter;
+		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
 
