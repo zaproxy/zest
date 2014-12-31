@@ -2,12 +2,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Alessandro Secco: seccoale@gmail.com
  */
 package org.mozilla.zest.core.v1;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +33,6 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 	 * Instantiates a new zest loop token file set.
 	 *
 	 * @param pathToFile the path to file
-	 * @throws FileNotFoundException the file not found exception
 	 */
 	public ZestLoopTokenClientElementsSet(ZestLoopClientElements loop, String windowHandle, String type, 
 			String element, String attribute) {
@@ -54,7 +50,6 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 	 * @param file the file
 	 * @return the zest loop token string set
 	 * @throws ZestClientFailException 
-	 * @throws FileNotFoundException if the file does not exist
 	 */
 	protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
 		if(this.convertedSet==null){
@@ -198,6 +193,10 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 		} catch (ZestClientFailException e) {
 			return null;
 		}
+	}
+
+	public void setLoop(ZestLoopClientElements loop) {
+		this.loop = loop;
 	}
 
 }
