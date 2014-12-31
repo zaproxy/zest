@@ -4,8 +4,6 @@
 
 package org.mozilla.zest.core.v1;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionRegex.
  */
@@ -62,10 +60,12 @@ public class ZestExpressionEquals extends ZestExpression{
 			return false;
 		}
 		
+		String val = runtime.replaceVariablesInString(value, false);
+		
 		if (this.caseExact) {
-			return str.equals(value);
+			return str.equals(val);
 		} else {
-			return str.equalsIgnoreCase(value);
+			return str.equalsIgnoreCase(val);
 		}
 	}
 
