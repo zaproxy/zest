@@ -504,6 +504,26 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 		// Update the headers with the ones actually sent
 		req.setHeaders(arrayToStr(method.getRequestHeaders()));
+		
+		
+		if (method.getStatusCode() == 302 && req.isFollowRedirects() && ! req.getMethod().equals("GET")) {
+			// Follow the redirect 'manually' as the httpclient lib only supports them for GET requests
+			method = new GetMethod(method.getResponseHeader("Location").getValue());
+			// Just in case there are multiple redirects
+			method.setFollowRedirects(req.isFollowRedirects());
+
+			try {
+				this.debug(req.getMethod() + " : " + req.getUrl());
+				code = httpclient.executeMethod(method);
+
+				responseHeader = method.getStatusLine().toString() + "\n"
+						+ arrayToStr(method.getResponseHeaders());
+				responseBody = method.getResponseBodyAsString();
+
+			} finally {
+				method.releaseConnection();
+			}
+		}
 
 		return new ZestResponse(req.getUrl(), responseHeader, responseBody,
 				code, new Date().getTime() - start.getTime());
