@@ -478,10 +478,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 
 		if (req.getMethod().equals("POST")) {
-			// Do this after setting the headers so the length is corrected
-			RequestEntity requestEntity = new StringRequestEntity(
-					req.getData(), null, null);
+			// The setRequestEntity call trashes any Content-Type specified, so record it and reapply it after
+			Header contentType = method.getRequestHeader("Content-Type");
+			RequestEntity requestEntity = new StringRequestEntity(req.getData(), null, null);
+			
 			((PostMethod) method).setRequestEntity(requestEntity);
+			
+			method.setRequestHeader(contentType);
 		}
 		
 		int code = 0;
