@@ -68,6 +68,7 @@ public class ZestActionInvoke extends ZestAction {
 	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
 	 */
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
+		ScriptEngine engine = null;
 		File f = new File(this.script);
 		if (! f.exists()) {
 			throw new ZestActionFailException(this, "No such file: " + f.getAbsolutePath());
@@ -76,7 +77,16 @@ public class ZestActionInvoke extends ZestAction {
 			throw new ZestActionFailException(this, "Is a directory: " + f.getAbsolutePath());
 		}
 		
-		if (f.canExecute()) {
+		// Check for Zest scripts first - on Windows standard files often have execute perms
+		String ext = null;
+		if (this.script.indexOf(".") > 0) {
+			ext = this.script.substring(this.script.lastIndexOf(".") + 1);
+		}
+		
+		if (ext != null && (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst"))) {
+			// Its a Zest script
+			engine = runtime.getScriptEngineFactory().getScriptEngine();
+		} else if (f.canExecute()) {
 			// Its executable - just run directly
 			try {
 				StringBuilder sb = new StringBuilder();
@@ -116,21 +126,13 @@ public class ZestActionInvoke extends ZestAction {
 			} catch (Exception e) {
 				throw new ZestActionFailException(this, e);
 			}
-		}
-		// Its not executable - try to find a suitable Java scripting engine
-		String ext = null;
-		if (this.script.indexOf(".") > 0) {
-			ext = this.script.substring(this.script.lastIndexOf(".") + 1);
-		}
-		if (ext == null) {
-			throw new ZestActionFailException(this, "Script doesnt not have an extension: " + f.getAbsolutePath());
+		} else if (ext != null) {
+			engine = new ScriptEngineManager().getEngineByName(ext);
+		} else { 
+			// Nothing to go on
+			throw new ZestActionFailException(this, "Script is not executable and does not have an extension: " + f.getAbsolutePath());
 		}
 		
-		ScriptEngine engine = new ScriptEngineManager().getEngineByName(ext);
-		if (engine == null && (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst"))) {
-			// Its a Zest script, handle as a special case if the engine if not registered
-			engine = runtime.getScriptEngineFactory().getScriptEngine();
-		}
 		if (engine == null) {
 			throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
 		}
