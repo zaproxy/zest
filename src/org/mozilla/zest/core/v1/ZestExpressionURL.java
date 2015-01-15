@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ZestExpressionURL.
  */
@@ -21,10 +20,10 @@ public class ZestExpressionURL extends ZestExpression {
 	private List<String> excludeRegexes = new ArrayList<String>();
 
 	/** The include patterns. */
-	private transient List<Pattern> includePatterns = new ArrayList<Pattern>();
+	private transient List<Pattern> includePatterns = null;
 	
 	/** The exclude patterns. */
-	private transient List<Pattern> excludePatterns = new ArrayList<Pattern>();
+	private transient List<Pattern> excludePatterns = null;
 
 	/**
 	 * Instantiates a new zest expression url.
@@ -56,6 +55,10 @@ public class ZestExpressionURL extends ZestExpression {
 		String url = req.getUrl().toString();
 		boolean inc = false;
 
+		if (this.includePatterns == null) {
+			this.initPatterns();
+		}
+
 		for (Pattern pattern : includePatterns) {
 			if (pattern.matcher(url).find()) {
 				inc = true;
@@ -75,7 +78,7 @@ public class ZestExpressionURL extends ZestExpression {
 		// Included and not excluded
 		return true;
 	}
-
+	
 	/**
 	 * Gets the include regexes.
 	 *
@@ -93,6 +96,22 @@ public class ZestExpressionURL extends ZestExpression {
 	public List<String> getExcludeRegexes() {
 		return excludeRegexes;
 	}
+	
+	private void initPatterns() {
+		includePatterns = new ArrayList<Pattern>();
+		excludePatterns = new ArrayList<Pattern>();
+		
+		if (includeRegexes != null) {
+			for (String regex : includeRegexes) {
+				this.includePatterns.add(Pattern.compile(regex));
+			}
+		}
+		if (excludeRegexes != null) {
+			for (String regex : excludeRegexes) {
+				this.excludePatterns.add(Pattern.compile(regex));
+			}
+		}
+	}
 
 	/**
 	 * Sets the include regexes.
@@ -101,13 +120,8 @@ public class ZestExpressionURL extends ZestExpression {
 	 */
 	public void setIncludeRegexes(List<String> includeRegexes) {
 		this.includeRegexes = includeRegexes;
-
-		this.includePatterns.clear();
-		if (includeRegexes != null) {
-			for (String regex : includeRegexes) {
-				this.includePatterns.add(Pattern.compile(regex));
-			}
-		}
+		// Force the patterns to be regenerated
+		this.includePatterns = null;
 	}
 
 	/**
@@ -117,13 +131,8 @@ public class ZestExpressionURL extends ZestExpression {
 	 */
 	public void setExcludeRegexes(List<String> excludeRegexes) {
 		this.excludeRegexes = excludeRegexes;
-
-		this.excludePatterns.clear();
-		if (excludeRegexes != null) {
-			for (String regex : excludeRegexes) {
-				this.excludePatterns.add(Pattern.compile(regex));
-			}
-		}
+		// Force the patterns to be regenerated
+		this.excludePatterns = null;
 	}
 
 	/* (non-Javadoc)
@@ -134,8 +143,8 @@ public class ZestExpressionURL extends ZestExpression {
 		ZestExpressionURL copy = new ZestExpressionURL();
 		List<String> copyIncludeRegex = new ArrayList<>(includeRegexes);
 		List<String> copyExcludeRegex = new ArrayList<>(excludeRegexes);
-		copy.includeRegexes = copyIncludeRegex;
-		copy.excludeRegexes = copyExcludeRegex;
+		copy.setIncludeRegexes(copyIncludeRegex);
+		copy.setExcludeRegexes(copyExcludeRegex);
 		return copy;
 	}
 	
