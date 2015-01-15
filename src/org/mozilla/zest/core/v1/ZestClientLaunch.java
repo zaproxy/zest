@@ -100,6 +100,7 @@ public class ZestClientLaunch extends ZestClient {
 			if (httpProxy.length() > 0) {
 				Proxy proxy = new Proxy();
 				proxy.setHttpProxy(httpProxy);
+				proxy.setSslProxy(httpProxy);
 				cap.setCapability(CapabilityType.PROXY, proxy);
 			}
 			if (capabilities != null) {
