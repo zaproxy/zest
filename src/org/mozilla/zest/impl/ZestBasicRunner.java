@@ -495,7 +495,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			this.debug(req.getMethod() + " : " + req.getUrl());
 			code = httpclient.executeMethod(method);
 
-			responseHeader = method.getStatusLine().toString() + "\n"
+			responseHeader = method.getStatusLine().toString() + "\r\n"
 					+ arrayToStr(method.getResponseHeaders());
 			responseBody = method.getResponseBodyAsString();
 
@@ -516,7 +516,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 				this.debug(req.getMethod() + " : " + req.getUrl());
 				code = httpclient.executeMethod(method);
 
-				responseHeader = method.getStatusLine().toString() + "\n"
+				responseHeader = method.getStatusLine().toString() + "\r\n"
 						+ arrayToStr(method.getResponseHeaders());
 				responseBody = method.getResponseBodyAsString();
 
