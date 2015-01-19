@@ -28,6 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestConditionalRegexExprUnitTest.class,
 	ZestConditionalRegexUnitTest.class,
 	ZestExpressionAndUnitTest.class,
+	ZestExpressionIsIntegerUnitTest.class,
 	ZestExpressionLengthUnitTest.class,
 	ZestExpressionRegexUnitTest.class,
 	ZestExpressionResponseTimeUnitTest.class,
