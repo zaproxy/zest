@@ -484,7 +484,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			
 			((PostMethod) method).setRequestEntity(requestEntity);
 			
-			method.setRequestHeader(contentType);
+			if (contentType != null) {
+				method.setRequestHeader(contentType);
+			}
 		}
 		
 		int code = 0;
