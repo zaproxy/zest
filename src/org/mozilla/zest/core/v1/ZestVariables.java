@@ -197,7 +197,7 @@ public class ZestVariables extends ZestElement {
 					// To prevent loops
 					previous.add(nvPair[0]);
 					changed = true;
-					str = str.replace(tokenStr, nvPair[1]);
+					str = str.replace(tokenStr, getReplacementValue(nvPair[1]));
 				}
 			}
 			if (! changed && urlEncode) {
@@ -209,7 +209,7 @@ public class ZestVariables extends ZestElement {
 							// To prevent loops
 							previous.add(nvPair[0]);
 							changed = true;
-							str = str.replace(tokenStr, nvPair[1]);
+							str = str.replace(tokenStr, getReplacementValue(nvPair[1]));
 						}
 					}
 				} catch (UnsupportedEncodingException e) {
@@ -223,6 +223,18 @@ public class ZestVariables extends ZestElement {
 		}
 		return str;
 		
+	}
+
+	/**
+	 * Gets the value suitable for {@link #replaceInString(String, boolean) replacement in the strings}.
+	 * <p>
+	 * If the given {@code value} is {@code null} it returns an empty string, otherwise the {@code value}.
+	 *
+	 * @param value the value to be used as replacement
+	 * @return the value suitable for replacement in strings, never {@code null}.
+	 */
+	private String getReplacementValue(String value) {
+		return (value == null) ? "" : value;
 	}
 
 	public String replaceInString (String str, boolean urlEncode) {
