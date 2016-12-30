@@ -1,0 +1,151 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'application'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+group 'org.mozilla'
+version '0.13-SNAPSHOT'
+
+mainClassName = 'org.mozilla.zest.impl.CmdLine'
+
+dependencies {
+    compile ('commons-httpclient:commons-httpclient:3.1',
+             'com.google.code.gson:gson:2.2.2',
+             'com.opera:operadriver:1.5',
+             'com.github.detro.ghostdriver:phantomjsdriver:1.1.0',
+             'org.seleniumhq.selenium:selenium-server:2.43.0',
+             'net.htmlparser.jericho:jericho-html:3.1')
+
+    testCompile('junit:junit:4.11',
+                'org.mockito:mockito-all:1.9.0')
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Version': version,
+        'Main-Class': mainClassName)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options {
+        links = [ 'http://docs.oracle.com/javase/7/docs/api/' ]
+        encoding = 'UTF-8'
+    }
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+ext.pomData = pom {
+    project {
+        name 'Mozilla Zest'
+        packaging 'jar'
+        description 'Zest is an experimental scripting language developed by the Mozilla security team designed to be used in web oriented security tools.'
+        url 'https://github.com/mozilla/zest'
+
+        organization {
+            name 'Mozilla Foundation'
+            url 'https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Zest'
+        }
+
+        mailingLists {
+            mailingList {
+                name 'Mozilla Zest'
+                post 'mozilla-zest@googlegroups.com'
+                archive 'https://groups.google.com/group/mozilla-zest'
+            }
+        }
+
+        scm {
+            url 'https://github.com/mozilla/zest'
+            connection 'scm:git:https://github.com/mozilla/zest.git'
+            developerConnection 'scm:git:https://github.com/mozilla/zest.git'
+        }
+
+        licenses {
+            license {
+                name 'Mozilla Public License Version 2.0'
+                url 'http://mozilla.org/MPL/2.0/'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'psiinon'
+                name 'Simon Bennetts'
+                email 'sbennetts@mozilla.com'
+            }
+        }
+    }
+}
+
+task generatePom {
+    description 'Generates the POM file.'
+    pomData.writeTo("$buildDir/pom.xml")
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier "sources"
+}
+
+artifacts { archives sourcesJar, javadocJar }
+
+signing {
+    if (project.hasProperty('signing.keyId')) {
+        sign configurations.archives
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom = pomData
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment ->
+                signing.signPom(deployment)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+            }
+
+            pom = pomData
+        }
+    }
+}
