@@ -246,10 +246,10 @@ public class ZestVariablesUnitTest {
         assertTrue(zestVars.getVariables().size() == 3);
         assertTrue(zestVars.getVariables().get(0)[0] == varName1);
         assertTrue(varValue1.equals(zestVars.getVariables().get(0)[1]));
-        assertTrue(varName2.equals(zestVars.getVariables().get(1)[0]));
-        assertTrue(varValue2.equals(zestVars.getVariables().get(1)[1]));
-        assertTrue(varName3.equals(zestVars.getVariables().get(2)[0]));
-        assertTrue(zestVars.getVariables().get(2)[1] == varValue3);
+        assertTrue(varName3.equals(zestVars.getVariables().get(1)[0]));
+        assertTrue(zestVars.getVariables().get(1)[1] == varValue3);
+        assertTrue(varName2.equals(zestVars.getVariables().get(2)[0]));
+        assertTrue(zestVars.getVariables().get(2)[1] == varValue2);
     }
 
     @Test

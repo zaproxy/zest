@@ -7,7 +7,7 @@ package org.mozilla.zest.core.v1;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -45,7 +45,7 @@ public class ZestVariables extends ZestElement {
 	private String tokenEnd = "}}";
 	
 	/** The tokens. */
-	private Map<String, String> tokens = new HashMap<String, String>();
+	private Map<String, String> tokens = new LinkedHashMap<>();
 	
 	/**
 	 * Instantiates a new zest tokens.
@@ -116,11 +116,13 @@ public class ZestVariables extends ZestElement {
 
 	/**
 	 * Sets the tokens.
+	 * <p>
+	 * It's created a copy of the given map.
 	 *
 	 * @param tokens the tokens
 	 */
 	public void setVariable(Map<String, String> tokens) {
-		this.tokens = tokens;
+		this.tokens = new LinkedHashMap<>(tokens);
 	}
 	
 	/**

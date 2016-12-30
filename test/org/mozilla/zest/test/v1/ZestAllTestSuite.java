@@ -43,7 +43,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ZestRequestUnitTest.class,
 	ZestScriptUnitTest.class,
 	ZestStructuredExpressionUnitTest.class,
-	ZestVariableUnitTest.class
+	ZestVariableUnitTest.class,
+	ZestVariablesUnitTest.class
 })
 
 public final class ZestAllTestSuite {
