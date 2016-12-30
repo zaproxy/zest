@@ -103,20 +103,13 @@ public class ZestActionInvoke extends ZestAction {
 						cmdarray[i] = kvPair[0] + "=" + kvPair[1];
 					}
 				}
-				Process p = Runtime.getRuntime().exec(cmdarray);
+				Process p = new ProcessBuilder(cmdarray).redirectErrorStream(true).start();
 				p.waitFor();
 
-				// Capture anything written to strout
+				// Capture anything written to stdout/err
 	            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	            String line = null;
 	            while ((line = br.readLine()) != null) {
-	            	sb.append(line);
-	            	sb.append("\n");
-				}
-				// Capture anything written to sterr
-	            br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-	            line = null;
-	            while ( (line = br.readLine()) != null) {
 	            	sb.append(line);
 	            	sb.append("\n");
 				}
