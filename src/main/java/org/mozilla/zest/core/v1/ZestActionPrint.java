@@ -50,6 +50,7 @@ public class ZestActionPrint extends ZestAction {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		String str = runtime.replaceVariablesInString(this.message, false);
 		runtime.output(str);

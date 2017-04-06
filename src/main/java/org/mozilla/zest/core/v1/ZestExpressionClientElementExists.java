@@ -62,6 +62,7 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 		

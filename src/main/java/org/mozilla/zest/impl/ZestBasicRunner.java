@@ -334,6 +334,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	}
 
 
+	@Override
 	public void output(String str) {
 		if (this.outputWriter != null) {
 			try {
@@ -676,6 +677,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		return this.variables.replaceInString(str, urlEncode);
 	}
 
+	@Override
 	public void setScriptEngineFactory(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
 	}

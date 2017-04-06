@@ -67,6 +67,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		String str = runtime.getVariable(variableName);		
 		if (str == null) {

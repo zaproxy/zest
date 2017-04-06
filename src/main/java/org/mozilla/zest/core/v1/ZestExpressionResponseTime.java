@@ -37,6 +37,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
 		if (response == null) {
