@@ -31,6 +31,7 @@ public abstract class ZestExpression extends ZestElement implements
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isInverse()
 	 */
+	@Override
 	public boolean isInverse() {
 		return not;
 	}
@@ -38,6 +39,7 @@ public abstract class ZestExpression extends ZestElement implements
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#setInverse(boolean)
 	 */
+	@Override
 	public void setInverse(boolean not) {
 		this.not = not;
 	}
@@ -63,5 +65,6 @@ public abstract class ZestExpression extends ZestElement implements
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
+	@Override
 	public abstract ZestExpression deepCopy();
 }

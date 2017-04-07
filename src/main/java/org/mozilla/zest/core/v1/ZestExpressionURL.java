@@ -47,6 +47,7 @@ public class ZestExpressionURL extends ZestExpression {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		ZestRequest req = runtime.getLastRequest();
 		if (req == null) {

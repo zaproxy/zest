@@ -56,6 +56,7 @@ public class ZestExpressionLength extends ZestExpression {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
 	 */
+	@Override
 	public ZestExpressionLength deepCopy() {
 		return new ZestExpressionLength(this.variableName, this.length, this.approx);
 	}

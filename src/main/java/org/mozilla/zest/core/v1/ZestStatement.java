@@ -165,6 +165,7 @@ public abstract class ZestStatement extends ZestElement {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
+	@Override
 	public abstract ZestStatement deepCopy();
 	
 	protected void init() {

@@ -56,6 +56,7 @@ public class ZestFieldDefinition extends ZestElement {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
 	 */
+	@Override
 	public ZestFieldDefinition deepCopy() {
 		ZestFieldDefinition ze = new ZestFieldDefinition(this.formName, this.fieldName);
 		ze.setFormIndex(this.getFormIndex());

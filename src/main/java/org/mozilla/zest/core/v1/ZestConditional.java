@@ -155,6 +155,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		this.addElse(this.elseStatements.size(), req);
 	}
 	
+	@Override
 	public List<ZestStatement> getChildren() {
 		List<ZestStatement> children = new ArrayList<ZestStatement>();
 		children.addAll(this.getIfStatements());
@@ -257,6 +258,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
 	 */
+	@Override
 	public void move(int index, ZestStatement stmt) {
 		if (this.ifStatements.contains(stmt)) {
 			this.removeIf(stmt);
@@ -319,6 +321,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
 	 */
+	@Override
 	public ZestStatement getLast() {
 		if (this.elseStatements.size() > 0) {
 			return this.elseStatements.get(this.elseStatements.size()-1);

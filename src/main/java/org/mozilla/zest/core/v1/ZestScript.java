@@ -209,6 +209,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
 	 */
+	@Override
 	public void move(int index, ZestStatement req) {
 		this.remove(req);
 		this.add(index, req);
@@ -239,6 +240,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
 	 */
+	@Override
 	public ZestStatement getStatement (int index) {
 		checkStatementIndexes();
 		for (ZestStatement zr : this.getStatements()) {
@@ -301,6 +303,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return statements;
 	}
 
+	@Override
 	public List<ZestStatement> getChildren() {
 		return Collections.unmodifiableList(this.getStatements());
 	}
@@ -372,6 +375,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		if (newPrefix != null && newPrefix.length() > 0) {
 			for (ZestStatement stmt : this.statements) {

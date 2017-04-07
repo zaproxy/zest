@@ -67,6 +67,7 @@ public class ZestActionInvoke extends ZestAction {
 	/* (non-Javadoc)
 	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
 	 */
+	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		ScriptEngine engine = null;
 		File f = new File(this.script);
