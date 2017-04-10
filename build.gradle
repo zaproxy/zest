@@ -1,3 +1,7 @@
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.2.0"
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '3.2.1'
 }
@@ -49,6 +53,12 @@ tasks.withType(Javadoc) {
     }
     if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+spotless {
+    java {
+        licenseHeaderFile "$projectDir/gradle/spotless/license.java"
     }
 }
 
