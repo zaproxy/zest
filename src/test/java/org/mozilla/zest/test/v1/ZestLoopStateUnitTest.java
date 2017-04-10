@@ -12,14 +12,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestLoopStateString;
 import org.mozilla.zest.core.v1.ZestLoopTokenStringSet;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopStateUnitTest {
 	String[] values = { "A", "B", "C", "D", "D" };
 	ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(values);

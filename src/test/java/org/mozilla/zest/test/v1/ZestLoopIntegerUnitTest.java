@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionPrint;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestControlLoopBreak;
@@ -26,7 +24,6 @@ import org.mozilla.zest.core.v1.ZestStatement;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopIntegerUnitTest {
 	static String[] values = { "a", "b", "c" };
 	static List<ZestStatement> statements = new LinkedList<>();

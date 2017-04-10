@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpression;
 import org.mozilla.zest.core.v1.ZestExpressionAnd;
@@ -36,7 +34,6 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestStructuredExpressionUnitTest {
 	@Test
 	public void testDeepCopySingleAndSameChildrenSize() {

@@ -8,8 +8,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssertion;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -17,7 +15,6 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestAssertBodyRegexUnitTest {
 
 	/**

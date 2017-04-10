@@ -28,8 +28,7 @@ dependencies {
              'org.seleniumhq.selenium:selenium-server:2.43.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    testCompile('junit:junit:4.11',
-                'org.mockito:mockito-all:1.9.0')
+    testCompile('junit:junit:4.11')
 }
 
 jar {

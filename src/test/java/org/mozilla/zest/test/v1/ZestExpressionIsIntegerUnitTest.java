@@ -12,13 +12,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestExpressionIsInteger;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestExpressionIsIntegerUnitTest {
 
 	@Test

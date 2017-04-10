@@ -14,14 +14,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestExpressionLength;
 import org.mozilla.zest.core.v1.ZestResponse;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestExpressionLengthUnitTest {
 public static ZestResponse response;
 static {
