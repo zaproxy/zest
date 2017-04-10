@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionInvoke;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -19,7 +17,6 @@ import org.mozilla.zest.core.v1.ZestResponse;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestActionInvokeUnitTest {
 
 	/**

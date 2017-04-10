@@ -16,8 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestAssignString;
 import org.mozilla.zest.core.v1.ZestConditional;
@@ -30,7 +28,6 @@ import org.mozilla.zest.impl.ZestBasicRunner;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopStringUnitTest {
 	String[] values = { "1", "2", "3", "4", "5", "6", "7" };
 

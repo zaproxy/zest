@@ -7,8 +7,6 @@ package org.mozilla.zest.test.v1;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignReplace;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -17,7 +15,6 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestAssignReplaceUnitTest {
 
 

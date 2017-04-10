@@ -8,8 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
 import org.mozilla.zest.core.v1.ZestJSON;
@@ -18,7 +16,6 @@ import org.mozilla.zest.core.v1.ZestResponse;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestAssignStringDelimitersUnitTest {
 
 	private TestRuntime rt = new TestRuntime();

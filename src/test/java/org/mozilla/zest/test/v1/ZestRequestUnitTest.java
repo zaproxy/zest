@@ -9,15 +9,12 @@ import static org.junit.Assert.assertEquals;
 import java.net.URL;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestVariables;
 
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestRequestUnitTest {
 
 	/**

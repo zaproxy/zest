@@ -13,8 +13,6 @@ import java.net.InetSocketAddress;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionSleep;
 import org.mozilla.zest.core.v1.ZestClientFailException;
 import org.mozilla.zest.core.v1.ZestClientLaunch;
@@ -29,7 +27,6 @@ import com.sun.net.httpserver.HttpServer;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestClientLaunchUnitTest {
 
 	private static final int PORT = 8888;

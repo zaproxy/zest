@@ -8,8 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignFieldValue;
 import org.mozilla.zest.core.v1.ZestAssignStringDelimiters;
 import org.mozilla.zest.core.v1.ZestConditional;
@@ -22,7 +20,6 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestScriptUnitTest {
 	
 	/**

@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
@@ -25,7 +23,6 @@ import org.mozilla.zest.core.v1.ZestLoopInteger;
 import org.mozilla.zest.core.v1.ZestLoopString;
 import org.mozilla.zest.core.v1.ZestStatement;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopSerializationUnitTest {
 	String[] values={"a","b","c"};
 	List<ZestStatement> statements=new LinkedList<>();
