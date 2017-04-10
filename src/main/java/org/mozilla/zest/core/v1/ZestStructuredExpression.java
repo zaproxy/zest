@@ -61,9 +61,6 @@ public abstract class ZestStructuredExpression extends ZestExpression implements
 		return this.children;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
-	 */
 	@Override
 	public boolean isLeaf() {
 		return false;

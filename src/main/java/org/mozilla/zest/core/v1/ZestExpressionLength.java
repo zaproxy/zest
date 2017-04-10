@@ -53,9 +53,6 @@ public class ZestExpressionLength extends ZestExpression {
 		this.setInverse(b);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionLength deepCopy() {
 		return new ZestExpressionLength(this.variableName, this.length, this.approx);
@@ -115,9 +112,6 @@ public class ZestExpressionLength extends ZestExpression {
 		this.approx = approx;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		if (this.variableName == null) {
@@ -132,9 +126,6 @@ public class ZestExpressionLength extends ZestExpression {
 		return toReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+ "Length: "+length+" +/- "+(((double)(length*approx))/100);

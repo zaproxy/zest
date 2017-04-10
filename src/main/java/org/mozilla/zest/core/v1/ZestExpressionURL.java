@@ -44,9 +44,6 @@ public class ZestExpressionURL extends ZestExpression {
 		this.setExcludeRegexes(excludeRegexes);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		ZestRequest req = runtime.getLastRequest();
@@ -136,9 +133,6 @@ public class ZestExpressionURL extends ZestExpression {
 		this.excludePatterns = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionURL deepCopy() {
 		ZestExpressionURL copy = new ZestExpressionURL();
@@ -149,9 +143,6 @@ public class ZestExpressionURL extends ZestExpression {
 		return copy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"URL: ACCEPT:";

@@ -39,17 +39,11 @@ public class ZestActionSleep extends ZestAction {
 		this.milliseconds = milliseconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestActionSleep;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		try {
@@ -69,9 +63,6 @@ public class ZestActionSleep extends ZestAction {
 		this.milliseconds = milliseconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionSleep deepCopy() {
 		ZestActionSleep copy = new ZestActionSleep(this.getIndex());
@@ -80,9 +71,6 @@ public class ZestActionSleep extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

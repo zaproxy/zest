@@ -47,9 +47,6 @@ public class ZestAssignCalc extends ZestAssignment {
 		this.operandB = operandB;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		int operA;
@@ -76,9 +73,6 @@ public class ZestAssignCalc extends ZestAssignment {
 		throw new ZestAssignFailException(this, "Invalid operation");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignCalc deepCopy() {
 		ZestAssignCalc copy = new ZestAssignCalc(this.getVariableName(), operandA, operation, operandB);

@@ -46,9 +46,6 @@ public class ZestHttpAuthentication extends ZestAuthentication {
 		this.password = password;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestHttpAuthentication deepCopy() {
 		return new ZestHttpAuthentication(this.site, this.realm, this.username, this.password);

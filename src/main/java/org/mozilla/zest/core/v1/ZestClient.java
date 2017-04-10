@@ -29,17 +29,11 @@ public abstract class ZestClient extends ZestStatement {
 
 	public abstract String invoke(ZestRuntime runtime) throws ZestClientFailException;
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestClient;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		// Ignore

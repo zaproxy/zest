@@ -57,9 +57,6 @@ public class ZestActionScan extends ZestAction {
 		this.targetParameter = targetParameter;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionScan deepCopy() {
 		ZestActionScan copy = new ZestActionScan(this.getIndex());
@@ -68,17 +65,11 @@ public class ZestActionScan extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		throw new ZestActionFailException(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return false;

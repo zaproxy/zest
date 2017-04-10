@@ -54,9 +54,6 @@ public class ZestVariables extends ZestElement {
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestVariables deepCopy() {
 		ZestVariables zt = new ZestVariables();

@@ -59,9 +59,6 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 		this.element = element;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
@@ -95,9 +92,6 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 		return wd.findElements(by).size() > 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionClientElementExists deepCopy() {
 		return new ZestExpressionClientElementExists(this.windowHandle, this.getType(), this.getElement());

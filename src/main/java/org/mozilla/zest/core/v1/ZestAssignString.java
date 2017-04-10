@@ -38,17 +38,11 @@ public class ZestAssignString extends ZestAssignment {
 		this.string = string;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) {
 		return runtime.replaceVariablesInString(this.string, false);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignString deepCopy() {
 		ZestAssignString copy = new ZestAssignString(this.getVariableName(), this.string);

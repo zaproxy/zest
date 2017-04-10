@@ -53,9 +53,6 @@ public class ZestFieldDefinition extends ZestElement {
 		this.fieldName = fieldName;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestFieldDefinition deepCopy() {
 		ZestFieldDefinition ze = new ZestFieldDefinition(this.formName, this.fieldName);

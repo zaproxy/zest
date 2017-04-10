@@ -30,13 +30,6 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		super(children);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest
-	 * .core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		boolean toReturn = false;
@@ -50,11 +43,6 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return toReturn;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionOr deepCopy() {
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();
@@ -67,9 +55,6 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		if(this.getChildrenCondition()==null || this.getChildrenCondition().isEmpty()){

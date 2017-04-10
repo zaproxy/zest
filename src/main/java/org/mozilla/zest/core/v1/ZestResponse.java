@@ -43,9 +43,6 @@ public class ZestResponse extends ZestElement {
 		this.responseTimeInMs = responseTimeInMs;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestResponse deepCopy() {
 		ZestResponse zr = new ZestResponse(this.url, this.headers, this.body, this.statusCode, this.responseTimeInMs);

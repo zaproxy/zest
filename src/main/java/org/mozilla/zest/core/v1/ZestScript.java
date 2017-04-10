@@ -139,9 +139,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return type;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestScript deepCopy() {
 		ZestScript script = new ZestScript();
@@ -206,9 +203,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		checkStatementIndexes();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public void move(int index, ZestStatement req) {
 		this.remove(req);
@@ -237,9 +231,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		checkStatementIndexes();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
-	 */
 	@Override
 	public ZestStatement getStatement (int index) {
 		checkStatementIndexes();
@@ -372,9 +363,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		this.setPrefix(this.prefix, newPrefix);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		if (newPrefix != null && newPrefix.length() > 0) {
@@ -478,9 +466,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		this.author = author;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
@@ -534,25 +519,16 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return ids;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public int getIndex (ZestStatement child) {
 		return this.statements.indexOf(child);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
-	 */
 	@Override
 	public ZestStatement getLast() {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public ZestStatement getChildBefore(ZestStatement child) {
 		if (this.statements.contains(child)) {
@@ -564,9 +540,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return Type.Passive.equals(this.getType());
