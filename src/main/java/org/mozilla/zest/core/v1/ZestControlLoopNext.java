@@ -15,17 +15,11 @@ import java.net.MalformedURLException;
  */
 public class ZestControlLoopNext extends ZestControl {
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix)
 			throws MalformedURLException {
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestControlLoopNext deepCopy() {
 		ZestControlLoopNext copy = new ZestControlLoopNext();
@@ -33,9 +27,6 @@ public class ZestControlLoopNext extends ZestControl {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

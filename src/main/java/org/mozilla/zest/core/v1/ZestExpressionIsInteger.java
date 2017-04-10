@@ -29,9 +29,6 @@ public class ZestExpressionIsInteger extends ZestExpression{
 		this.variableName = variableName;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		String str = runtime.getVariable(variableName);		
@@ -65,17 +62,11 @@ public class ZestExpressionIsInteger extends ZestExpression{
 		this.variableName = variableName;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
-	 */
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionIsInteger deepCopy() {
 		return new ZestExpressionIsInteger(this.getVariableName());

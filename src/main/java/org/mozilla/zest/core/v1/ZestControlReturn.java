@@ -27,17 +27,11 @@ public class ZestControlReturn extends ZestControl {
 		this.value = value;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix)
 			throws MalformedURLException {		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestControlReturn deepCopy() {
 		ZestControlReturn copy = new ZestControlReturn(value);
@@ -45,9 +39,6 @@ public class ZestControlReturn extends ZestControl {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

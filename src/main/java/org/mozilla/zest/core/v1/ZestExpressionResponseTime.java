@@ -34,9 +34,6 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		this.timeInMs=time;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
@@ -86,9 +83,6 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		this.timeInMs = timeInMs;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionResponseTime deepCopy() {
 		ZestExpressionResponseTime copy = new ZestExpressionResponseTime();
@@ -97,9 +91,6 @@ public class ZestExpressionResponseTime extends ZestExpression {
 		return copy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"Response Time "+(isGreaterThan()?"> ":"< ")+timeInMs;

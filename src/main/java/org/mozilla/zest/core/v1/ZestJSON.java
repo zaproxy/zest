@@ -74,9 +74,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return gson;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
-	 */
 	@Override
 	public ZestElement deserialize(JsonElement element, Type rawType,
 			JsonDeserializationContext arg2) throws JsonParseException {
@@ -97,9 +94,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
-	 */
 	@Override
 	public JsonElement serialize(ZestElement element, Type rawType,
 			JsonSerializationContext context) {

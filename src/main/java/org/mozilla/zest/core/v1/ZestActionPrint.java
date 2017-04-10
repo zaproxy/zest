@@ -39,17 +39,11 @@ public class ZestActionPrint extends ZestAction {
 		this.message = message;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestActionPrint;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		String str = runtime.replaceVariablesInString(this.message, false);
@@ -76,9 +70,6 @@ public class ZestActionPrint extends ZestAction {
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionPrint deepCopy() {
 		ZestActionPrint copy = new ZestActionPrint(this.getIndex());
@@ -87,9 +78,6 @@ public class ZestActionPrint extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

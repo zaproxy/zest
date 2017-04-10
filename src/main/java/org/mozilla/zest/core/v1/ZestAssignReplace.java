@@ -44,9 +44,6 @@ public class ZestAssignReplace extends ZestAssignment {
 		this.caseExact = caseExact;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		String var = runtime.getVariable(getVariableName());
@@ -66,9 +63,6 @@ public class ZestAssignReplace extends ZestAssignment {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignReplace deepCopy() {
 		ZestAssignReplace copy = new ZestAssignReplace(this.getVariableName(), this.replace, this.replacement, this.regex, this.caseExact);

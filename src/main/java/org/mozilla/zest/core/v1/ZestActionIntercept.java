@@ -26,9 +26,6 @@ public class ZestActionIntercept extends ZestAction {
 		super(index);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionIntercept deepCopy() {
 		ZestActionIntercept copy = new ZestActionIntercept(this.getIndex());
@@ -36,18 +33,12 @@ public class ZestActionIntercept extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		// Ignore
 		return "";
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return false;

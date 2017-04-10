@@ -122,9 +122,6 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 		this.location = location;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestAssignStringDelimiters deepCopy() {
 		ZestAssignStringDelimiters copy = new ZestAssignStringDelimiters(this.getIndex());
@@ -157,9 +154,6 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		if (prefix == null || prefix.length() == 0) {

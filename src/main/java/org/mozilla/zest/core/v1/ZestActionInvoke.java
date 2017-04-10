@@ -56,17 +56,11 @@ public class ZestActionInvoke extends ZestAction {
 		this.parameters = parameters;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestActionInvoke;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		ScriptEngine engine = null;
@@ -178,9 +172,6 @@ public class ZestActionInvoke extends ZestAction {
 		this.parameters = parameters;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionInvoke deepCopy() {
 		ZestActionInvoke copy = new ZestActionInvoke(this.getIndex());
@@ -194,9 +185,6 @@ public class ZestActionInvoke extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return false;

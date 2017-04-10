@@ -244,9 +244,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return elseStatements;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public int getIndex (ZestStatement child) {
 		if (this.ifStatements.contains(child)) {
@@ -255,9 +252,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return this.elseStatements.indexOf(child);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public void move(int index, ZestStatement stmt) {
 		if (this.ifStatements.contains(stmt)) {
@@ -271,17 +265,11 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestConditional;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		for (ZestStatement stmt : this.ifStatements) {
@@ -292,9 +280,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
@@ -318,9 +303,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return tokens;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
-	 */
 	@Override
 	public ZestStatement getLast() {
 		if (this.elseStatements.size() > 0) {
@@ -332,9 +314,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public ZestStatement getChildBefore(ZestStatement child) {
 		if (this.ifStatements.contains(child)) {
@@ -351,9 +330,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
-	 */
 	@Override
 	public ZestStatement getStatement (int index) {
 		for (ZestStatement zr : this.getIfStatements()) {
@@ -413,9 +389,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return old_root;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestStatement deepCopy() {
 		ZestConditional copy=new ZestConditional(getIndex());
@@ -432,9 +405,6 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 		return copy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

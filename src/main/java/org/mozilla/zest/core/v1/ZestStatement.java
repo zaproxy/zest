@@ -41,9 +41,6 @@ public abstract class ZestStatement extends ZestElement {
 	public ZestStatement() {
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestStatement;
@@ -162,9 +159,6 @@ public abstract class ZestStatement extends ZestElement {
 	 */
 	abstract void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException;
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public abstract ZestStatement deepCopy();
 	

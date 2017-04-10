@@ -61,9 +61,6 @@ public class ZestRequest extends ZestStatement {
 		super();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestRequest deepCopy () {
 		ZestRequest zr = new ZestRequest(this.getIndex());
@@ -305,17 +302,11 @@ public class ZestRequest extends ZestStatement {
 		this.setData(tokens.replaceInString(this.getData(), false));
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestRequest;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		if (this.getUrl() != null && this.getUrl().toString().startsWith(oldPrefix)) {
@@ -326,9 +317,6 @@ public class ZestRequest extends ZestStatement {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return false;
