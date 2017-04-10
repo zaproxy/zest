@@ -44,6 +44,14 @@ jar {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    options.compilerArgs = [
+        // Enable all warnings,
+        '-Xlint:all',
+        // but allow to compile with newer Java versions.
+        '-Xlint:-options',
+        // Be strict, treat warnings as errors.
+        '-Werror'
+    ]
 }
 
 tasks.withType(Javadoc) {

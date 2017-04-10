@@ -392,7 +392,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer{
 	public ZestStatement deepCopy() {
 		ZestConditional copy=new ZestConditional(getIndex());
 		if(this.rootExpression!=null){
-			copy.rootExpression=(ZestExpressionElement)rootExpression.deepCopy();
+			copy.rootExpression=rootExpression.deepCopy();
 		}
 		for(ZestStatement stmt:ifStatements){
 			copy.ifStatements.add(stmt.deepCopy());

@@ -186,7 +186,7 @@ public class ZestPrinter {
 			if (stmt instanceof ZestLoopString) {
 				ZestLoopString loopString = (ZestLoopString) loop;
 				System.out.print("FOR tokens IN [");
-				ZestLoopTokenStringSet set = (ZestLoopTokenStringSet) loopString.getSet();
+				ZestLoopTokenStringSet set = loopString.getSet();
 				for (int i = 0; i < set.size() - 1; i++) {
 					System.out.print(set.getToken(i) + ",");
 				}
