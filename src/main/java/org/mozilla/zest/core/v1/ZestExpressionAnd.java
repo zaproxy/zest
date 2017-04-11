@@ -68,11 +68,16 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		if(this.getChildrenCondition()== null || this.getChildrenCondition().isEmpty()){
 			return "Empty AND";
 		}
-		String expression=(isInverse()?"NOT (":"(");
-		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
-			expression += " "+this.getChild(i).toString()+" AND";
+		StringBuilder expression = new StringBuilder(150);
+		if (isInverse()) {
+			expression.append("NOT ");
 		}
-		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+")";
-		return expression;
+		expression.append('(');
+		int i = 0;
+		for (; i < this.getChildrenCondition().size() - 1; i++) {
+			expression.append(this.getChild(i).toString()).append(" AND ");
+		}
+		expression.append(this.getChild(i).toString()).append(')');
+		return expression.toString();
 	}
 }

@@ -144,14 +144,18 @@ public class ZestExpressionURL extends ZestExpression {
 	
 	@Override
 	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+"URL: ACCEPT:";
+		StringBuilder expression = new StringBuilder(150);
+		if (isInverse()) {
+			expression.append("NOT ");
+		}
+		expression.append("URL: ACCEPT:");
 		for(String s:includeRegexes){
-			expression+=" "+s;
+			expression.append(' ').append(s);
 		}
-		expression+=", EXCLUDE:";
+		expression.append(", EXCLUDE:");
 		for(String s:excludeRegexes){
-			expression+=s+" ";
+			expression.append(' ').append(s);
 		}
-		return expression;
+		return expression.toString();
 	}
 }
