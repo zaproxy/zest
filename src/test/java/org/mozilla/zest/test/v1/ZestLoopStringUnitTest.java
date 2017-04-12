@@ -66,8 +66,7 @@ public class ZestLoopStringUnitTest {
 		for (int i = 0; i < stopIndex; i++) {
 			loop.loop();
 		}
-		ZestLoopStateString state = (ZestLoopStateString) loop
-				.getCurrentState();
+		ZestLoopStateString state = loop.getCurrentState();
 		boolean rightIndex = state.getCurrentIndex() == stopIndex;
 		boolean rightValue = state.getCurrentToken().equals(
 				values[state.getCurrentIndex()]);
@@ -107,7 +106,7 @@ public class ZestLoopStringUnitTest {
 		loop.addStatement(new ZestConditional());
 		loop.addStatement(new ZestLoopString(values));
 		loop.addStatement(new ZestActionFail());
-		ZestLoopString copy = (ZestLoopString) loop.deepCopy();
+		ZestLoopString copy = loop.deepCopy();
 		assertTrue("same state",
 				copy.getCurrentState().equals(loop.getCurrentState()));
 	}

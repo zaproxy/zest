@@ -45,13 +45,4 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 		return copy;
 	}
 
-	@Override
-	public boolean equals(Object otherObject) {
-		if (otherObject instanceof ZestLoopStateInteger) {
-			ZestLoopStateInteger otherState = (ZestLoopStateInteger) otherObject;
-			return super.equals(otherState);
-		}
-		return false;
-	}
-
 }
