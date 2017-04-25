@@ -6,6 +6,8 @@ package org.mozilla.zest.test.v1;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -95,5 +97,50 @@ public class ZestExpressionRegexUnitTest {
 		ZestResponse response = new ZestResponse(null, null, null, 0, 0);
 		ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "");
 		assertFalse(regex.isTrue(new TestRuntime(response)));
+	}
+
+	@Test
+	public void shouldEvaluateAlwaysToFalseWithNullRegex() {
+		// Given
+		String nullRegex = null;
+		String varName = "VarName";
+		ZestExpressionRegex expressionRegex = new ZestExpressionRegex(varName, nullRegex);
+		for (String varValue : Arrays.asList("", "Some value", "A\nB", "$", ".")) {
+			// When
+			boolean evalution = expressionRegex.evaluate(createRuntime(varName, varValue));
+			// Then
+			assertFalse("String \"" + varValue + "\" evaludated to false.", evalution);
+		}
+	}
+
+	@Test
+	public void shouldEvaluateAlwaysToTrueWithEmptyRegex() {
+		// Given
+		String emptyRegex = "";
+		String varName = "VarName";
+		ZestExpressionRegex expressionRegex = new ZestExpressionRegex(varName, emptyRegex);
+		for (String varValue : Arrays.asList("", "Some value", "A\nB", "$", ".")) {
+			// When
+			boolean evalution = expressionRegex.evaluate(createRuntime(varName, varValue));
+			// Then
+			assertTrue("String \"" + varValue + "\" evaludated to false.", evalution);
+		}
+	}
+
+	@Test
+	public void shouldAllowToSetNullRegex() {
+		// Given
+		String nullRegex = null;
+		ZestExpressionRegex regex = new ZestExpressionRegex("VarName", "");
+		// When
+		regex.setRegex(nullRegex);
+		// Then
+		assertTrue(regex.getRegex() == null);
+	}
+
+	private static TestRuntime createRuntime(String varName, String varValue) {
+		TestRuntime runtime = new TestRuntime();
+		runtime.setVariable(varName, varValue);
+		return runtime;
 	}
 }

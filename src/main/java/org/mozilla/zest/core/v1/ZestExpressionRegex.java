@@ -66,10 +66,10 @@ public class ZestExpressionRegex extends ZestExpression{
 	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		String str = runtime.getVariable(variableName);		
-		if (str == null) {
+		if (str == null || regex == null) {
 			return false;
 		}
-		if (pattern == null && regex != null) {
+		if (pattern == null) {
 			if (caseExact) {
 				this.pattern = Pattern.compile(regex);
 			} else {
@@ -114,7 +114,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 */
 	public void setRegex(String regex) {
 		this.regex = regex;
-		this.pattern = Pattern.compile(regex);
+		this.pattern = regex != null ? Pattern.compile(regex) : null;
 	}
 
 
