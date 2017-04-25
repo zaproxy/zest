@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+import java.util.regex.Pattern;
+
 /**
  * The Class ZestAssignString assigns a string (which can include other variables) to the specified variable.
  */
@@ -50,16 +52,15 @@ public class ZestAssignReplace extends ZestAssignment {
 			return null;
 		}
 		String orig = runtime.replaceVariablesInString(var, false);
-		// TODO handle caseExact/ignore
-		if (regex) {
-			try {
-				return orig.replaceAll(replace, replacement);
-			} catch (Exception e) {
-				throw new ZestAssignFailException (this, e.getMessage());
-			}
-		} else {
-			return orig.replace(this.replace, this.replacement);
+		try {
+			return createPattern().matcher(orig).replaceAll(replacement);
+		} catch (Exception e) {
+			throw new ZestAssignFailException (this, e.getMessage());
 		}
+	}
+
+	private Pattern createPattern() {
+		return Pattern.compile(regex ? replace : Pattern.quote(replace), caseExact ? 0 : Pattern.CASE_INSENSITIVE);
 	}
 
 	@Override
