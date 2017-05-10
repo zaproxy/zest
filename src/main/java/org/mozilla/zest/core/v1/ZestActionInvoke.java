@@ -127,7 +127,7 @@ public class ZestActionInvoke extends ZestAction {
 		// Set the same writer so that output not lost
 		engine.getContext().setWriter(runtime.getScriptEngineFactory().getScriptEngine().getContext().getWriter());
 		
-		try {
+		try (FileReader fr = new FileReader(f)) {
 			Bindings bindings = engine.createBindings();
 			if (this.parameters != null) {
 				for (String[] kvPair : this.parameters) {
@@ -135,7 +135,7 @@ public class ZestActionInvoke extends ZestAction {
 				}
 			}
 
-			Object result =  engine.eval(new FileReader(f), bindings);
+			Object result =  engine.eval(fr, bindings);
 			if (result == null) {
 				return null;
 			}
