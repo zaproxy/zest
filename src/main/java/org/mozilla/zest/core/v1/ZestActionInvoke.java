@@ -94,7 +94,7 @@ public class ZestActionInvoke extends ZestAction {
 					cmdarray[0] = f.getAbsolutePath();
 					int i=1;
 					for (String[] kvPair : this.parameters) {
-						cmdarray[i] = kvPair[0] + "=" + kvPair[1];
+						cmdarray[i] = kvPair[0] + "=" + runtime.replaceVariablesInString(kvPair[1], false);
 					}
 				}
 				Process p = new ProcessBuilder(cmdarray).redirectErrorStream(true).start();
@@ -131,7 +131,7 @@ public class ZestActionInvoke extends ZestAction {
 			Bindings bindings = engine.createBindings();
 			if (this.parameters != null) {
 				for (String[] kvPair : this.parameters) {
-					bindings.put(kvPair[0], kvPair[1]);
+					bindings.put(kvPair[0], runtime.replaceVariablesInString(kvPair[1], false));
 				}
 			}
 
