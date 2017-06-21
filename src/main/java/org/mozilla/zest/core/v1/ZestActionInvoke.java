@@ -62,7 +62,6 @@ public class ZestActionInvoke extends ZestAction {
 	
 	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
-		ScriptEngine engine = null;
 		File f = new File(this.script);
 		if (! f.exists()) {
 			throw new ZestActionFailException(this, "No such file: " + f.getAbsolutePath());
@@ -71,16 +70,32 @@ public class ZestActionInvoke extends ZestAction {
 			throw new ZestActionFailException(this, "Is a directory: " + f.getAbsolutePath());
 		}
 		
-		// Check for Zest scripts first - on Windows standard files often have execute perms
+		// Check for scripts first - on Windows standard files often have execute perms
 		String ext = null;
 		if (this.script.indexOf(".") > 0) {
 			ext = this.script.substring(this.script.lastIndexOf(".") + 1);
 		}
 		
-		if (ext != null && (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst"))) {
-			// Its a Zest script
-			engine = runtime.getScriptEngineFactory().getScriptEngine();
-		} else if (f.canExecute()) {
+		ScriptEngine engine = null;
+		if (ext != null) {
+			if (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst")) {
+				// Its a Zest script
+				engine = runtime.getScriptEngineFactory().getScriptEngine();
+			} else {
+				engine = new ScriptEngineManager().getEngineByName(ext);
+			}
+		}
+
+		if (engine == null) {
+			if (!f.canExecute()) {
+				if (ext != null) {
+					throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
+				}
+				throw new ZestActionFailException(
+						this,
+						"Script is not executable and does not have an extension: " + f.getAbsolutePath());
+			}
+
 			// Its executable - just run directly
 			try {
 				StringBuilder sb = new StringBuilder();
@@ -113,15 +128,6 @@ public class ZestActionInvoke extends ZestAction {
 			} catch (Exception e) {
 				throw new ZestActionFailException(this, e);
 			}
-		} else if (ext != null) {
-			engine = new ScriptEngineManager().getEngineByName(ext);
-		} else { 
-			// Nothing to go on
-			throw new ZestActionFailException(this, "Script is not executable and does not have an extension: " + f.getAbsolutePath());
-		}
-		
-		if (engine == null) {
-			throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
 		}
 		
 		// Set the same writer so that output not lost
