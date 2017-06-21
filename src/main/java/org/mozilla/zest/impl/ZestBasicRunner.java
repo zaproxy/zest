@@ -157,7 +157,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		if (skipStatements || ! stmt.isEnabled()) {
 			return lastRes;
 		}
-		if (ZestScript.Type.Passive.equals(script.getType())
+		if (script.getType() != null && ZestScript.Type.Passive.equals(ZestScript.Type.valueOf(script.getType()))
 				&& !stmt.isPassive()) {
 			throw new IllegalArgumentException(stmt.getElementType()
 					+ " not allowed in passive scripts");

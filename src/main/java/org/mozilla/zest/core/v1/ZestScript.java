@@ -541,7 +541,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	
 	@Override
 	public boolean isPassive() {
-		return Type.Passive.equals(this.getType());
+		return this.getType() != null && Type.Passive.equals(Type.valueOf(this.getType()));
 	}
 
 	private void checkStatementIndexes() {
