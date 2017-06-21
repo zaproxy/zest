@@ -5,7 +5,8 @@ package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -44,9 +45,7 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.js").getPath());
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"param", "PQRST"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("param", "PQRST")));
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -98,9 +97,7 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.zest").getPath());
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"param", "ZYXWV"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("param", "ZYXWV")));
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -110,15 +107,28 @@ public class ZestActionInvokeUnitTest {
 		assertEquals ("ZYXWV", rt.getVariable("test"));
 		
 	}
+	
+	@Test
+	public void shouldReplaceVariablesPassedAsParameters() throws Exception {
+		// Given
+		String varName = "VarName";
+		String varValue = "VarValue";
+		TestRuntime rt = new TestRuntime();
+		rt.setVariable(varName, varValue);
+		ZestActionInvoke inv = new ZestActionInvoke();
+		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.js").getPath());
+		inv.setParameters(params(param("param", "{{" + varName + "}}")));
+		// When
+		String result = inv.invoke(null, rt);
+		// Then
+		assertEquals(varValue, result);
+	}
 
 	@Test
 	public void testSerialization() {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"first", "AAA"});
-		params.add(new String [] {"second", "BBB"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("first", "AAA"), param("second", "BBB")));
 		
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/simple-script.js").getPath());
 		
@@ -138,4 +148,14 @@ public class ZestActionInvokeUnitTest {
 		}
 	}
 
+	private static String[] param(String parameterName, String parameterValue) {
+		return new String[] { parameterName, parameterValue };
+	}
+
+	private static List<String[]> params(String[]... parameters) {
+		if (parameters == null || parameters.length == 0) {
+			return Collections.emptyList();
+		}
+		return Arrays.asList(parameters);
+	}
 }
