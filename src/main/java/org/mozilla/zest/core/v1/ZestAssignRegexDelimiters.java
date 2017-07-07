@@ -88,9 +88,7 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 	 */
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
-		if (prefix != null) {
-			this.prefixPattern = Pattern.compile(prefix);
-		}
+		this.prefixPattern = null;
 	}
 
 	/**
@@ -109,9 +107,7 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 	 */
 	public void setPostfix(String postfix) {
 		this.postfix = postfix;
-		if (postfix != null) {
-			this.postfixPattern = Pattern.compile(postfix);
-		}
+		this.postfixPattern = null;
 	}
 
 	/**
@@ -154,6 +150,8 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 	 */
 	private String getTokenValue(String str) {
 		if (str != null) {
+			checkPatterns();
+			
 			Matcher prefixMatcher = this.prefixPattern.matcher(str);
 			if (prefixMatcher.find()) {
 				int tokenStart = prefixMatcher.end();
@@ -166,6 +164,19 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Check if the pattern are set.
+     * They will not be set after a json deserialisation using field reflexion.
+     */
+	private void checkPatterns() {		
+		if (prefixPattern==null) {
+			prefixPattern = Pattern.compile(prefix);
+		}
+		if (postfixPattern==null) {
+			postfixPattern = Pattern.compile(postfix);
+		}
 	}
 
 	
