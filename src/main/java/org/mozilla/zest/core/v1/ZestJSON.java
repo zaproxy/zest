@@ -31,7 +31,7 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 	 * @return the string
 	 */
 	public static String toString(ZestElement element) {
-		return getGson().toJson(element).toString();
+		return getGson().toJson(element);
 	}
 	
 	/**
