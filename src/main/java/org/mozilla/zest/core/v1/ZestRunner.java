@@ -220,7 +220,8 @@ public interface ZestRunner {
 	
 	/**
 	 * Reports if debugging is enabled
-	 * @return
+	 * 
+	 * @return {@code true} if debug is enabled, {@code false} otherwise.
 	 */
 	boolean isDebug ();
 	

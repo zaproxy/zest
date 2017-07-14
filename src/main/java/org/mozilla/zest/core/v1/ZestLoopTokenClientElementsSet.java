@@ -30,7 +30,11 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 	/**
 	 * Instantiates a new zest loop token file set.
 	 *
-	 * @param pathToFile the path to file
+	 * @param loop the loop.
+	 * @param windowHandle the window handle.
+	 * @param type the type to select the {@code element}.
+	 * @param element the name of the element(s).
+	 * @param attribute the attribute of the element, might be {@code null}.
 	 */
 	public ZestLoopTokenClientElementsSet(ZestLoopClientElements loop, String windowHandle, String type, 
 			String element, String attribute) {
@@ -45,7 +49,6 @@ public class ZestLoopTokenClientElementsSet extends ZestElement implements ZestL
 	/**
 	 * private method for initialization of the loop (TokenSet & first state).
 	 *
-	 * @param file the file
 	 * @return the zest loop token string set
 	 * @throws ZestClientFailException 
 	 */

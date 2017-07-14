@@ -30,7 +30,7 @@ public class ZestActionFailException extends Exception {
 	 * Instantiates a new zest action fail exception.
 	 *
 	 * @param action the action
-	 * @param message the message
+	 * @param cause the cause
 	 */
 	public ZestActionFailException (ZestAction action, Throwable cause) {
 		super(cause);

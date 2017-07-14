@@ -29,7 +29,7 @@ public class ZestClientFailException extends Exception {
 	 * Instantiates a new zest client fail exception.
 	 *
 	 * @param client the client
-	 * @param message the message
+	 * @param cause the cause
 	 */
 	public ZestClientFailException (ZestElement client, Throwable cause) {
 		super(cause);

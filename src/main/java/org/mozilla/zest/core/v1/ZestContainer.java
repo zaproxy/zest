@@ -54,7 +54,7 @@ public interface ZestContainer {
 	
 	/**
 	 * Returns all of the containers immediate children
-	 * @return
+	 * @return the children
 	 */
 	public List<ZestStatement> getChildren();
 	
