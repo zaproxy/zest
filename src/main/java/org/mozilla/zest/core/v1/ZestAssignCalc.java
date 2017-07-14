@@ -63,7 +63,7 @@ public class ZestAssignCalc extends ZestAssignment {
 		if (OPERAND_ADD.equals(operation)) {
 			return Integer.toString(operA + operB);
 		} else if (OPERAND_SUBTRACT.equals(operation)) {
-			return Integer.toString(operA + operB);
+			return Integer.toString(operA - operB);
 		} else if (OPERAND_MULTIPLY.equals(operation)) {
 			return Integer.toString(operA * operB);
 		} else if (OPERAND_DIVIDE.equals(operation)) {
