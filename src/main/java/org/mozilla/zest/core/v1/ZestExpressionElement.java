@@ -5,11 +5,6 @@ package org.mozilla.zest.core.v1;
 
 // TODO: Auto-generated Javadoc
 /**
- * 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
  * this interface represents a Conditional Element, such as a simple<br>
  * Coditional (based on regex, Status Code, ..) or a list of AND/OR<br>
  * clauses
