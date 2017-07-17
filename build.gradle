@@ -10,6 +10,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'application'
+apply plugin: 'jacoco'
 
 repositories {
     mavenLocal()
