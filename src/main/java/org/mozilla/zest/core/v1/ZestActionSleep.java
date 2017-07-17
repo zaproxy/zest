@@ -13,14 +13,14 @@ public class ZestActionSleep extends ZestAction {
 	private long milliseconds;
 	
 	/**
-	 * Instantiates a new zest action print.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 */
 	public ZestActionSleep() {
 		super();
 	}
 
 	/**
-	 * Instantiates a new zest action fail.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 *
 	 * @param index the index
 	 */
@@ -29,9 +29,9 @@ public class ZestActionSleep extends ZestAction {
 	}
 
 	/**
-	 * Instantiates a new zest action print.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 *
-	 * @param message the message
+	 * @param milliseconds the number of milliseconds to sleep.
 	 */
 	public ZestActionSleep(long milliseconds) {
 		super();

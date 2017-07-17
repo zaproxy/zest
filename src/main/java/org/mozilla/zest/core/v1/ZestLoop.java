@@ -52,8 +52,6 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	/**
 	 * Inits the Loop.
 	 * 
-	 * @param name
-	 *            the name of the variable
 	 * @param set
 	 *            the initialization token set
 	 * @param statements
@@ -65,7 +63,8 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	}
 	/**
 	 * inits the loop refreshing the current state to the first considered state
-	 * @param zestBasicRunner 
+	 * 
+	 * @param runtime the Zest runtime.
 	 */
 	public void init(ZestRuntime runtime){
 		this.runtime = runtime;
@@ -112,6 +111,7 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 * increase the current state (ignoring all the statements which are still
 	 * to be computed for this loop: a new one starts).
 	 * 
+	 * @param set the set of tokens to continue the loop.
 	 * @return the new state (of the following loop)
 	 */
 	protected boolean loop(ZestLoopTokenSet<T> set) {
@@ -120,6 +120,8 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 
 	/**
 	 * ends the loop and set the state to the final value.
+	 * 
+	 * @param set the set of tokens to end the loop.
 	 */
 	protected void endLoop(ZestLoopTokenSet<T> set) {
 		this.currentState.toLastState(set);
@@ -201,7 +203,6 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 
 	/**
 	 * returns the set of the tokens in this loop.
-	 * @param runtime 
 	 * 
 	 * @return the set of the tokens in this loop
 	 */

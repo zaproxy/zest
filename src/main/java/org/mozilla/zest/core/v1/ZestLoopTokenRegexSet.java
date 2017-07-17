@@ -3,7 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -31,10 +30,13 @@ public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenS
 	}
 
 	/**
-	 * Instantiates a new zest loop token file set.
-	 *
-	 * @param pathToFile the path to file
-	 * @throws FileNotFoundException the file not found exception
+	 * Instantiates a new {@code ZestLoopTokenRegexSet}.
+	 * 
+	 * @param loop the loop.
+	 * @param inputVariableName the name of the variable.
+	 * @param regex the regular expression.
+	 * @param group the group to get from the regular expression.
+	 * @param caseExact {@code true} if the match is case sensitive, {@code false} otherwise.
 	 */
 	public ZestLoopTokenRegexSet(ZestLoopRegex loop, String inputVariableName, String regex, int group, boolean caseExact) {
 		super();
@@ -48,10 +50,8 @@ public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenS
 	/**
 	 * private method for initialization of the loop (TokenSet & first state).
 	 *
-	 * @param file the file
 	 * @return the zest loop token string set
 	 * @throws ZestClientFailException 
-	 * @throws FileNotFoundException if the file does not exist
 	 */
 	protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
 		if(this.convertedSet == null){

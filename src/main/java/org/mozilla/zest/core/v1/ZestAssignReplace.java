@@ -16,13 +16,13 @@ public class ZestAssignReplace extends ZestAssignment {
 	private boolean caseExact = false;
 	
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 */
 	public ZestAssignReplace() {
 	}
 
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 *
 	 * @param variableName the variable name
 	 */
@@ -31,11 +31,13 @@ public class ZestAssignReplace extends ZestAssignment {
 	}
 
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 *
-	 * @param variableName the variable name
-	 * @param minInt the min int
-	 * @param maxInt the max int
+	 * @param variableName the name of the variable where to do the replacement.
+	 * @param replace what to replace.
+	 * @param replacement the replacement.
+	 * @param regex {@code true} if {@code replace} is a regular expression, {@code false} otherwise.
+	 * @param caseExact {@code true} if the replace match is case sensitive, {@code false} otherwise.
 	 */
 	public ZestAssignReplace(String variableName, String replace, String replacement, boolean regex, boolean caseExact) {
 		super(variableName);

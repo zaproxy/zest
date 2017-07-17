@@ -16,16 +16,18 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 	private String element = null;
 	
 	/**
-	 * Instantiates a new zest expression status code.
+	 * Instantiates a new {@code ZestExpressionClientElementExists}.
 	 */
 	public ZestExpressionClientElementExists() {
 		super();
 	}
 	
 	/**
-	 * Instantiates a new zest expression status code.
-	 *
-	 * @param code the code
+	 * Instantiates a new {@code ZestExpressionClientElementExists}.
+	 * 
+	 * @param windowHandle the window handle.
+	 * @param type the type of the expression.
+	 * @param element the element to check for existence.
 	 */
 	public ZestExpressionClientElementExists(String windowHandle, String type, String element) {
 		super();

@@ -502,7 +502,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	
 	/**
 	 * Returns a set containing all of the window handles defined in this script
-	 * @return
+	 * 
+	 * @return the window handles.
 	 */
 	public Set<String> getClientWindowHandles() {
 		Set<String> ids = new HashSet<String>();

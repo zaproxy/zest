@@ -36,8 +36,9 @@ public class ZestAssignCalc extends ZestAssignment {
 	 * Instantiates a new zest assign random integer.
 	 *
 	 * @param variableName the variable name
-	 * @param minInt the min int
-	 * @param maxInt the max int
+	 * @param operandA the right hand operand.
+	 * @param operation the operation.
+	 * @param operandB the left hand operand.
 	 */
 	public ZestAssignCalc(String variableName, String operandA, String operation, String operandB) {
 		super(variableName);

@@ -14,9 +14,6 @@ import org.mozilla.zest.core.v1.ZestResponse;
 
 public class ZestUtils {
 
-	/**
-	 * @param args
-	 */
 	public static List<String> getForms (ZestResponse response) {
 		List<String> list = new ArrayList<String>();
 		Source src = new Source(response.getHeaders() + response.getBody());
