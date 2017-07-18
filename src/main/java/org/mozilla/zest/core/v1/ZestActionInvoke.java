@@ -54,6 +54,7 @@ public class ZestActionInvoke extends ZestAction {
 	public ZestActionInvoke(String script, String variableName, List<String[]> parameters) {
 		super();
 		this.script = script;
+		this.variableName = variableName;
 		this.parameters = parameters;
 	}
 

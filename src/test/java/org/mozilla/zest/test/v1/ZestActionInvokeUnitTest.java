@@ -5,6 +5,7 @@ package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,20 @@ import org.mozilla.zest.core.v1.ZestResponse;
 /**
  */
 public class ZestActionInvokeUnitTest {
+
+	@Test
+	public void shouldUseArgsPassedInConstructor() throws Exception {
+		// Given
+		String script = "script.js";
+		String variable = "var";
+		List<String[]> parameters = new ArrayList<>();
+		// When
+		ZestActionInvoke invokeAction = new ZestActionInvoke(script, variable, parameters);
+		// Then
+		assertEquals(invokeAction.getScript(), script);
+		assertEquals(invokeAction.getVariableName(), variable);
+		assertEquals(invokeAction.getParameters(), parameters);
+	}
 
 	/**
 	 * Method testSimpleJsScript.
