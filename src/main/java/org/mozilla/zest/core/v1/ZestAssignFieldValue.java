@@ -71,6 +71,10 @@ public class ZestAssignFieldValue extends ZestAssignment {
 
 	@Override
 	public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
+		if (response == null) {
+			throw new ZestAssignFailException(this, "Null response");
+		}
+
 		Source src = new Source(response.getHeaders() + response.getBody());
 		List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
 
