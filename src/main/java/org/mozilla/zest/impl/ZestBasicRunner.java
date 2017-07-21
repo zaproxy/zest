@@ -34,6 +34,7 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.methods.TraceMethod;
+import org.apache.commons.httpclient.params.HttpClientParams;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
@@ -84,8 +85,21 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public ZestBasicRunner() {
 	}
 
+	public ZestBasicRunner(HttpClientParams params) {
+		setHttpClientParams(params);
+	}
+
+	public ZestBasicRunner(ScriptEngineFactory factory, HttpClientParams params) {
+		setHttpClientParams(params);
+		this.scriptEngineFactory = factory;
+	}
+
 	public ZestBasicRunner(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
+	}
+
+	public void setHttpClientParams(HttpClientParams params){
+		httpclient.setParams(params);
 	}
 
 	@Override
