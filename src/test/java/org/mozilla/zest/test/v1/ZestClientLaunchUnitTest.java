@@ -69,8 +69,12 @@ public class ZestClientLaunchUnitTest {
 	@Test
 	public void testHtmlUnitByClassLaunch() throws Exception {
 		ZestScript script = new ZestScript();
-		script.add(new ZestClientLaunch("htmlunit", "org.openqa.selenium.htmlunit.HtmlUnitDriver", 
-				"http://localhost:" + PORT + "/test"));
+		ZestClientLaunch cl = new ZestClientLaunch(
+				"htmlunit",
+				"org.openqa.selenium.htmlunit.HtmlUnitDriver",
+				"http://localhost:" + PORT + "/test");
+		cl.setCapabilities("browserName=htmlunit");
+		script.add(cl);
 		script.add(new ZestClientWindowClose("htmlunit", 0));
 	
 		ZestBasicRunner runner = new ZestBasicRunner();
