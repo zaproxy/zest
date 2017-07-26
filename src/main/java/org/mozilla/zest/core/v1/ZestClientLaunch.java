@@ -40,6 +40,7 @@ public class ZestClientLaunch extends ZestClient {
 		this.windowHandle = windowHandle;
 		this.browserType = browserType;
 		this.url = url;
+		this.capabilities = capabilities;
 	}
 
 	public ZestClientLaunch() {
