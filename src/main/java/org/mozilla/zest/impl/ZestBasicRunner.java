@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
@@ -557,8 +558,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			if (colonIndex > 0) {
 				header = line.substring(0, colonIndex);
 				value = line.substring(colonIndex + 1).trim();
-				if (!header.toLowerCase().startsWith("cookie")
-						&& !header.toLowerCase().startsWith("content-length")) {
+				String lcHeader = header.toLowerCase(Locale.ROOT);
+				if (!lcHeader.startsWith("cookie") && !lcHeader.startsWith("content-length")) {
 					method.addRequestHeader(new Header(header, value));
 				}
 			}
