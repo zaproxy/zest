@@ -54,6 +54,37 @@ public class ZestClientLaunchUnitTest {
 	}
 
 	@Test
+	public void shouldUseArgsPassedInConstructor() throws Exception {
+		// Given
+		String windowHandle = "windowHandle";
+		String browserType = "browserType";
+		String url = "url";
+		// When
+		ZestClientLaunch invokeAction = new ZestClientLaunch(windowHandle, browserType, url);
+		// Then
+		assertEquals(invokeAction.getWindowHandle(), windowHandle);
+		assertEquals(invokeAction.getBrowserType(), browserType);
+		assertEquals(invokeAction.getUrl(), url);
+		assertEquals(invokeAction.getCapabilities(), null);
+	}
+
+	@Test
+	public void shouldUseArgsPassedInConstructorWithCapabilities() throws Exception {
+		// Given
+		String windowHandle = "windowHandle";
+		String browserType = "browserType";
+		String url = "url";
+		String capabilities = "capability=value";
+		// When
+		ZestClientLaunch invokeAction = new ZestClientLaunch(windowHandle, browserType, url, capabilities);
+		// Then
+		assertEquals(invokeAction.getWindowHandle(), windowHandle);
+		assertEquals(invokeAction.getBrowserType(), browserType);
+		assertEquals(invokeAction.getUrl(), url);
+		assertEquals(invokeAction.getCapabilities(), capabilities);
+	}
+
+	@Test
 	public void testHtmlUnitLaunch() throws Exception {
 		ZestScript script = new ZestScript();
 		script.add(new ZestClientLaunch("htmlunit", "HtmlUnit", "http://localhost:" + PORT + "/test"));
