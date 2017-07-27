@@ -17,8 +17,8 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 group 'org.mozilla'
 version '0.13-SNAPSHOT'
@@ -30,7 +30,7 @@ dependencies {
              'com.google.code.gson:gson:2.2.2',
              'com.opera:operadriver:1.5',
              'com.github.detro.ghostdriver:phantomjsdriver:1.1.0',
-             'org.seleniumhq.selenium:selenium-server:2.43.0',
+             'org.seleniumhq.selenium:selenium-server:3.4.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
     testCompile('junit:junit:4.11')
