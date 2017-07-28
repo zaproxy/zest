@@ -432,13 +432,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			throws ZestAssertFailException, ZestActionFailException,
 			IOException, ZestInvalidCommonTestException,
 			ZestAssignFailException, ZestClientFailException {
-		BufferedReader fr = new BufferedReader(reader);
 		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = fr.readLine()) != null) {
-			sb.append(line);
+		try (BufferedReader fr = new BufferedReader(reader)) {
+			String line;
+			while ((line = fr.readLine()) != null) {
+				sb.append(line);
+			}
 		}
-		fr.close();
 		return run((ZestScript) ZestJSON.fromString(sb.toString()), params);
 	}
 
