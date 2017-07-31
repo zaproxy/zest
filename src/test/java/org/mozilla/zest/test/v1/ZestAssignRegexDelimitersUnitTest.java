@@ -6,6 +6,7 @@ package org.mozilla.zest.test.v1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,7 +131,7 @@ public class ZestAssignRegexDelimitersUnitTest {
 		ZestRequest req = new ZestRequest();
 		req.setResponse(resp);
 		
-		String zestString = IOUtils.toString(getClass().getResource("/data/assignRegexDelimiters-script.zest"));
+		String zestString = IOUtils.toString(getClass().getResource("/data/assignRegexDelimiters-script.zest"), StandardCharsets.UTF_8);
 		ZestScript zestScript = (ZestScript) ZestJSON.fromString(zestString);
 		
 		Map<String, String> map = new HashMap<>();
