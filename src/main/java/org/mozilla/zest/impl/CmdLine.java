@@ -128,14 +128,12 @@ public class CmdLine {
 		}
 
 		StringBuilder sb;
-		try {
-			BufferedReader fr = new BufferedReader(new FileReader(script));
+		try (BufferedReader fr = new BufferedReader(new FileReader(script))) {
 			sb = new StringBuilder();
 			String line;
 			while ((line = fr.readLine()) != null) {
 			    sb.append(line);
 			}
-			fr.close();
 		} catch (Exception e) {
 			error("Error reading file " + script.getAbsolutePath() + ": " + e);
 			return;

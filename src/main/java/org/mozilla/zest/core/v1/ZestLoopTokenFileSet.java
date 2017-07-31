@@ -42,18 +42,18 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
 	 * @throws FileNotFoundException if the file does not exist
 	 */
 	private ZestLoopTokenStringSet getConvertedSet(File file) throws FileNotFoundException {
-		if(this.convertedSet==null){
-		Scanner in = new Scanner(file);
-		ZestLoopTokenStringSet initializationSet = new ZestLoopTokenStringSet();
-		String line;
-		while (in.hasNextLine()) {
-			line = in.nextLine();
-			if (!line.startsWith("#") && !line.isEmpty()) {//discards commented and empty line
-				initializationSet.addToken(line);
+		if (this.convertedSet == null) {
+			try (Scanner in = new Scanner(file)) {
+				ZestLoopTokenStringSet initializationSet = new ZestLoopTokenStringSet();
+				String line;
+				while (in.hasNextLine()) {
+					line = in.nextLine();
+					if (!line.startsWith("#") && !line.isEmpty()) {// discards commented and empty line
+						initializationSet.addToken(line);
+					}
+				}
+				this.convertedSet = initializationSet;
 			}
-		}
-		in.close();
-		this.convertedSet=initializationSet;
 		}
 		return convertedSet;
 	}
