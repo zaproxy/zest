@@ -1,22 +1,27 @@
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.4.1"
+}
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.0.1'
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'application'
+apply plugin: 'jacoco'
 
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 group 'org.mozilla'
-version '0.13-SNAPSHOT'
+version '0.13'
 
 mainClassName = 'org.mozilla.zest.impl.CmdLine'
 
@@ -25,11 +30,10 @@ dependencies {
              'com.google.code.gson:gson:2.2.2',
              'com.opera:operadriver:1.5',
              'com.github.detro.ghostdriver:phantomjsdriver:1.1.0',
-             'org.seleniumhq.selenium:selenium-server:2.43.0',
+             'org.seleniumhq.selenium:selenium-server:3.4.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    testCompile('junit:junit:4.11',
-                'org.mockito:mockito-all:1.9.0')
+    testCompile('junit:junit:4.11')
 }
 
 jar {
@@ -41,6 +45,14 @@ jar {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    options.compilerArgs = [
+        // Enable all warnings,
+        '-Xlint:all',
+        // but allow to compile with newer Java versions.
+        '-Xlint:-options',
+        // Be strict, treat warnings as errors.
+        '-Werror'
+    ]
 }
 
 tasks.withType(Javadoc) {
@@ -50,6 +62,12 @@ tasks.withType(Javadoc) {
     }
     if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+spotless {
+    java {
+        licenseHeaderFile "$projectDir/gradle/spotless/license.java"
     }
 }
 

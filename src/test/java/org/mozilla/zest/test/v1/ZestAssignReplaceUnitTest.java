@@ -1,14 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignReplace;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -17,7 +14,6 @@ import org.mozilla.zest.core.v1.ZestVariables;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestAssignReplaceUnitTest {
 
 
@@ -66,4 +62,61 @@ public class ZestAssignReplaceUnitTest {
 		assertEquals(assign.isRegex(), assign2.isRegex());
 	}
 
+	@Test
+	public void shouldReplaceStringWithDifferentCaseWhenUsingPlainStringReplacementWithoutExactCase() throws Exception {
+		// Given
+		boolean regex = false;
+		boolean exactCase = false;
+		String varName = "VarName";
+		ZestAssignReplace assign = new ZestAssignReplace(varName, "XyZ", "123", regex, exactCase);
+		// When
+		String assignment = assign.assign(null, createRuntime(varName, "Xyz xyz"));
+		// Then
+		assertEquals(assignment, "123 123");
+	}
+
+	@Test
+	public void shouldReplaceStringWithDifferentCaseWhenUsingRegexReplacementWithoutExactCase() throws Exception {
+		// Given
+		boolean regex = true;
+		boolean exactCase = false;
+		String varName = "VarName";
+		ZestAssignReplace assign = new ZestAssignReplace(varName, "Xy[Z]", "123", regex, exactCase);
+		// When
+		String assignment = assign.assign(null, createRuntime(varName, "Xyz xyz"));
+		// Then
+		assertEquals(assignment, "123 123");
+	}
+
+	@Test
+	public void shouldReplaceStringWithExactCaseWhenUsingPlainStringReplacementWithExactCase() throws Exception {
+		// Given
+		boolean regex = false;
+		boolean exactCase = true;
+		String varName = "VarName";
+		ZestAssignReplace assign = new ZestAssignReplace(varName, "Xyz", "123", regex, exactCase);
+		// When
+		String assignment = assign.assign(null, createRuntime(varName, "Xyz xyz"));
+		// Then
+		assertEquals(assignment, "123 xyz");
+	}
+
+	@Test
+	public void shouldReplaceStringWithExactCaseWhenUsingRegexReplacementWithExactCase() throws Exception {
+		// Given
+		boolean regex = true;
+		boolean exactCase = true;
+		String varName = "VarName";
+		ZestAssignReplace assign = new ZestAssignReplace(varName, "Xy[z]", "123", regex, exactCase);
+		// When
+		String assignment = assign.assign(null, createRuntime(varName, "Xyz xyz"));
+		// Then
+		assertEquals(assignment, "123 xyz");
+	}
+
+	private static TestRuntime createRuntime(String varName, String varValue) {
+		TestRuntime runtime = new TestRuntime();
+		runtime.setVariable(varName, varValue);
+		return runtime;
+	}
 }

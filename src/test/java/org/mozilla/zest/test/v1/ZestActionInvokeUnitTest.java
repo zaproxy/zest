@@ -1,17 +1,16 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionInvoke;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -19,8 +18,21 @@ import org.mozilla.zest.core.v1.ZestResponse;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestActionInvokeUnitTest {
+
+	@Test
+	public void shouldUseArgsPassedInConstructor() throws Exception {
+		// Given
+		String script = "script.js";
+		String variable = "var";
+		List<String[]> parameters = new ArrayList<>();
+		// When
+		ZestActionInvoke invokeAction = new ZestActionInvoke(script, variable, parameters);
+		// Then
+		assertEquals(invokeAction.getScript(), script);
+		assertEquals(invokeAction.getVariableName(), variable);
+		assertEquals(invokeAction.getParameters(), parameters);
+	}
 
 	/**
 	 * Method testSimpleJsScript.
@@ -48,9 +60,7 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.js").getPath());
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"param", "PQRST"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("param", "PQRST")));
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -102,9 +112,7 @@ public class ZestActionInvokeUnitTest {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.zest").getPath());
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"param", "ZYXWV"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("param", "ZYXWV")));
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -114,15 +122,28 @@ public class ZestActionInvokeUnitTest {
 		assertEquals ("ZYXWV", rt.getVariable("test"));
 		
 	}
+	
+	@Test
+	public void shouldReplaceVariablesPassedAsParameters() throws Exception {
+		// Given
+		String varName = "VarName";
+		String varValue = "VarValue";
+		TestRuntime rt = new TestRuntime();
+		rt.setVariable(varName, varValue);
+		ZestActionInvoke inv = new ZestActionInvoke();
+		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/param-script.js").getPath());
+		inv.setParameters(params(param("param", "{{" + varName + "}}")));
+		// When
+		String result = inv.invoke(null, rt);
+		// Then
+		assertEquals(varValue, result);
+	}
 
 	@Test
 	public void testSerialization() {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
-		List<String[]> params = new ArrayList<String[]>();
-		params.add(new String [] {"first", "AAA"});
-		params.add(new String [] {"second", "BBB"});
-		inv.setParameters(params);
+		inv.setParameters(params(param("first", "AAA"), param("second", "BBB")));
 		
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/simple-script.js").getPath());
 		
@@ -142,4 +163,14 @@ public class ZestActionInvokeUnitTest {
 		}
 	}
 
+	private static String[] param(String parameterName, String parameterValue) {
+		return new String[] { parameterName, parameterValue };
+	}
+
+	private static List<String[]> params(String[]... parameters) {
+		if (parameters == null || parameters.length == 0) {
+			return Collections.emptyList();
+		}
+		return Arrays.asList(parameters);
+	}
 }

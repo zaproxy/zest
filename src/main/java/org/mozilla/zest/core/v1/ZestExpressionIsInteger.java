@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 /**
@@ -29,9 +28,7 @@ public class ZestExpressionIsInteger extends ZestExpression{
 		this.variableName = variableName;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		String str = runtime.getVariable(variableName);		
 		if (str == null) {
@@ -64,17 +61,11 @@ public class ZestExpressionIsInteger extends ZestExpression{
 		this.variableName = variableName;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
-	 */
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionIsInteger deepCopy() {
 		return new ZestExpressionIsInteger(this.getVariableName());

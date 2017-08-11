@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.impl;
 
 import org.mozilla.zest.core.v1.ZestAction;
@@ -187,7 +186,7 @@ public class ZestPrinter {
 			if (stmt instanceof ZestLoopString) {
 				ZestLoopString loopString = (ZestLoopString) loop;
 				System.out.print("FOR tokens IN [");
-				ZestLoopTokenStringSet set = (ZestLoopTokenStringSet) loopString.getSet();
+				ZestLoopTokenStringSet set = loopString.getSet();
 				for (int i = 0; i < set.size() - 1; i++) {
 					System.out.print(set.getToken(i) + ",");
 				}

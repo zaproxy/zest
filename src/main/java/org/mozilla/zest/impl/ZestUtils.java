@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.impl;
 
 import java.util.ArrayList;
@@ -15,9 +14,6 @@ import org.mozilla.zest.core.v1.ZestResponse;
 
 public class ZestUtils {
 
-	/**
-	 * @param args
-	 */
 	public static List<String> getForms (ZestResponse response) {
 		List<String> list = new ArrayList<String>();
 		Source src = new Source(response.getHeaders() + response.getBody());

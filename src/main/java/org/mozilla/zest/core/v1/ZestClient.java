@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
@@ -29,17 +28,11 @@ public abstract class ZestClient extends ZestStatement {
 
 	public abstract String invoke(ZestRuntime runtime) throws ZestClientFailException;
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestClient;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
 	@Override
 	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		// Ignore

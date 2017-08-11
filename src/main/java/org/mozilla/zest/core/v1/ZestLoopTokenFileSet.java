@@ -1,10 +1,6 @@
-/**
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Alessandro Secco: seccoale@gmail.com
- */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
 import java.io.File;
@@ -46,18 +42,18 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
 	 * @throws FileNotFoundException if the file does not exist
 	 */
 	private ZestLoopTokenStringSet getConvertedSet(File file) throws FileNotFoundException {
-		if(this.convertedSet==null){
-		Scanner in = new Scanner(file);
-		ZestLoopTokenStringSet initializationSet = new ZestLoopTokenStringSet();
-		String line;
-		while (in.hasNextLine()) {
-			line = in.nextLine();
-			if (!line.startsWith("#") && !line.isEmpty()) {//discards commented and empty line
-				initializationSet.addToken(line);
+		if (this.convertedSet == null) {
+			try (Scanner in = new Scanner(file)) {
+				ZestLoopTokenStringSet initializationSet = new ZestLoopTokenStringSet();
+				String line;
+				while (in.hasNextLine()) {
+					line = in.nextLine();
+					if (!line.startsWith("#") && !line.isEmpty()) {// discards commented and empty line
+						initializationSet.addToken(line);
+					}
+				}
+				this.convertedSet = initializationSet;
 			}
-		}
-		in.close();
-		this.convertedSet=initializationSet;
 		}
 		return convertedSet;
 	}

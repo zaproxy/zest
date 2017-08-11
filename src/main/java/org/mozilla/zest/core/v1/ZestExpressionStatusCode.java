@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 
@@ -31,9 +30,7 @@ public class ZestExpressionStatusCode extends ZestExpression {
 		this.code=code;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		ZestResponse response = runtime.getLastResponse();
 		if (response == null) {
@@ -60,9 +57,6 @@ public class ZestExpressionStatusCode extends ZestExpression {
 		this.code = code;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionStatusCode deepCopy() {
 		ZestExpressionStatusCode copy = new ZestExpressionStatusCode();
@@ -70,9 +64,6 @@ public class ZestExpressionStatusCode extends ZestExpression {
 		return copy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"Status Code: "+code;

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 
@@ -14,14 +13,14 @@ public class ZestActionSleep extends ZestAction {
 	private long milliseconds;
 	
 	/**
-	 * Instantiates a new zest action print.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 */
 	public ZestActionSleep() {
 		super();
 	}
 
 	/**
-	 * Instantiates a new zest action fail.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 *
 	 * @param index the index
 	 */
@@ -30,26 +29,21 @@ public class ZestActionSleep extends ZestAction {
 	}
 
 	/**
-	 * Instantiates a new zest action print.
+	 * Instantiates a new {@code ZestActionSleep}.
 	 *
-	 * @param message the message
+	 * @param milliseconds the number of milliseconds to sleep.
 	 */
 	public ZestActionSleep(long milliseconds) {
 		super();
 		this.milliseconds = milliseconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestActionSleep;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
 		try {
 			Thread.sleep(milliseconds);
@@ -68,9 +62,6 @@ public class ZestActionSleep extends ZestAction {
 		this.milliseconds = milliseconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionSleep deepCopy() {
 		ZestActionSleep copy = new ZestActionSleep(this.getIndex());
@@ -79,9 +70,6 @@ public class ZestActionSleep extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return true;

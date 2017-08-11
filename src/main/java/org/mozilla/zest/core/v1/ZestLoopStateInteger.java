@@ -1,10 +1,6 @@
-/**
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Alessandro Secco: seccoale@gmail.com
- */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
 /**
@@ -47,15 +43,6 @@ public class ZestLoopStateInteger extends ZestLoopState<Integer> {
 		copy.setCurrentToken(this.getCurrentToken());
 		copy.setIndex(this.getCurrentIndex());
 		return copy;
-	}
-
-	@Override
-	public boolean equals(Object otherObject) {
-		if (otherObject instanceof ZestLoopStateInteger) {
-			ZestLoopStateInteger otherState = (ZestLoopStateInteger) otherObject;
-			return super.equals(otherState);
-		}
-		return false;
 	}
 
 }

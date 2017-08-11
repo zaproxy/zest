@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 /**
@@ -37,8 +36,9 @@ public class ZestAssignCalc extends ZestAssignment {
 	 * Instantiates a new zest assign random integer.
 	 *
 	 * @param variableName the variable name
-	 * @param minInt the min int
-	 * @param maxInt the max int
+	 * @param operandA the right hand operand.
+	 * @param operation the operation.
+	 * @param operandB the left hand operand.
 	 */
 	public ZestAssignCalc(String variableName, String operandA, String operation, String operandB) {
 		super(variableName);
@@ -47,9 +47,6 @@ public class ZestAssignCalc extends ZestAssignment {
 		this.operandB = operandB;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		int operA;
@@ -67,7 +64,7 @@ public class ZestAssignCalc extends ZestAssignment {
 		if (OPERAND_ADD.equals(operation)) {
 			return Integer.toString(operA + operB);
 		} else if (OPERAND_SUBTRACT.equals(operation)) {
-			return Integer.toString(operA + operB);
+			return Integer.toString(operA - operB);
 		} else if (OPERAND_MULTIPLY.equals(operation)) {
 			return Integer.toString(operA * operB);
 		} else if (OPERAND_DIVIDE.equals(operation)) {
@@ -76,9 +73,6 @@ public class ZestAssignCalc extends ZestAssignment {
 		throw new ZestAssignFailException(this, "Invalid operation");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignCalc deepCopy() {
 		ZestAssignCalc copy = new ZestAssignCalc(this.getVariableName(), operandA, operation, operandB);

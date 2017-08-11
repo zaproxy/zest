@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import org.openqa.selenium.By;
@@ -17,16 +16,18 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 	private String element = null;
 	
 	/**
-	 * Instantiates a new zest expression status code.
+	 * Instantiates a new {@code ZestExpressionClientElementExists}.
 	 */
 	public ZestExpressionClientElementExists() {
 		super();
 	}
 	
 	/**
-	 * Instantiates a new zest expression status code.
-	 *
-	 * @param code the code
+	 * Instantiates a new {@code ZestExpressionClientElementExists}.
+	 * 
+	 * @param windowHandle the window handle.
+	 * @param type the type of the expression.
+	 * @param element the element to check for existence.
 	 */
 	public ZestExpressionClientElementExists(String windowHandle, String type, String element) {
 		super();
@@ -59,9 +60,7 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 		this.element = element;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 		
@@ -94,9 +93,6 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 		return wd.findElements(by).size() > 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionClientElementExists deepCopy() {
 		return new ZestExpressionClientElementExists(this.windowHandle, this.getType(), this.getElement());

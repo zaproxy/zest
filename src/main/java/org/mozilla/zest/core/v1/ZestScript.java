@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
@@ -139,9 +138,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return type;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestScript deepCopy() {
 		ZestScript script = new ZestScript();
@@ -206,9 +202,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		checkStatementIndexes();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#move(int, org.mozilla.zest.core.v1.ZestStatement)
-	 */
+	@Override
 	public void move(int index, ZestStatement req) {
 		this.remove(req);
 		this.add(index, req);
@@ -236,9 +230,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		checkStatementIndexes();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getStatement(int)
-	 */
+	@Override
 	public ZestStatement getStatement (int index) {
 		checkStatementIndexes();
 		for (ZestStatement zr : this.getStatements()) {
@@ -301,6 +293,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return statements;
 	}
 
+	@Override
 	public List<ZestStatement> getChildren() {
 		return Collections.unmodifiableList(this.getStatements());
 	}
@@ -369,9 +362,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		this.setPrefix(this.prefix, newPrefix);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#setPrefix(java.lang.String, java.lang.String)
-	 */
+	@Override
 	public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
 		if (newPrefix != null && newPrefix.length() > 0) {
 			for (ZestStatement stmt : this.statements) {
@@ -474,9 +465,6 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		this.author = author;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#getTokens(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public Set<String> getVariableNames() {
 		Set<String> tokens = new HashSet<String>();
@@ -514,7 +502,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	
 	/**
 	 * Returns a set containing all of the window handles defined in this script
-	 * @return
+	 * 
+	 * @return the window handles.
 	 */
 	public Set<String> getClientWindowHandles() {
 		Set<String> ids = new HashSet<String>();
@@ -530,25 +519,16 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return ids;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getIndex(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public int getIndex (ZestStatement child) {
 		return this.statements.indexOf(child);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getLast()
-	 */
 	@Override
 	public ZestStatement getLast() {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestContainer#getChildBefore(org.mozilla.zest.core.v1.ZestStatement)
-	 */
 	@Override
 	public ZestStatement getChildBefore(ZestStatement child) {
 		if (this.statements.contains(child)) {
@@ -560,12 +540,9 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
-		return Type.Passive.equals(this.getType());
+		return this.getType() != null && Type.Passive.equals(Type.valueOf(this.getType()));
 	}
 
 	private void checkStatementIndexes() {

@@ -8,11 +8,6 @@ import java.util.List;
 
 // TODO: Auto-generated Javadoc
 /**
- * 
- /* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file, You
- * can obtain one at http://mozilla.org/MPL/2.0/.
- * 
  * This class represent a List of AND clauses
  * 
  * @author Alessandro Secco: seccoale@gmail.com
@@ -36,9 +31,6 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		super(andList);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionAnd deepCopy() {
 		List<ZestExpressionElement> copyChildren = new LinkedList<>();
@@ -51,9 +43,6 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		if(getChildrenCondition().isEmpty()){
@@ -69,19 +58,21 @@ public class ZestExpressionAnd extends ZestStructuredExpression{
 		return toReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		if(this.getChildrenCondition()== null || this.getChildrenCondition().isEmpty()){
 			return "Empty AND";
 		}
-		String expression=(isInverse()?"NOT (":"(");
-		for(int i=0; i<this.getChildrenCondition().size()-1; i++){
-			expression += " "+this.getChild(i).toString()+" AND";
+		StringBuilder expression = new StringBuilder(150);
+		if (isInverse()) {
+			expression.append("NOT ");
 		}
-		expression+=this.getChild(this.getChildrenCondition().size()-1).toString()+")";
-		return expression;
+		expression.append('(');
+		int i = 0;
+		for (; i < this.getChildrenCondition().size() - 1; i++) {
+			expression.append(this.getChild(i).toString()).append(" AND ");
+		}
+		expression.append(this.getChild(i).toString()).append(')');
+		return expression.toString();
 	}
 }

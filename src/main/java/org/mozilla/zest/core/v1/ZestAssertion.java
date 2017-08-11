@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 
@@ -63,20 +62,13 @@ public class ZestAssertion extends ZestElement{
 		return rootExpression.evaluate(runtime);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestAssertion;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestElement deepCopy() {
-		ZestExpressionElement copy_root_expr=(ZestExpressionElement)rootExpression.deepCopy();
-		return new ZestAssertion(copy_root_expr);
+		return new ZestAssertion(rootExpression.deepCopy());
 	}
 }

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.io.BufferedReader;
@@ -48,27 +47,24 @@ public class ZestActionInvoke extends ZestAction {
 	/**
 	 * Instantiates a new zest action invoke.
 	 *
-	 * @param message the message
+	 * @param script the name of the script or process to invoke.
+	 * @param variableName the name of the variable to assign the result of the invocation.
+	 * @param parameters the parameters for the script or the process.
 	 */
 	public ZestActionInvoke(String script, String variableName, List<String[]> parameters) {
 		super();
 		this.script = script;
+		this.variableName = variableName;
 		this.parameters = parameters;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#isSameSubclass(org.mozilla.zest.core.v1.ZestElement)
-	 */
 	@Override
 	public boolean isSameSubclass(ZestElement ze) {
 		return ze instanceof ZestActionInvoke;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAction#invoke(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
-		ScriptEngine engine = null;
 		File f = new File(this.script);
 		if (! f.exists()) {
 			throw new ZestActionFailException(this, "No such file: " + f.getAbsolutePath());
@@ -77,16 +73,32 @@ public class ZestActionInvoke extends ZestAction {
 			throw new ZestActionFailException(this, "Is a directory: " + f.getAbsolutePath());
 		}
 		
-		// Check for Zest scripts first - on Windows standard files often have execute perms
+		// Check for scripts first - on Windows standard files often have execute perms
 		String ext = null;
 		if (this.script.indexOf(".") > 0) {
 			ext = this.script.substring(this.script.lastIndexOf(".") + 1);
 		}
 		
-		if (ext != null && (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst"))) {
-			// Its a Zest script
-			engine = runtime.getScriptEngineFactory().getScriptEngine();
-		} else if (f.canExecute()) {
+		ScriptEngine engine = null;
+		if (ext != null) {
+			if (ext.equalsIgnoreCase("zest") || ext.equalsIgnoreCase("zst")) {
+				// Its a Zest script
+				engine = runtime.getScriptEngineFactory().getScriptEngine();
+			} else {
+				engine = new ScriptEngineManager().getEngineByName(ext);
+			}
+		}
+
+		if (engine == null) {
+			if (!f.canExecute()) {
+				if (ext != null) {
+					throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
+				}
+				throw new ZestActionFailException(
+						this,
+						"Script is not executable and does not have an extension: " + f.getAbsolutePath());
+			}
+
 			// Its executable - just run directly
 			try {
 				StringBuilder sb = new StringBuilder();
@@ -100,7 +112,7 @@ public class ZestActionInvoke extends ZestAction {
 					cmdarray[0] = f.getAbsolutePath();
 					int i=1;
 					for (String[] kvPair : this.parameters) {
-						cmdarray[i] = kvPair[0] + "=" + kvPair[1];
+						cmdarray[i] = kvPair[0] + "=" + runtime.replaceVariablesInString(kvPair[1], false);
 					}
 				}
 				Process p = new ProcessBuilder(cmdarray).redirectErrorStream(true).start();
@@ -119,29 +131,20 @@ public class ZestActionInvoke extends ZestAction {
 			} catch (Exception e) {
 				throw new ZestActionFailException(this, e);
 			}
-		} else if (ext != null) {
-			engine = new ScriptEngineManager().getEngineByName(ext);
-		} else { 
-			// Nothing to go on
-			throw new ZestActionFailException(this, "Script is not executable and does not have an extension: " + f.getAbsolutePath());
-		}
-		
-		if (engine == null) {
-			throw new ZestActionFailException(this, "Unknown script engine for extension: " + ext);
 		}
 		
 		// Set the same writer so that output not lost
 		engine.getContext().setWriter(runtime.getScriptEngineFactory().getScriptEngine().getContext().getWriter());
 		
-		try {
+		try (FileReader fr = new FileReader(f)) {
 			Bindings bindings = engine.createBindings();
 			if (this.parameters != null) {
 				for (String[] kvPair : this.parameters) {
-					bindings.put(kvPair[0], kvPair[1]);
+					bindings.put(kvPair[0], runtime.replaceVariablesInString(kvPair[1], false));
 				}
 			}
 
-			Object result =  engine.eval(new FileReader(f), bindings);
+			Object result =  engine.eval(fr, bindings);
 			if (result == null) {
 				return null;
 			}
@@ -177,9 +180,6 @@ public class ZestActionInvoke extends ZestAction {
 		this.parameters = parameters;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#deepCopy()
-	 */
 	@Override
 	public ZestActionInvoke deepCopy() {
 		ZestActionInvoke copy = new ZestActionInvoke(this.getIndex());
@@ -193,9 +193,6 @@ public class ZestActionInvoke extends ZestAction {
 		return copy;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestStatement#isPassive()
-	 */
 	@Override
 	public boolean isPassive() {
 		return false;

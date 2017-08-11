@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.util.ArrayList;
@@ -44,9 +43,7 @@ public class ZestExpressionURL extends ZestExpression {
 		this.setExcludeRegexes(excludeRegexes);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public boolean isTrue(ZestRuntime runtime) {
 		ZestRequest req = runtime.getLastRequest();
 		if (req == null) {
@@ -135,9 +132,6 @@ public class ZestExpressionURL extends ZestExpression {
 		this.excludePatterns = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionURL deepCopy() {
 		ZestExpressionURL copy = new ZestExpressionURL();
@@ -148,19 +142,20 @@ public class ZestExpressionURL extends ZestExpression {
 		return copy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
-		String expression=(isInverse()?"NOT ":"")+"URL: ACCEPT:";
+		StringBuilder expression = new StringBuilder(150);
+		if (isInverse()) {
+			expression.append("NOT ");
+		}
+		expression.append("URL: ACCEPT:");
 		for(String s:includeRegexes){
-			expression+=" "+s;
+			expression.append(' ').append(s);
 		}
-		expression+=", EXCLUDE:";
+		expression.append(", EXCLUDE:");
 		for(String s:excludeRegexes){
-			expression+=s+" ";
+			expression.append(' ').append(s);
 		}
-		return expression;
+		return expression.toString();
 	}
 }

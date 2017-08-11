@@ -20,18 +20,22 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 	
 	private ZestRunner runner = new ZestBasicRunner(this);
 	
+	@Override
 	public String getEngineName () {
 		return NAME;
 	}
 
+	@Override
 	public String getEngineVersion () {
 		return "1.0";
 	}
 
+	@Override
 	public String getLanguageName () {
 		return "Zest";
 	}
 
+	@Override
 	public String getLanguageVersion () {
 		return ZestScript.VERSION;
 	}

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.security.SecureRandom;
@@ -49,18 +48,12 @@ public class ZestAssignRandomInteger extends ZestAssignment {
 		this.maxInt = maxInt;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		int val = minInt + rnd.nextInt(maxInt - minInt);
 		return Integer.toString(val);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignRandomInteger deepCopy() {
 		ZestAssignRandomInteger copy = new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);

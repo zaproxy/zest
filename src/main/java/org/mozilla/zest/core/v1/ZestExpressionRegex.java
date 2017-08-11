@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.util.regex.Pattern;
@@ -64,15 +63,13 @@ public class ZestExpressionRegex extends ZestExpression{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isTrue(org.mozilla.zest.core.v1.ZestResponse)
-	 */
+	@Override
 	public boolean isTrue (ZestRuntime runtime) {
 		String str = runtime.getVariable(variableName);		
-		if (str == null) {
+		if (str == null || regex == null) {
 			return false;
 		}
-		if (pattern == null && regex != null) {
+		if (pattern == null) {
 			if (caseExact) {
 				this.pattern = Pattern.compile(regex);
 			} else {
@@ -117,7 +114,7 @@ public class ZestExpressionRegex extends ZestExpression{
 	 */
 	public void setRegex(String regex) {
 		this.regex = regex;
-		this.pattern = Pattern.compile(regex);
+		this.pattern = regex != null ? Pattern.compile(regex) : null;
 	}
 
 
@@ -139,25 +136,16 @@ public class ZestExpressionRegex extends ZestExpression{
 		this.caseExact = caseExact;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#isLeaf()
-	 */
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpression#deepCopy()
-	 */
 	@Override
 	public ZestExpressionRegex deepCopy() {
 		return new ZestExpressionRegex(this.getVariableName(), this.getRegex(), this.isCaseExact(), this.isInverse());
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		String expression=(isInverse()?"NOT ":"")+"REGEX: "+regex;

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.io.IOException;
@@ -221,7 +220,8 @@ public interface ZestRunner {
 	
 	/**
 	 * Reports if debugging is enabled
-	 * @return
+	 * 
+	 * @return {@code true} if debug is enabled, {@code false} otherwise.
 	 */
 	boolean isDebug ();
 	

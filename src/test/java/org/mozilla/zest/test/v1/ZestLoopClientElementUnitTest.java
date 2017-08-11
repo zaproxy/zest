@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
@@ -14,8 +13,6 @@ import java.net.InetSocketAddress;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionPrint;
 import org.mozilla.zest.core.v1.ZestClientLaunch;
 import org.mozilla.zest.core.v1.ZestClientWindowClose;
@@ -30,7 +27,6 @@ import com.sun.net.httpserver.HttpServer;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopClientElementUnitTest {
 
 	private static final int PORT = 8888;

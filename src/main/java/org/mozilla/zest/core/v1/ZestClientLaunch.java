@@ -40,6 +40,7 @@ public class ZestClientLaunch extends ZestClient {
 		this.windowHandle = windowHandle;
 		this.browserType = browserType;
 		this.url = url;
+		this.capabilities = capabilities;
 	}
 
 	public ZestClientLaunch() {
@@ -90,6 +91,7 @@ public class ZestClientLaunch extends ZestClient {
 		return false;
 	}
 
+	@Override
 	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
 		try {
@@ -120,7 +122,7 @@ public class ZestClientLaunch extends ZestClient {
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
 				driver = new ChromeDriver(cap); 
 			} else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
-				driver = new HtmlUnitDriver(cap); 
+				driver = new HtmlUnitDriver(DesiredCapabilities.htmlUnit().merge(cap)); 
 			} else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
 				driver = new InternetExplorerDriver(cap); 
 			} else if ("Opera".equalsIgnoreCase(this.browserType)) {

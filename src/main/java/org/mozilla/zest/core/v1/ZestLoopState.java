@@ -1,10 +1,6 @@
-/**
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Alessandro Secco: seccoale@gmail.com
- */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
 // TODO: Auto-generated Javadoc
@@ -131,12 +127,36 @@ public abstract class ZestLoopState<T> extends ZestElement {
 	}
 
 	@Override
-	public boolean equals(Object otherObject) {
-		if (otherObject instanceof ZestLoopState<?>) {
-			ZestLoopState<?> otherState = (ZestLoopState<?>) otherObject;
-			return this.currentIndex == otherState.currentIndex
-					&& this.currentToken.equals(otherState.currentToken);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + currentIndex;
+		result = prime * result + ((currentToken == null) ? 0 : currentToken.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
 		}
-		return false;
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ZestLoopState<?> other = (ZestLoopState<?>) obj;
+		if (currentIndex != other.currentIndex) {
+			return false;
+		}
+		if (currentToken == null) {
+			if (other.currentToken != null) {
+				return false;
+			}
+		} else if (!currentToken.equals(other.currentToken)) {
+			return false;
+		}
+		return true;
 	}
 }

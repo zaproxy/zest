@@ -1,8 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
+
+import java.util.regex.Pattern;
 
 /**
  * The Class ZestAssignString assigns a string (which can include other variables) to the specified variable.
@@ -15,13 +16,13 @@ public class ZestAssignReplace extends ZestAssignment {
 	private boolean caseExact = false;
 	
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 */
 	public ZestAssignReplace() {
 	}
 
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 *
 	 * @param variableName the variable name
 	 */
@@ -30,11 +31,13 @@ public class ZestAssignReplace extends ZestAssignment {
 	}
 
 	/**
-	 * Instantiates a new zest assign random integer.
+	 * Instantiates a new {@code ZestAssignReplace}.
 	 *
-	 * @param variableName the variable name
-	 * @param minInt the min int
-	 * @param maxInt the max int
+	 * @param variableName the name of the variable where to do the replacement.
+	 * @param replace what to replace.
+	 * @param replacement the replacement.
+	 * @param regex {@code true} if {@code replace} is a regular expression, {@code false} otherwise.
+	 * @param caseExact {@code true} if the replace match is case sensitive, {@code false} otherwise.
 	 */
 	public ZestAssignReplace(String variableName, String replace, String replacement, boolean regex, boolean caseExact) {
 		super(variableName);
@@ -44,9 +47,6 @@ public class ZestAssignReplace extends ZestAssignment {
 		this.caseExact = caseExact;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestTransformation#transform(org.mozilla.zest.core.v1.ZestRunner, org.mozilla.zest.core.v1.ZestRequest)
-	 */
 	@Override
 	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
 		String var = runtime.getVariable(getVariableName());
@@ -54,21 +54,17 @@ public class ZestAssignReplace extends ZestAssignment {
 			return null;
 		}
 		String orig = runtime.replaceVariablesInString(var, false);
-		// TODO handle caseExact/ignore
-		if (regex) {
-			try {
-				return orig.replaceAll(replace, replacement);
-			} catch (Exception e) {
-				throw new ZestAssignFailException (this, e.getMessage());
-			}
-		} else {
-			return orig.replace(this.replace, this.replacement);
+		try {
+			return createPattern().matcher(orig).replaceAll(replacement);
+		} catch (Exception e) {
+			throw new ZestAssignFailException (this, e.getMessage());
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
+	private Pattern createPattern() {
+		return Pattern.compile(regex ? replace : Pattern.quote(replace), caseExact ? 0 : Pattern.CASE_INSENSITIVE);
+	}
+
 	@Override
 	public ZestAssignReplace deepCopy() {
 		ZestAssignReplace copy = new ZestAssignReplace(this.getVariableName(), this.replace, this.replacement, this.regex, this.caseExact);

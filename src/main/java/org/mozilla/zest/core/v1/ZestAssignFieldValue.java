@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.util.List;
@@ -45,9 +44,6 @@ public class ZestAssignFieldValue extends ZestAssignment {
 		this.fieldDefinition = fieldDefinition;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
 	@Override
 	public ZestAssignFieldValue deepCopy() {
 		ZestAssignFieldValue copy = new ZestAssignFieldValue(this.getVariableName(), this.fieldDefinition.deepCopy());
@@ -73,11 +69,12 @@ public class ZestAssignFieldValue extends ZestAssignment {
 		this.fieldDefinition = fieldDefinition;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestAssignment#assign(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
+		if (response == null) {
+			throw new ZestAssignFailException(this, "Null response");
+		}
+
 		Source src = new Source(response.getHeaders() + response.getBody());
 		List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
 

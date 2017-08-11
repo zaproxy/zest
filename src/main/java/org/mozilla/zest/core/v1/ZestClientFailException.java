@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 /**
@@ -30,7 +29,7 @@ public class ZestClientFailException extends Exception {
 	 * Instantiates a new zest client fail exception.
 	 *
 	 * @param client the client
-	 * @param message the message
+	 * @param cause the cause
 	 */
 	public ZestClientFailException (ZestElement client, Throwable cause) {
 		super(cause);

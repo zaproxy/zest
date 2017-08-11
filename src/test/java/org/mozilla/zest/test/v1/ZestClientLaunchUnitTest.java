@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
@@ -13,8 +12,6 @@ import java.net.InetSocketAddress;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionSleep;
 import org.mozilla.zest.core.v1.ZestClientFailException;
 import org.mozilla.zest.core.v1.ZestClientLaunch;
@@ -29,7 +26,6 @@ import com.sun.net.httpserver.HttpServer;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestClientLaunchUnitTest {
 
 	private static final int PORT = 8888;
@@ -58,6 +54,37 @@ public class ZestClientLaunchUnitTest {
 	}
 
 	@Test
+	public void shouldUseArgsPassedInConstructor() throws Exception {
+		// Given
+		String windowHandle = "windowHandle";
+		String browserType = "browserType";
+		String url = "url";
+		// When
+		ZestClientLaunch invokeAction = new ZestClientLaunch(windowHandle, browserType, url);
+		// Then
+		assertEquals(invokeAction.getWindowHandle(), windowHandle);
+		assertEquals(invokeAction.getBrowserType(), browserType);
+		assertEquals(invokeAction.getUrl(), url);
+		assertEquals(invokeAction.getCapabilities(), null);
+	}
+
+	@Test
+	public void shouldUseArgsPassedInConstructorWithCapabilities() throws Exception {
+		// Given
+		String windowHandle = "windowHandle";
+		String browserType = "browserType";
+		String url = "url";
+		String capabilities = "capability=value";
+		// When
+		ZestClientLaunch invokeAction = new ZestClientLaunch(windowHandle, browserType, url, capabilities);
+		// Then
+		assertEquals(invokeAction.getWindowHandle(), windowHandle);
+		assertEquals(invokeAction.getBrowserType(), browserType);
+		assertEquals(invokeAction.getUrl(), url);
+		assertEquals(invokeAction.getCapabilities(), capabilities);
+	}
+
+	@Test
 	public void testHtmlUnitLaunch() throws Exception {
 		ZestScript script = new ZestScript();
 		script.add(new ZestClientLaunch("htmlunit", "HtmlUnit", "http://localhost:" + PORT + "/test"));
@@ -73,8 +100,12 @@ public class ZestClientLaunchUnitTest {
 	@Test
 	public void testHtmlUnitByClassLaunch() throws Exception {
 		ZestScript script = new ZestScript();
-		script.add(new ZestClientLaunch("htmlunit", "org.openqa.selenium.htmlunit.HtmlUnitDriver", 
-				"http://localhost:" + PORT + "/test"));
+		ZestClientLaunch cl = new ZestClientLaunch(
+				"htmlunit",
+				"org.openqa.selenium.htmlunit.HtmlUnitDriver",
+				"http://localhost:" + PORT + "/test");
+		cl.setCapabilities("browserName=htmlunit");
+		script.add(cl);
 		script.add(new ZestClientWindowClose("htmlunit", 0));
 	
 		ZestBasicRunner runner = new ZestBasicRunner();

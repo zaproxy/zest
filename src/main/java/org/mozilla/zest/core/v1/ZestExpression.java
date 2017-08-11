@@ -20,31 +20,21 @@ public abstract class ZestExpression extends ZestElement implements
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isLeaf()
-	 */
 	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#isInverse()
-	 */
+	@Override
 	public boolean isInverse() {
 		return not;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#setInverse(boolean)
-	 */
+	@Override
 	public void setInverse(boolean not) {
 		this.not = not;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestExpressionElement#evaluate(org.mozilla.zest.core.v1.ZestResponse)
-	 */
 	@Override
 	public boolean evaluate(ZestRuntime runtime) {
 		boolean toReturn = isTrue(runtime);
@@ -60,8 +50,6 @@ public abstract class ZestExpression extends ZestElement implements
 	// return counter;
 	// }
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.zest.core.v1.ZestElement#deepCopy()
-	 */
+	@Override
 	public abstract ZestExpression deepCopy();
 }

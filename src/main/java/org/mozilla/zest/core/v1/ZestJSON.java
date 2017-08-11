@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.core.v1;
 
 import java.lang.reflect.Type;
@@ -32,7 +31,7 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 	 * @return the string
 	 */
 	public static String toString(ZestElement element) {
-		return getGson().toJson(element).toString();
+		return getGson().toJson(element);
 	}
 	
 	/**
@@ -74,9 +73,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return gson;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
-	 */
 	@Override
 	public ZestElement deserialize(JsonElement element, Type rawType,
 			JsonDeserializationContext arg2) throws JsonParseException {
@@ -97,9 +93,6 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
-	 */
 	@Override
 	public JsonElement serialize(ZestElement element, Type rawType,
 			JsonSerializationContext context) {

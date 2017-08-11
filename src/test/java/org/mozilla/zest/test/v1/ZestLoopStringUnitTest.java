@@ -1,10 +1,6 @@
-/**
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
- * @author Alessandro Secco: seccoale@gmail.com
- */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
@@ -16,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestActionFail;
 import org.mozilla.zest.core.v1.ZestAssignString;
 import org.mozilla.zest.core.v1.ZestConditional;
@@ -30,7 +24,6 @@ import org.mozilla.zest.impl.ZestBasicRunner;
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestLoopStringUnitTest {
 	String[] values = { "1", "2", "3", "4", "5", "6", "7" };
 
@@ -73,8 +66,7 @@ public class ZestLoopStringUnitTest {
 		for (int i = 0; i < stopIndex; i++) {
 			loop.loop();
 		}
-		ZestLoopStateString state = (ZestLoopStateString) loop
-				.getCurrentState();
+		ZestLoopStateString state = loop.getCurrentState();
 		boolean rightIndex = state.getCurrentIndex() == stopIndex;
 		boolean rightValue = state.getCurrentToken().equals(
 				values[state.getCurrentIndex()]);
@@ -114,7 +106,7 @@ public class ZestLoopStringUnitTest {
 		loop.addStatement(new ZestConditional());
 		loop.addStatement(new ZestLoopString(values));
 		loop.addStatement(new ZestActionFail());
-		ZestLoopString copy = (ZestLoopString) loop.deepCopy();
+		ZestLoopString copy = loop.deepCopy();
 		assertTrue("same state",
 				copy.getCurrentState().equals(loop.getCurrentState()));
 	}

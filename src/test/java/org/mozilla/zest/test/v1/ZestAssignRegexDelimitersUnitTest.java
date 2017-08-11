@@ -1,23 +1,28 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 import org.mozilla.zest.core.v1.ZestAssignRegexDelimiters;
+import org.mozilla.zest.core.v1.ZestJSON;
+import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
+import org.mozilla.zest.core.v1.ZestScript;
+import org.mozilla.zest.impl.ZestBasicRunner;
 
 
 /**
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ZestAssignRegexDelimitersUnitTest {
 	
 	private TestRuntime rt = new TestRuntime();
@@ -113,6 +118,27 @@ public class ZestAssignRegexDelimitersUnitTest {
 			// Expected
 		}
 		
+	}
+	
+	/**
+	 * Method testAssignRegexDelimitersZestScript.
+	 * Test a zest script. Uses ZestJSON and ZestBasicRunner directly as ZestActionInvoke don't use the ZestResponse now.
+	 * @throws Exception
+	 */
+	@Test
+	public void testAssignRegexDelimitersZestScript() throws Exception {
+		ZestResponse resp = new ZestResponse(null, "Server: Apache-Coyote/1.1\r\nLocation: http://some.url.com\r\nExpires: Wed, 12 Jul 2017 11:26:32 GMT", "Body Prefix54321Postfix", 302, 0);
+		ZestRequest req = new ZestRequest();
+		req.setResponse(resp);
+		
+		String zestString = IOUtils.toString(getClass().getResource("/data/assignRegexDelimiters-script.zest"), StandardCharsets.UTF_8);
+		ZestScript zestScript = (ZestScript) ZestJSON.fromString(zestString);
+		
+		Map<String, String> map = new HashMap<>();
+		ZestBasicRunner runner = new ZestBasicRunner();
+		String result = runner.run(zestScript, req, map);
+		
+		assertEquals ("http://some.url.com", result);
 	}
 
 }

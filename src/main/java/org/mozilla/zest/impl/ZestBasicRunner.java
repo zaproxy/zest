@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.zest.impl;
 
 import java.io.BufferedReader;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +35,7 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.methods.TraceMethod;
+import org.apache.commons.httpclient.params.HttpClientParams;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
@@ -85,8 +86,21 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	public ZestBasicRunner() {
 	}
 
+	public ZestBasicRunner(HttpClientParams params) {
+		setHttpClientParams(params);
+	}
+
+	public ZestBasicRunner(ScriptEngineFactory factory, HttpClientParams params) {
+		setHttpClientParams(params);
+		this.scriptEngineFactory = factory;
+	}
+
 	public ZestBasicRunner(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
+	}
+
+	public void setHttpClientParams(HttpClientParams params){
+		httpclient.setParams(params);
 	}
 
 	@Override
@@ -158,7 +172,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		if (skipStatements || ! stmt.isEnabled()) {
 			return lastRes;
 		}
-		if (ZestScript.Type.Passive.equals(script.getType())
+		if (script.getType() != null && ZestScript.Type.Passive.equals(ZestScript.Type.valueOf(script.getType()))
 				&& !stmt.isPassive()) {
 			throw new IllegalArgumentException(stmt.getElementType()
 					+ " not allowed in passive scripts");
@@ -334,6 +348,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	}
 
 
+	@Override
 	public void output(String str) {
 		if (this.outputWriter != null) {
 			try {
@@ -417,13 +432,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			throws ZestAssertFailException, ZestActionFailException,
 			IOException, ZestInvalidCommonTestException,
 			ZestAssignFailException, ZestClientFailException {
-		BufferedReader fr = new BufferedReader(reader);
 		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = fr.readLine()) != null) {
-			sb.append(line);
+		try (BufferedReader fr = new BufferedReader(reader)) {
+			String line;
+			while ((line = fr.readLine()) != null) {
+				sb.append(line);
+			}
 		}
-		fr.close();
 		return run((ZestScript) ZestJSON.fromString(sb.toString()), params);
 	}
 
@@ -543,8 +558,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 			if (colonIndex > 0) {
 				header = line.substring(0, colonIndex);
 				value = line.substring(colonIndex + 1).trim();
-				if (!header.toLowerCase().startsWith("cookie")
-						&& !header.toLowerCase().startsWith("content-length")) {
+				String lcHeader = header.toLowerCase(Locale.ROOT);
+				if (!lcHeader.startsWith("cookie") && !lcHeader.startsWith("content-length")) {
 					method.addRequestHeader(new Header(header, value));
 				}
 			}
@@ -676,6 +691,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		return this.variables.replaceInString(str, urlEncode);
 	}
 
+	@Override
 	public void setScriptEngineFactory(ScriptEngineFactory factory) {
 		this.scriptEngineFactory = factory;
 	}
