@@ -21,7 +21,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group 'org.mozilla'
-version '0.13-SNAPSHOT'
+version '0.13'
 
 mainClassName = 'org.mozilla.zest.impl.CmdLine'
 
