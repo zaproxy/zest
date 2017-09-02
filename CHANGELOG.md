@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Selenium to 3.141.59. [#169](https://github.com/mozilla/zest/issues/169)
 - Keep proxying localhost with Chrome 72+ and Firefox 67+. [#197](https://github.com/mozilla/zest/pull/197)
 - Use ISO 8601 format to de/serialise dates from/to JSON, to not depend on the system the script is running. [#202](https://github.com/mozilla/zest/pull/202)
+- Expose the variables (name/value map) in the `ZestRunner`. [#119](https://github.com/mozilla/zest/pull/119)
 
 ### Removed
 - Remove dependency on Commons HttpClient, the client implementation, and related methods. [#136](https://github.com/mozilla/zest/pull/136)

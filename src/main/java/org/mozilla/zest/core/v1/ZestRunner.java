@@ -248,5 +248,13 @@ public interface ZestRunner {
      */
     void setVariable(String name, String value);
 
+    /**
+     * Gets the variables.
+     *
+     * @return a map with variables' name to value.
+     * @since 0.14.0
+     */
+    Map<String, String> getVariables();
+
     void setScriptEngineFactory(ScriptEngineFactory factory);
 }
