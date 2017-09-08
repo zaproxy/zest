@@ -57,7 +57,7 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options {
-        links = [ 'http://docs.oracle.com/javase/7/docs/api/' ]
+        links = [ 'https://docs.oracle.com/javase/8/docs/api/' ]
         encoding = 'UTF-8'
     }
     if (JavaVersion.current().isJava8Compatible()) {
