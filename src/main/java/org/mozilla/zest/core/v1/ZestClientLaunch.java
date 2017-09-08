@@ -140,11 +140,31 @@ public class ZestClientLaunch extends ZestClient {
 			}
 
 			if ("Firefox".equalsIgnoreCase(this.browserType)) {
+				FirefoxOptions firefoxOptions = new FirefoxOptions();
 				if (isHeadless()) {
-					FirefoxOptions firefoxOptions = new FirefoxOptions();
 					firefoxOptions.addArguments(HEADLESS_ARG);
-					firefoxOptions.addTo(cap);
 				}
+
+				if (!httpProxy.isEmpty()) {
+					String[] proxyData = httpProxy.split(":");
+					String proxyAddress = proxyData[0];
+					int proxyPort = Integer.parseInt(proxyData[1]);
+
+					// Some issues prevent the PROXY capability from being properly applied:
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1282873
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1369827
+					// For now set the preferences manually:
+					firefoxOptions.addPreference("network.proxy.type", 1);
+					firefoxOptions.addPreference("network.proxy.http", proxyAddress);
+					firefoxOptions.addPreference("network.proxy.http_port", proxyPort);
+					firefoxOptions.addPreference("network.proxy.ssl", proxyAddress);
+					firefoxOptions.addPreference("network.proxy.ssl_port", proxyPort);
+					firefoxOptions.addPreference("network.proxy.share_proxy_settings", true);
+					firefoxOptions.addPreference("network.proxy.no_proxies_on", "");
+					// And remove the PROXY capability:
+					cap.setCapability(CapabilityType.PROXY, (Object) null);
+				}
+				firefoxOptions.addTo(cap);
 
 				driver = new FirefoxDriver(cap);
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
