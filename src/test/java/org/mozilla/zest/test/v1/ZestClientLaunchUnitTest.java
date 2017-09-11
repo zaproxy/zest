@@ -126,7 +126,7 @@ public class ZestClientLaunchUnitTest {
 
 	@Test
 	public void testSerialization() {
-		ZestClientLaunch zcl1 = new ZestClientLaunch("htmlunit", "HtmlUnit", "http://localhost:" + PORT + "/test");
+		ZestClientLaunch zcl1 = new ZestClientLaunch("htmlunit", "HtmlUnit", "http://localhost:" + PORT + "/test", false);
 		String str = ZestJSON.toString(zcl1);
 		ZestClientLaunch zcl2 = (ZestClientLaunch) ZestJSON.fromString(str);
 		
@@ -134,5 +134,6 @@ public class ZestClientLaunchUnitTest {
 		assertEquals(zcl1.getBrowserType(), zcl2.getBrowserType());
 		assertEquals(zcl1.getWindowHandle(), zcl2.getWindowHandle());
 		assertEquals(zcl1.getUrl(), zcl2.getUrl());
+		assertEquals(zcl1.isHeadless(), zcl2.isHeadless());
 	}
 }

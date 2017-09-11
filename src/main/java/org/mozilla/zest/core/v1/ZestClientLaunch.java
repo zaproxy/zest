@@ -9,7 +9,9 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -26,21 +28,33 @@ import com.opera.core.systems.OperaDriver;
  */
 public class ZestClientLaunch extends ZestClient {
 
+	private static final String HEADLESS_ARG = "--headless";
+
 	private String windowHandle = null;
 	private String browserType = null;
 	private String url = null;
 	private String capabilities = null;
+	private boolean headless = true;
 
 	public ZestClientLaunch(String windowHandle, String browserType, String url) {
 		this(windowHandle, browserType, url, null);
 	}
 
+	public ZestClientLaunch(String windowHandle, String browserType, String url, boolean headless) {
+		this(windowHandle, browserType, url, null, headless);
+	}
+
 	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities) {
+		this(windowHandle, browserType, url, capabilities, true);
+	}
+
+	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities, boolean headless) {
 		super();
 		this.windowHandle = windowHandle;
 		this.browserType = browserType;
 		this.url = url;
 		this.capabilities = capabilities;
+		this.headless = headless;
 	}
 
 	public ZestClientLaunch() {
@@ -77,6 +91,14 @@ public class ZestClientLaunch extends ZestClient {
 
 	public void setCapabilities(String capabilities) {
 		this.capabilities = capabilities;
+	}
+
+	public boolean isHeadless() {
+		return headless;
+	}
+
+	public void setHeadless(boolean headless) {
+		this.headless = headless;
 	}
 
 	@Override
@@ -118,8 +140,20 @@ public class ZestClientLaunch extends ZestClient {
 			}
 
 			if ("Firefox".equalsIgnoreCase(this.browserType)) {
+				if (isHeadless()) {
+					FirefoxOptions firefoxOptions = new FirefoxOptions();
+					firefoxOptions.addArguments(HEADLESS_ARG);
+					firefoxOptions.addTo(cap);
+				}
+
 				driver = new FirefoxDriver(cap);
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
+				if (isHeadless()) {
+					ChromeOptions chromeOptions = new ChromeOptions();
+					chromeOptions.addArguments(HEADLESS_ARG);
+					cap.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+				}
+
 				driver = new ChromeDriver(cap); 
 			} else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
 				driver = new HtmlUnitDriver(DesiredCapabilities.htmlUnit().merge(cap)); 
