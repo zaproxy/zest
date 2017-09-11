@@ -23,8 +23,9 @@ public class ZestActionSleepUnitTest {
 	 */
 	@Test
 	public void testSimpleJsScript() throws Exception {
+		long sleepTime = 1000;
 		ZestActionSleep inv = new ZestActionSleep();
-		inv.setMilliseconds(1000);
+		inv.setMilliseconds(sleepTime);
 		TestRuntime rt = new TestRuntime();
 		
 		ZestResponse resp = new ZestResponse(null, "Header prefix12345postfix", "Body Prefix54321Postfix", 200, 0);
@@ -32,9 +33,9 @@ public class ZestActionSleepUnitTest {
 		String result = inv.invoke(resp, rt);
 		Date end = new Date();
 
-		assertEquals ("1000", result);
+		assertEquals (String.valueOf(sleepTime), result);
 		// Make sure its within 5% or expected time
-		assertEquals ((end.getTime() - start.getTime())/5, 200);
+		assertEquals (sleepTime, end.getTime() - start.getTime(), sleepTime * 0.05);
 	}
 
 	@Test
