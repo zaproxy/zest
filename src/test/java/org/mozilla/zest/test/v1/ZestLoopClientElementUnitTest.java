@@ -101,7 +101,7 @@ public class ZestLoopClientElementUnitTest {
 		runner.setOutputWriter(sw);
 		runner.run(script, null);
 		
-		assertEquals("text\n" + "password\n" + "submit\n", sw.toString());
+		assertEquals("text\n" + "password\n" + "select-one\n" + "submit\n", sw.toString());
 		
 	}
 
