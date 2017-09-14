@@ -61,6 +61,7 @@ public class ZestExpressionStatusCode extends ZestExpression {
 	public ZestExpressionStatusCode deepCopy() {
 		ZestExpressionStatusCode copy = new ZestExpressionStatusCode();
 		copy.code = code;
+		copy.setInverse(isInverse());
 		return copy;
 	}
 	
