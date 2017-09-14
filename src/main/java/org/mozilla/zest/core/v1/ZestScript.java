@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 
@@ -36,7 +37,27 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 *     Targeted   - the script acts on a request passed into it - it may make additional requests and may
 	 *     				changes to that request before submitting it. It may also not submit the request at all.   
 	 */
-	public enum Type {Active, Passive, StandAlone,  Targeted };
+	public enum Type {Active, Passive, StandAlone,  Targeted;
+
+		static Type getType(String type) {
+			if (type == null || type.isEmpty()) {
+				return null;
+			}
+
+			switch (type.toLowerCase(Locale.ROOT)) {
+			case "active":
+				return Active;
+			case "passive":
+				return Passive;
+			case "standalone":
+				return StandAlone;
+			case "targeted":
+				return Targeted;
+			default:
+				return null;
+			}
+		}
+	}
 
 	/** The about. */
 	private String about = ABOUT;
@@ -62,6 +83,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	/** The type. */
 	private String type;
 	
+	private transient Type scriptType;
+
 	/** The parameters. */
 	private ZestVariables parameters = new ZestVariables();
 	
@@ -113,6 +136,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 */
 	public void setType(Type type) {
 		this.type = type.name();
+		this.scriptType = type;
 	}
 	
 	/**
@@ -121,12 +145,17 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 * @param type the new type
 	 */
 	public void setType(String type) {
-		try {
-			Type.valueOf(type);
-		} catch (Exception e) {
+		setTypeImpl(type);
+		if (scriptType == null) {
 			throw new IllegalArgumentException("Unsupported type: " + type);
 		}
-		this.type = type;
+	}
+
+	private void setTypeImpl(String type) {
+		scriptType = Type.getType(type);
+		if (scriptType != null) {
+			this.type = scriptType.name();
+		}
 	}
 
 	/**
@@ -136,6 +165,13 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	 */
 	public String getType() {
 		return type;
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+
+		setTypeImpl(type);
 	}
 
 	@Override
@@ -160,6 +196,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 		script.prefix = this.prefix;
 		script.parameters = this.parameters.deepCopy();
 		script.type = this.type;
+		script.scriptType = this.scriptType;
 		
 		for (ZestStatement zr : this.getStatements()) {
 			script.add(zr.deepCopy());
@@ -542,7 +579,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 	
 	@Override
 	public boolean isPassive() {
-		return this.getType() != null && Type.Passive.equals(Type.valueOf(this.getType()));
+		return Type.Passive.equals(scriptType);
 	}
 
 	private void checkStatementIndexes() {
