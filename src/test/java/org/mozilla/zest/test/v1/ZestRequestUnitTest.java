@@ -52,4 +52,33 @@ public class ZestRequestUnitTest {
 		assertEquals ("/DEFGA/GHIB", req2.getZestCookies().get(0).getPath());
 	}
 
+	/**
+	 * Method testDeepCopy.
+	 * @throws Exception
+	 */
+	@Test
+	public void testDeepCopy() throws Exception {
+		ZestRequest req = new ZestRequest ();
+
+		req.setUrl(new URL("http://www.example.com/app/{{token1}}"));
+		req.setHeaders("Set-Cookie: test={{token2}}");
+		req.setData("test={{token3}}&user=12{{token3}}34");
+		req.addCookie(new ZestCookie("{{token}}.{{token3}}", "12{{token3}}34", "56{{token2}}78", "/{{token1}}A/{{token2}}B", new Date(), true));
+
+		ZestRequest req2 = req.deepCopy();
+
+		assertTrue(req.getHeaders().equals(req2.getHeaders()));
+		assertTrue(req.getData().equals(req2.getData()));
+
+		ZestCookie cookie = req.getZestCookies().get(0);
+		ZestCookie cookie2 = req2.getZestCookies().get(0);
+
+		assertTrue("cookies should not be reference equals", cookie != cookie2);
+		assertTrue(cookie.getDomain().equals(cookie2.getDomain()));
+		assertTrue(cookie.getName().equals(cookie2.getName()));
+		assertTrue(cookie.getValue().equals(cookie2.getValue()));
+		assertTrue(cookie.getPath().equals(cookie2.getPath()));
+		assertTrue(cookie.getExpiryDate().equals(cookie2.getExpiryDate()));
+		assertTrue(cookie.isSecure() == cookie2.isSecure());
+	}
 }
