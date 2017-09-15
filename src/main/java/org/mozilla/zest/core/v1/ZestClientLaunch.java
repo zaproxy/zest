@@ -19,6 +19,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 
+import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.opera.core.systems.OperaDriver;
 
 /**
@@ -179,6 +180,9 @@ public class ZestClientLaunch extends ZestClient {
 				driver = new HtmlUnitDriver(DesiredCapabilities.htmlUnit().merge(cap)); 
 			} else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
 				driver = new InternetExplorerDriver(cap); 
+			} else if ("JBD".equalsIgnoreCase(this.browserType)) {
+				cap.setCapability("jbd.headless", isHeadless());
+				driver = new JBrowserDriver(cap);
 			} else if ("Opera".equalsIgnoreCase(this.browserType)) {
 				driver = new OperaDriver(cap);
 			} else if ("PhantomJS".equalsIgnoreCase(this.browserType)) {
