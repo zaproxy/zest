@@ -42,7 +42,7 @@ public class ZestRequest extends ZestStatement {
 	private boolean followRedirects = true;
 	
 	/** Cookie to add to the request */
-	private List<Cookie> cookies = new ArrayList<Cookie>();
+	private List<ZestCookie> cookies = new ArrayList<>();
 	
 	/**
 	 * Instantiates a new zest request.
@@ -77,9 +77,9 @@ public class ZestRequest extends ZestStatement {
 			zr.addAssertion((ZestAssertion)zt.deepCopy());
 		}
 		
-		for (Cookie cookie : this.cookies) {
-			zr.addCookie(new Cookie(cookie.getDomain(), cookie.getName(), cookie.getValue(),
-					cookie.getPath(), cookie.getExpiryDate(), cookie.getSecure()));
+		for (ZestCookie cookie : this.cookies) {
+			zr.addCookie(new ZestCookie(cookie.getDomain(), cookie.getName(), cookie.getValue(),
+					cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure()));
 		}
 		zr.cookies = this.cookies;
 		zr.setEnabled(this.isEnabled());
@@ -299,6 +299,13 @@ public class ZestRequest extends ZestStatement {
 		this.setMethod(tokens.replaceInString(this.getMethod(), false));
 		this.setHeaders(tokens.replaceInString(this.getHeaders(), false));
 		this.setData(tokens.replaceInString(this.getData(), false));
+
+		for (ZestCookie cookie : this.cookies) {
+			cookie.setDomain(tokens.replaceInString(cookie.getDomain(),false));
+			cookie.setName(tokens.replaceInString(cookie.getName(),false));
+			cookie.setValue(tokens.replaceInString(cookie.getValue(),false));
+			cookie.setPath(tokens.replaceInString(cookie.getPath(),false));
+		}
 	}
 	
 	@Override
@@ -326,15 +333,36 @@ public class ZestRequest extends ZestStatement {
 	}
 	
 	public void addCookie(String domain, String name, String value, String path, Date expiry, boolean secure) {
-		this.addCookie(new Cookie(domain, name, value, path, expiry, secure));
+		this.addCookie(new ZestCookie(domain, name, value, path, expiry, secure));
 	}
 	
-	public void addCookie(Cookie cookie) {
+	public void addCookie(ZestCookie cookie) {
 		this.cookies.add(cookie);
 	}
 
+	/**
+	 * @deprecated (0.14) Use {@link #addCookie(ZestCookie)} instead.
+	 */
+	@Deprecated
+	public void addCookie(Cookie cookie) {
+		addCookie(cookie.getDomain(), cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getExpiryDate(), cookie.getSecure());
+	}
+
+	/**
+	 * @deprecated (0.14) Use {@link #getZestCookies()} instead.
+	 */
+	@Deprecated
 	public List<Cookie> getCookies() {
+		List<Cookie> cookies = new ArrayList<>();
+		for (ZestCookie cookie : this.cookies) {
+			cookies.add(new Cookie(cookie.getDomain(), cookie.getName(), cookie.getValue(),
+					cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure()));
+		}
+
 		return cookies;
 	}
 
+	public List<ZestCookie> getZestCookies() {
+		return cookies;
+	}
 }

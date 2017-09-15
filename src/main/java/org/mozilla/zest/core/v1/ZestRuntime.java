@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * The Interface ZestRuntime.
  */
-public interface ZestRuntime {
+public interface ZestRuntime extends ZestOutputWriter {
 	
 	/**
 	 * Get the current value of the specified variable.
@@ -51,12 +51,6 @@ public interface ZestRuntime {
 	 * @return the string with the variables replaces
 	 */
 	String replaceVariablesInString (String str, boolean urlEncode);
-
-	/**
-	 * Outputs the specified string
-	 * @param str
-	 */
-	void output(String str);
 
 	ScriptEngineFactory getScriptEngineFactory();
 
@@ -115,10 +109,4 @@ public interface ZestRuntime {
 	 * @return all the {@code WebDriver}s.
 	 */
 	List<WebDriver> getWebDrivers();
-
-	/**
-	 * Outputs the supplied message if debugging is turned on
-	 * @param str
-	 */
-	void debug(String str);
 }
