@@ -58,8 +58,7 @@ public class ZestClientWindowOpenUrl extends ZestClient {
 		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 		
 		if (wd == null) {
-			// No point throwing an exception as we were going to close it anyway
-			return null;
+			throw new ZestClientFailException(this, "No client: " + runtime.getVariable(getWindowHandle()));
 		}
 		
 		String targetUrl = runtime.replaceVariablesInString(url, true);
