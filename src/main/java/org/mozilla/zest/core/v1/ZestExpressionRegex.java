@@ -49,10 +49,9 @@ public class ZestExpressionRegex extends ZestExpression{
 	 * @param inverse the inverse
 	 */
 	public ZestExpressionRegex(String variableName, String regex, boolean caseExact, boolean inverse) {
-		super ();
+		super (inverse);
 		this.variableName = variableName;
 		this.caseExact = caseExact;
-		this.setInverse(inverse);
 		this.regex = regex;
 		if (regex != null) {
 			if (caseExact) {

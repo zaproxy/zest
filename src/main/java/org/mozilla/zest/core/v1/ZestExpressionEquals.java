@@ -43,11 +43,10 @@ public class ZestExpressionEquals extends ZestExpression{
 	 * @param inverse the inverse
 	 */
 	public ZestExpressionEquals(String variableName, String value, boolean caseExact, boolean inverse) {
-		super ();
+		super (inverse);
 		this.variableName = variableName;
 		this.value = value;
 		this.caseExact = caseExact;
-		this.setInverse(inverse);
 	}
 	
 	@Override

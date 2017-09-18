@@ -11,13 +11,24 @@ public abstract class ZestExpression extends ZestElement implements
 		ZestExpressionElement {
 	
 	/** The not. */
-	private boolean not = false;
+	private boolean not;
 
 	/**
 	 * Instantiates a new zest expression.
 	 */
 	public ZestExpression() {
+		this(false);
+	}
+
+	/**
+	 * Constructs a {@code ZestExpression} with the given inverse state.
+	 * 
+	 * @param inverse the inverse state.
+	 * @since 0.14
+	 */
+	protected ZestExpression(boolean inverse) {
 		super();
+		this.not = inverse;
 	}
 
 	@Override

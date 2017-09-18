@@ -33,10 +33,7 @@ public class ZestExpressionLength extends ZestExpression {
 	 * @param approx the approx
 	 */
 	public ZestExpressionLength(String variableName, int length, int approx) {
-		super();
-		this.variableName = variableName;
-		this.length = length;
-		this.approx = approx;
+		this(variableName, length, approx, false);
 	}
 
 	/**
@@ -44,12 +41,14 @@ public class ZestExpressionLength extends ZestExpression {
 	 *
 	 * @param variableName the variable name
 	 * @param length the length
-	 * @param j the approximation
-	 * @param b is inverse?
+	 * @param approx the approximation
+	 * @param inverse is inverse?
 	 */
-	public ZestExpressionLength(String variableName, int length, int j, boolean b) {
-		this(variableName, length,j);
-		this.setInverse(b);
+	public ZestExpressionLength(String variableName, int length, int approx, boolean inverse) {
+		super(inverse);
+		this.variableName = variableName;
+		this.length = length;
+		this.approx = approx;
 	}
 
 	@Override
