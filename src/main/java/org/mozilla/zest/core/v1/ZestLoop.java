@@ -361,13 +361,15 @@ public abstract class ZestLoop<T> extends ZestStatement implements
 	 * @return the list of copied statements
 	 */
 	public List<ZestStatement> copyStatements() {
-		if (this.getStatements() != null) {
-			List<ZestStatement> statements = new LinkedList<>();
-			for (ZestStatement stmt : this.getStatements()) {
-				statements.add(stmt.deepCopy());
-			}
+		List<ZestStatement> copiedStatements = new LinkedList<>();
+		if (this.getStatements() == null) {
+			return copiedStatements;
 		}
-		return statements;
+
+		for (ZestStatement stmt : getStatements()) {
+			copiedStatements.add(stmt.deepCopy());
+		}
+		return copiedStatements;
 	}
 
 	/**
