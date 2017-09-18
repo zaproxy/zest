@@ -31,7 +31,17 @@ public class ZestExpressionProtocol extends ZestExpression {
      * @param protocol the protocol that the request must have for the expression to return {@code true}.
      */
     public ZestExpressionProtocol(String protocol) {
-        super();
+        this(protocol, false);
+    }
+
+    /**
+     * Constructs a {@code ZestExpressionProtocol} with the given protocol and inverse state.
+     * 
+     * @param protocol the protocol that the request must have for the expression to return {@code true}.
+     * @param inverse if the expression should be the inverse.
+     */
+    public ZestExpressionProtocol(String protocol, boolean inverse) {
+        super(inverse);
         this.protocol = protocol;
     }
 
@@ -78,9 +88,7 @@ public class ZestExpressionProtocol extends ZestExpression {
 
     @Override
     public ZestExpressionProtocol deepCopy() {
-        ZestExpressionProtocol copy = new ZestExpressionProtocol(protocol);
-        copy.setInverse(isInverse());
-        return copy;
+        return new ZestExpressionProtocol(protocol, isInverse());
     }
 
     @Override

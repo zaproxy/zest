@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.test.v1;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -127,7 +128,9 @@ public class ZestExpressionURLUnitTest {
 	public void testDeepCopy() {
 		ZestExpressionURL urlExpr = new ZestExpressionURL(includeStrings,
 				excludeStrings);
+		urlExpr.setInverse(true);
 		ZestExpressionURL copy = urlExpr.deepCopy();
+		assertEquals(copy.isInverse(), urlExpr.isInverse());
 		for (int i = 0; i < includeSize; i++) {
 			String obtained = copy.getIncludeRegexes().get(i);
 			String expected = includeStrings.get(i);

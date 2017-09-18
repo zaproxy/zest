@@ -24,7 +24,18 @@ public class ZestExpressionIsInteger extends ZestExpression{
 	 * @param variableName the variableName
 	 */
 	public ZestExpressionIsInteger(String variableName) {
-		super ();
+		this(variableName, false);
+	}
+
+	/**
+	 * Construct a {@code ZestExpressionIsInteger} with the given variable name and inverse state.
+	 *
+	 * @param variableName the name of the variable to check.
+	 * @param inverse if the expression should be the inverse.
+	 * @since 0.14
+	 */
+	public ZestExpressionIsInteger(String variableName, boolean inverse) {
+		super(inverse);
 		this.variableName = variableName;
 	}
 	
@@ -68,7 +79,7 @@ public class ZestExpressionIsInteger extends ZestExpression{
 	
 	@Override
 	public ZestExpressionIsInteger deepCopy() {
-		return new ZestExpressionIsInteger(this.getVariableName());
+		return new ZestExpressionIsInteger(this.getVariableName(), isInverse());
 	}
 	
 }
