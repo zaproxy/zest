@@ -25,6 +25,7 @@ import org.mozilla.zest.core.v1.ZestExpressionEquals;
 import org.mozilla.zest.core.v1.ZestExpressionIsInteger;
 import org.mozilla.zest.core.v1.ZestExpressionLength;
 import org.mozilla.zest.core.v1.ZestExpressionOr;
+import org.mozilla.zest.core.v1.ZestExpressionProtocol;
 import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestExpressionResponseTime;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
@@ -249,6 +250,9 @@ public class ZestPrinter {
 			} else if (element instanceof ZestExpressionURL) {
 				// ZestExpressionURL urlExpr=(ZestExpressionURL)element;
 				System.out.print("URL ");
+			} else if (element instanceof ZestExpressionProtocol) {
+				ZestExpressionProtocol lengthExpr = (ZestExpressionProtocol) element;
+				System.out.print("Protocol: " + lengthExpr.getProtocol());
 			}
 		} else {
 			printIndent(indent);
