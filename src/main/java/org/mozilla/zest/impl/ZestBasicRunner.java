@@ -8,33 +8,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import javax.script.ScriptEngineFactory;
 
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.DeleteMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.HeadMethod;
-import org.apache.commons.httpclient.methods.OptionsMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.commons.httpclient.methods.TraceMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFailException;
@@ -50,10 +32,10 @@ import org.mozilla.zest.core.v1.ZestConditional;
 import org.mozilla.zest.core.v1.ZestControlLoopBreak;
 import org.mozilla.zest.core.v1.ZestControlLoopNext;
 import org.mozilla.zest.core.v1.ZestControlReturn;
-import org.mozilla.zest.core.v1.ZestHttpAuthentication;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoop;
+import org.mozilla.zest.core.v1.ZestOutputWriter;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
@@ -63,10 +45,10 @@ import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestVariables;
 import org.openqa.selenium.WebDriver;
 
-public class ZestBasicRunner implements ZestRunner, ZestRuntime {
+public class ZestBasicRunner implements ZestRunner, ZestRuntime, ZestOutputWriter {
 
 	private ScriptEngineFactory scriptEngineFactory = null;
-	private HttpClient httpclient = new HttpClient();
+	private ZestHttpClient httpclient;
 	private boolean stopOnAssertFail = true;
 	private boolean stopOnTestFail = true;
 	private Writer outputWriter = null;
@@ -84,23 +66,56 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	private Map<String, WebDriver> webDriverMap = new HashMap<String, WebDriver>();
 
 	public ZestBasicRunner() {
+		setHttpClient(new CommonsHttpClient(new HttpClient()));
 	}
 
+	/**
+	 * @deprecated (0.14) Use {@link #ZestBasicRunner(ZestHttpClient)} instead.
+	 */
+	@Deprecated
 	public ZestBasicRunner(HttpClientParams params) {
+		this();
 		setHttpClientParams(params);
 	}
 
+	/**
+	 * @deprecated (0.14) Use {@link #ZestBasicRunner(ScriptEngineFactory, ZestHttpClient)} instead.
+	 */
+	@Deprecated
 	public ZestBasicRunner(ScriptEngineFactory factory, HttpClientParams params) {
+		this();
 		setHttpClientParams(params);
+		this.scriptEngineFactory = factory;
+	}
+
+	/**
+	 * @since 0.14
+	 */
+	public ZestBasicRunner(ZestHttpClient httpclient) {
+		setHttpClient(httpclient);
+	}
+
+	/**
+	 * @since 0.14
+	 */
+	public ZestBasicRunner(ScriptEngineFactory factory, ZestHttpClient httpclient) {
+		setHttpClient(httpclient);
 		this.scriptEngineFactory = factory;
 	}
 
 	public ZestBasicRunner(ScriptEngineFactory factory) {
+		this();
 		this.scriptEngineFactory = factory;
 	}
 
+	/**
+	 * @deprecated (0.14) Use {@link #setHttpClient(ZestHttpClient)} instead.
+	 */
+	@Deprecated
 	public void setHttpClientParams(HttpClientParams params){
-		httpclient.setParams(params);
+		if(httpclient instanceof CommonsHttpClient){
+			((CommonsHttpClient)httpclient).setParams(params);
+		}
 	}
 
 	@Override
@@ -120,15 +135,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		List<ZestAuthentication> auth = script.getAuthentication();
 		if (auth != null) {
 			for (ZestAuthentication za : auth) {
-				if (za instanceof ZestHttpAuthentication) {
-					ZestHttpAuthentication zha = (ZestHttpAuthentication) za;
-
-					Credentials defaultcreds = new UsernamePasswordCredentials(
-							zha.getUsername(), zha.getPassword());
-					httpclient.getState().setCredentials(
-							new AuthScope(zha.getSite(), 80,
-									AuthScope.ANY_REALM), defaultcreds);
-				}
+				httpclient.addAuthentication(za);
 			}
 		}
 
@@ -180,6 +187,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		if (stmt instanceof ZestRequest) {
 			this.lastRequest = ((ZestRequest) stmt).deepCopy();
 			this.lastRequest.replaceTokens(this.variables);
+			this.debug(this.lastRequest.getMethod() + " : " + this.lastRequest.getUrl());
 			this.lastResponse = send(this.lastRequest);
 			
 			// Set up the 'standard' variables
@@ -376,7 +384,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	@Override
 	public ZestResponse send(ZestRequest request) throws IOException {
-		return send(httpclient, request);
+		return httpclient.send(request);
 	}
 
 	@Override
@@ -449,130 +457,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		return run((ZestScript) ZestJSON.fromString(script), params);
 	}
 
-	private ZestResponse send(HttpClient httpclient, ZestRequest req)
-			throws IOException {
-		HttpMethod method;
-		URI uri = new URI(req.getUrl().toString(), false);
-
-		switch (req.getMethod()) {
-		case "GET":
-			method = new GetMethod(uri.toString());
-			// Can only redirect on GETs
-			method.setFollowRedirects(req.isFollowRedirects());
-			break;
-		case "POST":
-			method = new PostMethod(uri.toString());
-			break;
-		case "OPTIONS":
-			method = new OptionsMethod(uri.toString());
-			break;
-		case "HEAD":
-			method = new HeadMethod(uri.toString());
-			break;
-		case "PUT":
-			method = new PutMethod(uri.toString());
-			break;
-		case "DELETE":
-			method = new DeleteMethod(uri.toString());
-			break;
-		case "TRACE":
-			method = new TraceMethod(uri.toString());
-			break;
-		default:
-			throw new IllegalArgumentException("Method not supported: "
-					+ req.getMethod());
-		}
-		
-		setHeaders(method, req.getHeaders());
-		
-		for (Cookie cookie : req.getCookies()) {
-			// Replace any Zest variables in the value
-			cookie.setValue(this.replaceVariablesInString(cookie.getValue(), false));
-			httpclient.getState().addCookie(cookie);
-		}
-
-		if (req.getMethod().equals("POST")) {
-			// The setRequestEntity call trashes any Content-Type specified, so record it and reapply it after
-			Header contentType = method.getRequestHeader("Content-Type");
-			RequestEntity requestEntity = new StringRequestEntity(req.getData(), null, null);
-			
-			((PostMethod) method).setRequestEntity(requestEntity);
-			
-			if (contentType != null) {
-				method.setRequestHeader(contentType);
-			}
-		}
-		
-		int code = 0;
-		String responseHeader = null;
-		String responseBody = null;
-		Date start = new Date();
-		try {
-			this.debug(req.getMethod() + " : " + req.getUrl());
-			code = httpclient.executeMethod(method);
-
-			responseHeader = method.getStatusLine().toString() + "\r\n"
-					+ arrayToStr(method.getResponseHeaders());
-			responseBody = method.getResponseBodyAsString();
-
-		} finally {
-			method.releaseConnection();
-		}
-		// Update the headers with the ones actually sent
-		req.setHeaders(arrayToStr(method.getRequestHeaders()));
-		
-		
-		if (method.getStatusCode() == 302 && req.isFollowRedirects() && ! req.getMethod().equals("GET")) {
-			// Follow the redirect 'manually' as the httpclient lib only supports them for GET requests
-			method = new GetMethod(method.getResponseHeader("Location").getValue());
-			// Just in case there are multiple redirects
-			method.setFollowRedirects(req.isFollowRedirects());
-
-			try {
-				this.debug(req.getMethod() + " : " + req.getUrl());
-				code = httpclient.executeMethod(method);
-
-				responseHeader = method.getStatusLine().toString() + "\r\n"
-						+ arrayToStr(method.getResponseHeaders());
-				responseBody = method.getResponseBodyAsString();
-
-			} finally {
-				method.releaseConnection();
-			}
-		}
-
-		return new ZestResponse(req.getUrl(), responseHeader, responseBody,
-				code, new Date().getTime() - start.getTime());
-	}
-
-	private void setHeaders(HttpMethod method, String headers) {
-		if (headers == null) {
-			return;
-		}
-		String[] headerArray = headers.split("\r\n");
-		String header;
-		String value;
-		for (String line : headerArray) {
-			int colonIndex = line.indexOf(":");
-			if (colonIndex > 0) {
-				header = line.substring(0, colonIndex);
-				value = line.substring(colonIndex + 1).trim();
-				String lcHeader = header.toLowerCase(Locale.ROOT);
-				if (!lcHeader.startsWith("cookie") && !lcHeader.startsWith("content-length")) {
-					method.addRequestHeader(new Header(header, value));
-				}
-			}
-		}
-	}
-	
-	private String arrayToStr(Header[] headers) {
-		StringBuilder sb = new StringBuilder();
-		for (Header header : headers) {
-			sb.append(header.toString());
-		}
-		return sb.toString();
-	}
-
 	@Override
 	public void setStopOnAssertFail(boolean stop) {
 		stopOnAssertFail = stop;
@@ -601,7 +485,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 	@Override
 	public void setProxy(String host, int port) {
 		// TODO support credentials
-		httpclient.getHostConfiguration().setProxy(host, port);
+		httpclient.setProxy(host, port);
 		if (host == null) {
 			this.proxyStr = "";
 		} else {
@@ -671,8 +555,20 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 		}
 	}
 
+	/**
+	 * @deprecated (0.14) Use {@link #setHttpClient(ZestHttpClient)} instead.
+	 */
+	@Deprecated
 	public void setHttpClient(HttpClient httpclient) {
+		setHttpClient(new CommonsHttpClient(httpclient));
+	}
+
+	/**
+	 * @since 0.14
+	 */
+	public void setHttpClient(ZestHttpClient httpclient) {
 		this.httpclient = httpclient;
+		this.httpclient.init(this);
 	}
 
 	@Override
