@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.test.v1;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -42,9 +43,12 @@ static {
 	}
 	@Test
 	public void testDeepCopy() {
-		ZestExpressionLength length=new ZestExpressionLength();
+		ZestExpressionLength length=new ZestExpressionLength("var", 100, 5, true);
 		ZestExpressionLength copy=length.deepCopy();
-		assertTrue(copy.getClass().equals(length.getClass()));
+		assertEquals(copy.getVariableName(), length.getVariableName());
+		assertEquals(copy.getLength(), length.getLength());
+		assertEquals(copy.getApprox(), length.getApprox());
+		assertEquals(copy.isInverse(), length.isInverse());
 	}
 	@Test
 	public void testDeepCopySameParams() {

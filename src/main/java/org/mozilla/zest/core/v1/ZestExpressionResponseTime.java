@@ -11,7 +11,7 @@ package org.mozilla.zest.core.v1;
 public class ZestExpressionResponseTime extends ZestExpression {
 	
 	/** The greater than. */
-	private boolean greaterThan = true;
+	private boolean greaterThan;
 	
 	/** The time in ms. */
 	private long timeInMs;
@@ -20,7 +20,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 	 * Instantiates a new zest expression response time.
 	 */
 	public ZestExpressionResponseTime() {
-		super();
+		this(0);
 	}
 	
 	/**
@@ -29,8 +29,34 @@ public class ZestExpressionResponseTime extends ZestExpression {
 	 * @param time the time
 	 */
 	public ZestExpressionResponseTime(long time) {
-		super();
-		this.timeInMs=time;
+		this(time, true);
+	}
+
+	/**
+	 * Constructs a {@code ZestExpressionResponseTime} with the given time and whether the response should be greater than the
+	 * given time.
+	 *
+	 * @param time the time in milliseconds.
+	 * @param greaterThan if the response time should be greater than the given time.
+	 * @since 0.14
+	 */
+	public ZestExpressionResponseTime(long time, boolean greaterThan) {
+		this(time, greaterThan, false);
+	}
+
+	/**
+	 * Constructs a {@code ZestExpressionResponseTime} with the given time, whether the response should be greater than the
+	 * given time, and with the given inverse state.
+	 *
+	 * @param time the time in milliseconds.
+	 * @param greaterThan if the response time should be greater than the given time.
+	 * @param inverse if the expression should be the inverse.
+	 * @since 0.14
+	 */
+	public ZestExpressionResponseTime(long time, boolean greaterThan, boolean inverse) {
+		super(inverse);
+		this.timeInMs = time;
+		this.greaterThan = greaterThan;
 	}
 	
 	@Override
@@ -84,10 +110,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
 
 	@Override
 	public ZestExpressionResponseTime deepCopy() {
-		ZestExpressionResponseTime copy = new ZestExpressionResponseTime();
-		copy.greaterThan = this.greaterThan;
-		copy.timeInMs = this.timeInMs;
-		return copy;
+		return new ZestExpressionResponseTime(timeInMs, greaterThan, isInverse());
 	}
 	
 	@Override

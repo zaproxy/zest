@@ -52,6 +52,7 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 			}
 		}
 		ZestExpressionOr copy = new ZestExpressionOr(copyChildren);
+		copy.setInverse(isInverse());
 		return copy;
 	}
 

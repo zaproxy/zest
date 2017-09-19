@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.test.v1;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -24,9 +25,11 @@ public class ZestExpressionResponseTimeUnitTest {
 
 	@Test
 	public void testDeepCopy() {
-		ZestExpressionResponseTime timeExpr=new ZestExpressionResponseTime(1000);
+		ZestExpressionResponseTime timeExpr=new ZestExpressionResponseTime(1000, false, true);
 		ZestExpressionResponseTime copy=timeExpr.deepCopy();
 		assertTrue(copy.getTimeInMs()==timeExpr.getTimeInMs());
+		assertEquals(copy.isGreaterThan(), timeExpr.isGreaterThan());
+		assertEquals(copy.isInverse(), timeExpr.isInverse());
 	}
 	@Test
 	public void testDeepCopyNoPointers() {

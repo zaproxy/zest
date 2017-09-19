@@ -30,7 +30,20 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 	 * @param element the element to check for existence.
 	 */
 	public ZestExpressionClientElementExists(String windowHandle, String type, String element) {
-		super();
+		this(windowHandle, type, element, false);
+	}
+
+	/**
+	 * Constructs a {@code ZestExpressionClientElementExists} with the given data.
+	 * 
+	 * @param windowHandle the window handle.
+	 * @param type the type of the expression.
+	 * @param element the element to check for existence.
+	 * @param inverse if the expression should be the inverse.
+	 * @since 0.14
+	 */
+	public ZestExpressionClientElementExists(String windowHandle, String type, String element, boolean inverse) {
+		super(inverse);
 		this.windowHandle = windowHandle;
 		this.type = type;
 		this.element = element;
@@ -95,7 +108,7 @@ public class ZestExpressionClientElementExists extends ZestExpression {
 
 	@Override
 	public ZestExpressionClientElementExists deepCopy() {
-		return new ZestExpressionClientElementExists(this.windowHandle, this.getType(), this.getElement());
+		return new ZestExpressionClientElementExists(this.windowHandle, this.getType(), this.getElement(), isInverse());
 	}
 	
 }

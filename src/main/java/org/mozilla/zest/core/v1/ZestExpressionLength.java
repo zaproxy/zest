@@ -53,7 +53,7 @@ public class ZestExpressionLength extends ZestExpression {
 
 	@Override
 	public ZestExpressionLength deepCopy() {
-		return new ZestExpressionLength(this.variableName, this.length, this.approx);
+		return new ZestExpressionLength(this.variableName, this.length, this.approx, isInverse());
 	}
 	
 	/**

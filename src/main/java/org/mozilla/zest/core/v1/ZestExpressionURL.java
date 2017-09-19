@@ -139,6 +139,7 @@ public class ZestExpressionURL extends ZestExpression {
 		List<String> copyExcludeRegex = new ArrayList<>(excludeRegexes);
 		copy.setIncludeRegexes(copyIncludeRegex);
 		copy.setExcludeRegexes(copyExcludeRegex);
+		copy.setInverse(isInverse());
 		return copy;
 	}
 	

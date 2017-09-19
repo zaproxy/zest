@@ -42,9 +42,9 @@ public class ZestExpressionIsIntegerUnitTest {
 	
 	@Test
 	public void testZestExpressionIsIntegerCopy() {
-		ZestExpressionIsInteger ast = new ZestExpressionIsInteger();
-		ast.setVariableName("aaa");
+		ZestExpressionIsInteger ast = new ZestExpressionIsInteger("aaa", true);
 		ZestExpressionIsInteger ast2 =ast.deepCopy();
 		assertEquals(ast.getVariableName(), ast2.getVariableName());
+		assertEquals(ast.isInverse(), ast2.isInverse());
 	}
 }
