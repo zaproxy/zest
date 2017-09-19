@@ -5,6 +5,7 @@ package org.mozilla.zest.test.v1;
 
 import static org.junit.Assert.assertEquals;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,12 +27,14 @@ public class ZestActionInvokeUnitTest {
 		String script = "script.js";
 		String variable = "var";
 		List<String[]> parameters = new ArrayList<>();
+		String charset = StandardCharsets.UTF_8.name();
 		// When
-		ZestActionInvoke invokeAction = new ZestActionInvoke(script, variable, parameters);
+		ZestActionInvoke invokeAction = new ZestActionInvoke(script, variable, parameters, charset);
 		// Then
 		assertEquals(invokeAction.getScript(), script);
 		assertEquals(invokeAction.getVariableName(), variable);
 		assertEquals(invokeAction.getParameters(), parameters);
+		assertEquals(invokeAction.getCharset(), charset);
 	}
 
 	/**
@@ -143,6 +146,7 @@ public class ZestActionInvokeUnitTest {
 	public void testSerialization() {
 		ZestActionInvoke inv = new ZestActionInvoke();
 		inv.setVariableName("test");
+		inv.setCharset(StandardCharsets.UTF_8.name());
 		inv.setParameters(params(param("first", "AAA"), param("second", "BBB")));
 		
 		inv.setScript(ZestActionInvokeUnitTest.class.getResource("/data/simple-script.js").getPath());
@@ -154,6 +158,7 @@ public class ZestActionInvokeUnitTest {
 		assertEquals(inv.getElementType(), inv2.getElementType());
 		assertEquals(inv.getVariableName(), inv2.getVariableName());
 		assertEquals(inv.getScript(), inv2.getScript());
+		assertEquals(inv.getCharset(), inv2.getCharset());
 		assertEquals(inv.getParameters().size(), inv2.getParameters().size());
 		for (int i=0; i < inv.getParameters().size(); i++) {
 			assertEquals(inv.getParameters().get(i).length, inv2.getParameters().get(i).length);
