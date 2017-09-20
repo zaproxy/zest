@@ -4,17 +4,18 @@
 package org.mozilla.zest.core.v1;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
@@ -120,6 +121,9 @@ public class ZestClientLaunch extends ZestClient {
 		try {
 			WebDriver driver = null;
 			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			// W3C capability
+			cap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 
 			String httpProxy = runtime.getProxy();
 			if (httpProxy.length() > 0) {
@@ -169,11 +173,14 @@ public class ZestClientLaunch extends ZestClient {
 
 				driver = new FirefoxDriver(cap);
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
-				if (isHeadless()) {
-					ChromeOptions chromeOptions = new ChromeOptions();
-					chromeOptions.addArguments(HEADLESS_ARG);
-					cap.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-				}
+				// XXX Do not support headless until the following issue is fixed:
+				// https://bugs.chromium.org/p/chromium/issues/detail?id=721739
+				// (it does not accept insecure certs when in headless)
+				// if (isHeadless()) {
+				// 	ChromeOptions chromeOptions = new ChromeOptions();
+				// 	chromeOptions.addArguments(HEADLESS_ARG);
+				// 	cap.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+				// }
 
 				driver = new ChromeDriver(cap); 
 			} else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
@@ -182,10 +189,15 @@ public class ZestClientLaunch extends ZestClient {
 				driver = new InternetExplorerDriver(cap); 
 			} else if ("JBD".equalsIgnoreCase(this.browserType)) {
 				cap.setCapability("jbd.headless", isHeadless());
+				cap.setCapability("jbd.ssl", "trustanything");
 				driver = new JBrowserDriver(cap);
 			} else if ("Opera".equalsIgnoreCase(this.browserType)) {
 				driver = new OperaDriver(cap);
 			} else if ("PhantomJS".equalsIgnoreCase(this.browserType)) {
+				ArrayList<String> cliArgs = new ArrayList<>(2);
+				cliArgs.add("--ssl-protocol=any");
+				cliArgs.add("--ignore-ssl-errors=yes");
+				cap.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgs);
 				driver = new PhantomJSDriver(cap);
 			} else if ("Safari".equalsIgnoreCase(this.browserType)) {
 				driver = new SafariDriver(cap);
