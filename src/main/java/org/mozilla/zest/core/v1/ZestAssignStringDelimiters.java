@@ -24,13 +24,13 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 	private String location;
 
 	/** The location constant which represents the Head of a response. */
-	transient public static final String LOC_HEAD = "HEAD"; 
+	public static final transient String LOC_HEAD = "HEAD"; 
 	
 	/** The location constant which represents the Body of a response. */
-	transient public static final String LOC_BODY = "BODY"; 
+	public static final transient String LOC_BODY = "BODY"; 
 
 	/** The set of valid locations. */
-	transient private static final Set<String> LOCATIONS = 
+	private static final transient Set<String> LOCATIONS = 
 			new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
 
 	/**
