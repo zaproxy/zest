@@ -151,8 +151,9 @@ public class ZestActionInvoke extends ZestAction {
 	            	sb.append(line);
 	            	sb.append("\n");
 				}
-	            runtime.setVariable(variableName, sb.toString());
-				return sb.toString();
+				String result = sb.toString();
+				runtime.setVariable(variableName, result);
+				return result;
 				
 			} catch (Exception e) {
 				throw new ZestActionFailException(this, e);
@@ -175,8 +176,9 @@ public class ZestActionInvoke extends ZestAction {
 				return null;
 			}
 
-			runtime.setVariable(variableName, result.toString());
-			return result.toString();
+			String resultStr = result.toString();
+			runtime.setVariable(variableName, resultStr);
+			return resultStr;
 		} catch (Exception e) {
 			throw new ZestActionFailException(this, e);
 		}
