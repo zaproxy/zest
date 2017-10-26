@@ -26,19 +26,19 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 	private String location;
 
 	/** The Constant LOC_HEAD. */
-	transient public static final String LOC_HEAD = "HEAD"; 
+	public static final transient String LOC_HEAD = "HEAD"; 
 	
 	/** The Constant LOC_BODY. */
-	transient public static final String LOC_BODY = "BODY"; 
+	public static final transient String LOC_BODY = "BODY"; 
 
 	/** The prefix pattern. */
-	transient private Pattern prefixPattern = null;
+	private transient Pattern prefixPattern = null;
 	
 	/** The postfix pattern. */
-	transient private Pattern postfixPattern = null;
+	private transient Pattern postfixPattern = null;
 	
 	/** The Constant LOCATIONS. */
-	transient private static final Set<String> LOCATIONS = 
+	private static final transient Set<String> LOCATIONS = 
 			new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
 
 	/**
