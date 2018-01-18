@@ -33,8 +33,6 @@ import com.opera.core.systems.OperaDriver;
  */
 public class ZestClientLaunch extends ZestClient {
 
-	private static final String HEADLESS_ARG = "--headless";
-
 	private String windowHandle = null;
 	private String browserType = null;
 	private String url = null;
@@ -126,7 +124,7 @@ public class ZestClientLaunch extends ZestClient {
 			DesiredCapabilities cap = new DesiredCapabilities();
 			cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			// W3C capability
-			cap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+			cap.setAcceptInsecureCerts(true);
 
 			String httpProxy = runtime.getProxy();
 			if (httpProxy.length() > 0) {
@@ -149,9 +147,7 @@ public class ZestClientLaunch extends ZestClient {
 
 			if ("Firefox".equalsIgnoreCase(this.browserType)) {
 				FirefoxOptions firefoxOptions = new FirefoxOptions();
-				if (isHeadless()) {
-					firefoxOptions.addArguments(HEADLESS_ARG);
-				}
+				firefoxOptions.setHeadless(isHeadless());
 
 				if (!httpProxy.isEmpty()) {
 					String[] proxyData = httpProxy.split(":");
@@ -177,12 +173,7 @@ public class ZestClientLaunch extends ZestClient {
 				driver = new FirefoxDriver(firefoxOptions);
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
 				ChromeOptions chromeOptions = new ChromeOptions();
-				// XXX Do not support headless until the following issue is fixed:
-				// https://bugs.chromium.org/p/chromium/issues/detail?id=721739
-				// (it does not accept insecure certs when in headless)
-				// if (isHeadless()) {
-				// 	chromeOptions.addArguments(HEADLESS_ARG);
-				// }
+				chromeOptions.setHeadless(isHeadless());
 				chromeOptions.merge(cap);
 
 				driver = new ChromeDriver(chromeOptions);
