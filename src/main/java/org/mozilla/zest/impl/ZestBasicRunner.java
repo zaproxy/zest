@@ -35,7 +35,6 @@ import org.mozilla.zest.core.v1.ZestControlReturn;
 import org.mozilla.zest.core.v1.ZestInvalidCommonTestException;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestLoop;
-import org.mozilla.zest.core.v1.ZestOutputWriter;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestRunner;
@@ -45,7 +44,7 @@ import org.mozilla.zest.core.v1.ZestStatement;
 import org.mozilla.zest.core.v1.ZestVariables;
 import org.openqa.selenium.WebDriver;
 
-public class ZestBasicRunner implements ZestRunner, ZestRuntime, ZestOutputWriter {
+public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
 	private ScriptEngineFactory scriptEngineFactory = null;
 	private ZestHttpClient httpclient;
