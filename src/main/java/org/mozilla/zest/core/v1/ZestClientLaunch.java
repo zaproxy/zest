@@ -212,7 +212,7 @@ public class ZestClientLaunch extends ZestClient {
 			
 			runtime.addWebDriver(getWindowHandle(), driver);
 			
-			if (this.url != null) {
+			if (this.url != null && !this.url.isEmpty()) {
 				driver.get(runtime.replaceVariablesInString(this.url, true));
 			}
 			
