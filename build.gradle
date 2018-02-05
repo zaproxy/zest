@@ -39,7 +39,8 @@ dependencies {
         exclude group: 'org.seleniumhq.selenium'
     }
 
-    testCompile('junit:junit:4.11')
+    testCompile('junit:junit:4.11',
+                'com.github.tomakehurst:wiremock-standalone:2.14.0')
 }
 
 jar {
