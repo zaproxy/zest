@@ -113,7 +113,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
 
 	@Test
 	public void testSerialization() {
-		ZestClientLaunch zcl1 = new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE), false);
+		ZestClientLaunch zcl1 = new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE), false, "/profile");
 		String str = ZestJSON.toString(zcl1);
 		ZestClientLaunch zcl2 = (ZestClientLaunch) ZestJSON.fromString(str);
 		
@@ -122,12 +122,13 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
 		assertEquals(zcl1.getWindowHandle(), zcl2.getWindowHandle());
 		assertEquals(zcl1.getUrl(), zcl2.getUrl());
 		assertEquals(zcl1.isHeadless(), zcl2.isHeadless());
+		assertEquals(zcl1.getProfilePath(), zcl2.getProfilePath());
 	}
 
 	@Test
 	public void shouldDeepCopy() throws Exception {
 		// Given
-		ZestClientLaunch original = new ZestClientLaunch("handle", "browser", "url", "capabilities", false);
+		ZestClientLaunch original = new ZestClientLaunch("handle", "browser", "url", "capabilities", false, "/profile");
 		original.setEnabled(false);
 		// When
 		ZestClientLaunch copy = (ZestClientLaunch) original.deepCopy();
@@ -138,6 +139,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
 		assertEquals(original.getUrl(), copy.getUrl());
 		assertEquals(original.getCapabilities(), copy.getCapabilities());
 		assertEquals(original.isHeadless(), copy.isHeadless());
+		assertEquals(original.getProfilePath(), copy.getProfilePath());
 		assertEquals(original.isEnabled(), copy.isEnabled());
 	}
 }
