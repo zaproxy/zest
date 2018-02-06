@@ -106,7 +106,12 @@ public class ZestClientLaunch extends ZestClient {
 
 	@Override
 	public ZestStatement deepCopy() {
-		ZestClientLaunch copy = new ZestClientLaunch(this.getWindowHandle(), this.getBrowserType(), this.getUrl());
+		ZestClientLaunch copy = new ZestClientLaunch(
+				this.getWindowHandle(),
+				this.getBrowserType(),
+				this.getUrl(),
+				this.getCapabilities(),
+				this.isHeadless());
 		copy.setEnabled(this.isEnabled());
 		return copy;
 	}

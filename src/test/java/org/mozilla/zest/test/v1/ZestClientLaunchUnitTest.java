@@ -123,4 +123,21 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
 		assertEquals(zcl1.getUrl(), zcl2.getUrl());
 		assertEquals(zcl1.isHeadless(), zcl2.isHeadless());
 	}
+
+	@Test
+	public void shouldDeepCopy() throws Exception {
+		// Given
+		ZestClientLaunch original = new ZestClientLaunch("handle", "browser", "url", "capabilities", false);
+		original.setEnabled(false);
+		// When
+		ZestClientLaunch copy = (ZestClientLaunch) original.deepCopy();
+		// Then
+		assertEquals(original.getElementType(), copy.getElementType());
+		assertEquals(original.getBrowserType(), copy.getBrowserType());
+		assertEquals(original.getWindowHandle(), copy.getWindowHandle());
+		assertEquals(original.getUrl(), copy.getUrl());
+		assertEquals(original.getCapabilities(), copy.getCapabilities());
+		assertEquals(original.isHeadless(), copy.isHeadless());
+		assertEquals(original.isEnabled(), copy.isEnabled());
+	}
 }
