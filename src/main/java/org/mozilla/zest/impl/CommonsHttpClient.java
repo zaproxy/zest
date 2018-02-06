@@ -12,6 +12,7 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.DeleteMethod;
+import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.OptionsMethod;
@@ -115,12 +116,12 @@ class CommonsHttpClient implements ZestHttpClient{
             httpclient.getState().addCookie(cookie);
         }
 
-        if (req.getMethod().equals("POST")) {
+        if (method instanceof EntityEnclosingMethod) {
             // The setRequestEntity call trashes any Content-Type specified, so record it and reapply it after
             Header contentType = method.getRequestHeader("Content-Type");
             RequestEntity requestEntity = new StringRequestEntity(req.getData(), null, null);
 
-            ((PostMethod) method).setRequestEntity(requestEntity);
+            ((EntityEnclosingMethod) method).setRequestEntity(requestEntity);
 
             if (contentType != null) {
                 method.setRequestHeader(contentType);
