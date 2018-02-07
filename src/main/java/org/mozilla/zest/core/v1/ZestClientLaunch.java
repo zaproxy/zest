@@ -3,7 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.openqa.selenium.Capabilities;
@@ -13,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
@@ -38,6 +42,7 @@ public class ZestClientLaunch extends ZestClient {
 	private String url = null;
 	private String capabilities = null;
 	private boolean headless = true;
+	private String profilePath;
 
 	public ZestClientLaunch(String windowHandle, String browserType, String url) {
 		this(windowHandle, browserType, url, null);
@@ -47,17 +52,26 @@ public class ZestClientLaunch extends ZestClient {
 		this(windowHandle, browserType, url, null, headless);
 	}
 
+	public ZestClientLaunch(String windowHandle, String browserType, String url, boolean headless, String profilePath) {
+		this(windowHandle, browserType, url, null, headless, profilePath);
+	}
+
 	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities) {
 		this(windowHandle, browserType, url, capabilities, true);
 	}
 
 	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities, boolean headless) {
+		this(windowHandle, browserType, url, capabilities, headless, "");
+	}
+
+	public ZestClientLaunch(String windowHandle, String browserType, String url, String capabilities, boolean headless, String profilePath) {
 		super();
 		this.windowHandle = windowHandle;
 		this.browserType = browserType;
 		this.url = url;
 		this.capabilities = capabilities;
 		this.headless = headless;
+		this.profilePath = profilePath;
 	}
 
 	public ZestClientLaunch() {
@@ -104,6 +118,14 @@ public class ZestClientLaunch extends ZestClient {
 		this.headless = headless;
 	}
 
+	public String getProfilePath() {
+		return profilePath;
+	}
+
+	public void setProfilePath(String profilePath) {
+		this.profilePath = profilePath;
+	}
+
 	@Override
 	public ZestStatement deepCopy() {
 		ZestClientLaunch copy = new ZestClientLaunch(
@@ -111,7 +133,8 @@ public class ZestClientLaunch extends ZestClient {
 				this.getBrowserType(),
 				this.getUrl(),
 				this.getCapabilities(),
-				this.isHeadless());
+				this.isHeadless(),
+				this.getProfilePath());
 		copy.setEnabled(this.isEnabled());
 		return copy;
 	}
@@ -153,6 +176,9 @@ public class ZestClientLaunch extends ZestClient {
 			if ("Firefox".equalsIgnoreCase(this.browserType)) {
 				FirefoxOptions firefoxOptions = new FirefoxOptions();
 				firefoxOptions.setHeadless(isHeadless());
+				if (isProfilePathSet()) {
+					firefoxOptions.setProfile(new FirefoxProfile(new File(profilePath)));
+				}
 
 				if (!httpProxy.isEmpty()) {
 					String[] proxyData = httpProxy.split(":");
@@ -179,6 +205,13 @@ public class ZestClientLaunch extends ZestClient {
 			} else if ("Chrome".equalsIgnoreCase(this.browserType)) {
 				ChromeOptions chromeOptions = new ChromeOptions();
 				chromeOptions.setHeadless(isHeadless());
+				if (isProfilePathSet()) {
+					Path path = Paths.get(profilePath);
+					String userDataDir = path.getParent().toString();
+					String profileDirName = path.getFileName().toString();
+					chromeOptions.addArguments("user-data-dir=" + userDataDir);
+					chromeOptions.addArguments("--profile-directory=" + profileDirName);
+				}
 				chromeOptions.merge(cap);
 
 				driver = new ChromeDriver(chromeOptions);
@@ -228,4 +261,7 @@ public class ZestClientLaunch extends ZestClient {
 		}
 	}
 
+	private boolean isProfilePathSet() {
+		return profilePath != null && !profilePath.isEmpty();
+	}
 }
