@@ -35,7 +35,7 @@ dependencies {
              'org.seleniumhq.selenium:selenium-server:3.8.1',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    compile('com.machinepublishers:jbrowserdriver:0.17.11') {
+    compile('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
         exclude group: 'org.seleniumhq.selenium'
     }
 
