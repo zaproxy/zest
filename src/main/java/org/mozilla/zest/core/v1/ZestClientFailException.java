@@ -37,6 +37,19 @@ public class ZestClientFailException extends Exception {
 	}
 
 	/**
+	 * Constructs a {@code ZestClientFailException} with the given client, message, and cause.
+	 *
+	 * @param client the client.
+	 * @param message the detail message.
+	 * @param cause the cause.
+	 * @since 0.14
+	 */
+	public ZestClientFailException(ZestElement client, String message, Throwable cause) {
+		super(message, cause);
+		this.element = client;
+	}
+
+	/**
 	 * Instantiates a new zest client fail exception.
 	 *
 	 * @param client the client
