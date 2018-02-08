@@ -22,7 +22,7 @@ public class ZestClientWindowOpenUrl extends ZestClient {
 	public ZestClientWindowOpenUrl(String windowHandle, String url) {
 		super();
 		this.windowHandle = windowHandle;
-		this.url = url;;
+		this.url = url;
 	}
 
 	public String getWindowHandle() {
