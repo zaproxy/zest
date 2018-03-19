@@ -5,36 +5,37 @@ package org.mozilla.zest.core.v1;
 
 /**
  * Clear the specified client element.
- * @author simon
  *
+ * @author simon
  */
 public class ZestClientElementClear extends ZestClientElement {
 
-	public ZestClientElementClear(String sessionIdName, String type, String element) {
-		super(sessionIdName, type, element);
-	}
-	
-	public ZestClientElementClear() {
-		super();
-	}
-	
-	@Override
-	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-		this.getWebElement(runtime).clear();
+    public ZestClientElementClear(String sessionIdName, String type, String element) {
+        super(sessionIdName, type, element);
+    }
 
-		return null;
-	}
+    public ZestClientElementClear() {
+        super();
+    }
 
-	@Override
-	public ZestStatement deepCopy() {
-		ZestClientElementClear copy = new ZestClientElementClear(this.getWindowHandle(), this.getType(), this.getElement());
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    @Override
+    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+        this.getWebElement(runtime).clear();
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+        return null;
+    }
 
+    @Override
+    public ZestStatement deepCopy() {
+        ZestClientElementClear copy =
+                new ZestClientElementClear(
+                        this.getWindowHandle(), this.getType(), this.getElement());
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
+
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 }

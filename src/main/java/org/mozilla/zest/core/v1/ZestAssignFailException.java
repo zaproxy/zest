@@ -4,45 +4,42 @@
 package org.mozilla.zest.core.v1;
 
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestActionFailException.
- */
+/** The Class ZestActionFailException. */
 public class ZestAssignFailException extends Exception {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	
-	/** The assignment that failed. */
-	private ZestAssignment assign = null;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Instantiates a new zest action fail exception.
-	 *
-	 * @param assign the assign
-	 * @param message the message
-	 */
-	public ZestAssignFailException (ZestAssignment assign, String message) {
-		super(message);
-		this.assign = assign;
-	}
+    /** The assignment that failed. */
+    private ZestAssignment assign = null;
 
-	/**
-	 * Instantiates a new zest action fail exception.
-	 *
-	 * @param assign the assign
-	 */
-	public ZestAssignFailException (ZestAssignment assign) {
-		super();
-		this.assign = assign;
-	}
+    /**
+     * Instantiates a new zest action fail exception.
+     *
+     * @param assign the assign
+     * @param message the message
+     */
+    public ZestAssignFailException(ZestAssignment assign, String message) {
+        super(message);
+        this.assign = assign;
+    }
 
-	/**
-	 * Gets the action.
-	 *
-	 * @return the action
-	 */
-	public ZestAssignment getAssignment() {
-		return assign;
-	}
-	
+    /**
+     * Instantiates a new zest action fail exception.
+     *
+     * @param assign the assign
+     */
+    public ZestAssignFailException(ZestAssignment assign) {
+        super();
+        this.assign = assign;
+    }
+
+    /**
+     * Gets the action.
+     *
+     * @return the action
+     */
+    public ZestAssignment getAssignment() {
+        return assign;
+    }
 }

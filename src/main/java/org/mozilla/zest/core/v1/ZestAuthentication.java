@@ -3,10 +3,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-/**
- * The Class ZestAuthentication.
- */
-public abstract class ZestAuthentication extends ZestElement {
-
-
-}
+/** The Class ZestAuthentication. */
+public abstract class ZestAuthentication extends ZestElement {}

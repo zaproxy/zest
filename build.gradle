@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.8.0"
+    id "com.diffplug.gradle.spotless" version "3.10.0"
 }
 
 task wrapper(type: Wrapper) {
@@ -76,6 +76,8 @@ tasks.withType(Javadoc) {
 spotless {
     java {
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
+
+        googleJavaFormat().style('AOSP')
     }
 }
 

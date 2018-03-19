@@ -4,74 +4,70 @@
 package org.mozilla.zest.core.v1;
 
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestActionScan.
- */
+/** The Class ZestActionScan. */
 public class ZestActionScan extends ZestAction {
 
-	/** The target parameter. */
-	private String targetParameter;
+    /** The target parameter. */
+    private String targetParameter;
 
-	/**
-	 * Instantiates a new zest action scan.
-	 */
-	public ZestActionScan() {
-		super();
-	}
-	
-	/**
-	 * Instantiates a new zest action scan.
-	 *
-	 * @param targetParameter the target parameter
-	 */
-	public ZestActionScan(String targetParameter) {
-		super ();
-		this.targetParameter = targetParameter;
-	}
-	
-	/**
-	 * Instantiates a new zest action scan.
-	 *
-	 * @param index the index
-	 */
-	public ZestActionScan(int index) {
-		super(index);
-	}
+    /** Instantiates a new zest action scan. */
+    public ZestActionScan() {
+        super();
+    }
 
-	/**
-	 * Gets the target parameter.
-	 *
-	 * @return the target parameter
-	 */
-	public String getTargetParameter() {
-		return targetParameter;
-	}
+    /**
+     * Instantiates a new zest action scan.
+     *
+     * @param targetParameter the target parameter
+     */
+    public ZestActionScan(String targetParameter) {
+        super();
+        this.targetParameter = targetParameter;
+    }
 
-	/**
-	 * Sets the target parameter.
-	 *
-	 * @param targetParameter the new target parameter
-	 */
-	public void setTargetParameter(String targetParameter) {
-		this.targetParameter = targetParameter;
-	}
+    /**
+     * Instantiates a new zest action scan.
+     *
+     * @param index the index
+     */
+    public ZestActionScan(int index) {
+        super(index);
+    }
 
-	@Override
-	public ZestActionScan deepCopy() {
-		ZestActionScan copy = new ZestActionScan(this.getIndex());
-		copy.targetParameter = this.targetParameter;
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    /**
+     * Gets the target parameter.
+     *
+     * @return the target parameter
+     */
+    public String getTargetParameter() {
+        return targetParameter;
+    }
 
-	@Override
-	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
-		throw new ZestActionFailException(this);
-	}
+    /**
+     * Sets the target parameter.
+     *
+     * @param targetParameter the new target parameter
+     */
+    public void setTargetParameter(String targetParameter) {
+        this.targetParameter = targetParameter;
+    }
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+    @Override
+    public ZestActionScan deepCopy() {
+        ZestActionScan copy = new ZestActionScan(this.getIndex());
+        copy.targetParameter = this.targetParameter;
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
+    @Override
+    public String invoke(ZestResponse response, ZestRuntime runtime)
+            throws ZestActionFailException {
+        throw new ZestActionFailException(this);
+    }
+
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 }

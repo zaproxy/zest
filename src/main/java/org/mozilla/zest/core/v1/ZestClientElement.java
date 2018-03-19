@@ -7,82 +7,79 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-/**
- * An abstract class representing an action on a client element.
- */
-
+/** An abstract class representing an action on a client element. */
 public abstract class ZestClientElement extends ZestClient {
 
-	private String windowHandle = null;
-	private String type = null;
-	private String element = null;
-	
-	public ZestClientElement(String windowHandle, String type, String element) {
-		super();
-		this.windowHandle = windowHandle;
-		this.type = type;
-		this.element = element;
-	}
+    private String windowHandle = null;
+    private String type = null;
+    private String element = null;
 
-	public ZestClientElement() {
-		super();
-	}
-	
-	public String getWindowHandle() {
-		return windowHandle;
-	}
+    public ZestClientElement(String windowHandle, String type, String element) {
+        super();
+        this.windowHandle = windowHandle;
+        this.type = type;
+        this.element = element;
+    }
 
-	public void setWindowHandle(String windowHandle) {
-		this.windowHandle = windowHandle;
-	}
+    public ZestClientElement() {
+        super();
+    }
 
-	public String getElement() {
-		return element;
-	}
+    public String getWindowHandle() {
+        return windowHandle;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setWindowHandle(String windowHandle) {
+        this.windowHandle = windowHandle;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getElement() {
+        return element;
+    }
 
-	public void setElement(String element) {
-		this.element = element;
-	}
+    public String getType() {
+        return type;
+    }
 
-	protected WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
-		
-		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
-		
-		if (wd == null) {
-			throw new ZestClientFailException(this, "No client: " + runtime.getVariable(getWindowHandle()));
-		}
-		String elem = runtime.replaceVariablesInString(this.getElement(), false);
+    public void setType(String type) {
+        this.type = type;
+    }
 
-		try {
-			if ("className".equalsIgnoreCase(type)) {
-				return wd.findElement(By.className(elem));
-			} else if ("cssSelector".equalsIgnoreCase(type)) {
-				return wd.findElement(By.cssSelector(elem));
-			} else if ("id".equalsIgnoreCase(type)) {
-				return wd.findElement(By.id(elem));
-			} else if ("linkText".equalsIgnoreCase(type)) {
-				return wd.findElement(By.linkText(elem));
-			} else if ("name".equalsIgnoreCase(type)) {
-				return wd.findElement(By.name(elem));
-			} else if ("partialLinkText".equalsIgnoreCase(type)) {
-				return wd.findElement(By.partialLinkText(elem));
-			} else if ("tagName".equalsIgnoreCase(type)) {
-				return wd.findElement(By.tagName(elem));
-			} else if ("xpath".equalsIgnoreCase(type)) {
-				return wd.findElement(By.xpath(elem));
-			}
-			throw new ZestClientFailException(this, "Unsupported type: " + type);
-		} catch (Exception e) {
-			throw new ZestClientFailException(this, e);
-		}
-	}
+    public void setElement(String element) {
+        this.element = element;
+    }
 
+    protected WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
+
+        WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
+
+        if (wd == null) {
+            throw new ZestClientFailException(
+                    this, "No client: " + runtime.getVariable(getWindowHandle()));
+        }
+        String elem = runtime.replaceVariablesInString(this.getElement(), false);
+
+        try {
+            if ("className".equalsIgnoreCase(type)) {
+                return wd.findElement(By.className(elem));
+            } else if ("cssSelector".equalsIgnoreCase(type)) {
+                return wd.findElement(By.cssSelector(elem));
+            } else if ("id".equalsIgnoreCase(type)) {
+                return wd.findElement(By.id(elem));
+            } else if ("linkText".equalsIgnoreCase(type)) {
+                return wd.findElement(By.linkText(elem));
+            } else if ("name".equalsIgnoreCase(type)) {
+                return wd.findElement(By.name(elem));
+            } else if ("partialLinkText".equalsIgnoreCase(type)) {
+                return wd.findElement(By.partialLinkText(elem));
+            } else if ("tagName".equalsIgnoreCase(type)) {
+                return wd.findElement(By.tagName(elem));
+            } else if ("xpath".equalsIgnoreCase(type)) {
+                return wd.findElement(By.xpath(elem));
+            }
+            throw new ZestClientFailException(this, "Unsupported type: " + type);
+        } catch (Exception e) {
+            throw new ZestClientFailException(this, e);
+        }
+    }
 }

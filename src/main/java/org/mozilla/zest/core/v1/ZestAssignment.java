@@ -5,82 +5,77 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 
-
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestAction.
- */
+/** The Class ZestAction. */
 public abstract class ZestAssignment extends ZestStatement {
 
-	/** The variable name. */
-	private String variableName;
+    /** The variable name. */
+    private String variableName;
 
-	/**
-	 * Instantiates a new zest action.
-	 */
-	public ZestAssignment() {
-		super();
-	}
+    /** Instantiates a new zest action. */
+    public ZestAssignment() {
+        super();
+    }
 
-	/**
-	 * Instantiates a new zest assignment.
-	 *
-	 * @param variableName the variable name
-	 */
-	public ZestAssignment(String variableName) {
-		super();
-		this.variableName = variableName;
-	}
+    /**
+     * Instantiates a new zest assignment.
+     *
+     * @param variableName the variable name
+     */
+    public ZestAssignment(String variableName) {
+        super();
+        this.variableName = variableName;
+    }
 
-	/**
-	 * Instantiates a new zest action.
-	 *
-	 * @param index the index
-	 */
-	public ZestAssignment(int index) {
-		super(index);
-	}
+    /**
+     * Instantiates a new zest action.
+     *
+     * @param index the index
+     */
+    public ZestAssignment(int index) {
+        super(index);
+    }
 
-	@Override
-	public boolean isSameSubclass(ZestElement ze) {
-		return ze instanceof ZestAssignment;
-	}
-	
-	@Override
-	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
-		// Ignore
-	}
+    @Override
+    public boolean isSameSubclass(ZestElement ze) {
+        return ze instanceof ZestAssignment;
+    }
 
-	/**
-	 * Returns the variable name.
-	 *
-	 * @return the variable name
-	 */
-	public String getVariableName() {
-		return variableName;
-	}
+    @Override
+    void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
+        // Ignore
+    }
 
-	/**
-	 * Sets the variable name.
-	 *
-	 * @param name the new variable name
-	 */
-	public void setVariableName(String name) {
-		this.variableName = name;
-	}
+    /**
+     * Returns the variable name.
+     *
+     * @return the variable name
+     */
+    public String getVariableName() {
+        return variableName;
+    }
 
-	@Override
-	public boolean isPassive() {
-		return true;
-	}
+    /**
+     * Sets the variable name.
+     *
+     * @param name the new variable name
+     */
+    public void setVariableName(String name) {
+        this.variableName = name;
+    }
 
-	/**
-	 * Invoke.
-	 *
-	 * @param response the response
-	 * @return the string
-	 * @throws ZestAssignFailException the zest assign fail exception
-	 */
-	public abstract String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException;
-	
+    @Override
+    public boolean isPassive() {
+        return true;
+    }
+
+    /**
+     * Invoke.
+     *
+     * @param response the response
+     * @return the string
+     * @throws ZestAssignFailException the zest assign fail exception
+     */
+    public abstract String assign(ZestResponse response, ZestRuntime runtime)
+            throws ZestAssignFailException;
 }

@@ -7,21 +7,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestElement;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestScript;
 
-/**
- * Verifies that the examples can be parsed.
- */
+/** Verifies that the examples can be parsed. */
 public class VerifyExamples {
 
     @Test
     public void shouldParseExamples() throws Exception {
-        String[] scripts = { "BodgeIt_Register_XSS" };
+        String[] scripts = {"BodgeIt_Register_XSS"};
         for (String script : scripts) {
             assertZestScript(script);
         }

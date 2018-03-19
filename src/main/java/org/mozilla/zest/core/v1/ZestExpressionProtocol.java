@@ -6,29 +6,28 @@ package org.mozilla.zest.core.v1;
 import java.net.URL;
 
 /**
- * A {@link ZestExpression} that checks if the {@link ZestRuntime#getLastRequest() last request} has a given protocol (for
- * example, HTTPS).
- * <p>
- * The check is done in a case-insensitive manner. The expression returns {@code false} if no protocol was set (that is,
- * {@code null}).
- * 
+ * A {@link ZestExpression} that checks if the {@link ZestRuntime#getLastRequest() last request} has
+ * a given protocol (for example, HTTPS).
+ *
+ * <p>The check is done in a case-insensitive manner. The expression returns {@code false} if no
+ * protocol was set (that is, {@code null}).
+ *
  * @since 0.14
  */
 public class ZestExpressionProtocol extends ZestExpression {
 
     private String protocol;
 
-    /**
-     * Constructs a {@code ZestExpressionProtocol} with no protocol.
-     */
+    /** Constructs a {@code ZestExpressionProtocol} with no protocol. */
     public ZestExpressionProtocol() {
         super();
     }
 
     /**
      * Constructs a {@code ZestExpressionProtocol} with the given protocol.
-     * 
-     * @param protocol the protocol that the request must have for the expression to return {@code true}.
+     *
+     * @param protocol the protocol that the request must have for the expression to return {@code
+     *     true}.
      */
     public ZestExpressionProtocol(String protocol) {
         this(protocol, false);
@@ -36,8 +35,9 @@ public class ZestExpressionProtocol extends ZestExpression {
 
     /**
      * Constructs a {@code ZestExpressionProtocol} with the given protocol and inverse state.
-     * 
-     * @param protocol the protocol that the request must have for the expression to return {@code true}.
+     *
+     * @param protocol the protocol that the request must have for the expression to return {@code
+     *     true}.
      * @param inverse if the expression should be the inverse.
      */
     public ZestExpressionProtocol(String protocol, boolean inverse) {
@@ -46,8 +46,8 @@ public class ZestExpressionProtocol extends ZestExpression {
     }
 
     /**
-     * Tells whether or not the {@link ZestRuntime#getLastRequest() last request} matches {@link #getProtocol() the protocol}
-     * set.
+     * Tells whether or not the {@link ZestRuntime#getLastRequest() last request} matches {@link
+     * #getProtocol() the protocol} set.
      */
     @Override
     public boolean isTrue(ZestRuntime runtime) {
@@ -95,5 +95,4 @@ public class ZestExpressionProtocol extends ZestExpression {
     public String toString() {
         return (isInverse() ? "NOT " : "") + "Protocol: " + protocol;
     }
-
 }

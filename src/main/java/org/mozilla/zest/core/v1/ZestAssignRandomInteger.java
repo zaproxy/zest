@@ -6,95 +6,91 @@ package org.mozilla.zest.core.v1;
 import java.security.SecureRandom;
 
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestTransformRndIntReplace assigned a random integer to the specified variable.
- */
+/** The Class ZestTransformRndIntReplace assigned a random integer to the specified variable. */
 public class ZestAssignRandomInteger extends ZestAssignment {
 
-	/** The min int. */
-	private int minInt = 0;
-	
-	/** The max int. */
-	private int maxInt = Integer.MAX_VALUE;
-	
-	/** The rnd. */
-	private transient SecureRandom rnd = new SecureRandom(); 
-	
-	/**
-	 * Instantiates a new zest assign random integer.
-	 */
-	public ZestAssignRandomInteger() {
-	}
+    /** The min int. */
+    private int minInt = 0;
 
-	/**
-	 * Instantiates a new zest assign random integer.
-	 *
-	 * @param variableName the variable name
-	 */
-	public ZestAssignRandomInteger(String variableName) {
-		super(variableName);
-	}
+    /** The max int. */
+    private int maxInt = Integer.MAX_VALUE;
 
-	/**
-	 * Instantiates a new zest assign random integer.
-	 *
-	 * @param variableName the variable name
-	 * @param minInt the min int
-	 * @param maxInt the max int
-	 */
-	public ZestAssignRandomInteger(String variableName, int minInt, int maxInt) {
-		super(variableName);
-		this.minInt = minInt;
-		this.maxInt = maxInt;
-	}
+    /** The rnd. */
+    private transient SecureRandom rnd = new SecureRandom();
 
-	@Override
-	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
-		int val = minInt + rnd.nextInt(maxInt - minInt);
-		return Integer.toString(val);
-	}
+    /** Instantiates a new zest assign random integer. */
+    public ZestAssignRandomInteger() {}
 
-	@Override
-	public ZestAssignRandomInteger deepCopy() {
-		ZestAssignRandomInteger copy = new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    /**
+     * Instantiates a new zest assign random integer.
+     *
+     * @param variableName the variable name
+     */
+    public ZestAssignRandomInteger(String variableName) {
+        super(variableName);
+    }
 
-	/**
-	 * Gets the min int.
-	 *
-	 * @return the min int
-	 */
-	public int getMinInt() {
-		return minInt;
-	}
+    /**
+     * Instantiates a new zest assign random integer.
+     *
+     * @param variableName the variable name
+     * @param minInt the min int
+     * @param maxInt the max int
+     */
+    public ZestAssignRandomInteger(String variableName, int minInt, int maxInt) {
+        super(variableName);
+        this.minInt = minInt;
+        this.maxInt = maxInt;
+    }
 
-	/**
-	 * Sets the min int.
-	 *
-	 * @param minInt the new min int
-	 */
-	public void setMinInt(int minInt) {
-		this.minInt = minInt;
-	}
+    @Override
+    public String assign(ZestResponse response, ZestRuntime runtime)
+            throws ZestAssignFailException {
+        int val = minInt + rnd.nextInt(maxInt - minInt);
+        return Integer.toString(val);
+    }
 
-	/**
-	 * Gets the max int.
-	 *
-	 * @return the max int
-	 */
-	public int getMaxInt() {
-		return maxInt;
-	}
+    @Override
+    public ZestAssignRandomInteger deepCopy() {
+        ZestAssignRandomInteger copy =
+                new ZestAssignRandomInteger(this.getVariableName(), this.minInt, this.maxInt);
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	/**
-	 * Sets the max int.
-	 *
-	 * @param maxInt the new max int
-	 */
-	public void setMaxInt(int maxInt) {
-		this.maxInt = maxInt;
-	}
+    /**
+     * Gets the min int.
+     *
+     * @return the min int
+     */
+    public int getMinInt() {
+        return minInt;
+    }
 
+    /**
+     * Sets the min int.
+     *
+     * @param minInt the new min int
+     */
+    public void setMinInt(int minInt) {
+        this.minInt = minInt;
+    }
+
+    /**
+     * Gets the max int.
+     *
+     * @return the max int
+     */
+    public int getMaxInt() {
+        return maxInt;
+    }
+
+    /**
+     * Sets the max int.
+     *
+     * @param maxInt the new max int
+     */
+    public void setMaxInt(int maxInt) {
+        this.maxInt = maxInt;
+    }
 }

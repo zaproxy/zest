@@ -4,15 +4,12 @@
 package org.mozilla.zest.test.v1;
 
 import java.util.HashMap;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestScript;
 import org.mozilla.zest.impl.ZestBasicRunner;
 
-/**
- * Unit test for {@code ZestBasicRunner}.
- */
+/** Unit test for {@code ZestBasicRunner}. */
 public class ZestBasicRunnerUnitTest {
 
     @Test(expected = IllegalArgumentException.class)

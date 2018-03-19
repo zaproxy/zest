@@ -14,7 +14,6 @@ import static org.mockito.Mockito.withSettings;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -25,16 +24,13 @@ import org.mozilla.zest.core.v1.ZestRuntime;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Unit test for {@link ZestClientScreenshot}.
- */
+/** Unit test for {@link ZestClientScreenshot}. */
 public class ZestClientScreenshotUnitTest {
 
-    private static final byte[] SCREENSHOT_DATA = { 0x00, 0x01, 0x02 };
+    private static final byte[] SCREENSHOT_DATA = {0x00, 0x01, 0x02};
     private static final String SCREENSHOT_DATA_BASE_64 = "AAEC";
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    @Rule public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
     public void shouldBePassive() {
@@ -83,7 +79,8 @@ public class ZestClientScreenshotUnitTest {
         String filePath = "/path";
         String variableName = "variableName";
         // When
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, filePath, variableName);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, filePath, variableName);
         // Then
         assertEquals(windowHandle, clientScreenshot.getWindowHandle());
         assertEquals(filePath, clientScreenshot.getFilePath());
@@ -137,7 +134,8 @@ public class ZestClientScreenshotUnitTest {
     @Test(expected = NullPointerException.class)
     public void shouldFailWhenInvokingWithNullRuntime() throws Exception {
         // Given
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot("handle", "/path", "variableName");
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot("handle", "/path", "variableName");
         ZestRuntime runtime = null;
         // When
         clientScreenshot.invoke(runtime);
@@ -147,7 +145,8 @@ public class ZestClientScreenshotUnitTest {
     @Test(expected = ZestClientFailException.class)
     public void shouldFailToInvokeIfWindowHandleNotAvailable() throws Exception {
         // Given
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot("handle", "/path", "variableName");
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot("handle", "/path", "variableName");
         ZestRuntime runtime = runtime();
         // When
         clientScreenshot.invoke(runtime);
@@ -158,7 +157,8 @@ public class ZestClientScreenshotUnitTest {
     public void shouldFailToInvokeIfClientDoesNotTakeScreenshots() throws Exception {
         // Given
         String windowHandle = "handle";
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, "/path", "variableName");
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, "/path", "variableName");
         ZestRuntime runtime = runtimeWithWebDriver(windowHandle);
         // When
         clientScreenshot.invoke(runtime);
@@ -166,7 +166,8 @@ public class ZestClientScreenshotUnitTest {
     }
 
     @Test(expected = ZestClientFailException.class)
-    public void shouldFailToInvokeIfClientTakeScreenshotsButFileAndVariableAreNull() throws Exception {
+    public void shouldFailToInvokeIfClientTakeScreenshotsButFileAndVariableAreNull()
+            throws Exception {
         // Given
         String windowHandle = "windowHandle";
         ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, null, null);
@@ -177,7 +178,8 @@ public class ZestClientScreenshotUnitTest {
     }
 
     @Test(expected = ZestClientFailException.class)
-    public void shouldFailToInvokeIfClientTakeScreenshotsButFileAndVariableAreEmpty() throws Exception {
+    public void shouldFailToInvokeIfClientTakeScreenshotsButFileAndVariableAreEmpty()
+            throws Exception {
         // Given
         String windowHandle = "windowHandle";
         ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, "", "");
@@ -193,8 +195,10 @@ public class ZestClientScreenshotUnitTest {
         Path path = folder.newFile().toPath();
         String windowHandle = "windowHandle";
         String filePath = path.toString();
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, filePath, null);
-        ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, filePath, null);
+        ZestRuntime runtime =
+                runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
         when(runtime.replaceVariablesInString(filePath, false)).thenReturn(filePath);
         // When
         clientScreenshot.invoke(runtime);
@@ -207,8 +211,10 @@ public class ZestClientScreenshotUnitTest {
         Path path = folder.newFolder().toPath();
         String windowHandle = "windowHandle";
         String filePath = path.toString();
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, filePath, null);
-        ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, filePath, null);
+        ZestRuntime runtime =
+                runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
         when(runtime.replaceVariablesInString(filePath, false)).thenReturn(filePath);
         // When
         clientScreenshot.invoke(runtime);
@@ -221,8 +227,10 @@ public class ZestClientScreenshotUnitTest {
         Path path = folder.getRoot().toPath().resolve("zcs-file-only.png");
         String windowHandle = "windowHandle";
         String filePath = path.toString();
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, filePath, null);
-        ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, filePath, null);
+        ZestRuntime runtime =
+                runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
         when(runtime.replaceVariablesInString(filePath, false)).thenReturn(filePath);
         // When
         clientScreenshot.invoke(runtime);
@@ -235,8 +243,10 @@ public class ZestClientScreenshotUnitTest {
         // Given
         String windowHandle = "windowHandle";
         String variableName = "variableName";
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, null, variableName);
-        ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, null, variableName);
+        ZestRuntime runtime =
+                runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
         // When
         clientScreenshot.invoke(runtime);
         // Then
@@ -250,8 +260,10 @@ public class ZestClientScreenshotUnitTest {
         String windowHandle = "windowHandle";
         String filePath = path.toString();
         String variableName = "variableName";
-        ZestClientScreenshot clientScreenshot = new ZestClientScreenshot(windowHandle, filePath, variableName);
-        ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
+        ZestClientScreenshot clientScreenshot =
+                new ZestClientScreenshot(windowHandle, filePath, variableName);
+        ZestRuntime runtime =
+                runtimeWithWebDriverThatTakesScreenshot(windowHandle, SCREENSHOT_DATA);
         when(runtime.replaceVariablesInString(filePath, false)).thenReturn(filePath);
         // When
         clientScreenshot.invoke(runtime);
@@ -263,11 +275,13 @@ public class ZestClientScreenshotUnitTest {
     @Test
     public void shouldSerialiseAndDeserialise() {
         // Given
-        ZestClientScreenshot original = new ZestClientScreenshot("windowHandle", "/path", "variableName");
+        ZestClientScreenshot original =
+                new ZestClientScreenshot("windowHandle", "/path", "variableName");
         original.setEnabled(false);
         // When
         String serialisation = ZestJSON.toString(original);
-        ZestClientScreenshot deserialised = (ZestClientScreenshot) ZestJSON.fromString(serialisation);
+        ZestClientScreenshot deserialised =
+                (ZestClientScreenshot) ZestJSON.fromString(serialisation);
         // Then
         assertEquals(deserialised.getElementType(), original.getElementType());
         assertEquals(deserialised.getWindowHandle(), original.getWindowHandle());
@@ -279,7 +293,8 @@ public class ZestClientScreenshotUnitTest {
     @Test
     public void shouldDeepCopy() throws Exception {
         // Given
-        ZestClientScreenshot original = new ZestClientScreenshot("windowHandle", "/path", "variableName");
+        ZestClientScreenshot original =
+                new ZestClientScreenshot("windowHandle", "/path", "variableName");
         original.setEnabled(false);
         // When
         ZestClientScreenshot copy = original.deepCopy();
@@ -305,14 +320,18 @@ public class ZestClientScreenshotUnitTest {
     private static ZestRuntime runtimeWithWebDriverThatTakesScreenshot(String windowHandle) {
         ZestRuntime runtime = runtime();
         when(runtime.getWebDriver(windowHandle))
-                .thenReturn(mock(WebDriver.class, withSettings().extraInterfaces(TakesScreenshot.class)));
+                .thenReturn(
+                        mock(
+                                WebDriver.class,
+                                withSettings().extraInterfaces(TakesScreenshot.class)));
         return runtime;
     }
 
-    private static ZestRuntime runtimeWithWebDriverThatTakesScreenshot(String windowHandle, byte[] screenshotData) {
+    private static ZestRuntime runtimeWithWebDriverThatTakesScreenshot(
+            String windowHandle, byte[] screenshotData) {
         ZestRuntime runtime = runtimeWithWebDriverThatTakesScreenshot(windowHandle);
-        when(((TakesScreenshot) runtime.getWebDriver(windowHandle)).getScreenshotAs(any())).thenReturn(screenshotData);
+        when(((TakesScreenshot) runtime.getWebDriver(windowHandle)).getScreenshotAs(any()))
+                .thenReturn(screenshotData);
         return runtime;
     }
-
 }

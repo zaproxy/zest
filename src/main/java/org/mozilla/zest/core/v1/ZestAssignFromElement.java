@@ -3,14 +3,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.Source;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.Source;
 
 public class ZestAssignFromElement extends ZestAssignment {
 
@@ -31,44 +30,43 @@ public class ZestAssignFromElement extends ZestAssignment {
     private boolean returnAttribute;
     private String returnedAttributeName;
 
-    public ZestAssignFromElement() {
-    }
+    public ZestAssignFromElement() {}
 
     public ZestAssignFromElement(String variableName) {
         super(variableName);
     }
 
     @Override
-    public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
+    public String assign(ZestResponse response, ZestRuntime runtime)
+            throws ZestAssignFailException {
         if (response == null) {
             throw new ZestAssignFailException(this, "Null response");
         }
 
         Source src = new Source(response.getBody());
         List<Element> elementsFilteredByElementName = filterByElementNameIfConfigured(src);
-        List<Element> elementsFilteredByAttributeValue = filterByAttributeValueIfConfigured(elementsFilteredByElementName);
+        List<Element> elementsFilteredByAttributeValue =
+                filterByAttributeValueIfConfigured(elementsFilteredByElementName);
         List<Element> elements = reverseIfConfigured(elementsFilteredByAttributeValue);
         Element element = findElementAtIndex(elements);
-        if(element == null){
+        if (element == null) {
             return null;
         }
         return getReturnValue(element);
     }
 
     private String getReturnValue(Element element) throws ZestAssignFailException {
-        if(returnElement){
+        if (returnElement) {
             return element.getContent().toString();
-        }
-        else if(returnAttribute){
+        } else if (returnAttribute) {
             return element.getAttributeValue(returnedAttributeName);
-        }
-        else {
+        } else {
             throw new ZestAssignFailException(this, "A selection method must be configured");
         }
     }
 
     private Element findElementAtIndex(List<Element> elements) {
-        if(indexIsOutOfRange(elements)){
+        if (indexIsOutOfRange(elements)) {
             return null;
         }
         return elements.get(elementIndex);
@@ -79,25 +77,26 @@ public class ZestAssignFromElement extends ZestAssignment {
     }
 
     private List<Element> reverseIfConfigured(List<Element> elements) {
-        if(reverseFilteredElements){
+        if (reverseFilteredElements) {
             Collections.reverse(elements);
             return elements;
         }
         return elements;
     }
 
-    private List<Element> filterByElementNameIfConfigured(Source source){
-        if(filterElementName){
+    private List<Element> filterByElementNameIfConfigured(Source source) {
+        if (filterElementName) {
             return source.getAllElements(elementNameFilter);
         }
         return source.getAllElements();
     }
 
-    private List<Element> filterByAttributeValueIfConfigured(List<Element> elements) throws ZestAssignFailException {
+    private List<Element> filterByAttributeValueIfConfigured(List<Element> elements)
+            throws ZestAssignFailException {
         if (filterAttributeValue) {
             List<Element> matchingElements = new ArrayList<>();
-            for (Element element: elements) {
-                if(isMatchingAttributeFilter(element)){
+            for (Element element : elements) {
+                if (isMatchingAttributeFilter(element)) {
                     matchingElements.add(element);
                 }
             }
@@ -107,33 +106,43 @@ public class ZestAssignFromElement extends ZestAssignment {
     }
 
     private boolean isMatchingAttributeFilter(Element element) throws ZestAssignFailException {
-        if(attributeValueFilterPattern == null){
+        if (attributeValueFilterPattern == null) {
             try {
-                attributeValueFilterPattern = Pattern.compile(attributeValueFilter, attributeValueFilterFlags);
-            }catch (IllegalArgumentException ex){
-                throw new ZestAssignFailException(this, ex.getMessage() + "\r\nRegEx:'" + attributeValueFilter + "' with Flags:'" + attributeValueFilterFlags + "' can not be compiled to pattern.");
+                attributeValueFilterPattern =
+                        Pattern.compile(attributeValueFilter, attributeValueFilterFlags);
+            } catch (IllegalArgumentException ex) {
+                throw new ZestAssignFailException(
+                        this,
+                        ex.getMessage()
+                                + "\r\nRegEx:'"
+                                + attributeValueFilter
+                                + "' with Flags:'"
+                                + attributeValueFilterFlags
+                                + "' can not be compiled to pattern.");
             }
         }
 
         String attributeValue = element.getAttributeValue(attributeNameFilter);
-        if(attributeValue == null){
+        if (attributeValue == null) {
             return false;
         }
         Matcher matcher = attributeValueFilterPattern.matcher(attributeValue);
         return matcher.matches();
     }
 
-    public ZestAssignFromElement whereElementIs(String elementName){
+    public ZestAssignFromElement whereElementIs(String elementName) {
         filterElementName = true;
         elementNameFilter = elementName;
         return this;
     }
 
-    public ZestAssignFromElement whereAttributeIs(String attributeName, String attributeValueRegExp) {
+    public ZestAssignFromElement whereAttributeIs(
+            String attributeName, String attributeValueRegExp) {
         return whereAttributeIs(attributeName, attributeValueRegExp, 0);
     }
 
-    public ZestAssignFromElement whereAttributeIs(String attributeName, String attributeValueRegExp, int flags){
+    public ZestAssignFromElement whereAttributeIs(
+            String attributeName, String attributeValueRegExp, int flags) {
         filterAttributeValue = true;
         attributeNameFilter = attributeName;
         attributeValueFilter = attributeValueRegExp;
@@ -142,67 +151,67 @@ public class ZestAssignFromElement extends ZestAssignment {
         return this;
     }
 
-    public ZestAssignFromElement first(){
-       return atIndex(0);
+    public ZestAssignFromElement first() {
+        return atIndex(0);
     }
 
-    public ZestAssignFromElement last(){
+    public ZestAssignFromElement last() {
         return atIndex(0, true);
     }
 
-    public ZestAssignFromElement atIndex(int index){
+    public ZestAssignFromElement atIndex(int index) {
         return atIndex(index, false);
     }
 
-    public ZestAssignFromElement atIndex(int index, boolean reverse){
+    public ZestAssignFromElement atIndex(int index, boolean reverse) {
         reverseFilteredElements = reverse;
         elementIndex = index;
         return this;
     }
 
-    private void clearSelectMethod(){
+    private void clearSelectMethod() {
         returnElement = false;
         returnAttribute = false;
     }
 
-    public ZestAssignFromElement selectContent(){
+    public ZestAssignFromElement selectContent() {
         clearSelectMethod();
         returnElement = true;
         return this;
     }
 
-    public ZestAssignFromElement selectAttributeValue(String attributeName){
+    public ZestAssignFromElement selectAttributeValue(String attributeName) {
         clearSelectMethod();
         returnAttribute = true;
         returnedAttributeName = attributeName;
         return this;
     }
 
-    public boolean isFilteredByElementName(){
+    public boolean isFilteredByElementName() {
         return filterElementName;
     }
 
-    public String getElementNameFilter(){
+    public String getElementNameFilter() {
         return elementNameFilter;
     }
 
-    public boolean isFilteredByAttribute(){
+    public boolean isFilteredByAttribute() {
         return filterAttributeValue;
     }
 
-    public String getAttributeNameFilter(){
+    public String getAttributeNameFilter() {
         return attributeNameFilter;
     }
 
-    public String getAttributeValueFilter(){
+    public String getAttributeValueFilter() {
         return attributeValueFilter;
     }
 
-    public int getAttributeValueFilterFlags(){
+    public int getAttributeValueFilterFlags() {
         return attributeValueFilterFlags;
     }
 
-    public boolean areFilteredElementsReversed(){
+    public boolean areFilteredElementsReversed() {
         return reverseFilteredElements;
     }
 
@@ -222,7 +231,7 @@ public class ZestAssignFromElement extends ZestAssignment {
         return returnedAttributeName;
     }
 
-    public void removeFilter(){
+    public void removeFilter() {
         filterElementName = false;
         elementNameFilter = null;
 
@@ -235,7 +244,8 @@ public class ZestAssignFromElement extends ZestAssignment {
 
     @Override
     public ZestStatement deepCopy() {
-        ZestAssignFromElement zestAssignFromElement = new ZestAssignFromElement(this.getVariableName());
+        ZestAssignFromElement zestAssignFromElement =
+                new ZestAssignFromElement(this.getVariableName());
         zestAssignFromElement.filterElementName = this.filterElementName;
         zestAssignFromElement.elementNameFilter = this.elementNameFilter;
 

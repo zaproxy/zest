@@ -8,87 +8,87 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * Click on the specified client element.
- * @author simon
  *
+ * @author simon
  */
 public class ZestClientAssignCookie extends ZestClient {
 
-	private String windowHandle;
-	private String variableName;
-	private String cookieName;
+    private String windowHandle;
+    private String variableName;
+    private String cookieName;
 
-	public ZestClientAssignCookie(String windowHandle, String variableName, String cookieName) {
-		super();
-		this.windowHandle = windowHandle;
-		this.variableName = variableName;
-		this.cookieName = cookieName;
-	}
-	
-	public ZestClientAssignCookie() {
-		super();
-	}
+    public ZestClientAssignCookie(String windowHandle, String variableName, String cookieName) {
+        super();
+        this.windowHandle = windowHandle;
+        this.variableName = variableName;
+        this.cookieName = cookieName;
+    }
 
-	public String getWindowHandle() {
-		return windowHandle;
-	}
+    public ZestClientAssignCookie() {
+        super();
+    }
 
-	public void setWindowHandle(String windowHandle) {
-		this.windowHandle = windowHandle;
-	}
+    public String getWindowHandle() {
+        return windowHandle;
+    }
 
-	public String getVariableName() {
-		return variableName;
-	}
+    public void setWindowHandle(String windowHandle) {
+        this.windowHandle = windowHandle;
+    }
 
-	public void setVariableName(String variableName) {
-		this.variableName = variableName;
-	}
+    public String getVariableName() {
+        return variableName;
+    }
 
-	public String getCookieName() {
-		return cookieName;
-	}
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
+    }
 
-	public void setCookieName(String cookieName) {
-		this.cookieName = cookieName;
-	}
+    public String getCookieName() {
+        return cookieName;
+    }
 
-	@Override
-	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
-		String val = "";
-		
-		if (cookieName != null && cookieName.length() > 0) {
-			// A named cookie
-			Cookie cookie = wd.manage().getCookieNamed(cookieName);
-			if (cookie != null) {
-				val = cookie.getValue();
-			}
-		} else {
-			// return all of them
-			StringBuilder sb = new StringBuilder();
-			for (Cookie cookie : wd.manage().getCookies()) {
-				sb.append(cookie.getName());
-				sb.append("=");
-				sb.append(cookie.getValue());
-				sb.append("; ");
-			}
-			val = sb.toString();
-		}
+    public void setCookieName(String cookieName) {
+        this.cookieName = cookieName;
+    }
 
-		runtime.setVariable(this.variableName, val);
-		return val;
-	}
+    @Override
+    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+        WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
+        String val = "";
 
-	@Override
-	public ZestStatement deepCopy() {
-		ZestClientAssignCookie copy = new ZestClientAssignCookie(windowHandle, variableName, cookieName);
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+        if (cookieName != null && cookieName.length() > 0) {
+            // A named cookie
+            Cookie cookie = wd.manage().getCookieNamed(cookieName);
+            if (cookie != null) {
+                val = cookie.getValue();
+            }
+        } else {
+            // return all of them
+            StringBuilder sb = new StringBuilder();
+            for (Cookie cookie : wd.manage().getCookies()) {
+                sb.append(cookie.getName());
+                sb.append("=");
+                sb.append(cookie.getValue());
+                sb.append("; ");
+            }
+            val = sb.toString();
+        }
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+        runtime.setVariable(this.variableName, val);
+        return val;
+    }
 
+    @Override
+    public ZestStatement deepCopy() {
+        ZestClientAssignCookie copy =
+                new ZestClientAssignCookie(windowHandle, variableName, cookieName);
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
+
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 }

@@ -4,94 +4,91 @@
 package org.mozilla.zest.core.v1;
 
 import java.util.List;
-
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestTransformFieldReplace.
- */
+/** The Class ZestTransformFieldReplace. */
 public class ZestAssignFieldValue extends ZestAssignment {
 
-	/** The field definition. */
-	private ZestFieldDefinition fieldDefinition; 
-	
-	/**
-	 * Instantiates a new zest transform field replace.
-	 */
-	public ZestAssignFieldValue() {
-	}
+    /** The field definition. */
+    private ZestFieldDefinition fieldDefinition;
 
-	/**
-	 * Instantiates a new zest transform field replace.
-	 *
-	 * @param variableName the variable name
-	 */
-	public ZestAssignFieldValue(String variableName) {
-		super(variableName);
-	}
+    /** Instantiates a new zest transform field replace. */
+    public ZestAssignFieldValue() {}
 
-	/**
-	 * Instantiates a new zest transform field replace.
-	 *
-	 * @param variableName the variable name
-	 * @param fieldDefinition the field definition
-	 */
-	public ZestAssignFieldValue(String variableName, ZestFieldDefinition fieldDefinition) {
-		super(variableName);
-		this.fieldDefinition = fieldDefinition;
-	}
+    /**
+     * Instantiates a new zest transform field replace.
+     *
+     * @param variableName the variable name
+     */
+    public ZestAssignFieldValue(String variableName) {
+        super(variableName);
+    }
 
-	@Override
-	public ZestAssignFieldValue deepCopy() {
-		ZestAssignFieldValue copy = new ZestAssignFieldValue(this.getVariableName(), this.fieldDefinition.deepCopy());
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    /**
+     * Instantiates a new zest transform field replace.
+     *
+     * @param variableName the variable name
+     * @param fieldDefinition the field definition
+     */
+    public ZestAssignFieldValue(String variableName, ZestFieldDefinition fieldDefinition) {
+        super(variableName);
+        this.fieldDefinition = fieldDefinition;
+    }
 
-	/**
-	 * Gets the field definition.
-	 *
-	 * @return the field definition
-	 */
-	public ZestFieldDefinition getFieldDefinition() {
-		return fieldDefinition;
-	}
+    @Override
+    public ZestAssignFieldValue deepCopy() {
+        ZestAssignFieldValue copy =
+                new ZestAssignFieldValue(this.getVariableName(), this.fieldDefinition.deepCopy());
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	/**
-	 * Sets the field definition.
-	 *
-	 * @param fieldDefinition the new field definition
-	 */
-	public void setFieldDefinition(ZestFieldDefinition fieldDefinition) {
-		this.fieldDefinition = fieldDefinition;
-	}
+    /**
+     * Gets the field definition.
+     *
+     * @return the field definition
+     */
+    public ZestFieldDefinition getFieldDefinition() {
+        return fieldDefinition;
+    }
 
-	@Override
-	public String assign(ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
-		if (response == null) {
-			throw new ZestAssignFailException(this, "Null response");
-		}
+    /**
+     * Sets the field definition.
+     *
+     * @param fieldDefinition the new field definition
+     */
+    public void setFieldDefinition(ZestFieldDefinition fieldDefinition) {
+        this.fieldDefinition = fieldDefinition;
+    }
 
-		Source src = new Source(response.getHeaders() + response.getBody());
-		List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
+    @Override
+    public String assign(ZestResponse response, ZestRuntime runtime)
+            throws ZestAssignFailException {
+        if (response == null) {
+            throw new ZestAssignFailException(this, "Null response");
+        }
 
-		if (formElements != null && fieldDefinition.getFormIndex() < formElements.size()) {
-			Element form = formElements.get(fieldDefinition.getFormIndex());
-			
-			List<Element> inputElements = form.getAllElements(HTMLElementName.INPUT);
-			for (Element inputElement : inputElements) {
-				if (fieldDefinition.getFieldName().equals(inputElement.getAttributeValue("ID")) ||
-						fieldDefinition.getFieldName().equals(inputElement.getAttributeValue("NAME"))) {
-					// Got it
-					return inputElement.getAttributeValue("VALUE");
-				}
-			}
-		}
-		
-		return null;
-	}
-	
+        Source src = new Source(response.getHeaders() + response.getBody());
+        List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
+
+        if (formElements != null && fieldDefinition.getFormIndex() < formElements.size()) {
+            Element form = formElements.get(fieldDefinition.getFormIndex());
+
+            List<Element> inputElements = form.getAllElements(HTMLElementName.INPUT);
+            for (Element inputElement : inputElements) {
+                if (fieldDefinition.getFieldName().equals(inputElement.getAttributeValue("ID"))
+                        || fieldDefinition
+                                .getFieldName()
+                                .equals(inputElement.getAttributeValue("NAME"))) {
+                    // Got it
+                    return inputElement.getAttributeValue("VALUE");
+                }
+            }
+        }
+
+        return null;
+    }
 }

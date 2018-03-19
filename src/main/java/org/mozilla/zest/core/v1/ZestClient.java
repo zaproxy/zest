@@ -5,36 +5,32 @@ package org.mozilla.zest.core.v1;
 
 import java.net.MalformedURLException;
 
-/**
- * An abstract class that all client related statements extend.
- */
+/** An abstract class that all client related statements extend. */
 public abstract class ZestClient extends ZestStatement {
 
-	/**
-	 * Instantiates a new zest action.
-	 */
-	public ZestClient() {
-		super();
-	}
+    /** Instantiates a new zest action. */
+    public ZestClient() {
+        super();
+    }
 
-	/**
-	 * Instantiates a new zest client.
-	 *
-	 * @param index the index
-	 */
-	public ZestClient(int index) {
-		super(index);
-	}
+    /**
+     * Instantiates a new zest client.
+     *
+     * @param index the index
+     */
+    public ZestClient(int index) {
+        super(index);
+    }
 
-	public abstract String invoke(ZestRuntime runtime) throws ZestClientFailException;
-	
-	@Override
-	public boolean isSameSubclass(ZestElement ze) {
-		return ze instanceof ZestClient;
-	}
-	
-	@Override
-	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
-		// Ignore
-	}
+    public abstract String invoke(ZestRuntime runtime) throws ZestClientFailException;
+
+    @Override
+    public boolean isSameSubclass(ZestElement ze) {
+        return ze instanceof ZestClient;
+    }
+
+    @Override
+    void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
+        // Ignore
+    }
 }

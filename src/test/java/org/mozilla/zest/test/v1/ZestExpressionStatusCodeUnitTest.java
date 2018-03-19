@@ -8,15 +8,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionStatusCode;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestResponse;
 
-/**
- * Unit test for {@link ZestExpressionStatusCode}.
- */
+/** Unit test for {@link ZestExpressionStatusCode}. */
 public class ZestExpressionStatusCodeUnitTest {
 
     @Test
@@ -131,12 +128,13 @@ public class ZestExpressionStatusCodeUnitTest {
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(401);
         // When
         String serialisation = ZestJSON.toString(statusCodeExpression);
-        ZestExpressionStatusCode deserialisedStatusCodeExpression = (ZestExpressionStatusCode) ZestJSON
-                .fromString(serialisation);
+        ZestExpressionStatusCode deserialisedStatusCodeExpression =
+                (ZestExpressionStatusCode) ZestJSON.fromString(serialisation);
         // Then
         assertTrue(deserialisedStatusCodeExpression != statusCodeExpression);
         assertEquals(deserialisedStatusCodeExpression.getCode(), statusCodeExpression.getCode());
-        assertEquals(deserialisedStatusCodeExpression.isInverse(), statusCodeExpression.isInverse());
+        assertEquals(
+                deserialisedStatusCodeExpression.isInverse(), statusCodeExpression.isInverse());
     }
 
     private static ZestResponse createResponse(int statusCode) throws Exception {

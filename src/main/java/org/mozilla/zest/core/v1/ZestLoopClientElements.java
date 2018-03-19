@@ -6,122 +6,124 @@ package org.mozilla.zest.core.v1;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/**
- * This class represent a loop through a list of strings given in input through
- * a file.
- */
+/** This class represent a loop through a list of strings given in input through a file. */
 public class ZestLoopClientElements extends ZestLoop<String> {
-	
-	private ZestLoopTokenClientElementsSet set = null;
 
-	public ZestLoopClientElements(String variableName, String windowHandle, String type, String element, String attribute) {
-		super(variableName);
-		this.set = new ZestLoopTokenClientElementsSet(this, windowHandle, type, element, attribute);
-	}
+    private ZestLoopTokenClientElementsSet set = null;
 
-	/**
-	 * Instantiates a new zest loop file.
-	 *
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public ZestLoopClientElements() {
-		this.set = new ZestLoopTokenClientElementsSet(this, "", "", "", "");
-	}
+    public ZestLoopClientElements(
+            String variableName,
+            String windowHandle,
+            String type,
+            String element,
+            String attribute) {
+        super(variableName);
+        this.set = new ZestLoopTokenClientElementsSet(this, windowHandle, type, element, attribute);
+    }
 
-	/**
-	 * Instantiates a new zest loop file.
-	 *
-	 * @param index the index of the statement
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 */
-	private ZestLoopClientElements(int index) {
-		super(index);
-	}
+    /**
+     * Instantiates a new zest loop file.
+     *
+     * @throws FileNotFoundException the file not found exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public ZestLoopClientElements() {
+        this.set = new ZestLoopTokenClientElementsSet(this, "", "", "", "");
+    }
 
-	@Override
-	public ZestLoopClientElements deepCopy() {
-		ZestLoopClientElements copy;
-		copy = new ZestLoopClientElements(this.getIndex());
-		copy.setVariableName(getVariableName());
-		copy.setCurrentState(this.getCurrentState().deepCopy());
-		copy.setStatements(this.copyStatements());
-		copy.setSet(this.getSet().deepCopy());
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    /**
+     * Instantiates a new zest loop file.
+     *
+     * @param index the index of the statement
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    private ZestLoopClientElements(int index) {
+        super(index);
+    }
 
-	@Override
-	public ZestLoopStateClientElements getCurrentState() {
-		return (ZestLoopStateClientElements) super.getCurrentState();
-	}
+    @Override
+    public ZestLoopClientElements deepCopy() {
+        ZestLoopClientElements copy;
+        copy = new ZestLoopClientElements(this.getIndex());
+        copy.setVariableName(getVariableName());
+        copy.setCurrentState(this.getCurrentState().deepCopy());
+        copy.setStatements(this.copyStatements());
+        copy.setSet(this.getSet().deepCopy());
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	@Override
-	public ZestLoopTokenClientElementsSet getSet() {
-		return this.set;
-	}
+    @Override
+    public ZestLoopStateClientElements getCurrentState() {
+        return (ZestLoopStateClientElements) super.getCurrentState();
+    }
 
-	@Override
-	public boolean isLastState() {
-		return super.getCurrentState().isLastState(getSet());
-	}
+    @Override
+    public ZestLoopTokenClientElementsSet getSet() {
+        return this.set;
+    }
 
-	@Override
-	public void increase() {
-		super.getCurrentState().increase(getSet());
-	}
+    @Override
+    public boolean isLastState() {
+        return super.getCurrentState().isLastState(getSet());
+    }
 
-	@Override
-	public void toLastState() {
-		getCurrentState().toLastState(getSet());
-	}
-	@Override
-	public String getCurrentToken(){
-		if(super.getCurrentToken()==null){
-			super.init(getSet(), getStatements());
-		}
-		return super.getCurrentToken();
-	}
-	
-	public boolean loop(){
-		return super.loop(getSet());
-	}
-	
-	public void endLoop(){
-		super.endLoop(getSet());
-	}
-	
-	public String getWindowHandle() {
-		return getSet().getWindowHandle();
-	}
+    @Override
+    public void increase() {
+        super.getCurrentState().increase(getSet());
+    }
 
-	public String getElement() {
-		return getSet().getElement();
-	}
+    @Override
+    public void toLastState() {
+        getCurrentState().toLastState(getSet());
+    }
 
-	public String getType() {
-		return getSet().getType();
-	}
+    @Override
+    public String getCurrentToken() {
+        if (super.getCurrentToken() == null) {
+            super.init(getSet(), getStatements());
+        }
+        return super.getCurrentToken();
+    }
 
-	public String getAttribute() {
-		return getSet().getAttribute();
-	}
+    public boolean loop() {
+        return super.loop(getSet());
+    }
 
-	public void setWindowHandle(String windowHandle) {
-		getSet().setWindowHandle(windowHandle);
-	}
+    public void endLoop() {
+        super.endLoop(getSet());
+    }
 
-	public void setElement(String element) {
-		getSet().setElement(element);
-	}
+    public String getWindowHandle() {
+        return getSet().getWindowHandle();
+    }
 
-	public void setType(String type) {
-		getSet().setType(type);
-	}
+    public String getElement() {
+        return getSet().getElement();
+    }
 
-	public void setAttribute(String attribute) {
-		getSet().setAttribute(attribute);
-	}
+    public String getType() {
+        return getSet().getType();
+    }
 
+    public String getAttribute() {
+        return getSet().getAttribute();
+    }
+
+    public void setWindowHandle(String windowHandle) {
+        getSet().setWindowHandle(windowHandle);
+    }
+
+    public void setElement(String element) {
+        getSet().setElement(element);
+    }
+
+    public void setType(String type) {
+        getSet().setType(type);
+    }
+
+    public void setAttribute(String attribute) {
+        getSet().setAttribute(attribute);
+    }
 }

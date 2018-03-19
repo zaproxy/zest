@@ -5,9 +5,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.Date;
 
-/**
- * @since 0.14
- */
+/** @since 0.14 */
 public class ZestCookie {
 
     private String domain;
@@ -17,7 +15,8 @@ public class ZestCookie {
     private Date expiry;
     private boolean secure;
 
-    public ZestCookie(String domain, String name, String value, String path, Date expiry, boolean secure) {
+    public ZestCookie(
+            String domain, String name, String value, String path, Date expiry, boolean secure) {
         this.domain = domain;
         this.name = name;
         this.value = value;

@@ -3,20 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-
-/**
- * The Class ZestLoopStateFile.
- */
+/** The Class ZestLoopStateFile. */
 public class ZestLoopStateRegex extends ZestLoopStateString {
 
-	/**
-	 * Instantiates a new zest loop state file.
-	 */
-	public ZestLoopStateRegex() {
-		super();
-	}
-	
-	public ZestLoopStateRegex(ZestLoopTokenRegexSet set) throws ZestClientFailException{
-		super(set.getConvertedSet());
-	}
+    /** Instantiates a new zest loop state file. */
+    public ZestLoopStateRegex() {
+        super();
+    }
+
+    public ZestLoopStateRegex(ZestLoopTokenRegexSet set) throws ZestClientFailException {
+        super(set.getConvertedSet());
+    }
 }
