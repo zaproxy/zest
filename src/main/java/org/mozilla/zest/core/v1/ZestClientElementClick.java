@@ -5,37 +5,38 @@ package org.mozilla.zest.core.v1;
 
 /**
  * Click on the specified client element.
- * @author simon
  *
+ * @author simon
  */
 public class ZestClientElementClick extends ZestClientElement {
 
-	public ZestClientElementClick(String sessionIdName, String type, String element) {
-		super(sessionIdName, type, element);
-	}
-	
-	public ZestClientElementClick() {
-		super();
-	}
-	
-	@Override
-	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-		
-		this.getWebElement(runtime).click();
+    public ZestClientElementClick(String sessionIdName, String type, String element) {
+        super(sessionIdName, type, element);
+    }
 
-		return null;
-	}
+    public ZestClientElementClick() {
+        super();
+    }
 
-	@Override
-	public ZestStatement deepCopy() {
-		ZestClientElementClick copy = new ZestClientElementClick(this.getWindowHandle(), this.getType(), this.getElement());
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    @Override
+    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+        this.getWebElement(runtime).click();
 
+        return null;
+    }
+
+    @Override
+    public ZestStatement deepCopy() {
+        ZestClientElementClick copy =
+                new ZestClientElementClick(
+                        this.getWindowHandle(), this.getType(), this.getElement());
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
+
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 }

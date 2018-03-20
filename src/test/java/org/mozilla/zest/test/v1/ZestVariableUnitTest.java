@@ -6,48 +6,45 @@ package org.mozilla.zest.test.v1;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestAssignString;
 import org.mozilla.zest.core.v1.ZestLoopFile;
 import org.mozilla.zest.core.v1.ZestScript;
 
-
-/**
- */
+/** */
 public class ZestVariableUnitTest {
 
-	/**
-	 * Method testTokenReplacement.
-	 * @throws Exception
-	 */
-	@Test
-	public void testAssign() throws Exception {
-		ZestScript script = new ZestScript();
-		ZestAssignString ast = new ZestAssignString();
+    /**
+     * Method testTokenReplacement.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testAssign() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestAssignString ast = new ZestAssignString();
 
-		String test1 = "fdsjik934785:P@O():*&K";
-		ast.setVariableName("aaa");
-		ast.setString(test1);
-		
-		script.add(ast);
-		
-		Set<String> vars = script.getVariableNames();
-		
-		assertTrue (vars.contains("aaa"));
-	}
+        String test1 = "fdsjik934785:P@O():*&K";
+        ast.setVariableName("aaa");
+        ast.setString(test1);
 
-	@Test
-	public void testLoop() throws Exception {
-		ZestScript script = new ZestScript();
-		ZestLoopFile loop = new ZestLoopFile();
-		loop.setVariableName("aaa");
-		
-		script.add(loop);
-		
-		Set<String> vars = script.getVariableNames();
-		
-		assertTrue (vars.contains("aaa"));
-	}
+        script.add(ast);
 
+        Set<String> vars = script.getVariableNames();
+
+        assertTrue(vars.contains("aaa"));
+    }
+
+    @Test
+    public void testLoop() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestLoopFile loop = new ZestLoopFile();
+        loop.setVariableName("aaa");
+
+        script.add(loop);
+
+        Set<String> vars = script.getVariableNames();
+
+        assertTrue(vars.contains("aaa"));
+    }
 }

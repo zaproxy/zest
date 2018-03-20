@@ -12,70 +12,74 @@ import org.mozilla.zest.core.v1.ZestExpressionRegex;
 import org.mozilla.zest.core.v1.ZestResponse;
 import org.mozilla.zest.core.v1.ZestVariables;
 
-/**
- */
+/** */
 public class ZestAssertBodyRegexUnitTest {
 
-	/**
-	 * Method testSimpleIncRegex.
-	 * @throws Exception
-	 */
-	@Test
-	public void testSimpleIncRegex() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123");
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
-	}
+    /**
+     * Method testSimpleIncRegex.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSimpleIncRegex() throws Exception {
+        ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123");
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
+    }
 
-	/**
-	 * Method testSimpleExcRegex.
-	 * @throws Exception
-	 */
-	@Test
-	public void testSimpleExcRegex() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123");
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatst123", 200, 0))));
-	}
+    /**
+     * Method testSimpleExcRegex.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSimpleExcRegex() throws Exception {
+        ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123");
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatst123", 200, 0))));
+    }
 
-	/**
-	 * Method testSimpleIncInvRegex.
-	 * @throws Exception
-	 */
-	@Test
-	public void testSimpleIncInvRegex() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", false, true);
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
-	}
+    /**
+     * Method testSimpleIncInvRegex.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSimpleIncInvRegex() throws Exception {
+        ZestExpressionRegex regex =
+                new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", false, true);
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
+    }
 
-	@Test
-	public void testSimpleCaseExact() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", true, false);
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
-		assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaaTest123", 200, 0))));
-	}
+    @Test
+    public void testSimpleCaseExact() throws Exception {
+        ZestExpressionRegex regex =
+                new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", true, false);
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
+        assertFalse(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaaTest123", 200, 0))));
+    }
 
-	@Test
-	public void testSimpleCaseIgnore() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", false, false);
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
-		assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaaTest123", 200, 0))));
-	}
+    @Test
+    public void testSimpleCaseIgnore() throws Exception {
+        ZestExpressionRegex regex =
+                new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", false, false);
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatest123", 200, 0))));
+        assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaaTest123", 200, 0))));
+    }
 
-
-	/**
-	 * Method testSimpleExcInvRegex.
-	 * @throws Exception
-	 */
-	@Test
-	public void testSimpleExcInvRegex() throws Exception {
-		ZestExpressionRegex regex=new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123",false, true);
-		ZestAssertion ze=new ZestAssertion(regex);
-		assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatst123", 200, 0))));
-	}
-
+    /**
+     * Method testSimpleExcInvRegex.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSimpleExcInvRegex() throws Exception {
+        ZestExpressionRegex regex =
+                new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "test123", false, true);
+        ZestAssertion ze = new ZestAssertion(regex);
+        assertTrue(ze.isValid(new TestRuntime(new ZestResponse(null, "", "aaaatst123", 200, 0))));
+    }
 }
-

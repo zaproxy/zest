@@ -8,16 +8,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
-
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 /**
  * A {@link ZestClient} action that takes a screenshot.
- * <p>
- * The screenshot can be saved to a file and/or to a variable (for the latter Base64 encoded).
- * 
+ *
+ * <p>The screenshot can be saved to a file and/or to a variable (for the latter Base64 encoded).
+ *
  * @since 0.14
  */
 public class ZestClientScreenshot extends ZestClient {
@@ -26,19 +25,18 @@ public class ZestClientScreenshot extends ZestClient {
     private String filePath;
     private String variableName;
 
-    /**
-     * Constructs a {@code ZestClientScreenshot} with no file path nor variable name.
-     */
+    /** Constructs a {@code ZestClientScreenshot} with no file path nor variable name. */
     public ZestClientScreenshot() {
         super();
     }
 
     /**
      * Constructs a {@code ZestClientScreenshot} with the given file path and variable name.
-     * 
+     *
      * @param windowHandle the window handle to obtain the client.
      * @param filePath the path to the file where to save the screenshot, might be {@code null}.
-     * @param variableName the name of the variable where to save the screenshot (Base64 encoded), might be {@code null}.
+     * @param variableName the name of the variable where to save the screenshot (Base64 encoded),
+     *     might be {@code null}.
      */
     public ZestClientScreenshot(String windowHandle, String filePath, String variableName) {
         super();
@@ -76,8 +74,8 @@ public class ZestClientScreenshot extends ZestClient {
 
     /**
      * Sets the path to the file.
-     * <p>
-     * Variables are replaced before using the path.
+     *
+     * <p>Variables are replaced before using the path.
      *
      * @param filePath the path to the file.
      */
@@ -107,7 +105,8 @@ public class ZestClientScreenshot extends ZestClient {
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
         if (wd == null) {
-            throw new ZestClientFailException(this, "No client: " + runtime.getVariable(getWindowHandle()));
+            throw new ZestClientFailException(
+                    this, "No client: " + runtime.getVariable(getWindowHandle()));
         }
         if (!(wd instanceof TakesScreenshot)) {
             throw new ZestClientFailException(
@@ -132,7 +131,8 @@ public class ZestClientScreenshot extends ZestClient {
             try {
                 Files.copy(new ByteArrayInputStream(screenshot), Paths.get(finalFilePath));
             } catch (IOException e) {
-                throw new ZestClientFailException(this, "Failed to save the screenshot to file.", e);
+                throw new ZestClientFailException(
+                        this, "Failed to save the screenshot to file.", e);
             }
         }
 
@@ -141,7 +141,8 @@ public class ZestClientScreenshot extends ZestClient {
 
     @Override
     public ZestClientScreenshot deepCopy() {
-        ZestClientScreenshot copy = new ZestClientScreenshot(getWindowHandle(), getFilePath(), getVariableName());
+        ZestClientScreenshot copy =
+                new ZestClientScreenshot(getWindowHandle(), getFilePath(), getVariableName());
         copy.setEnabled(isEnabled());
         return copy;
     }
@@ -150,5 +151,4 @@ public class ZestClientScreenshot extends ZestClient {
     public boolean isPassive() {
         return true;
     }
-
 }

@@ -3,82 +3,77 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-
-/**
- * The Class ZestActionPrint.
- */
+/** The Class ZestActionPrint. */
 public class ZestActionPrint extends ZestAction {
-	
-	/** The message. */
-	private String message;
-	
-	/**
-	 * Instantiates a new zest action print.
-	 */
-	public ZestActionPrint() {
-		super();
-	}
 
-	/**
-	 * Instantiates a new zest action fail.
-	 *
-	 * @param index the index
-	 */
-	public ZestActionPrint(int index) {
-		super(index);
-	}
+    /** The message. */
+    private String message;
 
-	/**
-	 * Instantiates a new zest action print.
-	 *
-	 * @param message the message
-	 */
-	public ZestActionPrint(String message) {
-		super();
-		this.message = message;
-	}
+    /** Instantiates a new zest action print. */
+    public ZestActionPrint() {
+        super();
+    }
 
-	@Override
-	public boolean isSameSubclass(ZestElement ze) {
-		return ze instanceof ZestActionPrint;
-	}
-	
-	@Override
-	public String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException {
-		String str = runtime.replaceVariablesInString(this.message, false);
-		runtime.output(str);
-		return str;
-	}
+    /**
+     * Instantiates a new zest action fail.
+     *
+     * @param index the index
+     */
+    public ZestActionPrint(int index) {
+        super(index);
+    }
 
-	/**
-	 * Gets the message.
-	 *
-	 * @return the message
-	 */
-	public String getMessage() {
-		return message;
-	}
+    /**
+     * Instantiates a new zest action print.
+     *
+     * @param message the message
+     */
+    public ZestActionPrint(String message) {
+        super();
+        this.message = message;
+    }
 
-	/**
-	 * Sets the message.
-	 *
-	 * @param message the new message
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
+    @Override
+    public boolean isSameSubclass(ZestElement ze) {
+        return ze instanceof ZestActionPrint;
+    }
 
-	@Override
-	public ZestActionPrint deepCopy() {
-		ZestActionPrint copy = new ZestActionPrint(this.getIndex());
-		copy.message = message;
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    @Override
+    public String invoke(ZestResponse response, ZestRuntime runtime)
+            throws ZestActionFailException {
+        String str = runtime.replaceVariablesInString(this.message, false);
+        runtime.output(str);
+        return str;
+    }
 
-	@Override
-	public boolean isPassive() {
-		return true;
-	}
+    /**
+     * Gets the message.
+     *
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Sets the message.
+     *
+     * @param message the new message
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public ZestActionPrint deepCopy() {
+        ZestActionPrint copy = new ZestActionPrint(this.getIndex());
+        copy.message = message;
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
+
+    @Override
+    public boolean isPassive() {
+        return true;
+    }
 }

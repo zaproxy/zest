@@ -4,55 +4,53 @@
 package org.mozilla.zest.core.v1;
 
 /**
- * The Class ZestAssignString assigns a string (which can include other variables) to the specified variable.
+ * The Class ZestAssignString assigns a string (which can include other variables) to the specified
+ * variable.
  */
 public class ZestAssignString extends ZestAssignment {
 
-	private String string = null;
-	
-	/**
-	 * Instantiates a new {@code ZestAssignString}.
-	 */
-	public ZestAssignString() {
-	}
+    private String string = null;
 
-	/**
-	 * Instantiates a new {@code ZestAssignString}.
-	 *
-	 * @param variableName the variable name
-	 */
-	public ZestAssignString(String variableName) {
-		super(variableName);
-	}
+    /** Instantiates a new {@code ZestAssignString}. */
+    public ZestAssignString() {}
 
-	/**
-	 * Instantiates a new {@code ZestAssignString}.
-	 *
-	 * @param variableName the variable name
-	 * @param string the string to assign.
-	 */
-	public ZestAssignString(String variableName, String string) {
-		super(variableName);
-		this.string = string;
-	}
+    /**
+     * Instantiates a new {@code ZestAssignString}.
+     *
+     * @param variableName the variable name
+     */
+    public ZestAssignString(String variableName) {
+        super(variableName);
+    }
 
-	@Override
-	public String assign (ZestResponse response, ZestRuntime runtime) {
-		return runtime.replaceVariablesInString(this.string, false);
-	}
+    /**
+     * Instantiates a new {@code ZestAssignString}.
+     *
+     * @param variableName the variable name
+     * @param string the string to assign.
+     */
+    public ZestAssignString(String variableName, String string) {
+        super(variableName);
+        this.string = string;
+    }
 
-	@Override
-	public ZestAssignString deepCopy() {
-		ZestAssignString copy = new ZestAssignString(this.getVariableName(), this.string);
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    @Override
+    public String assign(ZestResponse response, ZestRuntime runtime) {
+        return runtime.replaceVariablesInString(this.string, false);
+    }
 
-	public String getString() {
-		return string;
-	}
+    @Override
+    public ZestAssignString deepCopy() {
+        ZestAssignString copy = new ZestAssignString(this.getVariableName(), this.string);
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	public void setString(String string) {
-		this.string = string;
-	}
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
+    }
 }

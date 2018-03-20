@@ -7,97 +7,99 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * A class which allows you to get a session associated with a popup window
- * @author simon
  *
+ * @author simon
  */
 public class ZestClientSwitchToFrame extends ZestClient {
 
-	private String windowHandle = null;
-	private int frameIndex = -1;
-	private String frameName = null;
-	private boolean parent = false;
-	
-	public ZestClientSwitchToFrame() {
-		super();
-	}
+    private String windowHandle = null;
+    private int frameIndex = -1;
+    private String frameName = null;
+    private boolean parent = false;
 
-	/**
-	 * Only one of index, name or parent=true should be used
-	 * @param windowHandle
-	 * @param index
-	 * @param name
-	 * @param parent
-	 */
-	public ZestClientSwitchToFrame(String windowHandle, int index, String name, boolean parent) {
-		super();
-		this.windowHandle = windowHandle;
-		this.frameIndex = index;
-		this.frameName = name;
-		this.parent = parent;
-	}
+    public ZestClientSwitchToFrame() {
+        super();
+    }
 
-	public String getWindowHandle() {
-		return windowHandle;
-	}
+    /**
+     * Only one of index, name or parent=true should be used
+     *
+     * @param windowHandle
+     * @param index
+     * @param name
+     * @param parent
+     */
+    public ZestClientSwitchToFrame(String windowHandle, int index, String name, boolean parent) {
+        super();
+        this.windowHandle = windowHandle;
+        this.frameIndex = index;
+        this.frameName = name;
+        this.parent = parent;
+    }
 
-	public void setWindowHandle(String windowHandle) {
-		this.windowHandle = windowHandle;
-	}
+    public String getWindowHandle() {
+        return windowHandle;
+    }
 
-	@Override
-	public ZestStatement deepCopy() {
-		ZestClientSwitchToFrame copy = new ZestClientSwitchToFrame(windowHandle, frameIndex, frameName, parent);
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    public void setWindowHandle(String windowHandle) {
+        this.windowHandle = windowHandle;
+    }
 
-	public int getFrameIndex() {
-		return frameIndex;
-	}
+    @Override
+    public ZestStatement deepCopy() {
+        ZestClientSwitchToFrame copy =
+                new ZestClientSwitchToFrame(windowHandle, frameIndex, frameName, parent);
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	public String getFrameName() {
-		return frameName;
-	}
+    public int getFrameIndex() {
+        return frameIndex;
+    }
 
-	public boolean isParent() {
-		return parent;
-	}
+    public String getFrameName() {
+        return frameName;
+    }
 
-	public void setFrameIndex(int index) {
-		this.frameIndex = index;
-	}
+    public boolean isParent() {
+        return parent;
+    }
 
-	public void setFrameName(String name) {
-		this.frameName = name;
-	}
+    public void setFrameIndex(int index) {
+        this.frameIndex = index;
+    }
 
-	public void setParent(boolean parent) {
-		this.parent = parent;
-	}
+    public void setFrameName(String name) {
+        this.frameName = name;
+    }
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+    public void setParent(boolean parent) {
+        this.parent = parent;
+    }
 
-	@Override
-	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 
-		WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
-		
-		if (wd == null) {
-			throw new ZestClientFailException(this, "No client: " + runtime.getVariable(getWindowHandle()));
-		}
+    @Override
+    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-		if (this.frameIndex >= 0) {
-			wd.switchTo().frame(this.frameIndex);
-		} else if (this.isParent()) {
-			wd.switchTo().parentFrame();
-		} else {
-			wd.switchTo().frame(this.frameName);
-		}
+        WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 
-		return this.windowHandle;
-	}
+        if (wd == null) {
+            throw new ZestClientFailException(
+                    this, "No client: " + runtime.getVariable(getWindowHandle()));
+        }
 
+        if (this.frameIndex >= 0) {
+            wd.switchTo().frame(this.frameIndex);
+        } else if (this.isParent()) {
+            wd.switchTo().parentFrame();
+        } else {
+            wd.switchTo().frame(this.frameName);
+        }
+
+        return this.windowHandle;
+    }
 }

@@ -8,15 +8,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestExpressionProtocol;
 import org.mozilla.zest.core.v1.ZestJSON;
 import org.mozilla.zest.core.v1.ZestRequest;
 
-/**
- * Unit test for {@link ZestExpressionProtocol}.
- */
+/** Unit test for {@link ZestExpressionProtocol}. */
 public class ZestExpressionProtocolUnitTest {
 
     @Test
@@ -164,10 +161,12 @@ public class ZestExpressionProtocolUnitTest {
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         // When
         String serialisation = ZestJSON.toString(protocolExpression);
-        ZestExpressionProtocol deserialisedProtocolExpression = (ZestExpressionProtocol) ZestJSON.fromString(serialisation);
+        ZestExpressionProtocol deserialisedProtocolExpression =
+                (ZestExpressionProtocol) ZestJSON.fromString(serialisation);
         // Then
         assertTrue(deserialisedProtocolExpression != protocolExpression);
-        assertEquals(deserialisedProtocolExpression.getProtocol(), protocolExpression.getProtocol());
+        assertEquals(
+                deserialisedProtocolExpression.getProtocol(), protocolExpression.getProtocol());
         assertEquals(deserialisedProtocolExpression.isInverse(), protocolExpression.isInverse());
     }
 

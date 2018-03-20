@@ -6,16 +6,13 @@ package org.mozilla.zest.test.v1;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestComment;
 import org.mozilla.zest.core.v1.ZestLoop;
 import org.mozilla.zest.core.v1.ZestLoopTokenSet;
 import org.mozilla.zest.core.v1.ZestStatement;
 
-/**
- * Unit test for {@link ZestLoop}.
- */
+/** Unit test for {@link ZestLoop}. */
 public class ZestLoopUnitTest {
 
     @Test
@@ -61,13 +58,9 @@ public class ZestLoopUnitTest {
         }
 
         @Override
-        protected void increase() {
-        }
+        protected void increase() {}
 
         @Override
-        public void toLastState() {
-        }
-
+        public void toLastState() {}
     }
-
 }

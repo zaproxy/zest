@@ -5,17 +5,13 @@ package org.mozilla.zest.test.v1;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-
-/**
- * Helper class that manages a HTTP server for use during tests.
- */
+/** Helper class that manages a HTTP server for use during tests. */
 public abstract class ServerBasedTest {
 
-    @Rule
-    public WireMockRule server = createServer();
+    @Rule public WireMockRule server = createServer();
 
     protected WireMockRule createServer() {
         return new WireMockRule(options().dynamicPort(), false);

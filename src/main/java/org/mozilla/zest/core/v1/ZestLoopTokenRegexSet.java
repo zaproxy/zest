@@ -14,180 +14,183 @@ import java.util.regex.Pattern;
  * the tokens inside the converted set must not be transient
  */
 public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenSet<String> {
-	
-	private String inputVariableName = null;
-	private String regex = null;
-	private int groupIndex = 0;
-	private boolean caseExact;
-	
-	/** The converted set. */
-	private transient ZestLoopTokenStringSet convertedSet = null;
-	
-	private transient ZestLoopRegex loop;
 
-	public ZestLoopTokenRegexSet() {
-		super();
-	}
+    private String inputVariableName = null;
+    private String regex = null;
+    private int groupIndex = 0;
+    private boolean caseExact;
 
-	/**
-	 * Instantiates a new {@code ZestLoopTokenRegexSet}.
-	 * 
-	 * @param loop the loop.
-	 * @param inputVariableName the name of the variable.
-	 * @param regex the regular expression.
-	 * @param group the group to get from the regular expression.
-	 * @param caseExact {@code true} if the match is case sensitive, {@code false} otherwise.
-	 */
-	public ZestLoopTokenRegexSet(ZestLoopRegex loop, String inputVariableName, String regex, int group, boolean caseExact) {
-		super();
-		this.loop = loop;
-		this.inputVariableName = inputVariableName;
-		this.regex = regex;
-		this.groupIndex = group;
-		this.caseExact = caseExact;
-	}
+    /** The converted set. */
+    private transient ZestLoopTokenStringSet convertedSet = null;
 
-	/**
-	 * private method for initialization of the loop (TokenSet & first state).
-	 *
-	 * @return the zest loop token string set
-	 * @throws ZestClientFailException 
-	 */
-	protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
-		if(this.convertedSet == null){
-			if (loop == null) {
-				// Not yet initialized
-				return null;
-			}
-			ZestLoopTokenStringSet set = new ZestLoopTokenStringSet();
-			Pattern pattern;
-			
-			if (caseExact) {
-				pattern = Pattern.compile(regex);
-			} else {
-				pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-			}
+    private transient ZestLoopRegex loop;
 
-			String str = this.loop.getRuntime().getVariable(inputVariableName);		
-			if (str != null) {
-				Matcher matcher = pattern.matcher(str);
-				
-				while (matcher.find()) {
-					if (matcher.groupCount() >= groupIndex) {
-						String match = matcher.group(groupIndex);
-						if (match != null) {
-							set.addToken(match);
-						}
-					}
-				}
-			}
-			
-			this.convertedSet = set;
-		}
-		return convertedSet;
-	}
+    public ZestLoopTokenRegexSet() {
+        super();
+    }
 
-	@Override
-	public String getToken(int index) {
-		try {
-			return this.getConvertedSet().getToken(index);
-		} catch (ZestClientFailException e) {
-			return null;
-		}
-	}
+    /**
+     * Instantiates a new {@code ZestLoopTokenRegexSet}.
+     *
+     * @param loop the loop.
+     * @param inputVariableName the name of the variable.
+     * @param regex the regular expression.
+     * @param group the group to get from the regular expression.
+     * @param caseExact {@code true} if the match is case sensitive, {@code false} otherwise.
+     */
+    public ZestLoopTokenRegexSet(
+            ZestLoopRegex loop,
+            String inputVariableName,
+            String regex,
+            int group,
+            boolean caseExact) {
+        super();
+        this.loop = loop;
+        this.inputVariableName = inputVariableName;
+        this.regex = regex;
+        this.groupIndex = group;
+        this.caseExact = caseExact;
+    }
 
-	public List<String> getTokens() {
-		try {
-			return Collections.unmodifiableList(getConvertedSet().getTokens());
-		} catch (ZestClientFailException e) {
-			return null;
-		}
-	}
+    /**
+     * private method for initialization of the loop (TokenSet & first state).
+     *
+     * @return the zest loop token string set
+     * @throws ZestClientFailException
+     */
+    protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
+        if (this.convertedSet == null) {
+            if (loop == null) {
+                // Not yet initialized
+                return null;
+            }
+            ZestLoopTokenStringSet set = new ZestLoopTokenStringSet();
+            Pattern pattern;
 
-	@Override
-	public int indexOf(String token) {
-		try {
-			return getConvertedSet().indexOf(token);
-		} catch (ZestClientFailException e) {
-			return -1;
-		}
-	}
+            if (caseExact) {
+                pattern = Pattern.compile(regex);
+            } else {
+                pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            }
 
-	@Override
-	public String getLastToken() {
-		try {
-			return getConvertedSet().getLastToken();
-		} catch (ZestClientFailException e) {
-			return null;
-		}
-	}
+            String str = this.loop.getRuntime().getVariable(inputVariableName);
+            if (str != null) {
+                Matcher matcher = pattern.matcher(str);
 
-	@Override
-	public int size() {
-		try {
-			return this.getConvertedSet().size();
-		} catch (ZestClientFailException e) {
-			return -1;
-		}
-	}
+                while (matcher.find()) {
+                    if (matcher.groupCount() >= groupIndex) {
+                        String match = matcher.group(groupIndex);
+                        if (match != null) {
+                            set.addToken(match);
+                        }
+                    }
+                }
+            }
 
-	@Override
-	public ZestLoopTokenRegexSet deepCopy() {
-		return new ZestLoopTokenRegexSet(loop, inputVariableName, regex, groupIndex, caseExact);
-	}
+            this.convertedSet = set;
+        }
+        return convertedSet;
+    }
 
+    @Override
+    public String getToken(int index) {
+        try {
+            return this.getConvertedSet().getToken(index);
+        } catch (ZestClientFailException e) {
+            return null;
+        }
+    }
 
-	public String getInputVariableName() {
-		return inputVariableName;
-	}
+    public List<String> getTokens() {
+        try {
+            return Collections.unmodifiableList(getConvertedSet().getTokens());
+        } catch (ZestClientFailException e) {
+            return null;
+        }
+    }
 
-	public String getRegex() {
-		return regex;
-	}
+    @Override
+    public int indexOf(String token) {
+        try {
+            return getConvertedSet().indexOf(token);
+        } catch (ZestClientFailException e) {
+            return -1;
+        }
+    }
 
-	public boolean isCaseExact() {
-		return caseExact;
-	}
+    @Override
+    public String getLastToken() {
+        try {
+            return getConvertedSet().getLastToken();
+        } catch (ZestClientFailException e) {
+            return null;
+        }
+    }
 
-	public ZestLoopRegex getLoop() {
-		return loop;
-	}
+    @Override
+    public int size() {
+        try {
+            return this.getConvertedSet().size();
+        } catch (ZestClientFailException e) {
+            return -1;
+        }
+    }
 
-	public void setInputVariableName(String inputVariableName) {
-		this.inputVariableName = inputVariableName;
-	}
+    @Override
+    public ZestLoopTokenRegexSet deepCopy() {
+        return new ZestLoopTokenRegexSet(loop, inputVariableName, regex, groupIndex, caseExact);
+    }
 
-	public void setRegex(String regex) {
-		this.regex = regex;
-	}
+    public String getInputVariableName() {
+        return inputVariableName;
+    }
 
-	public int getGroupIndex() {
-		return groupIndex;
-	}
+    public String getRegex() {
+        return regex;
+    }
 
-	public void setGroupIndex(int groupIndex) {
-		this.groupIndex = groupIndex;
-	}
+    public boolean isCaseExact() {
+        return caseExact;
+    }
 
-	public void setCaseExact(boolean caseExact) {
-		this.caseExact = caseExact;
-	}
+    public ZestLoopRegex getLoop() {
+        return loop;
+    }
 
-	public void setLoop(ZestLoopRegex loop) {
-		this.loop = loop;
-	}
+    public void setInputVariableName(String inputVariableName) {
+        this.inputVariableName = inputVariableName;
+    }
 
-	public void setConvertedSet(ZestLoopTokenStringSet convertedSet) {
-		this.convertedSet = convertedSet;
-	}
+    public void setRegex(String regex) {
+        this.regex = regex;
+    }
 
-	@Override
-	public ZestLoopStateRegex getFirstState(){
-		try {
-			return new ZestLoopStateRegex(this);
-		} catch (ZestClientFailException e) {
-			return null;
-		}
-	}
+    public int getGroupIndex() {
+        return groupIndex;
+    }
 
+    public void setGroupIndex(int groupIndex) {
+        this.groupIndex = groupIndex;
+    }
+
+    public void setCaseExact(boolean caseExact) {
+        this.caseExact = caseExact;
+    }
+
+    public void setLoop(ZestLoopRegex loop) {
+        this.loop = loop;
+    }
+
+    public void setConvertedSet(ZestLoopTokenStringSet convertedSet) {
+        this.convertedSet = convertedSet;
+    }
+
+    @Override
+    public ZestLoopStateRegex getFirstState() {
+        try {
+            return new ZestLoopStateRegex(this);
+        } catch (ZestClientFailException e) {
+            return null;
+        }
+    }
 }

@@ -3,6 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.impl;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.Locale;
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
@@ -29,15 +32,12 @@ import org.mozilla.zest.core.v1.ZestOutputWriter;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * The Class CommonsHttpClient
+ *
  * @since 0.14
  */
-class CommonsHttpClient implements ZestHttpClient{
+class CommonsHttpClient implements ZestHttpClient {
 
     private ZestOutputWriter zestOutputWriter;
     private HttpClient httpclient = new HttpClient();
@@ -68,14 +68,16 @@ class CommonsHttpClient implements ZestHttpClient{
     }
 
     private void addHttpAuthentication(ZestHttpAuthentication zestHttpAuthentication) {
-        Credentials defaultCredentials = new UsernamePasswordCredentials(zestHttpAuthentication.getUsername(), zestHttpAuthentication.getPassword());
-        AuthScope authScope = new AuthScope(zestHttpAuthentication.getSite(), 80, AuthScope.ANY_REALM);
+        Credentials defaultCredentials =
+                new UsernamePasswordCredentials(
+                        zestHttpAuthentication.getUsername(), zestHttpAuthentication.getPassword());
+        AuthScope authScope =
+                new AuthScope(zestHttpAuthentication.getSite(), 80, AuthScope.ANY_REALM);
         httpclient.getState().setCredentials(authScope, defaultCredentials);
     }
 
     @Override
-    public ZestResponse send(ZestRequest req)
-            throws IOException {
+    public ZestResponse send(ZestRequest req) throws IOException {
         HttpMethod method;
         URI uri = new URI(req.getUrl().toString(), false);
 
@@ -104,20 +106,26 @@ class CommonsHttpClient implements ZestHttpClient{
                 method = new TraceMethod(uri.toString());
                 break;
             default:
-                throw new IllegalArgumentException("Method not supported: "
-                        + req.getMethod());
+                throw new IllegalArgumentException("Method not supported: " + req.getMethod());
         }
 
         setHeaders(method, req.getHeaders());
 
         for (ZestCookie zestCookie : req.getZestCookies()) {
-            Cookie cookie = new Cookie(zestCookie.getDomain(), zestCookie.getName(), zestCookie.getValue(),
-                    zestCookie.getPath(), zestCookie.getExpiryDate(), zestCookie.isSecure());
+            Cookie cookie =
+                    new Cookie(
+                            zestCookie.getDomain(),
+                            zestCookie.getName(),
+                            zestCookie.getValue(),
+                            zestCookie.getPath(),
+                            zestCookie.getExpiryDate(),
+                            zestCookie.isSecure());
             httpclient.getState().addCookie(cookie);
         }
 
         if (method instanceof EntityEnclosingMethod) {
-            // The setRequestEntity call trashes any Content-Type specified, so record it and reapply it after
+            // The setRequestEntity call trashes any Content-Type specified, so record it and
+            // reapply it after
             Header contentType = method.getRequestHeader("Content-Type");
             RequestEntity requestEntity = new StringRequestEntity(req.getData(), null, null);
 
@@ -135,8 +143,10 @@ class CommonsHttpClient implements ZestHttpClient{
         try {
             code = httpclient.executeMethod(method);
 
-            responseHeader = method.getStatusLine().toString() + "\r\n"
-                    + arrayToStr(method.getResponseHeaders());
+            responseHeader =
+                    method.getStatusLine().toString()
+                            + "\r\n"
+                            + arrayToStr(method.getResponseHeaders());
             responseBody = method.getResponseBodyAsString();
 
         } finally {
@@ -145,9 +155,11 @@ class CommonsHttpClient implements ZestHttpClient{
         // Update the headers with the ones actually sent
         req.setHeaders(arrayToStr(method.getRequestHeaders()));
 
-
-        if (method.getStatusCode() == 302 && req.isFollowRedirects() && ! req.getMethod().equals("GET")) {
-            // Follow the redirect 'manually' as the httpclient lib only supports them for GET requests
+        if (method.getStatusCode() == 302
+                && req.isFollowRedirects()
+                && !req.getMethod().equals("GET")) {
+            // Follow the redirect 'manually' as the httpclient lib only supports them for GET
+            // requests
             method = new GetMethod(method.getResponseHeader("Location").getValue());
             // Just in case there are multiple redirects
             method.setFollowRedirects(req.isFollowRedirects());
@@ -156,8 +168,10 @@ class CommonsHttpClient implements ZestHttpClient{
                 this.debug(req.getMethod() + " : " + req.getUrl());
                 code = httpclient.executeMethod(method);
 
-                responseHeader = method.getStatusLine().toString() + "\r\n"
-                        + arrayToStr(method.getResponseHeaders());
+                responseHeader =
+                        method.getStatusLine().toString()
+                                + "\r\n"
+                                + arrayToStr(method.getResponseHeaders());
                 responseBody = method.getResponseBodyAsString();
 
             } finally {
@@ -165,8 +179,12 @@ class CommonsHttpClient implements ZestHttpClient{
             }
         }
 
-        return new ZestResponse(req.getUrl(), responseHeader, responseBody,
-                code, new Date().getTime() - start.getTime());
+        return new ZestResponse(
+                req.getUrl(),
+                responseHeader,
+                responseBody,
+                code,
+                new Date().getTime() - start.getTime());
     }
 
     private void setHeaders(HttpMethod method, String headers) {
@@ -197,8 +215,8 @@ class CommonsHttpClient implements ZestHttpClient{
         return sb.toString();
     }
 
-    private void debug(String str){
-        if(zestOutputWriter != null){
+    private void debug(String str) {
+        if (zestOutputWriter != null) {
             zestOutputWriter.debug(str);
         }
     }

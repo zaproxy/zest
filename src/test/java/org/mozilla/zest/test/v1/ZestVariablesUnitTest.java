@@ -11,13 +11,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestVariables;
 
-/**
- * Unit test for {@link ZestVariables}.
- */
+/** Unit test for {@link ZestVariables}. */
 public class ZestVariablesUnitTest {
 
     private static final String VAR_NAME = "name";
@@ -268,7 +265,13 @@ public class ZestVariablesUnitTest {
         zestVars.setVariable("Var1", "0");
         zestVars.setVariable(null, "1");
         zestVars.setVariable("Var3", null);
-        String string = token(zestVars, "Var1") + " < " + token(zestVars, null) + " != [" + token(zestVars, "Var3") + "]";
+        String string =
+                token(zestVars, "Var1")
+                        + " < "
+                        + token(zestVars, null)
+                        + " != ["
+                        + token(zestVars, "Var3")
+                        + "]";
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
@@ -300,7 +303,9 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
-        assertTrue(("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2")).equals(finalString));
+        assertTrue(
+                ("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2"))
+                        .equals(finalString));
     }
 
     @Test
@@ -310,8 +315,13 @@ public class ZestVariablesUnitTest {
         zestVars.setVariable("Var%", "0");
         zestVars.setVariable(null, "1");
         zestVars.setVariable("Var&", null);
-        String string = urlencoded(token(zestVars, "Var%")) + " < " + token(zestVars, null) + " != ["
-                + urlencoded(token(zestVars, "Var&")) + "]";
+        String string =
+                urlencoded(token(zestVars, "Var%"))
+                        + " < "
+                        + token(zestVars, null)
+                        + " != ["
+                        + urlencoded(token(zestVars, "Var&"))
+                        + "]";
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
@@ -326,7 +336,8 @@ public class ZestVariablesUnitTest {
         zestVars.setVariable("Var%", "-1 < " + token(zestVars, "Var&"));
         zestVars.setVariable("Var&", urlencoded(token(zestVars, "Var?")));
         zestVars.setVariable("Var?", "1");
-        String string = urlencoded(token(zestVars, "Var%")) + " <= " + urlencoded(token(zestVars, "Var?"));
+        String string =
+                urlencoded(token(zestVars, "Var%")) + " <= " + urlencoded(token(zestVars, "Var?"));
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
@@ -341,12 +352,18 @@ public class ZestVariablesUnitTest {
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
         zestVars.setVariable("Var2", "[" + token(zestVars, "Var3") + "]");
         zestVars.setVariable("Var3", token(zestVars, "Var2"));
-        String string = urlencoded(token(zestVars, "Var1")) + " | " + urlencoded(token(zestVars, "Var3"));
+        String string =
+                urlencoded(token(zestVars, "Var1")) + " | " + urlencoded(token(zestVars, "Var3"));
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
         // Then
-        assertTrue(("No Loop: [" + token(zestVars, "Var2") + "] | " + urlencoded(token(zestVars, "Var3"))).equals(finalString));
+        assertTrue(
+                ("No Loop: ["
+                                + token(zestVars, "Var2")
+                                + "] | "
+                                + urlencoded(token(zestVars, "Var3")))
+                        .equals(finalString));
     }
 
     private static String token(ZestVariables zestVars, String string) {
@@ -360,5 +377,4 @@ public class ZestVariablesUnitTest {
             throw new RuntimeException(e);
         }
     }
-
 }
