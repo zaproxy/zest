@@ -16,10 +16,10 @@ For more details see the wiki: https://github.com/mozilla/zest/wiki
 ## How to Obtain
 
 If using a dependency management tool, for example [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/), the
-`mozilla-zest` library can be obtained from [Maven Central](http://search.maven.org/) with following coordinates:
+`zest` library can be obtained from [Maven Central](http://search.maven.org/) with following coordinates:
 
  * GroupId: `org.mozilla`
- * ArtifactId: `mozilla-zest`
+ * ArtifactId: `zest`
  * Version: `0.13`
 
 ## Building
