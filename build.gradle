@@ -6,7 +6,7 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.6'
 }
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'application'
@@ -28,18 +28,20 @@ mainClassName = 'org.mozilla.zest.impl.CmdLine'
 sourceSets.test.resources.srcDirs 'examples'
 
 dependencies {
-    compile ('commons-httpclient:commons-httpclient:3.1',
+    // XXX Change to implementation at some point, currently exposed through `ZestRequest.addCookie` and `getCookies()`.
+    api 'commons-httpclient:commons-httpclient:3.1'
+    implementation (
              'com.google.code.gson:gson:2.2.2',
              'com.opera:operadriver:1.5',
              'com.codeborne:phantomjsdriver:1.4.3',
              'org.seleniumhq.selenium:selenium-server:3.11.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    compile('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
+    implementation('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
         exclude group: 'org.seleniumhq.selenium'
     }
 
-    testCompile('junit:junit:4.11',
+    testImplementation('junit:junit:4.11',
                 'com.github.tomakehurst:wiremock-standalone:2.14.0',
                 'org.mockito:mockito-core:2.13.0')
 }
