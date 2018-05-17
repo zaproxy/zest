@@ -2,7 +2,7 @@ plugins {
     id "com.diffplug.gradle.spotless" version "3.10.0"
 }
 
-task wrapper(type: Wrapper) {
+wrapper {
     gradleVersion = '4.7'
 }
 
