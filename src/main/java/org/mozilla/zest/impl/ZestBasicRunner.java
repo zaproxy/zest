@@ -44,6 +44,12 @@ import org.openqa.selenium.WebDriver;
 
 public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
+    public static class Default {
+        public static final int TIMEOUT_IN_SECONDS = 30;
+
+        private Default() {}
+    }
+
     private ScriptEngineFactory scriptEngineFactory = null;
     private ZestHttpClient httpclient;
     private boolean stopOnAssertFail = true;
@@ -62,8 +68,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     private Map<String, WebDriver> webDriverMap = new HashMap<String, WebDriver>();
 
+    /**
+     * New Zest basic runner with default settings.
+     *
+     * @since 0.14.0
+     */
     public ZestBasicRunner() {
-        setHttpClient(new CommonsHttpClient(new HttpClient()));
+        this(Default.TIMEOUT_IN_SECONDS, false);
     }
 
     /** @deprecated (0.14.0) Use {@link #ZestBasicRunner(ZestHttpClient)} instead. */
@@ -71,6 +82,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     public ZestBasicRunner(HttpClientParams params) {
         this();
         setHttpClientParams(params);
+    }
+
+    /**
+     * New Zest basic runner with custom settings
+     *
+     * @since 0.14.0
+     */
+    public ZestBasicRunner(Integer timeoutInSeconds, boolean skipSSLCertificateCheck) {
+        int timeout = (timeoutInSeconds == null) ? Default.TIMEOUT_IN_SECONDS : timeoutInSeconds;
+        setHttpClient(new ComponentsHttpClient(timeout, skipSSLCertificateCheck));
     }
 
     /**

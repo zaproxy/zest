@@ -23,12 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow to specify profile when launching Chrome and Firefox. [#152](https://github.com/mozilla/zest/pull/152)
 - Allow to obtain a screenshot from the browsers (e.g Chrome, Firefox). [#155](https://github.com/mozilla/zest/pull/155)
 - Add timestamp (unix time) to request, to indicate when it was sent. [#181](https://github.com/mozilla/zest/pull/181)
+- Command line arguments to set connection timeout and skip SSL certificate validations.
 
 ### Changed
 - Update PhantomJS driver to 1.4.3. [#120](https://github.com/mozilla/zest/pull/120)
 - Be more lenient when checking script type. [#126](https://github.com/mozilla/zest/pull/126)
 - Change action invoke to allow to set the charset. [#134](https://github.com/mozilla/zest/pull/134)
 - Accept insecure certs when launching browsers. [#136](https://github.com/mozilla/zest/pull/136)
+- Update HTTP client implementation, use HttpComponents Client instead of Commons HttpClient. [#168](https://github.com/mozilla/zest/issues/168)
 - Update Selenium to 3.14.0. [#169](https://github.com/mozilla/zest/issues/169)
 
 ## [0.13] - 2017-08-11
