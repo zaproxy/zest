@@ -34,7 +34,7 @@ dependencies {
              'com.google.code.gson:gson:2.2.2',
              'com.opera:operadriver:1.5',
              'com.codeborne:phantomjsdriver:1.4.3',
-             'org.seleniumhq.selenium:selenium-server:3.11.0',
+             'org.seleniumhq.selenium:selenium-server:3.13.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
     implementation('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
