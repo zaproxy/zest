@@ -3,8 +3,13 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'application'
-    id 'jacoco'
     id "com.diffplug.gradle.spotless" version "3.13.0"
+}
+
+if (JavaVersion.current() <= JavaVersion.VERSION_1_10) {
+    // XXX Not yet supported on Java 11
+    // https://github.com/jacoco/jacoco/issues/663
+    apply plugin: 'jacoco'
 }
 
 wrapper {
@@ -32,7 +37,7 @@ dependencies {
     // XXX Change to implementation at some point, currently exposed through `ZestRequest.addCookie` and `getCookies()`.
     api 'commons-httpclient:commons-httpclient:3.1'
     implementation (
-             'com.google.code.gson:gson:2.2.2',
+             'com.google.code.gson:gson:2.8.5',
              'com.opera:operadriver:1.5',
              'com.codeborne:phantomjsdriver:1.4.3',
              'org.seleniumhq.selenium:selenium-server:3.13.0',
@@ -44,7 +49,7 @@ dependencies {
 
     testImplementation('junit:junit:4.11',
                 'com.github.tomakehurst:wiremock-standalone:2.14.0',
-                'org.mockito:mockito-core:2.13.0')
+                'org.mockito:mockito-core:2.19.1')
 }
 
 jar {
