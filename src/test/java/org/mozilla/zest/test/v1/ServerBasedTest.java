@@ -17,7 +17,11 @@ public abstract class ServerBasedTest {
         return new WireMockRule(options().dynamicPort(), false);
     }
 
+    protected String getHostPort() {
+        return server.getOptions().bindAddress() + ":" + server.port();
+    }
+
     protected String getServerUrl(String path) {
-        return "http://" + server.getOptions().bindAddress() + ":" + server.port() + path;
+        return "http://" + getHostPort() + path;
     }
 }
