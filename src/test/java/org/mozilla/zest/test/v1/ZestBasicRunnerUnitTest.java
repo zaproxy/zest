@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.byLessThan;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -73,6 +74,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         // Then
         request = runner.getLastRequest();
         assertThat(request).isNotNull();
+        assertThat(request.getTimestamp()).isCloseTo(System.currentTimeMillis(), byLessThan(2000L));
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
         assertThat(request.getHeaders()).isEqualTo(headers);

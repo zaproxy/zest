@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow to use JBrowserDriver (JBD) in client launch. [#127](https://github.com/mozilla/zest/pull/127)
 - Allow to specify profile when launching Chrome and Firefox. [#152](https://github.com/mozilla/zest/pull/152)
 - Allow to obtain a screenshot from the browsers (e.g Chrome, Firefox). [#155](https://github.com/mozilla/zest/pull/155)
+- Add timestamp (unix time) to request, to indicate when it was sent. [#181](https://github.com/mozilla/zest/pull/181)
 
 ### Changed
 - Update PhantomJS driver to 1.4.3. [#120](https://github.com/mozilla/zest/pull/120)

@@ -38,6 +38,9 @@ public class ZestRequest extends ZestStatement {
     /** If true follow redirects, otherwise do not */
     private boolean followRedirects = true;
 
+    /** The timestamp when the request was sent. */
+    private long timestamp;
+
     /** Cookie to add to the request */
     private List<ZestCookie> cookies = new ArrayList<>();
 
@@ -64,6 +67,7 @@ public class ZestRequest extends ZestStatement {
         zr.setMethod(this.method);
         zr.setHeaders(this.headers);
         zr.setFollowRedirects(this.followRedirects);
+        zr.setTimestamp(this.timestamp);
 
         if (this.getResponse() != null) {
             zr.setResponse(this.getResponse().deepCopy());
@@ -236,6 +240,26 @@ public class ZestRequest extends ZestStatement {
 
     public void setFollowRedirects(boolean followRedirects) {
         this.followRedirects = followRedirects;
+    }
+
+    /**
+     * Gets when the request was sent (unix time).
+     *
+     * @return the timestamp when the request was sent.
+     * @since 0.14.0
+     */
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Sets when the request was sent (unix time).
+     *
+     * @param timestamp the timestamp when the request was sent.
+     * @since 0.14.0
+     */
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
