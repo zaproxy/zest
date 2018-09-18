@@ -5,7 +5,7 @@ package org.mozilla.zest.core.v1;
 
 import java.util.Date;
 
-/** @since 0.14 */
+/** @since 0.14.0 */
 public class ZestCookie {
 
     private String domain;

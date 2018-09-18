@@ -36,7 +36,7 @@ public class ZestExpressionClientElementExists extends ZestExpression {
      * @param type the type of the expression.
      * @param element the element to check for existence.
      * @param inverse if the expression should be the inverse.
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestExpressionClientElementExists(
             String windowHandle, String type, String element, boolean inverse) {

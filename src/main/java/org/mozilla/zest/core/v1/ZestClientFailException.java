@@ -40,7 +40,7 @@ public class ZestClientFailException extends Exception {
      * @param client the client.
      * @param message the detail message.
      * @param cause the cause.
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestClientFailException(ZestElement client, String message, Throwable cause) {
         super(message, cause);

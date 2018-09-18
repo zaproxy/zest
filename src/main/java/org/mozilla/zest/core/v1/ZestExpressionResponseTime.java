@@ -33,7 +33,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
      *
      * @param time the time in milliseconds.
      * @param greaterThan if the response time should be greater than the given time.
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestExpressionResponseTime(long time, boolean greaterThan) {
         this(time, greaterThan, false);
@@ -46,7 +46,7 @@ public class ZestExpressionResponseTime extends ZestExpression {
      * @param time the time in milliseconds.
      * @param greaterThan if the response time should be greater than the given time.
      * @param inverse if the expression should be the inverse.
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestExpressionResponseTime(long time, boolean greaterThan, boolean inverse) {
         super(inverse);
