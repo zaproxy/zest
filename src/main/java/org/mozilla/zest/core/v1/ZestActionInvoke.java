@@ -69,7 +69,7 @@ public class ZestActionInvoke extends ZestAction {
      * @param parameters the parameters for the script or the process.
      * @param charset the name of the charset used for read operations (for example, read the script
      *     or the output of the invoked program).
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestActionInvoke(
             String script, String variableName, List<String[]> parameters, String charset) {
@@ -229,7 +229,7 @@ public class ZestActionInvoke extends ZestAction {
      * file or the output of the invoked program).
      *
      * @return the name of the charset.
-     * @since 0.14
+     * @since 0.14.0
      */
     public String getCharset() {
         return charset;
@@ -240,7 +240,7 @@ public class ZestActionInvoke extends ZestAction {
      * file or the output of the invoked program).
      *
      * @param charset the name of the charset.
-     * @since 0.14
+     * @since 0.14.0
      */
     public void setCharset(String charset) {
         this.charset = charset;

@@ -17,7 +17,7 @@ import org.openqa.selenium.WebDriver;
  *
  * <p>The screenshot can be saved to a file and/or to a variable (for the latter Base64 encoded).
  *
- * @since 0.14
+ * @since 0.14.0
  */
 public class ZestClientScreenshot extends ZestClient {
 

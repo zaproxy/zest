@@ -35,7 +35,7 @@ import org.mozilla.zest.core.v1.ZestResponse;
 /**
  * The Class CommonsHttpClient
  *
- * @since 0.14
+ * @since 0.14.0
  */
 class CommonsHttpClient implements ZestHttpClient {
 

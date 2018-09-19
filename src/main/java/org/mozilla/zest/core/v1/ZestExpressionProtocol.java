@@ -12,7 +12,7 @@ import java.net.URL;
  * <p>The check is done in a case-insensitive manner. The expression returns {@code false} if no
  * protocol was set (that is, {@code null}).
  *
- * @since 0.14
+ * @since 0.14.0
  */
 public class ZestExpressionProtocol extends ZestExpression {
 

@@ -368,7 +368,7 @@ public class ZestRequest extends ZestStatement {
         this.cookies.add(cookie);
     }
 
-    /** @deprecated (0.14) Use {@link #addCookie(ZestCookie)} instead. */
+    /** @deprecated (0.14.0) Use {@link #addCookie(ZestCookie)} instead. */
     @Deprecated
     public void addCookie(Cookie cookie) {
         addCookie(
@@ -380,7 +380,7 @@ public class ZestRequest extends ZestStatement {
                 cookie.getSecure());
     }
 
-    /** @deprecated (0.14) Use {@link #getZestCookies()} instead. */
+    /** @deprecated (0.14.0) Use {@link #getZestCookies()} instead. */
     @Deprecated
     public List<Cookie> getCookies() {
         List<Cookie> cookies = new ArrayList<>();

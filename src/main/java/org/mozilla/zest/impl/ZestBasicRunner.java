@@ -66,7 +66,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         setHttpClient(new CommonsHttpClient(new HttpClient()));
     }
 
-    /** @deprecated (0.14) Use {@link #ZestBasicRunner(ZestHttpClient)} instead. */
+    /** @deprecated (0.14.0) Use {@link #ZestBasicRunner(ZestHttpClient)} instead. */
     @Deprecated
     public ZestBasicRunner(HttpClientParams params) {
         this();
@@ -74,7 +74,8 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     }
 
     /**
-     * @deprecated (0.14) Use {@link #ZestBasicRunner(ScriptEngineFactory, ZestHttpClient)} instead.
+     * @deprecated (0.14.0) Use {@link #ZestBasicRunner(ScriptEngineFactory, ZestHttpClient)}
+     *     instead.
      */
     @Deprecated
     public ZestBasicRunner(ScriptEngineFactory factory, HttpClientParams params) {
@@ -83,12 +84,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         this.scriptEngineFactory = factory;
     }
 
-    /** @since 0.14 */
+    /** @since 0.14.0 */
     public ZestBasicRunner(ZestHttpClient httpclient) {
         setHttpClient(httpclient);
     }
 
-    /** @since 0.14 */
+    /** @since 0.14.0 */
     public ZestBasicRunner(ScriptEngineFactory factory, ZestHttpClient httpclient) {
         setHttpClient(httpclient);
         this.scriptEngineFactory = factory;
@@ -99,7 +100,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         this.scriptEngineFactory = factory;
     }
 
-    /** @deprecated (0.14) Use {@link #setHttpClient(ZestHttpClient)} instead. */
+    /** @deprecated (0.14.0) Use {@link #setHttpClient(ZestHttpClient)} instead. */
     @Deprecated
     public void setHttpClientParams(HttpClientParams params) {
         if (httpclient instanceof CommonsHttpClient) {
@@ -546,13 +547,13 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         }
     }
 
-    /** @deprecated (0.14) Use {@link #setHttpClient(ZestHttpClient)} instead. */
+    /** @deprecated (0.14.0) Use {@link #setHttpClient(ZestHttpClient)} instead. */
     @Deprecated
     public void setHttpClient(HttpClient httpclient) {
         setHttpClient(new CommonsHttpClient(httpclient));
     }
 
-    /** @since 0.14 */
+    /** @since 0.14.0 */
     public void setHttpClient(ZestHttpClient httpclient) {
         this.httpclient = httpclient;
         this.httpclient.init(this);

@@ -28,7 +28,7 @@ public class ZestExpressionIsInteger extends ZestExpression {
      *
      * @param variableName the name of the variable to check.
      * @param inverse if the expression should be the inverse.
-     * @since 0.14
+     * @since 0.14.0
      */
     public ZestExpressionIsInteger(String variableName, boolean inverse) {
         super(inverse);

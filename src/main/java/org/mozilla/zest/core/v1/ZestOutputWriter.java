@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-/** @since 0.14 */
+/** @since 0.14.0 */
 public interface ZestOutputWriter {
 
     /**

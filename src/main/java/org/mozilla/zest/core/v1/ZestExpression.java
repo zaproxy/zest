@@ -19,7 +19,7 @@ public abstract class ZestExpression extends ZestElement implements ZestExpressi
      * Constructs a {@code ZestExpression} with the given inverse state.
      *
      * @param inverse if the expression should be the inverse.
-     * @since 0.14
+     * @since 0.14.0
      */
     protected ZestExpression(boolean inverse) {
         super();
