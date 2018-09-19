@@ -140,6 +140,7 @@ class CommonsHttpClient implements ZestHttpClient {
         String responseHeader = null;
         String responseBody = null;
         Date start = new Date();
+        req.setTimestamp(start.getTime());
         try {
             code = httpclient.executeMethod(method);
 
