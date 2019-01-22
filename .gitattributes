@@ -1,4 +1,4 @@
-* text=auto
+* text=lf
 
 *.java text
 *.properties text
@@ -13,8 +13,8 @@
 javax.script.ScriptEngineFactory text
 
 *.bat text eol=crlf
-*.sh text eol=lf
-gradlew text eol=lf
+*.sh text
+gradlew text
 
 *.jar binary
 *.png binary
