@@ -3,23 +3,11 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'application'
-    id "com.diffplug.gradle.spotless" version "3.13.0"
+    id 'jacoco'
+    id "com.diffplug.gradle.spotless" version "3.23.0"
 }
-
-if (JavaVersion.current() <= JavaVersion.VERSION_1_10) {
-    // XXX Not yet supported on Java 11
-    // https://github.com/jacoco/jacoco/issues/663
-    apply plugin: 'jacoco'
-}
-
-wrapper {
-    gradleVersion = '4.8.1'
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -91,13 +79,13 @@ spotless {
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
     from javadoc
+    archiveClassifier.set("javadoc")
 }
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
-    classifier "sources"
+    archiveClassifier.set("sources")
 }
 
 publishing {
