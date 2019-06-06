@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 import javax.script.ScriptEngineFactory;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.params.HttpClientParams;
 import org.mozilla.zest.core.v1.ZestAction;
 import org.mozilla.zest.core.v1.ZestActionFailException;
 import org.mozilla.zest.core.v1.ZestAssertFailException;
@@ -77,13 +75,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         this(Default.TIMEOUT_IN_SECONDS, false);
     }
 
-    /** @deprecated (0.14.0) Use {@link #ZestBasicRunner(ZestHttpClient)} instead. */
-    @Deprecated
-    public ZestBasicRunner(HttpClientParams params) {
-        this();
-        setHttpClientParams(params);
-    }
-
     /**
      * New Zest basic runner with custom settings
      *
@@ -92,17 +83,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     public ZestBasicRunner(Integer timeoutInSeconds, boolean skipSSLCertificateCheck) {
         int timeout = (timeoutInSeconds == null) ? Default.TIMEOUT_IN_SECONDS : timeoutInSeconds;
         setHttpClient(new ComponentsHttpClient(timeout, skipSSLCertificateCheck));
-    }
-
-    /**
-     * @deprecated (0.14.0) Use {@link #ZestBasicRunner(ScriptEngineFactory, ZestHttpClient)}
-     *     instead.
-     */
-    @Deprecated
-    public ZestBasicRunner(ScriptEngineFactory factory, HttpClientParams params) {
-        this();
-        setHttpClientParams(params);
-        this.scriptEngineFactory = factory;
     }
 
     /** @since 0.14.0 */
@@ -119,14 +99,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     public ZestBasicRunner(ScriptEngineFactory factory) {
         this();
         this.scriptEngineFactory = factory;
-    }
-
-    /** @deprecated (0.14.0) Use {@link #setHttpClient(ZestHttpClient)} instead. */
-    @Deprecated
-    public void setHttpClientParams(HttpClientParams params) {
-        if (httpclient instanceof CommonsHttpClient) {
-            ((CommonsHttpClient) httpclient).setParams(params);
-        }
     }
 
     @Override
@@ -566,12 +538,6 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
             this.setVariable(ZestVariables.RESPONSE_HEADER, response.getHeaders());
             this.setVariable(ZestVariables.RESPONSE_BODY, response.getBody());
         }
-    }
-
-    /** @deprecated (0.14.0) Use {@link #setHttpClient(ZestHttpClient)} instead. */
-    @Deprecated
-    public void setHttpClient(HttpClient httpclient) {
-        setHttpClient(new CommonsHttpClient(httpclient));
     }
 
     /** @since 0.14.0 */

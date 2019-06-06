@@ -33,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update HTTP client implementation, use HttpComponents Client instead of Commons HttpClient. [#168](https://github.com/mozilla/zest/issues/168)
 - Update Selenium to 3.14.0. [#169](https://github.com/mozilla/zest/issues/169)
 
+### Removed
+- Remove dependency on Commons HttpClient, the client implementation, and related methods. [#136](https://github.com/mozilla/zest/pull/136)
+
 ## [0.13] - 2017-08-11
 ## [0.12] - 2015-01-19
 ## [0.11] - 2015-01-15
