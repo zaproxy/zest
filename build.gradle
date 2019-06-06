@@ -11,6 +11,8 @@ repositories {
     mavenCentral()
 }
 
+apply from: "$rootDir/gradle/travis-ci.gradle.kts"
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
