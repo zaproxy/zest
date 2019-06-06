@@ -51,7 +51,7 @@ public class ZestLoopTokenClientElementsSet extends ZestElement
     }
 
     /**
-     * private method for initialization of the loop (TokenSet & first state).
+     * private method for initialization of the loop (TokenSet &amp; first state).
      *
      * @return the zest loop token string set
      * @throws ZestClientFailException
