@@ -64,6 +64,7 @@ tasks.withType(Javadoc) {
     options {
         links = [ 'https://docs.oracle.com/javase/8/docs/api/' ]
         encoding = 'UTF-8'
+        source = sourceCompatibility
     }
     if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
