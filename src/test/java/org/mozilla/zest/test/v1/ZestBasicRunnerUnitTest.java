@@ -77,7 +77,10 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request.getTimestamp()).isCloseTo(System.currentTimeMillis(), byLessThan(2000L));
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        assertThat(request.getHeaders()).isEqualTo(headers);
+        // The HTTP client adds some headers to the ZestRequest.
+        String expectedHeaders =
+                headers + "Connection: Keep-Alive\r\nAccept-Encoding: gzip,deflate\r\n";
+        assertThat(request.getHeaders()).isEqualTo(expectedHeaders);
         assertThat(request.getData()).isEqualTo(data);
 
         ZestResponse response = runner.getLastResponse();

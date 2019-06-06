@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.httpclient.Cookie;
 
 /** The Class ZestRequest. */
 public class ZestRequest extends ZestStatement {
@@ -366,36 +365,6 @@ public class ZestRequest extends ZestStatement {
 
     public void addCookie(ZestCookie cookie) {
         this.cookies.add(cookie);
-    }
-
-    /** @deprecated (0.14.0) Use {@link #addCookie(ZestCookie)} instead. */
-    @Deprecated
-    public void addCookie(Cookie cookie) {
-        addCookie(
-                cookie.getDomain(),
-                cookie.getName(),
-                cookie.getValue(),
-                cookie.getPath(),
-                cookie.getExpiryDate(),
-                cookie.getSecure());
-    }
-
-    /** @deprecated (0.14.0) Use {@link #getZestCookies()} instead. */
-    @Deprecated
-    public List<Cookie> getCookies() {
-        List<Cookie> cookies = new ArrayList<>();
-        for (ZestCookie cookie : this.cookies) {
-            cookies.add(
-                    new Cookie(
-                            cookie.getDomain(),
-                            cookie.getName(),
-                            cookie.getValue(),
-                            cookie.getPath(),
-                            cookie.getExpiryDate(),
-                            cookie.isSecure()));
-        }
-
-        return cookies;
     }
 
     public List<ZestCookie> getZestCookies() {

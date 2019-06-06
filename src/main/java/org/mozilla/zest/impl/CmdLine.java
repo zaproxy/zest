@@ -20,8 +20,9 @@ import org.mozilla.zest.core.v1.ZestScript;
 public class CmdLine {
 
     private static final String USAGE =
-            "Usage: -script <file> [-summary | -list] [-debug] [-prefix <http://prefix>] [-token <name>=<value>]...\n"
+            "Usage: -script <file> [-summary | -list] [-debug] [-timeout <timeout for requests in seconds>] [-prefix <http://prefix>] [-token <name>=<value>]...\n"
                     + "    [-http-auth-site <site> -http-auth-realm <realm> -http-auth-user <user> -http-auth-password <password>] \n"
+                    + "    [-insecure <skip the SSL certificate check>]"
                     + "    For more information about Zest visit "
                     + ZestScript.ZEST_URL;
 
@@ -48,6 +49,8 @@ public class CmdLine {
         String httpAuthUser = null;
         String httpAuthPassword = null;
         boolean debug = false;
+        boolean skipSSLCertificateCheck = false;
+        Integer timeoutInSeconds = null;
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-summary")) {
@@ -114,6 +117,20 @@ public class CmdLine {
                 }
                 i++;
                 httpAuthPassword = args[i];
+            } else if (args[i].equals("-timeout")) {
+                if (i >= args.length - 1) {
+                    error(USAGE);
+                    return;
+                }
+                i++;
+                try {
+                    timeoutInSeconds = Integer.parseInt(args[i]);
+                } catch (NumberFormatException e) {
+                    error("The timeout must be a number but was: " + args[i]);
+                    error(USAGE);
+                }
+            } else if (args[i].equals("-insecure")) {
+                skipSSLCertificateCheck = true;
             } else {
                 error("Parameter not recognised: " + args[i]);
                 error(USAGE);
@@ -184,7 +201,7 @@ public class CmdLine {
                     zs.setAuthentication(authList);
                 }
 
-                run(zs, tokens, debug);
+                run(zs, tokens, debug, timeoutInSeconds, skipSSLCertificateCheck);
                 break;
         }
     }
@@ -193,8 +210,13 @@ public class CmdLine {
         System.err.println(str);
     }
 
-    private static void run(ZestScript zs, Map<String, String> parameters, boolean debug) {
-        ZestBasicRunner zbr = new ZestBasicRunner();
+    private static void run(
+            ZestScript zs,
+            Map<String, String> parameters,
+            boolean debug,
+            Integer timeoutInSeconds,
+            boolean skipSSLCertificateCheck) {
+        ZestBasicRunner zbr = new ZestBasicRunner(timeoutInSeconds, skipSSLCertificateCheck);
         zbr.setOutputWriter(new OutputStreamWriter(System.out));
         zbr.setStopOnAssertFail(false);
         zbr.setDebug(debug);

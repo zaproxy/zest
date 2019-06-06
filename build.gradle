@@ -22,9 +22,8 @@ mainClassName = 'org.mozilla.zest.impl.CmdLine'
 sourceSets.test.resources.srcDirs 'examples'
 
 dependencies {
-    // XXX Change to implementation at some point, currently exposed through `ZestRequest.addCookie` and `getCookies()`.
-    api 'commons-httpclient:commons-httpclient:3.1'
     implementation (
+             'org.apache.httpcomponents:httpclient:4.5.8',
              'com.google.code.gson:gson:2.8.5',
              'com.opera:operadriver:1.5',
              'com.codeborne:phantomjsdriver:1.4.3',
