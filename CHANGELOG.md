@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow to obtain a screenshot from the browsers (e.g Chrome, Firefox). [#155](https://github.com/mozilla/zest/pull/155)
 - Add timestamp (unix time) to request, to indicate when it was sent. [#181](https://github.com/mozilla/zest/pull/181)
 - Command line arguments to set connection timeout and skip SSL certificate validations.
+- Add statements to set/remove and assign from global variables, provided by the runtime. [#194](https://github.com/mozilla/zest/pull/194)
 
 ### Changed
 - Update PhantomJS driver to 1.4.3. [#120](https://github.com/mozilla/zest/pull/120)

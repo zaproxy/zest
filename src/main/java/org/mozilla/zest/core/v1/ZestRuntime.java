@@ -27,6 +27,35 @@ public interface ZestRuntime extends ZestOutputWriter {
     void setVariable(String name, String value);
 
     /**
+     * Gets a global variable.
+     *
+     * <p>The global variables should outlive and be available to all scripts. How and where the
+     * variables are persisted and for how long is left as an implementation detail.
+     *
+     * @param name the name of the variable.
+     * @return the value of the variable, might be {@code null} if no value was previously set.
+     * @since 0.14.0
+     * @see #setGlobalVariable(String, String)
+     */
+    default String getGlobalVariable(String name) {
+        return null;
+    }
+
+    /**
+     * Sets or removes a global variable.
+     *
+     * <p>The variable is removed when the {@code value} is {@code null}.
+     *
+     * @param name the name of the variable.
+     * @param value the value of the variable.
+     * @since 0.14.0
+     * @see #getGlobalVariable(String)
+     */
+    default void setGlobalVariable(String name, String value) {
+        // Nothing to do.
+    }
+
+    /**
      * Get the last response.
      *
      * @return the last response
