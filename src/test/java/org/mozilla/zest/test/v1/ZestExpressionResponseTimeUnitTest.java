@@ -76,6 +76,7 @@ public class ZestExpressionResponseTimeUnitTest {
         assertTrue(timeExpr.getTimeInMs() != copy.getTimeInMs());
     }
 
+    @Test
     public void testIsTrueDeepCopyDifferentGreaterThan() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(1000);
         ZestExpressionResponseTime copy = timeExpr.deepCopy();
