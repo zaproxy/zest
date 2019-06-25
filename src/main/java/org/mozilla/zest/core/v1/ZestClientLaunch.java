@@ -216,6 +216,8 @@ public class ZestClientLaunch extends ZestClient {
                     firefoxOptions.addPreference("network.proxy.no_proxies_on", "");
                     // And remove the PROXY capability:
                     cap.setCapability(CapabilityType.PROXY, (Object) null);
+
+                    firefoxOptions.addPreference("network.proxy.allow_hijacking_localhost", true);
                 }
                 firefoxOptions.merge(cap);
 
@@ -230,6 +232,10 @@ public class ZestClientLaunch extends ZestClient {
                     chromeOptions.addArguments("user-data-dir=" + userDataDir);
                     chromeOptions.addArguments("--profile-directory=" + profileDirName);
                 }
+                if (!httpProxy.isEmpty()) {
+                    chromeOptions.addArguments("--proxy-bypass-list=<-loopback>");
+                }
+
                 chromeOptions.merge(cap);
 
                 driver = new ChromeDriver(chromeOptions);
