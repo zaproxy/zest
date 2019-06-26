@@ -38,6 +38,7 @@ public class ZestStructuredExpressionUnitTest {
         assertTrue(and.getChildrenCondition().size() == copy.getChildrenCondition().size());
     }
 
+    @Test
     public void testOrDeepCopySingleAndSameChildrenSize() {
         ZestExpressionOr or = new ZestExpressionOr();
         or.addChildCondition(new ZestExpressionStatusCode(100));
