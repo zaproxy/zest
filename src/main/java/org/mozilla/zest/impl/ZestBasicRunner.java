@@ -64,7 +64,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     private Stack<ZestLoop<?>> loops = new Stack<>();
     private boolean skipStatements = false;
 
-    private Map<String, WebDriver> webDriverMap = new HashMap<String, WebDriver>();
+    private Map<String, WebDriver> webDriverMap = new HashMap<>();
 
     /**
      * New Zest basic runner with default settings.
@@ -294,22 +294,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
             }
             this.setVariable(loop.getVariableName(), "");
             return lastResponse;
-        } catch (ZestAssertFailException e) {
-            this.output(e.getMessage());
-            throw e;
-        } catch (ZestActionFailException e) {
-            this.output(e.getMessage());
-            throw e;
-        } catch (ZestInvalidCommonTestException e) {
-            this.output(e.getMessage());
-            throw e;
-        } catch (IOException e) {
-            this.output(e.getMessage());
-            throw e;
-        } catch (ZestAssignFailException e) {
-            this.output(e.getMessage());
-            throw e;
-        } catch (ZestClientFailException e) {
+        } catch (ZestAssertFailException
+                | ZestActionFailException
+                | ZestInvalidCommonTestException
+                | IOException
+                | ZestAssignFailException
+                | ZestClientFailException e) {
             this.output(e.getMessage());
             throw e;
         }
@@ -376,7 +366,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public void handleResponse(ZestRequest request, ZestResponse response)
-            throws ZestAssertFailException, ZestActionFailException {
+            throws ZestAssertFailException {
         boolean passed = true;
         for (ZestAssertion za : request.getAssertions()) {
             if (za.isValid(this)) {
@@ -415,8 +405,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     }
 
     @Override
-    public void responseFailed(ZestRequest request, ZestResponse response)
-            throws ZestAssertFailException {
+    public void responseFailed(ZestRequest request, ZestResponse response) {
         this.debug(request.getIndex() + " Response FAILED");
     }
 
@@ -602,7 +591,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public List<WebDriver> getWebDrivers() {
-        List<WebDriver> list = new ArrayList<WebDriver>();
+        List<WebDriver> list = new ArrayList<>();
         for (WebDriver wd : this.webDriverMap.values()) {
             list.add(wd);
         }

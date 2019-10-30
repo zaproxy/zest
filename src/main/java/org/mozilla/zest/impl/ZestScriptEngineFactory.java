@@ -39,7 +39,7 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public List<String> getExtensions() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("zest");
         list.add("zst");
         return Collections.unmodifiableList(list);
@@ -53,7 +53,7 @@ public class ZestScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public List<String> getNames() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("Zest");
         return Collections.unmodifiableList(list);
     }

@@ -20,13 +20,8 @@ import org.mozilla.zest.core.v1.ZestVariables;
 /** */
 public class ZestScriptUnitTest {
 
-    /**
-     * Method testSimpleIndexing.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testSimpleIndexing() throws Exception {
+    public void testSimpleIndexing() {
         ZestScript script = new ZestScript();
         ZestRequest req = new ZestRequest();
         script.add(req);
@@ -41,13 +36,8 @@ public class ZestScriptUnitTest {
         checkOrder(new ZestStatement[] {script, req, req1b, req2, null});
     }
 
-    /**
-     * Method testDepthIndexing.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testDepthIndexing() throws Exception {
+    public void testDepthIndexing() {
         ZestScript script = new ZestScript();
         ZestRequest req = new ZestRequest();
         script.add(req);
@@ -90,13 +80,8 @@ public class ZestScriptUnitTest {
         checkOrder(new ZestStatement[] {script, req, cond1, req4, req3, req2, null});
     }
 
-    /**
-     * Method testDeepComplex.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testDeepComplex() throws Exception {
+    public void testDeepComplex() {
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc3 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
@@ -173,13 +158,8 @@ public class ZestScriptUnitTest {
         // assertEquals(req4.getIndex(), xfrm2.getRequestId());
     }
 
-    /**
-     * Method testDeepMiscOrder.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testDeepMiscOrder() throws Exception {
+    public void testDeepMiscOrder() {
         ZestScript script = new ZestScript();
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
@@ -251,13 +231,8 @@ public class ZestScriptUnitTest {
         }
     }
 
-    /**
-     * Method testSimpleIndexing.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testVariableNames() throws Exception {
+    public void testVariableNames() {
         ZestScript script = new ZestScript();
         // Check the default ones
         assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_HEADER));

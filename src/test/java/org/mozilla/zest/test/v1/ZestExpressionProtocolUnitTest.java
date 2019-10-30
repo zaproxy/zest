@@ -78,7 +78,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNoRequest() throws Exception {
+    public void shouldEvaluateToFalseIfNoRequest() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         // When
@@ -88,7 +88,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfRequestButNoUrl() throws Exception {
+    public void shouldEvaluateToFalseIfRequestButNoUrl() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         ZestRequest request = createRequest();

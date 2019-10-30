@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,9 +37,7 @@ public class ZestLoopTokenStringSet extends ZestElement implements ZestLoopToken
     public ZestLoopTokenStringSet(String[] values) {
         super();
         tokens = new LinkedList<>();
-        for (String value : values) {
-            tokens.add(value);
-        }
+        Collections.addAll(tokens, values);
     }
 
     public void addToken(String token) {

@@ -31,8 +31,7 @@ public class ZestActionIntercept extends ZestAction {
     }
 
     @Override
-    public String invoke(ZestResponse response, ZestRuntime runtime)
-            throws ZestActionFailException {
+    public String invoke(ZestResponse response, ZestRuntime runtime) {
         // Ignore
         return "";
     }

@@ -44,8 +44,7 @@ public class ZestAssignRandomInteger extends ZestAssignment {
     }
 
     @Override
-    public String assign(ZestResponse response, ZestRuntime runtime)
-            throws ZestAssignFailException {
+    public String assign(ZestResponse response, ZestRuntime runtime) {
         int val = minInt + rnd.nextInt(maxInt - minInt);
         return Integer.toString(val);
     }

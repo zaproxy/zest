@@ -13,13 +13,8 @@ import org.mozilla.zest.core.v1.ZestResponse;
 /** */
 public class ZestAssignStringUnitTest {
 
-    /**
-     * Method testSimpleCase.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testSimpleCase() throws Exception {
+    public void testSimpleCase() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
         ZestResponse resp =
@@ -32,13 +27,8 @@ public class ZestAssignStringUnitTest {
         assertEquals(test1, ast.assign(resp, rt));
     }
 
-    /**
-     * Method testRegexes.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testVariables() throws Exception {
+    public void testVariables() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
 
@@ -67,7 +57,7 @@ public class ZestAssignStringUnitTest {
     }
 
     @Test
-    public void testRecurse() throws Exception {
+    public void testRecurse() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
 

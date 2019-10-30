@@ -67,7 +67,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNoResponse() throws Exception {
+    public void shouldEvaluateToFalseIfNoResponse() {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(204);
         // When

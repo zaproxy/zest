@@ -26,15 +26,12 @@ public class ZestExpressionOr extends ZestStructuredExpression {
 
     @Override
     public boolean isTrue(ZestRuntime runtime) {
-        boolean toReturn = false;
         for (ZestExpressionElement con : getChildrenCondition()) {
-            toReturn = toReturn || con.evaluate(runtime); // compute OR for each
-            // child
-            if (toReturn) {
-                break; // lazy evaluation
+            if (con.evaluate(runtime)) {
+                return true; // lazy evaluation
             }
         }
-        return toReturn;
+        return false;
     }
 
     @Override

@@ -43,8 +43,7 @@ public class ZestActionGlobalVariableRemove extends ZestAction {
     }
 
     @Override
-    public String invoke(ZestResponse response, ZestRuntime runtime)
-            throws ZestActionFailException {
+    public String invoke(ZestResponse response, ZestRuntime runtime) {
         runtime.setGlobalVariable(globalVariableName, null);
         return null;
     }

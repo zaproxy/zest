@@ -15,7 +15,7 @@ public interface ZestContainer {
      *
      * @return the last
      */
-    public ZestStatement getLast();
+    ZestStatement getLast();
 
     /**
      * Gets the statement.
@@ -23,7 +23,7 @@ public interface ZestContainer {
      * @param index the index
      * @return the statement
      */
-    public ZestStatement getStatement(int index);
+    ZestStatement getStatement(int index);
 
     /**
      * Gets the index.
@@ -31,7 +31,7 @@ public interface ZestContainer {
      * @param child the child
      * @return the index
      */
-    public int getIndex(ZestStatement child);
+    int getIndex(ZestStatement child);
 
     /**
      * Move.
@@ -39,7 +39,7 @@ public interface ZestContainer {
      * @param index the index
      * @param stmt the stmt
      */
-    public void move(int index, ZestStatement stmt);
+    void move(int index, ZestStatement stmt);
 
     /**
      * Gets the child before.
@@ -47,19 +47,19 @@ public interface ZestContainer {
      * @param child the child
      * @return the child before
      */
-    public ZestStatement getChildBefore(ZestStatement child);
+    ZestStatement getChildBefore(ZestStatement child);
 
     /**
      * Returns all of the containers immediate children
      *
      * @return the children
      */
-    public List<ZestStatement> getChildren();
+    List<ZestStatement> getChildren();
 
     /**
      * Returns all of the variable names defined by this staement and its children.
      *
      * @return the tokens
      */
-    abstract Set<String> getVariableNames();
+    Set<String> getVariableNames();
 }

@@ -19,7 +19,7 @@ import org.mozilla.zest.core.v1.ZestResponse;
 public class ZestActionInvokeUnitTest {
 
     @Test
-    public void shouldUseArgsPassedInConstructor() throws Exception {
+    public void shouldUseArgsPassedInConstructor() {
         // Given
         String script = "script.js";
         String variable = "var";
@@ -34,11 +34,6 @@ public class ZestActionInvokeUnitTest {
         assertEquals(invokeAction.getCharset(), charset);
     }
 
-    /**
-     * Method testSimpleJsScript.
-     *
-     * @throws Exception
-     */
     @Test
     public void testSimpleJsScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
@@ -55,11 +50,6 @@ public class ZestActionInvokeUnitTest {
         assertEquals("abcde", result);
     }
 
-    /**
-     * Method testSimpleJsScript.
-     *
-     * @throws Exception
-     */
     @Test
     public void testParamJsScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
@@ -77,11 +67,6 @@ public class ZestActionInvokeUnitTest {
         assertEquals("PQRST", result);
     }
 
-    /**
-     * Method testSimpleZestScript.
-     *
-     * @throws Exception
-     */
     @Test
     public void testSimpleZestScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
@@ -98,11 +83,6 @@ public class ZestActionInvokeUnitTest {
         assertEquals("ABCDE", result);
     }
 
-    /**
-     * Method testAssignZestScript.
-     *
-     * @throws Exception
-     */
     @Test
     public void testAssignZestScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
@@ -119,11 +99,6 @@ public class ZestActionInvokeUnitTest {
         assertEquals("EFGHI", result);
     }
 
-    /**
-     * Method testParamZestScript.
-     *
-     * @throws Exception
-     */
     @Test
     public void testParamZestScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();

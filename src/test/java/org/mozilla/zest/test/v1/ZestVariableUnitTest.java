@@ -14,13 +14,8 @@ import org.mozilla.zest.core.v1.ZestScript;
 /** */
 public class ZestVariableUnitTest {
 
-    /**
-     * Method testTokenReplacement.
-     *
-     * @throws Exception
-     */
     @Test
-    public void testAssign() throws Exception {
+    public void testAssign() {
         ZestScript script = new ZestScript();
         ZestAssignString ast = new ZestAssignString();
 

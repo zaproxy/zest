@@ -3,8 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.net.MalformedURLException;
-
 // TODO: Auto-generated Javadoc
 /** The Class ZestAction. */
 public abstract class ZestAction extends ZestStatement {
@@ -29,7 +27,7 @@ public abstract class ZestAction extends ZestStatement {
     }
 
     @Override
-    void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
+    void setPrefix(String oldPrefix, String newPrefix) {
         // Ignore
     }
 

@@ -123,7 +123,7 @@ public class ZestVariables extends ZestElement {
      * @return the tokens
      */
     public List<String[]> getVariables() {
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
         for (Entry<String, String> entry : tokens.entrySet()) {
             list.add(new String[] {entry.getKey(), entry.getValue()});
         }
@@ -232,7 +232,7 @@ public class ZestVariables extends ZestElement {
     }
 
     public String replaceInString(String str, boolean urlEncode) {
-        List<String> prev = new ArrayList<String>();
+        List<String> prev = new ArrayList<>();
         return this.replaceInString(str, urlEncode, prev);
     }
 }

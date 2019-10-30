@@ -32,7 +32,7 @@ public class ZestRequest extends ZestStatement {
     private ZestResponse response;
 
     /** The assertions. */
-    private List<ZestAssertion> assertions = new ArrayList<ZestAssertion>();
+    private List<ZestAssertion> assertions = new ArrayList<>();
 
     /** If true follow redirects, otherwise do not */
     private boolean followRedirects = true;

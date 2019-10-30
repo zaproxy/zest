@@ -56,9 +56,8 @@ public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenS
      * private method for initialization of the loop (TokenSet &amp; first state).
      *
      * @return the zest loop token string set
-     * @throws ZestClientFailException
      */
-    protected ZestLoopTokenStringSet getConvertedSet() throws ZestClientFailException {
+    protected ZestLoopTokenStringSet getConvertedSet() {
         if (this.convertedSet == null) {
             if (loop == null) {
                 // Not yet initialized
@@ -94,46 +93,26 @@ public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenS
 
     @Override
     public String getToken(int index) {
-        try {
-            return this.getConvertedSet().getToken(index);
-        } catch (ZestClientFailException e) {
-            return null;
-        }
+        return this.getConvertedSet().getToken(index);
     }
 
     public List<String> getTokens() {
-        try {
-            return Collections.unmodifiableList(getConvertedSet().getTokens());
-        } catch (ZestClientFailException e) {
-            return null;
-        }
+        return Collections.unmodifiableList(getConvertedSet().getTokens());
     }
 
     @Override
     public int indexOf(String token) {
-        try {
-            return getConvertedSet().indexOf(token);
-        } catch (ZestClientFailException e) {
-            return -1;
-        }
+        return getConvertedSet().indexOf(token);
     }
 
     @Override
     public String getLastToken() {
-        try {
-            return getConvertedSet().getLastToken();
-        } catch (ZestClientFailException e) {
-            return null;
-        }
+        return getConvertedSet().getLastToken();
     }
 
     @Override
     public int size() {
-        try {
-            return this.getConvertedSet().size();
-        } catch (ZestClientFailException e) {
-            return -1;
-        }
+        return this.getConvertedSet().size();
     }
 
     @Override
@@ -187,10 +166,6 @@ public class ZestLoopTokenRegexSet extends ZestElement implements ZestLoopTokenS
 
     @Override
     public ZestLoopStateRegex getFirstState() {
-        try {
-            return new ZestLoopStateRegex(this);
-        } catch (ZestClientFailException e) {
-            return null;
-        }
+        return new ZestLoopStateRegex(this);
     }
 }

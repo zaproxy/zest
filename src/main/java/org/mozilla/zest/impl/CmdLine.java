@@ -43,7 +43,7 @@ public class CmdLine {
         File script = null;
         Mode mode = null;
         String prefix = null;
-        Map<String, String> tokens = new HashMap<String, String>();
+        Map<String, String> tokens = new HashMap<>();
         String httpAuthSite = null;
         String httpAuthRealm = null;
         String httpAuthUser = null;
@@ -194,7 +194,7 @@ public class CmdLine {
                 }
 
                 if (httpAuthSite != null) {
-                    List<ZestAuthentication> authList = new ArrayList<ZestAuthentication>();
+                    List<ZestAuthentication> authList = new ArrayList<>();
                     authList.add(
                             new ZestHttpAuthentication(
                                     httpAuthSite, httpAuthRealm, httpAuthUser, httpAuthPassword));
