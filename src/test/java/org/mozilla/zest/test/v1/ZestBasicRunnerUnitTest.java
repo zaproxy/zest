@@ -4,8 +4,11 @@
 package org.mozilla.zest.test.v1;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 
@@ -95,5 +98,30 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
                                 + "Server: abc\r\n"
                                 + "Transfer-Encoding: chunked\r\n");
         assertThat(response.getBody()).isEqualTo("This is the response");
+    }
+
+    @Test
+    public void shouldSendPutRequestWithBody() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        String method = "PUT";
+        request.setMethod(method);
+        request.setUrl(url);
+        String data = "Content Request Body";
+        request.setData(data);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        assertThat(request.getData()).isEqualTo(data);
+        server.verify(
+                putRequestedFor(urlMatching(PATH_SERVER_FILE)).withRequestBody(equalTo(data)));
     }
 }
