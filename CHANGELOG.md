@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change action invoke to allow to set the charset. [#134](https://github.com/mozilla/zest/pull/134)
 - Accept insecure certs when launching browsers. [#136](https://github.com/mozilla/zest/pull/136)
 - Update HTTP client implementation, use HttpComponents Client instead of Commons HttpClient. [#168](https://github.com/mozilla/zest/issues/168)
-- Update Selenium to 3.14.0. [#169](https://github.com/mozilla/zest/issues/169)
+- Update Selenium to 3.141.59. [#169](https://github.com/mozilla/zest/issues/169)
 - Keep proxying localhost with Chrome 72+ and Firefox 67+. [#197](https://github.com/mozilla/zest/pull/197)
 
 ### Removed
