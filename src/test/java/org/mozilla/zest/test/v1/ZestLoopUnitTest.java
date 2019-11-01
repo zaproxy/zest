@@ -16,7 +16,7 @@ import org.mozilla.zest.core.v1.ZestStatement;
 public class ZestLoopUnitTest {
 
     @Test
-    public void shouldReturnEmptyListIfNoStatementsWhenCopyingStatements() throws Exception {
+    public void shouldReturnEmptyListIfNoStatementsWhenCopyingStatements() {
         // Given
         ZestLoop<String> loop = new ZestLoopTest();
         // When
@@ -26,7 +26,7 @@ public class ZestLoopUnitTest {
     }
 
     @Test
-    public void shouldReturnADifferentListAndStatementsWhenCopyingStatements() throws Exception {
+    public void shouldReturnADifferentListAndStatementsWhenCopyingStatements() {
         // Given
         ZestLoop<String> loop = new ZestLoopTest();
         loop.addStatement(new ZestComment());

@@ -17,7 +17,7 @@ public interface ZestLoopTokenSet<T> {
      * @param index the index of the token
      * @return the token at the given index
      */
-    public T getToken(int index);
+    T getToken(int index);
 
     /**
      * returns the index of a given token.
@@ -25,33 +25,33 @@ public interface ZestLoopTokenSet<T> {
      * @param token the token whose index we are searching for
      * @return the index of the token
      */
-    public int indexOf(T token);
+    int indexOf(T token);
 
     /**
      * returns the last token the loop may consider.
      *
      * @return the last token the loop may consider
      */
-    public T getLastToken();
+    T getLastToken();
 
     /**
      * returns the size of this set.
      *
      * @return the size of this set
      */
-    public int size();
+    int size();
 
     /**
      * Deep copy.
      *
      * @return the zest loop token set
      */
-    public ZestLoopTokenSet<T> deepCopy();
+    ZestLoopTokenSet<T> deepCopy();
 
     /**
      * Gets the first state.
      *
      * @return the first state
      */
-    public ZestLoopState<T> getFirstState();
+    ZestLoopState<T> getFirstState();
 }

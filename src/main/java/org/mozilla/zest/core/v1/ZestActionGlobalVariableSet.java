@@ -65,8 +65,7 @@ public class ZestActionGlobalVariableSet extends ZestAction {
     }
 
     @Override
-    public String invoke(ZestResponse response, ZestRuntime runtime)
-            throws ZestActionFailException {
+    public String invoke(ZestResponse response, ZestRuntime runtime) {
         String replacedValue = runtime.replaceVariablesInString(value, false);
         runtime.setGlobalVariable(globalVariableName, replacedValue);
         return replacedValue;

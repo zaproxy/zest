@@ -33,7 +33,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldUseArgsPassedInConstructor() throws Exception {
+    public void shouldUseArgsPassedInConstructor() {
         // Given
         String windowHandle = "windowHandle";
         String browserType = "browserType";
@@ -48,7 +48,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldUseArgsPassedInConstructorWithCapabilities() throws Exception {
+    public void shouldUseArgsPassedInConstructorWithCapabilities() {
         // Given
         String windowHandle = "windowHandle";
         String browserType = "browserType";
@@ -132,7 +132,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldDeepCopy() throws Exception {
+    public void shouldDeepCopy() {
         // Given
         ZestClientLaunch original =
                 new ZestClientLaunch("handle", "browser", "url", "capabilities", false, "/profile");

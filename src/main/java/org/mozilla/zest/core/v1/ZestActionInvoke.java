@@ -24,7 +24,7 @@ public class ZestActionInvoke extends ZestAction {
     /** The path to the script - can be relative or absolute. */
     private String script;
 
-    private List<String[]> parameters = new ArrayList<String[]>();
+    private List<String[]> parameters = new ArrayList<>();
 
     /**
      * The name of the charset used for read operations (for example, read the script or the output
@@ -251,7 +251,7 @@ public class ZestActionInvoke extends ZestAction {
         ZestActionInvoke copy = new ZestActionInvoke(this.getIndex());
         copy.script = script;
         copy.variableName = variableName;
-        copy.parameters = new ArrayList<String[]>();
+        copy.parameters = new ArrayList<>();
         for (String[] kvPair : this.parameters) {
             copy.parameters.add(new String[] {kvPair[0], kvPair[1]});
         }

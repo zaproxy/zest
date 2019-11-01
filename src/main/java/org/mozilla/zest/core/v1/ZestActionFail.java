@@ -13,7 +13,7 @@ public class ZestActionFail extends ZestAction {
         LOW,
         MEDIUM,
         HIGH
-    };
+    }
 
     /** The message. */
     private String message;

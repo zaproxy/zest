@@ -3,10 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-/** This class represent a loop through a list of strings given in input through a file. */
+/** This class represent a loop through a set of client elements */
 public class ZestLoopClientElements extends ZestLoop<String> {
 
     private ZestLoopTokenClientElementsSet set = null;
@@ -21,22 +18,15 @@ public class ZestLoopClientElements extends ZestLoop<String> {
         this.set = new ZestLoopTokenClientElementsSet(this, windowHandle, type, element, attribute);
     }
 
-    /**
-     * Instantiates a new zest loop file.
-     *
-     * @throws FileNotFoundException the file not found exception
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
+    /** Instantiates a new loop of client elements. */
     public ZestLoopClientElements() {
         this.set = new ZestLoopTokenClientElementsSet(this, "", "", "", "");
     }
 
     /**
-     * Instantiates a new zest loop file.
+     * Instantiates a new loop of client elements.
      *
      * @param index the index of the statement
-     * @throws IOException
-     * @throws FileNotFoundException
      */
     private ZestLoopClientElements(int index) {
         super(index);

@@ -13,7 +13,7 @@ import org.mozilla.zest.core.v1.ZestResponse;
 public class ZestUtils {
 
     public static List<String> getForms(ZestResponse response) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         Source src = new Source(response.getHeaders() + response.getBody());
         List<Element> formElements = src.getAllElements(HTMLElementName.FORM);
         int formId = 0;
@@ -28,7 +28,7 @@ public class ZestUtils {
     }
 
     public static List<String> getFields(ZestResponse response, int formId) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         Source src = new Source(response.getHeaders() + response.getBody());
         List<Element> formElements = src.getAllElements(HTMLElementName.FORM);

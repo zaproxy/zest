@@ -11,7 +11,7 @@ public class ZestLoopStateRegex extends ZestLoopStateString {
         super();
     }
 
-    public ZestLoopStateRegex(ZestLoopTokenRegexSet set) throws ZestClientFailException {
+    public ZestLoopStateRegex(ZestLoopTokenRegexSet set) {
         super(set.getConvertedSet());
     }
 }

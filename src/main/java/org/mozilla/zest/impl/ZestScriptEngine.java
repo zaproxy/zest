@@ -27,7 +27,7 @@ public class ZestScriptEngine extends AbstractScriptEngine {
 
     @Override
     public Object eval(String script, ScriptContext context) throws ScriptException {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
 
         if (context != null) {
             this.runner.setOutputWriter(context.getWriter());
@@ -50,7 +50,7 @@ public class ZestScriptEngine extends AbstractScriptEngine {
 
     @Override
     public Object eval(Reader reader, ScriptContext context) throws ScriptException {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
 
         if (context != null) {
             this.runner.setOutputWriter(context.getWriter());

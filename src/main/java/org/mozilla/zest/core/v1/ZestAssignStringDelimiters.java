@@ -31,7 +31,7 @@ public class ZestAssignStringDelimiters extends ZestAssignment {
 
     /** The set of valid locations. */
     private static final transient Set<String> LOCATIONS =
-            new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
+            new HashSet<>(Arrays.asList(LOC_HEAD, LOC_BODY));
 
     /** Instantiates a new zest action set variable. */
     public ZestAssignStringDelimiters() {

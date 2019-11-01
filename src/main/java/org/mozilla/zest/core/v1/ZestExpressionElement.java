@@ -18,7 +18,7 @@ public interface ZestExpressionElement {
      *
      * @return true if it is a Simple Conditional false otherwise
      */
-    public boolean isLeaf();
+    boolean isLeaf();
 
     /**
      * the boolean value result of the expression without inverse flag.
@@ -26,7 +26,7 @@ public interface ZestExpressionElement {
      * @param runtime the runtime
      * @return the boolean value of the expression without inverse flag
      */
-    public boolean isTrue(ZestRuntime runtime);
+    boolean isTrue(ZestRuntime runtime);
 
     /**
      * the boolean value of the whole Conditional Element.
@@ -34,21 +34,21 @@ public interface ZestExpressionElement {
      * @param runtime the runtime
      * @return the boolean value of the whole Conditional Element
      */
-    public boolean evaluate(ZestRuntime runtime);
+    boolean evaluate(ZestRuntime runtime);
 
     /**
      * return true if the Conditional Element has a NOT clause.
      *
      * @return true if the Conditional Element has a NOT clause
      */
-    public boolean isInverse();
+    boolean isInverse();
 
     /**
      * sets if the Conditional Element has a NOT clause.
      *
      * @param not true if this Conditional Element has to contain the NOT clause
      */
-    public void setInverse(boolean not);
+    void setInverse(boolean not);
 
     /**
      * Deep copy.
@@ -56,5 +56,5 @@ public interface ZestExpressionElement {
      * @return a copy of the ZestConditionalElement
      * @see ZestElement
      */
-    public ZestExpressionElement deepCopy();
+    ZestExpressionElement deepCopy();
 }

@@ -49,7 +49,7 @@ public class ZestLoopRegex extends ZestLoop<String> {
     }
 
     @Override
-    public ZestLoopState<String> getCurrentState() {
+    public ZestLoopStateRegex getCurrentState() {
         return (ZestLoopStateRegex) super.getCurrentState();
     }
 

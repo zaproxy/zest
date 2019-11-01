@@ -55,7 +55,7 @@ public class ZestClientWindowClose extends ZestClient {
     }
 
     @Override
-    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+    public String invoke(ZestRuntime runtime) {
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 
         if (wd == null) {

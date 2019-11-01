@@ -39,8 +39,7 @@ public class ZestActionPrint extends ZestAction {
     }
 
     @Override
-    public String invoke(ZestResponse response, ZestRuntime runtime)
-            throws ZestActionFailException {
+    public String invoke(ZestResponse response, ZestRuntime runtime) {
         String str = runtime.replaceVariablesInString(this.message, false);
         runtime.output(str);
         return str;

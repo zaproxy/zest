@@ -291,7 +291,7 @@ public class ZestClientScreenshotUnitTest {
     }
 
     @Test
-    public void shouldDeepCopy() throws Exception {
+    public void shouldDeepCopy() {
         // Given
         ZestClientScreenshot original =
                 new ZestClientScreenshot("windowHandle", "/path", "variableName");

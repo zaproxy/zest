@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 public class ZestExpressionURL extends ZestExpression {
 
     /** The include regexes. */
-    private List<String> includeRegexes = new ArrayList<String>();
+    private List<String> includeRegexes = new ArrayList<>();
 
     /** The exclude regexes. */
-    private List<String> excludeRegexes = new ArrayList<String>();
+    private List<String> excludeRegexes = new ArrayList<>();
 
     /** The include patterns. */
     private transient List<Pattern> includePatterns = null;
@@ -90,8 +90,8 @@ public class ZestExpressionURL extends ZestExpression {
     }
 
     private void initPatterns() {
-        includePatterns = new ArrayList<Pattern>();
-        excludePatterns = new ArrayList<Pattern>();
+        includePatterns = new ArrayList<>();
+        excludePatterns = new ArrayList<>();
 
         if (includeRegexes != null) {
             for (String regex : includeRegexes) {

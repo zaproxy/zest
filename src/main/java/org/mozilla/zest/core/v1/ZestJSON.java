@@ -72,8 +72,7 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
 
     @Override
     public ZestElement deserialize(
-            JsonElement element, Type rawType, JsonDeserializationContext arg2)
-            throws JsonParseException {
+            JsonElement element, Type rawType, JsonDeserializationContext arg2) {
         if (element instanceof JsonObject) {
             String elementType = ((JsonObject) element).get("elementType").getAsString();
 

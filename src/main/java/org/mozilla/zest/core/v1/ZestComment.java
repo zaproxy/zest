@@ -3,8 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.net.MalformedURLException;
-
 /** Exits the script returning a string. */
 public class ZestComment extends ZestStatement {
 
@@ -21,7 +19,7 @@ public class ZestComment extends ZestStatement {
     }
 
     @Override
-    void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {}
+    void setPrefix(String oldPrefix, String newPrefix) {}
 
     @Override
     public ZestComment deepCopy() {

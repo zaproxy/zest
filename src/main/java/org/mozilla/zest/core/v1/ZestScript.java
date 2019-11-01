@@ -89,10 +89,10 @@ public class ZestScript extends ZestStatement implements ZestContainer {
     private ZestVariables parameters = new ZestVariables();
 
     /** The statements. */
-    private List<ZestStatement> statements = new ArrayList<ZestStatement>();
+    private List<ZestStatement> statements = new ArrayList<>();
 
     /** The authentication. */
-    private List<ZestAuthentication> authentication = new ArrayList<ZestAuthentication>();
+    private List<ZestAuthentication> authentication = new ArrayList<>();
 
     /** Instantiates a new zest script. */
     public ZestScript() {
@@ -503,7 +503,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 
     @Override
     public Set<String> getVariableNames() {
-        Set<String> tokens = new HashSet<String>();
+        Set<String> tokens = new HashSet<>();
 
         // Add the 'standard' ones
         tokens.add(ZestVariables.REQUEST_URL);
@@ -542,7 +542,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
      * @return the window handles.
      */
     public Set<String> getClientWindowHandles() {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         ZestStatement next = this.getNext();
         while (next != null) {
             if (next instanceof ZestClientLaunch) {

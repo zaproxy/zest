@@ -21,7 +21,7 @@ public class ZestVariablesUnitTest {
     private static final String VAR_VALUE = "value";
 
     @Test
-    public void shouldHaveTokenStartByDefault() throws Exception {
+    public void shouldHaveTokenStartByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -31,7 +31,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldHaveTokenEndByDefault() throws Exception {
+    public void shouldHaveTokenEndByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -41,7 +41,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldHaveNoVariablesByDefault() throws Exception {
+    public void shouldHaveNoVariablesByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -51,7 +51,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetTokenStart() throws Exception {
+    public void shouldSetTokenStart() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenStart = "\\|";
@@ -62,7 +62,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetTokenEnd() throws Exception {
+    public void shouldSetTokenEnd() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenEnd = "|//";
@@ -73,7 +73,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithNameAsValue() throws Exception {
+    public void shouldAddVarWithNameAsValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -85,7 +85,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithValue() throws Exception {
+    public void shouldAddVarWithValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -97,7 +97,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithNameAsValueIfValueIsNull() throws Exception {
+    public void shouldAddVarWithNameAsValueIfValueIsNull() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
@@ -110,7 +110,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldNotAddVarIfAlreadyAdded() throws Exception {
+    public void shouldNotAddVarIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
@@ -123,7 +123,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldNotAddVarWithValueIfAlreadyAdded() throws Exception {
+    public void shouldNotAddVarWithValueIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
@@ -136,7 +136,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldGetValueOfVariableAdded() throws Exception {
+    public void shouldGetValueOfVariableAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME, VAR_VALUE);
@@ -147,7 +147,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldGetNullValueIfVariableWasNotAdded() throws Exception {
+    public void shouldGetNullValueIfVariableWasNotAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -157,7 +157,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariables() throws Exception {
+    public void shouldSetVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -183,7 +183,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariable() throws Exception {
+    public void shouldSetVariable() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -195,7 +195,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariableWithNullName() throws Exception {
+    public void shouldSetVariableWithNullName() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String name = null;
@@ -208,7 +208,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariableWithNullValue() throws Exception {
+    public void shouldSetVariableWithNullValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
@@ -221,7 +221,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVariables() throws Exception {
+    public void shouldAddVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -249,7 +249,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReturnNullStringIfReplacingVariablesInNullString() throws Exception {
+    public void shouldReturnNullStringIfReplacingVariablesInNullString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -259,7 +259,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "0");
@@ -279,7 +279,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "-1 < " + token(zestVars, "Var2"));
@@ -293,7 +293,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInVariablesInString() throws Exception {
+    public void shouldReplaceLoopingVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
@@ -309,7 +309,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceEncodedVariablesInString() throws Exception {
+    public void shouldReplaceEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "0");
@@ -330,7 +330,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInEncodedVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "-1 < " + token(zestVars, "Var&"));
@@ -346,7 +346,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInEncodedVariablesInString() throws Exception {
+    public void shouldReplaceLoopingVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));

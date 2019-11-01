@@ -17,10 +17,10 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
     private ZestExpressionElement rootExpression = null;
 
     /** The if statements. */
-    private List<ZestStatement> ifStatements = new ArrayList<ZestStatement>();
+    private List<ZestStatement> ifStatements = new ArrayList<>();
 
     /** The else statements. */
-    private List<ZestStatement> elseStatements = new ArrayList<ZestStatement>();
+    private List<ZestStatement> elseStatements = new ArrayList<>();
 
     /** Instantiates a new zest conditional. */
     public ZestConditional() {
@@ -128,7 +128,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
      * @return the if statement at index
      * @throws IndexOutOfBoundsException the index out of bounds exception
      */
-    public ZestStatement getIfStatement(int index) throws IndexOutOfBoundsException {
+    public ZestStatement getIfStatement(int index) {
         return this.ifStatements.get(index);
     }
 
@@ -152,7 +152,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
 
     @Override
     public List<ZestStatement> getChildren() {
-        List<ZestStatement> children = new ArrayList<ZestStatement>();
+        List<ZestStatement> children = new ArrayList<>();
         children.addAll(this.getIfStatements());
         children.addAll(this.getElseStatements());
         return Collections.unmodifiableList(children);
@@ -225,7 +225,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
      * @return the else statement at the given index
      * @throws IndexOutOfBoundsException the index out of bounds exception
      */
-    public ZestStatement getElseStatement(int index) throws IndexOutOfBoundsException {
+    public ZestStatement getElseStatement(int index) {
         return this.elseStatements.get(index);
     }
 
@@ -276,7 +276,7 @@ public class ZestConditional extends ZestStatement implements ZestContainer {
 
     @Override
     public Set<String> getVariableNames() {
-        Set<String> tokens = new HashSet<String>();
+        Set<String> tokens = new HashSet<>();
 
         for (ZestStatement stmt : this.ifStatements) {
             if (stmt instanceof ZestContainer) {

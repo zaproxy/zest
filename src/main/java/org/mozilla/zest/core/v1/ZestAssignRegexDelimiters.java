@@ -39,7 +39,7 @@ public class ZestAssignRegexDelimiters extends ZestAssignment {
 
     /** The Constant LOCATIONS. */
     private static final transient Set<String> LOCATIONS =
-            new HashSet<String>(Arrays.asList(new String[] {LOC_HEAD, LOC_BODY}));
+            new HashSet<>(Arrays.asList(LOC_HEAD, LOC_BODY));
 
     /** Instantiates a new zest action set token. */
     public ZestAssignRegexDelimiters() {

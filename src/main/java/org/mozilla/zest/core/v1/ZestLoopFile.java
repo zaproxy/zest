@@ -19,7 +19,7 @@ public class ZestLoopFile extends ZestLoop<String> {
      * @throws FileNotFoundException the file not found exception
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public ZestLoopFile() throws FileNotFoundException, IOException {
+    public ZestLoopFile() throws IOException {
         this(File.createTempFile("emptyfile", ".txt"));
     }
 
@@ -27,10 +27,9 @@ public class ZestLoopFile extends ZestLoop<String> {
      * Instantiates a new zest loop file.
      *
      * @param index the index of the statement
-     * @throws IOException
-     * @throws FileNotFoundException
+     * @throws IOException if an I/O error occurred.
      */
-    private ZestLoopFile(int index) throws FileNotFoundException, IOException {
+    private ZestLoopFile(int index) throws IOException {
         super(index);
         this.set =
                 new ZestLoopTokenFileSet(

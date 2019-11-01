@@ -46,14 +46,12 @@ public class ZestExpressionAnd extends ZestStructuredExpression {
         if (getChildrenCondition().isEmpty()) {
             return false;
         }
-        boolean toReturn = true;
         for (ZestExpressionElement con : getChildrenCondition()) {
-            toReturn = toReturn && con.evaluate(runtime); // compute AND for each child
-            if (!toReturn) {
-                break; // lazy evaluation
+            if (!con.evaluate(runtime)) {
+                return false; // lazy evaluation
             }
         }
-        return toReturn;
+        return true;
     }
 
     @Override
