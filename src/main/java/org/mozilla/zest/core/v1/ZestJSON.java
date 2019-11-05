@@ -18,11 +18,12 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Date;
 
 // TODO: Auto-generated Javadoc
 /** The Class ZestJSON. */
-public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<ZestElement> {
+public class ZestJSON {
 
     /** The gson. */
     private static Gson gson = null;
@@ -58,19 +59,20 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
      */
     private static Gson getGson() {
         if (gson == null) {
+            GsonBuilder builder = newDefaultGsonBuilder();
             // Need to add all of the abstract classes
-            gson =
-                    newDefaultGsonBuilder()
-                            .registerTypeAdapter(ZestAction.class, new ZestJSON())
-                            .registerTypeAdapter(ZestAssignment.class, new ZestJSON())
-                            .registerTypeAdapter(ZestAuthentication.class, new ZestJSON())
-                            .registerTypeAdapter(ZestElement.class, new ZestJSON())
-                            .registerTypeAdapter(ZestStatement.class, new ZestJSON())
-                            .registerTypeAdapter(ZestExpressionElement.class, new ZestJSON())
-                            .registerTypeAdapter(ZestLoop.class, new ZestJSON())
-                            .registerTypeAdapter(ZestLoopState.class, new ZestJSON())
-                            .registerTypeAdapter(ZestLoopTokenSet.class, new ZestJSON())
-                            .create();
+            Arrays.asList(
+                            ZestAction.class,
+                            ZestAssignment.class,
+                            ZestAuthentication.class,
+                            ZestElement.class,
+                            ZestStatement.class,
+                            ZestExpressionElement.class,
+                            ZestLoop.class,
+                            ZestLoopState.class,
+                            ZestLoopTokenSet.class)
+                    .forEach(type -> builder.registerTypeAdapter(type, ZestTypeAdapter.INSTANCE));
+            gson = builder.create();
         }
         return gson;
     }
@@ -81,33 +83,37 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
                 .setPrettyPrinting();
     }
 
-    @Override
-    public ZestElement deserialize(
-            JsonElement element, Type rawType, JsonDeserializationContext arg2) {
-        if (element instanceof JsonObject) {
-            String elementType = ((JsonObject) element).get("elementType").getAsString();
+    private static class ZestTypeAdapter
+            implements JsonDeserializer<ZestElement>, JsonSerializer<ZestElement> {
 
-            if (elementType.startsWith("Zest")) {
-                try {
-                    // Class<?> c =
-                    // Class.forName(this.getClass().getPackage().getName()"org.mozilla.zest.core.v1." + elementType);
-                    Class<?> c =
-                            Class.forName(
-                                    this.getClass().getPackage().getName() + "." + elementType);
-                    return (ZestElement) getGson().fromJson(element, c);
+        static final ZestTypeAdapter INSTANCE = new ZestTypeAdapter();
 
-                } catch (ClassNotFoundException e) {
-                    throw new JsonParseException(e);
+        private static final String ZEST_PACKAGE = ZestTypeAdapter.class.getPackage().getName();
+
+        @Override
+        public ZestElement deserialize(
+                JsonElement element, Type rawType, JsonDeserializationContext arg2) {
+            if (element instanceof JsonObject) {
+                String elementType = ((JsonObject) element).get("elementType").getAsString();
+
+                if (elementType.startsWith("Zest")) {
+                    try {
+                        Class<?> c = Class.forName(ZEST_PACKAGE + "." + elementType);
+                        return (ZestElement) getGson().fromJson(element, c);
+
+                    } catch (ClassNotFoundException e) {
+                        throw new JsonParseException(e);
+                    }
                 }
             }
+            return null;
         }
-        return null;
-    }
 
-    @Override
-    public JsonElement serialize(
-            ZestElement element, Type rawType, JsonSerializationContext context) {
-        return newDefaultGsonBuilder().create().toJsonTree(element);
+        @Override
+        public JsonElement serialize(
+                ZestElement element, Type rawType, JsonSerializationContext context) {
+            return newDefaultGsonBuilder().create().toJsonTree(element);
+        }
     }
 
     private static class DateTypeAdapter implements JsonDeserializer<Date>, JsonSerializer<Date> {
