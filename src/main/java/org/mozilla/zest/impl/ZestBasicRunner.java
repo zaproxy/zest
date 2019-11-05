@@ -479,6 +479,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     }
 
     @Override
+    public Map<String, String> getVariables() {
+        return this.variables.getVariablesMap();
+    }
+
+    @Override
     public void setVariable(String name, String value) {
         if (this.debug) {
             String val = value;

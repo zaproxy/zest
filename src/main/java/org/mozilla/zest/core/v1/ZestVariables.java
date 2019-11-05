@@ -6,6 +6,7 @@ package org.mozilla.zest.core.v1;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +129,16 @@ public class ZestVariables extends ZestElement {
             list.add(new String[] {entry.getKey(), entry.getValue()});
         }
         return list;
+    }
+
+    /**
+     * Gets the variables as a map, name to value.
+     *
+     * @return an unmodifiable map containing the variables.
+     * @since 0.14.0
+     */
+    public Map<String, String> getVariablesMap() {
+        return Collections.unmodifiableMap(tokens);
     }
 
     /**
