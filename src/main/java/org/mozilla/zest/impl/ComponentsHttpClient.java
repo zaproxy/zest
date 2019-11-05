@@ -69,6 +69,7 @@ class ComponentsHttpClient implements ZestHttpClient {
         this.httpContext.setCookieStore(new BasicCookieStore());
         this.defaultRequestConfig =
                 RequestConfig.custom()
+                        .setCircularRedirectsAllowed(true)
                         .setConnectTimeout(timeoutInSeconds * 1_000)
                         .setConnectionRequestTimeout(timeoutInSeconds * 1_000)
                         // To improve compatibility with more webapps use STANDARD,
