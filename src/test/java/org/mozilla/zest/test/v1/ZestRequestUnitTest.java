@@ -87,10 +87,10 @@ public class ZestRequestUnitTest {
         assertEquals("http://www.example.com/app/DEFG", req2.getUrl().toString());
         assertEquals("Set-Cookie: test=GHI", req2.getHeaders());
         assertEquals("test=JKL&user=12JKL34", req2.getData());
-        assertEquals("ABC.JKL", req2.getZestCookies().get(0).getDomain());
-        assertEquals("12JKL34", req2.getZestCookies().get(0).getName());
-        assertEquals("56GHI78", req2.getZestCookies().get(0).getValue());
-        assertEquals("/DEFGA/GHIB", req2.getZestCookies().get(0).getPath());
+        assertEquals("ABC.JKL", req2.getCookies().get(0).getDomain());
+        assertEquals("12JKL34", req2.getCookies().get(0).getName());
+        assertEquals("56GHI78", req2.getCookies().get(0).getValue());
+        assertEquals("/DEFGA/GHIB", req2.getCookies().get(0).getPath());
     }
 
     /**
@@ -121,8 +121,8 @@ public class ZestRequestUnitTest {
         assertTrue(req.getData().equals(req2.getData()));
         assertTrue(req.getTimestamp() == req2.getTimestamp());
 
-        ZestCookie cookie = req.getZestCookies().get(0);
-        ZestCookie cookie2 = req2.getZestCookies().get(0);
+        ZestCookie cookie = req.getCookies().get(0);
+        ZestCookie cookie2 = req2.getCookies().get(0);
 
         assertTrue("cookies should not be reference equals", cookie != cookie2);
         assertTrue(cookie.getDomain().equals(cookie2.getDomain()));
@@ -168,7 +168,7 @@ public class ZestRequestUnitTest {
         assertThat(deserialisedRequest.getData()).isEqualTo("a=b&c=d");
         assertThat(deserialisedRequest.isFollowRedirects()).isEqualTo(false);
         assertThat(deserialisedRequest.getTimestamp()).isEqualTo(1558960123456L);
-        assertThat(deserialisedRequest.getZestCookies())
+        assertThat(deserialisedRequest.getCookies())
                 .contains(
                         new ZestCookie("example.com", "name", "value", "/path", new Date(0L), true),
                         new ZestCookie(

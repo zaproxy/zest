@@ -367,7 +367,7 @@ public class ZestRequest extends ZestStatement {
         this.cookies.add(cookie);
     }
 
-    public List<ZestCookie> getZestCookies() {
+    public List<ZestCookie> getCookies() {
         return cookies;
     }
 }
