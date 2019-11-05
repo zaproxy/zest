@@ -19,6 +19,39 @@ import org.mozilla.zest.core.v1.ZestVariables;
 /** */
 public class ZestRequestUnitTest {
 
+    private static final String REQUEST_SERIALISATION =
+            "{\n"
+                    + "  \"url\": \"http://example.com/\",\n"
+                    + "  \"urlToken\": \"http://{{host}}/\",\n"
+                    + "  \"data\": \"a\\u003db\\u0026c\\u003dd\",\n"
+                    + "  \"method\": \"POST\",\n"
+                    + "  \"headers\": \"Header-A: value-a\\r\\nHeader-B: value-b\",\n"
+                    + "  \"assertions\": [],\n"
+                    + "  \"followRedirects\": false,\n"
+                    + "  \"timestamp\": 1558960123456,\n"
+                    + "  \"cookies\": [\n"
+                    + "    {\n"
+                    + "      \"domain\": \"example.com\",\n"
+                    + "      \"name\": \"name\",\n"
+                    + "      \"value\": \"value\",\n"
+                    + "      \"path\": \"/path\",\n"
+                    + "      \"expiry\": \"1970-01-01T00:00:00Z\",\n"
+                    + "      \"secure\": true\n"
+                    + "    },\n"
+                    + "    {\n"
+                    + "      \"domain\": \"example.com\",\n"
+                    + "      \"name\": \"id\",\n"
+                    + "      \"value\": \"valueId\",\n"
+                    + "      \"path\": \"/path/id\",\n"
+                    + "      \"expiry\": \"2019-05-27T12:28:43Z\",\n"
+                    + "      \"secure\": false\n"
+                    + "    }\n"
+                    + "  ],\n"
+                    + "  \"index\": 0,\n"
+                    + "  \"enabled\": true,\n"
+                    + "  \"elementType\": \"ZestRequest\"\n"
+                    + "}";
+
     /**
      * Method testTokenReplacement.
      *
@@ -101,34 +134,49 @@ public class ZestRequestUnitTest {
     }
 
     @Test
-    public void shouldSerialiseAndDeserialise() throws Exception {
+    public void shouldSerialise() throws Exception {
         // Given
         ZestRequest request = new ZestRequest();
-        URL url = new URL("http://example.com/");
-        request.setUrl(url);
-        String urlToken = "http://{{host}}/";
-        request.setUrlToken(urlToken);
-        String method = "POST";
-        request.setMethod(method);
-        String headers = "Header-A: value-a\r\nHeader-B: value-b";
-        request.setHeaders(headers);
-        String data = "a=b&c=d";
-        request.setData(data);
-        boolean followRedirects = false;
-        request.setFollowRedirects(followRedirects);
-        long timestamp = Instant.now().toEpochMilli();
-        request.setTimestamp(timestamp);
+        request.setUrl(new URL("http://example.com/"));
+        request.setUrlToken("http://{{host}}/");
+        request.setMethod("POST");
+        request.setHeaders("Header-A: value-a\r\nHeader-B: value-b");
+        request.setData("a=b&c=d");
+        request.setFollowRedirects(false);
+        request.setTimestamp(1558960123456L);
+        request.addCookie("example.com", "name", "value", "/path", new Date(0L), true);
+        request.addCookie(
+                "example.com", "id", "valueId", "/path/id", new Date(1558960123000L), false);
         // When
         String serialisation = ZestJSON.toString(request);
+        // Then
+        assertThat(serialisation).isEqualTo(REQUEST_SERIALISATION);
+    }
+
+    @Test
+    public void shouldDeserialise() throws Exception {
+        // Given
+        String serialisation = REQUEST_SERIALISATION;
+        // When
         ZestRequest deserialisedRequest = (ZestRequest) ZestJSON.fromString(serialisation);
         // Then
-        assertThat(deserialisedRequest).isNotSameAs(request);
-        assertThat(deserialisedRequest.getUrl()).isEqualTo(url);
-        assertThat(deserialisedRequest.getUrlToken()).isEqualTo(urlToken);
-        assertThat(deserialisedRequest.getMethod()).isEqualTo(method);
-        assertThat(deserialisedRequest.getHeaders()).isEqualTo(headers);
-        assertThat(deserialisedRequest.getData()).isEqualTo(data);
-        assertThat(deserialisedRequest.isFollowRedirects()).isEqualTo(followRedirects);
-        assertThat(deserialisedRequest.getTimestamp()).isEqualTo(timestamp);
+        assertThat(deserialisedRequest.getUrl()).isEqualTo(new URL("http://example.com/"));
+        assertThat(deserialisedRequest.getUrlToken()).isEqualTo("http://{{host}}/");
+        assertThat(deserialisedRequest.getMethod()).isEqualTo("POST");
+        assertThat(deserialisedRequest.getHeaders())
+                .isEqualTo("Header-A: value-a\r\nHeader-B: value-b");
+        assertThat(deserialisedRequest.getData()).isEqualTo("a=b&c=d");
+        assertThat(deserialisedRequest.isFollowRedirects()).isEqualTo(false);
+        assertThat(deserialisedRequest.getTimestamp()).isEqualTo(1558960123456L);
+        assertThat(deserialisedRequest.getZestCookies())
+                .contains(
+                        new ZestCookie("example.com", "name", "value", "/path", new Date(0L), true),
+                        new ZestCookie(
+                                "example.com",
+                                "id",
+                                "valueId",
+                                "/path/id",
+                                new Date(1558960123000L),
+                                false));
     }
 }

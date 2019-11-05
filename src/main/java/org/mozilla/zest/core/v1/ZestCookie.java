@@ -4,6 +4,7 @@
 package org.mozilla.zest.core.v1;
 
 import java.util.Date;
+import java.util.Objects;
 
 /** @since 0.14.0 */
 public class ZestCookie {
@@ -71,5 +72,30 @@ public class ZestCookie {
 
     public void setSecure(boolean secure) {
         this.secure = secure;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(domain, expiry, name, path, secure, value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ZestCookie other = (ZestCookie) obj;
+        return secure == other.secure
+                && Objects.equals(domain, other.domain)
+                && Objects.equals(expiry, other.expiry)
+                && Objects.equals(name, other.name)
+                && Objects.equals(path, other.path)
+                && Objects.equals(value, other.value);
     }
 }
