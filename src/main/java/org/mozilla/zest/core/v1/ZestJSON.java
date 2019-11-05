@@ -10,9 +10,15 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 // TODO: Auto-generated Javadoc
 /** The Class ZestJSON. */
@@ -54,7 +60,7 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
         if (gson == null) {
             // Need to add all of the abstract classes
             gson =
-                    new GsonBuilder()
+                    newDefaultGsonBuilder()
                             .registerTypeAdapter(ZestAction.class, new ZestJSON())
                             .registerTypeAdapter(ZestAssignment.class, new ZestJSON())
                             .registerTypeAdapter(ZestAuthentication.class, new ZestJSON())
@@ -64,10 +70,15 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
                             .registerTypeAdapter(ZestLoop.class, new ZestJSON())
                             .registerTypeAdapter(ZestLoopState.class, new ZestJSON())
                             .registerTypeAdapter(ZestLoopTokenSet.class, new ZestJSON())
-                            .setPrettyPrinting()
                             .create();
         }
         return gson;
+    }
+
+    private static GsonBuilder newDefaultGsonBuilder() {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, DateTypeAdapter.INSTANCE)
+                .setPrettyPrinting();
     }
 
     @Override
@@ -96,6 +107,29 @@ public class ZestJSON implements JsonDeserializer<ZestElement>, JsonSerializer<Z
     @Override
     public JsonElement serialize(
             ZestElement element, Type rawType, JsonSerializationContext context) {
-        return new GsonBuilder().setPrettyPrinting().create().toJsonTree(element);
+        return newDefaultGsonBuilder().create().toJsonTree(element);
+    }
+
+    private static class DateTypeAdapter implements JsonDeserializer<Date>, JsonSerializer<Date> {
+
+        static final DateTypeAdapter INSTANCE = new DateTypeAdapter();
+
+        private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_DATE_TIME;
+
+        @Override
+        public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(FORMAT.format(src.toInstant().atOffset(ZoneOffset.UTC)));
+        }
+
+        @Override
+        public Date deserialize(
+                JsonElement json, Type typeOfT, JsonDeserializationContext context) {
+            String value = json.getAsJsonPrimitive().getAsString();
+            try {
+                return new Date(FORMAT.parse(value, Instant::from).toEpochMilli());
+            } catch (DateTimeParseException e) {
+                throw new JsonParseException("Failed to parse the date: " + value, e);
+            }
+        }
     }
 }
