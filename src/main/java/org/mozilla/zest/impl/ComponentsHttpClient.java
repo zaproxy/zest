@@ -176,7 +176,7 @@ class ComponentsHttpClient implements ZestHttpClient {
         method.setConfig(defaultRequestConfig);
         setHeaders(method, req.getHeaders());
 
-        for (ZestCookie zestCookie : req.getZestCookies()) {
+        for (ZestCookie zestCookie : req.getCookies()) {
             BasicClientCookie cookie =
                     new BasicClientCookie(zestCookie.getName(), zestCookie.getValue());
             cookie.setDomain(zestCookie.getDomain());
