@@ -1,0 +1,21 @@
+* text=auto eol=lf
+
+*.java text
+*.properties text
+*.js text
+*.zst text
+*.zest text
+*.txt text
+*.md text
+*.ucls text
+*.gradle text
+
+javax.script.ScriptEngineFactory text
+
+*.bat eol=crlf
+*.sh text
+gradlew text
+
+*.jar binary
+*.png binary
+*.jpg binary

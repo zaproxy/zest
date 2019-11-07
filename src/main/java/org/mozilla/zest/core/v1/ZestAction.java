@@ -3,48 +3,41 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.net.MalformedURLException;
-
-
 // TODO: Auto-generated Javadoc
-/**
- * The Class ZestAction.
- */
+/** The Class ZestAction. */
 public abstract class ZestAction extends ZestStatement {
 
-	/**
-	 * Instantiates a new zest action.
-	 */
-	public ZestAction() {
-		super();
-	}
+    /** Instantiates a new zest action. */
+    public ZestAction() {
+        super();
+    }
 
-	/**
-	 * Instantiates a new zest action.
-	 *
-	 * @param index the index
-	 */
-	public ZestAction(int index) {
-		super(index);
-	}
+    /**
+     * Instantiates a new zest action.
+     *
+     * @param index the index
+     */
+    public ZestAction(int index) {
+        super(index);
+    }
 
-	@Override
-	public boolean isSameSubclass(ZestElement ze) {
-		return ze instanceof ZestAction;
-	}
-	
-	@Override
-	void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
-		// Ignore
-	}
+    @Override
+    public boolean isSameSubclass(ZestElement ze) {
+        return ze instanceof ZestAction;
+    }
 
-	/**
-	 * Invoke.
-	 *
-	 * @param response the response
-	 * @return the string
-	 * @throws ZestActionFailException the zest action fail exception
-	 */
-	public abstract String invoke(ZestResponse response, ZestRuntime runtime) throws ZestActionFailException;
+    @Override
+    void setPrefix(String oldPrefix, String newPrefix) {
+        // Ignore
+    }
 
+    /**
+     * Invoke.
+     *
+     * @param response the response
+     * @return the string
+     * @throws ZestActionFailException the zest action fail exception
+     */
+    public abstract String invoke(ZestResponse response, ZestRuntime runtime)
+            throws ZestActionFailException;
 }

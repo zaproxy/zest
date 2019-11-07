@@ -8,9 +8,8 @@ import org.mozilla.zest.core.v1.ZestExpressionRegex;
 
 public class ZestConditionalRegexComplexUnitTest {
 
-	@Test
-	public void testEvaluateAlone() {
-		new ZestExpressionRegex();
-	}
-
+    @Test
+    public void testEvaluateAlone() {
+        new ZestExpressionRegex();
+    }
 }

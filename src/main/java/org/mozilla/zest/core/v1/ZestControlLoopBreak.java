@@ -3,29 +3,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.core.v1;
 
-import java.net.MalformedURLException;
 // TODO: Auto-generated Javadoc
 
-/**
- * empty class: represents a BREAK inside the loop.
- */
+/** empty class: represents a BREAK inside the loop. */
 public class ZestControlLoopBreak extends ZestControl {
 
-	@Override
-	void setPrefix(String oldPrefix, String newPrefix)
-			throws MalformedURLException {		
-	}
+    @Override
+    void setPrefix(String oldPrefix, String newPrefix) {}
 
-	@Override
-	public ZestControlLoopBreak deepCopy() {
-		ZestControlLoopBreak copy = new ZestControlLoopBreak();
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    @Override
+    public ZestControlLoopBreak deepCopy() {
+        ZestControlLoopBreak copy = new ZestControlLoopBreak();
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	@Override
-	public boolean isPassive() {
-		return true;
-	}
-	
+    @Override
+    public boolean isPassive() {
+        return true;
+    }
 }

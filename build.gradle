@@ -1,39 +1,46 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.4.1"
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'application'
+    id 'jacoco'
+    id "com.diffplug.gradle.spotless" version "3.23.0"
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.0.1'
-}
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'application'
-apply plugin: 'jacoco'
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
+
+apply from: "$rootDir/gradle/travis-ci.gradle.kts"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group 'org.mozilla'
-version '0.13'
+version '0.14.0'
 
 mainClassName = 'org.mozilla.zest.impl.CmdLine'
 
+sourceSets.test.resources.srcDirs 'examples'
+
 dependencies {
-    compile ('commons-httpclient:commons-httpclient:3.1',
-             'com.google.code.gson:gson:2.2.2',
+    implementation (
+             'org.apache.httpcomponents:httpclient:4.5.8',
+             'com.google.code.gson:gson:2.8.5',
              'com.opera:operadriver:1.5',
-             'com.github.detro.ghostdriver:phantomjsdriver:1.1.0',
-             'org.seleniumhq.selenium:selenium-server:3.4.0',
+             'com.codeborne:phantomjsdriver:1.4.3',
+             'org.seleniumhq.selenium:selenium-server:3.141.59',
+             'org.seleniumhq.selenium:htmlunit-driver:2.36.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    testCompile('junit:junit:4.11')
+    implementation('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
+        exclude group: 'org.seleniumhq.selenium'
+    }
+
+    testImplementation('junit:junit:4.11',
+                'com.github.tomakehurst:wiremock-standalone:2.14.0',
+                'org.mockito:mockito-core:2.19.1')
+    testImplementation("org.assertj:assertj-core:3.11.0")
 }
 
 jar {
@@ -57,8 +64,9 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options {
-        links = [ 'http://docs.oracle.com/javase/7/docs/api/' ]
+        links = [ 'https://docs.oracle.com/javase/8/docs/api/' ]
         encoding = 'UTF-8'
+        source = sourceCompatibility
     }
     if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
@@ -68,102 +76,91 @@ tasks.withType(Javadoc) {
 spotless {
     java {
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
+
+        googleJavaFormat().style('AOSP')
     }
-}
-
-ext.pomData = pom {
-    project {
-        name 'Mozilla Zest'
-        packaging 'jar'
-        description 'Zest is an experimental scripting language developed by the Mozilla security team designed to be used in web oriented security tools.'
-        url 'https://github.com/mozilla/zest'
-
-        organization {
-            name 'Mozilla Foundation'
-            url 'https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Zest'
-        }
-
-        mailingLists {
-            mailingList {
-                name 'Mozilla Zest'
-                post 'mozilla-zest@googlegroups.com'
-                archive 'https://groups.google.com/group/mozilla-zest'
-            }
-        }
-
-        scm {
-            url 'https://github.com/mozilla/zest'
-            connection 'scm:git:https://github.com/mozilla/zest.git'
-            developerConnection 'scm:git:https://github.com/mozilla/zest.git'
-        }
-
-        licenses {
-            license {
-                name 'Mozilla Public License Version 2.0'
-                url 'http://mozilla.org/MPL/2.0/'
-                distribution 'repo'
-            }
-        }
-
-        developers {
-            developer {
-                id 'psiinon'
-                name 'Simon Bennetts'
-                email 'sbennetts@mozilla.com'
-            }
-        }
-    }
-}
-
-task generatePom {
-    description 'Generates the POM file.'
-    pomData.writeTo("$buildDir/pom.xml")
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
     from javadoc
+    archiveClassifier.set("javadoc")
 }
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
-    classifier "sources"
+    archiveClassifier.set("sources")
 }
 
-artifacts { archives sourcesJar, javadocJar }
+publishing {
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+
+            if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+        }
+    }
+
+    publications {
+        zest(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'Mozilla Zest'
+                packaging = 'jar'
+                description = 'Zest is an experimental scripting language developed by the Mozilla security team designed to be used in web oriented security tools.'
+                url = 'https://github.com/mozilla/zest'
+
+                organization {
+                    name = 'Mozilla Foundation'
+                    url = 'https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Zest'
+                }
+
+                mailingLists {
+                    mailingList {
+                        name = 'Mozilla Zest'
+                        post = 'mozilla-zest@googlegroups.com'
+                        archive = 'https://groups.google.com/group/mozilla-zest'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/mozilla/zest'
+                    connection = 'scm:git:https://github.com/mozilla/zest.git'
+                    developerConnection = 'scm:git:https://github.com/mozilla/zest.git'
+                }
+
+                licenses {
+                    license {
+                        name = 'Mozilla Public License Version 2.0'
+                        url = 'http://mozilla.org/MPL/2.0/'
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'psiinon'
+                        name = 'Simon Bennetts'
+                        email = 'sbennetts@mozilla.com'
+                    }
+                }
+            }
+        }
+    }
+}
 
 signing {
     if (project.hasProperty('signing.keyId')) {
-        sign configurations.archives
-    }
-}
-
-install {
-    repositories.mavenInstaller {
-        pom = pomData
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment ->
-                signing.signPom(deployment)
-            }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-            }
-
-            pom = pomData
-        }
+        sign publishing.publications.zest
     }
 }

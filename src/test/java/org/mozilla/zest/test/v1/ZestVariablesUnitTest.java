@@ -11,20 +11,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestVariables;
 
-/**
- * Unit test for {@link ZestVariables}.
- */
+/** Unit test for {@link ZestVariables}. */
 public class ZestVariablesUnitTest {
 
     private static final String VAR_NAME = "name";
     private static final String VAR_VALUE = "value";
 
     @Test
-    public void shouldHaveTokenStartByDefault() throws Exception {
+    public void shouldHaveTokenStartByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -34,7 +31,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldHaveTokenEndByDefault() throws Exception {
+    public void shouldHaveTokenEndByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -44,7 +41,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldHaveNoVariablesByDefault() throws Exception {
+    public void shouldHaveNoVariablesByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -54,7 +51,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetTokenStart() throws Exception {
+    public void shouldSetTokenStart() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenStart = "\\|";
@@ -65,7 +62,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetTokenEnd() throws Exception {
+    public void shouldSetTokenEnd() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenEnd = "|//";
@@ -76,7 +73,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithNameAsValue() throws Exception {
+    public void shouldAddVarWithNameAsValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -88,7 +85,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithValue() throws Exception {
+    public void shouldAddVarWithValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -100,7 +97,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVarWithNameAsValueIfValueIsNull() throws Exception {
+    public void shouldAddVarWithNameAsValueIfValueIsNull() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
@@ -113,7 +110,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldNotAddVarIfAlreadyAdded() throws Exception {
+    public void shouldNotAddVarIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
@@ -126,7 +123,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldNotAddVarWithValueIfAlreadyAdded() throws Exception {
+    public void shouldNotAddVarWithValueIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
@@ -139,7 +136,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldGetValueOfVariableAdded() throws Exception {
+    public void shouldGetValueOfVariableAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME, VAR_VALUE);
@@ -150,7 +147,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldGetNullValueIfVariableWasNotAdded() throws Exception {
+    public void shouldGetNullValueIfVariableWasNotAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -160,7 +157,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariables() throws Exception {
+    public void shouldSetVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -186,7 +183,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariable() throws Exception {
+    public void shouldSetVariable() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -198,7 +195,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariableWithNullName() throws Exception {
+    public void shouldSetVariableWithNullName() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String name = null;
@@ -211,7 +208,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetVariableWithNullValue() throws Exception {
+    public void shouldSetVariableWithNullValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
@@ -224,7 +221,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldAddVariables() throws Exception {
+    public void shouldAddVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -252,7 +249,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReturnNullStringIfReplacingVariablesInNullString() throws Exception {
+    public void shouldReturnNullStringIfReplacingVariablesInNullString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -262,13 +259,19 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "0");
         zestVars.setVariable(null, "1");
         zestVars.setVariable("Var3", null);
-        String string = token(zestVars, "Var1") + " < " + token(zestVars, null) + " != [" + token(zestVars, "Var3") + "]";
+        String string =
+                token(zestVars, "Var1")
+                        + " < "
+                        + token(zestVars, null)
+                        + " != ["
+                        + token(zestVars, "Var3")
+                        + "]";
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
@@ -276,7 +279,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "-1 < " + token(zestVars, "Var2"));
@@ -290,7 +293,7 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInVariablesInString() throws Exception {
+    public void shouldReplaceLoopingVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
@@ -300,18 +303,25 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
-        assertTrue(("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2")).equals(finalString));
+        assertTrue(
+                ("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2"))
+                        .equals(finalString));
     }
 
     @Test
-    public void shouldReplaceEncodedVariablesInString() throws Exception {
+    public void shouldReplaceEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "0");
         zestVars.setVariable(null, "1");
         zestVars.setVariable("Var&", null);
-        String string = urlencoded(token(zestVars, "Var%")) + " < " + token(zestVars, null) + " != ["
-                + urlencoded(token(zestVars, "Var&")) + "]";
+        String string =
+                urlencoded(token(zestVars, "Var%"))
+                        + " < "
+                        + token(zestVars, null)
+                        + " != ["
+                        + urlencoded(token(zestVars, "Var&"))
+                        + "]";
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
@@ -320,13 +330,14 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceVariablesInEncodedVariablesInString() throws Exception {
+    public void shouldReplaceVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "-1 < " + token(zestVars, "Var&"));
         zestVars.setVariable("Var&", urlencoded(token(zestVars, "Var?")));
         zestVars.setVariable("Var?", "1");
-        String string = urlencoded(token(zestVars, "Var%")) + " <= " + urlencoded(token(zestVars, "Var?"));
+        String string =
+                urlencoded(token(zestVars, "Var%")) + " <= " + urlencoded(token(zestVars, "Var?"));
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
@@ -335,18 +346,24 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInEncodedVariablesInString() throws Exception {
+    public void shouldReplaceLoopingVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
         zestVars.setVariable("Var2", "[" + token(zestVars, "Var3") + "]");
         zestVars.setVariable("Var3", token(zestVars, "Var2"));
-        String string = urlencoded(token(zestVars, "Var1")) + " | " + urlencoded(token(zestVars, "Var3"));
+        String string =
+                urlencoded(token(zestVars, "Var1")) + " | " + urlencoded(token(zestVars, "Var3"));
         boolean encode = true;
         // When
         String finalString = zestVars.replaceInString(string, encode);
         // Then
-        assertTrue(("No Loop: [" + token(zestVars, "Var2") + "] | " + urlencoded(token(zestVars, "Var3"))).equals(finalString));
+        assertTrue(
+                ("No Loop: ["
+                                + token(zestVars, "Var2")
+                                + "] | "
+                                + urlencoded(token(zestVars, "Var3")))
+                        .equals(finalString));
     }
 
     private static String token(ZestVariables zestVars, String string) {
@@ -360,5 +377,4 @@ public class ZestVariablesUnitTest {
             throw new RuntimeException(e);
         }
     }
-
 }

@@ -6,102 +6,114 @@ package org.mozilla.zest.core.v1;
 import java.util.regex.Pattern;
 
 /**
- * The Class ZestAssignString assigns a string (which can include other variables) to the specified variable.
+ * The Class ZestAssignString assigns a string (which can include other variables) to the specified
+ * variable.
  */
 public class ZestAssignReplace extends ZestAssignment {
 
-	private String replace = null;
-	private String replacement = null;
-	private boolean regex = false;
-	private boolean caseExact = false;
-	
-	/**
-	 * Instantiates a new {@code ZestAssignReplace}.
-	 */
-	public ZestAssignReplace() {
-	}
+    private String replace = null;
+    private String replacement = null;
+    private boolean regex = false;
+    private boolean caseExact = false;
 
-	/**
-	 * Instantiates a new {@code ZestAssignReplace}.
-	 *
-	 * @param variableName the variable name
-	 */
-	public ZestAssignReplace(String variableName) {
-		super(variableName);
-	}
+    /** Instantiates a new {@code ZestAssignReplace}. */
+    public ZestAssignReplace() {}
 
-	/**
-	 * Instantiates a new {@code ZestAssignReplace}.
-	 *
-	 * @param variableName the name of the variable where to do the replacement.
-	 * @param replace what to replace.
-	 * @param replacement the replacement.
-	 * @param regex {@code true} if {@code replace} is a regular expression, {@code false} otherwise.
-	 * @param caseExact {@code true} if the replace match is case sensitive, {@code false} otherwise.
-	 */
-	public ZestAssignReplace(String variableName, String replace, String replacement, boolean regex, boolean caseExact) {
-		super(variableName);
-		this.replace = replace;
-		this.replacement = replacement;
-		this.regex = regex;
-		this.caseExact = caseExact;
-	}
+    /**
+     * Instantiates a new {@code ZestAssignReplace}.
+     *
+     * @param variableName the variable name
+     */
+    public ZestAssignReplace(String variableName) {
+        super(variableName);
+    }
 
-	@Override
-	public String assign (ZestResponse response, ZestRuntime runtime) throws ZestAssignFailException {
-		String var = runtime.getVariable(getVariableName());
-		if (var == null) {
-			return null;
-		}
-		String orig = runtime.replaceVariablesInString(var, false);
-		try {
-			return createPattern().matcher(orig).replaceAll(replacement);
-		} catch (Exception e) {
-			throw new ZestAssignFailException (this, e.getMessage());
-		}
-	}
+    /**
+     * Instantiates a new {@code ZestAssignReplace}.
+     *
+     * @param variableName the name of the variable where to do the replacement.
+     * @param replace what to replace.
+     * @param replacement the replacement.
+     * @param regex {@code true} if {@code replace} is a regular expression, {@code false}
+     *     otherwise.
+     * @param caseExact {@code true} if the replace match is case sensitive, {@code false}
+     *     otherwise.
+     */
+    public ZestAssignReplace(
+            String variableName,
+            String replace,
+            String replacement,
+            boolean regex,
+            boolean caseExact) {
+        super(variableName);
+        this.replace = replace;
+        this.replacement = replacement;
+        this.regex = regex;
+        this.caseExact = caseExact;
+    }
 
-	private Pattern createPattern() {
-		return Pattern.compile(regex ? replace : Pattern.quote(replace), caseExact ? 0 : Pattern.CASE_INSENSITIVE);
-	}
+    @Override
+    public String assign(ZestResponse response, ZestRuntime runtime)
+            throws ZestAssignFailException {
+        String var = runtime.getVariable(getVariableName());
+        if (var == null) {
+            return null;
+        }
+        String orig = runtime.replaceVariablesInString(var, false);
+        try {
+            return createPattern().matcher(orig).replaceAll(replacement);
+        } catch (Exception e) {
+            throw new ZestAssignFailException(this, e.getMessage());
+        }
+    }
 
-	@Override
-	public ZestAssignReplace deepCopy() {
-		ZestAssignReplace copy = new ZestAssignReplace(this.getVariableName(), this.replace, this.replacement, this.regex, this.caseExact);
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    private Pattern createPattern() {
+        return Pattern.compile(
+                regex ? replace : Pattern.quote(replace), caseExact ? 0 : Pattern.CASE_INSENSITIVE);
+    }
 
-	public String getReplace() {
-		return replace;
-	}
+    @Override
+    public ZestAssignReplace deepCopy() {
+        ZestAssignReplace copy =
+                new ZestAssignReplace(
+                        this.getVariableName(),
+                        this.replace,
+                        this.replacement,
+                        this.regex,
+                        this.caseExact);
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
 
-	public void setReplace(String replace) {
-		this.replace = replace;
-	}
+    public String getReplace() {
+        return replace;
+    }
 
-	public String getReplacement() {
-		return replacement;
-	}
+    public void setReplace(String replace) {
+        this.replace = replace;
+    }
 
-	public void setReplacement(String replacement) {
-		this.replacement = replacement;
-	}
+    public String getReplacement() {
+        return replacement;
+    }
 
-	public boolean isRegex() {
-		return regex;
-	}
+    public void setReplacement(String replacement) {
+        this.replacement = replacement;
+    }
 
-	public void setRegex(boolean regex) {
-		this.regex = regex;
-	}
+    public boolean isRegex() {
+        return regex;
+    }
 
-	public boolean isCaseExact() {
-		return caseExact;
-	}
+    public void setRegex(boolean regex) {
+        this.regex = regex;
+    }
 
-	public void setCaseExact(boolean caseExact) {
-		this.caseExact = caseExact;
-	}
+    public boolean isCaseExact() {
+        return caseExact;
+    }
 
+    public void setCaseExact(boolean caseExact) {
+        this.caseExact = caseExact;
+    }
 }

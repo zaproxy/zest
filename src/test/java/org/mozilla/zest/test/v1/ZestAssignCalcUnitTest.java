@@ -9,13 +9,11 @@ import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestAssignCalc;
 import org.mozilla.zest.core.v1.ZestAssignFailException;
 
-/**
- * Unit test for {@code ZestAssignCalc}.
- */
+/** Unit test for {@code ZestAssignCalc}. */
 public class ZestAssignCalcUnitTest {
 
     @Test
-    public void shouldBePassiveZestStatement() throws Exception {
+    public void shouldBePassiveZestStatement() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -23,7 +21,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldHaveNoVariableNameByDefault() throws Exception {
+    public void shouldHaveNoVariableNameByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -31,7 +29,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldBeEnabledByDefault() throws Exception {
+    public void shouldBeEnabledByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -39,7 +37,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldHaveNoOperandsNorOperationByDefault() throws Exception {
+    public void shouldHaveNoOperandsNorOperationByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -49,7 +47,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldConstructWithVariableName() throws Exception {
+    public void shouldConstructWithVariableName() {
         // Given
         String variableName = "Var1";
         // When
@@ -59,7 +57,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldConstructWithVariableNameOperandsAndOperation() throws Exception {
+    public void shouldConstructWithVariableNameOperandsAndOperation() {
         // Given
         String variableName = "Var2";
         String operandA = "1";
@@ -75,7 +73,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetVariableName() throws Exception {
+    public void shouldSetVariableName() {
         // Given
         String variableName = "Var3";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -86,7 +84,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetNullVariableName() throws Exception {
+    public void shouldSetNullVariableName() {
         // Given
         String variableName = null;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -97,7 +95,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetEnabledState() throws Exception {
+    public void shouldSetEnabledState() {
         // Given
         boolean enabled = false;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -108,7 +106,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetOperandA() throws Exception {
+    public void shouldSetOperandA() {
         // Given
         String operandA = "3";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -119,7 +117,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetKnownOperation() throws Exception {
+    public void shouldSetKnownOperation() {
         // Given
         String operation = ZestAssignCalc.OPERAND_SUBTRACT;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -130,7 +128,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetUnknownOperation() throws Exception {
+    public void shouldSetUnknownOperation() {
         // Given
         String operation = "unknown";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -141,7 +139,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldSetOperandB() throws Exception {
+    public void shouldSetOperandB() {
         // Given
         String operandB = "4";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
@@ -152,7 +150,7 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldDeepCopy() throws Exception {
+    public void shouldDeepCopy() {
         // Given
         String variableName = "Var4";
         String operandA = "5";
@@ -174,7 +172,8 @@ public class ZestAssignCalcUnitTest {
     @Test(expected = ZestAssignFailException.class)
     public void shouldFailTheAssignWithoutOperandA() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", null, ZestAssignCalc.OPERAND_ADD, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", null, ZestAssignCalc.OPERAND_ADD, "2");
         // When
         assignCalc.assign(null, new TestRuntime());
         // Then = ZestAssignFailException
@@ -192,7 +191,8 @@ public class ZestAssignCalcUnitTest {
     @Test(expected = ZestAssignFailException.class)
     public void shouldFailTheAssignWithNonNumericOperandA() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "NotANumber", ZestAssignCalc.OPERAND_ADD, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "NotANumber", ZestAssignCalc.OPERAND_ADD, "2");
         // When
         assignCalc.assign(null, new TestRuntime());
         // Then = ZestAssignFailException
@@ -201,7 +201,8 @@ public class ZestAssignCalcUnitTest {
     @Test(expected = ZestAssignFailException.class)
     public void shouldFailTheAssignWithoutOperandB() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, null);
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, null);
         // When
         assignCalc.assign(null, new TestRuntime());
         // Then = ZestAssignFailException
@@ -219,7 +220,8 @@ public class ZestAssignCalcUnitTest {
     @Test(expected = ZestAssignFailException.class)
     public void shouldFailTheAssignWithNonNumericOperandB() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "NotANumber");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "NotANumber");
         // When
         assignCalc.assign(null, new TestRuntime());
         // Then = ZestAssignFailException
@@ -256,7 +258,8 @@ public class ZestAssignCalcUnitTest {
     @Test
     public void shouldSubtractAssign() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "2", ZestAssignCalc.OPERAND_SUBTRACT, "1");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "2", ZestAssignCalc.OPERAND_SUBTRACT, "1");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
@@ -266,7 +269,8 @@ public class ZestAssignCalcUnitTest {
     @Test
     public void shouldMinusAssign() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "4", ZestAssignCalc.OPERAND_MULTIPLY, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "4", ZestAssignCalc.OPERAND_MULTIPLY, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
@@ -276,7 +280,8 @@ public class ZestAssignCalcUnitTest {
     @Test
     public void shouldDivideAssign() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "6", ZestAssignCalc.OPERAND_DIVIDE, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "6", ZestAssignCalc.OPERAND_DIVIDE, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
@@ -288,7 +293,8 @@ public class ZestAssignCalcUnitTest {
         // Given
         TestRuntime runtime = new TestRuntime();
         runtime.setVariable("A", "4");
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "{{A}}", ZestAssignCalc.OPERAND_ADD, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "{{A}}", ZestAssignCalc.OPERAND_ADD, "2");
         // When
         String result = assignCalc.assign(null, runtime);
         // Then
@@ -300,7 +306,8 @@ public class ZestAssignCalcUnitTest {
         // Given
         TestRuntime runtime = new TestRuntime();
         runtime.setVariable("B", "4");
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "2", ZestAssignCalc.OPERAND_ADD, "{{B}}");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "2", ZestAssignCalc.OPERAND_ADD, "{{B}}");
         // When
         String result = assignCalc.assign(null, runtime);
         // Then
@@ -310,7 +317,8 @@ public class ZestAssignCalcUnitTest {
     @Test
     public void shouldConvertResultIntoInteger() throws Exception {
         // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_DIVIDE, "2");
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_DIVIDE, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then

@@ -5,47 +5,49 @@ package org.mozilla.zest.core.v1;
 
 /**
  * Send key presses to the specified client element.
- * @author simon
  *
+ * @author simon
  */
 public class ZestClientElementSendKeys extends ZestClientElement {
-	
-	private String value = null;
 
-	public ZestClientElementSendKeys(String sessionIdName, String type, String element, String value) {
-		super(sessionIdName, type, element);
-		this.value = value;
-	}
-	
-	public ZestClientElementSendKeys() {
-		super();
-	}
-	
-	@Override
-	public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-		String str = runtime.replaceVariablesInString(value, false);
-		this.getWebElement(runtime).sendKeys(str);
-		return str;
-	}
-	
-	public String getValue() {
-		return value;
-	}
+    private String value = null;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public ZestClientElementSendKeys(
+            String sessionIdName, String type, String element, String value) {
+        super(sessionIdName, type, element);
+        this.value = value;
+    }
 
-	@Override
-	public ZestStatement deepCopy() {
-		ZestClientElementSendKeys copy = new ZestClientElementSendKeys(this.getWindowHandle(), this.getType(), this.getElement(), this.getValue());
-		copy.setEnabled(this.isEnabled());
-		return copy;
-	}
+    public ZestClientElementSendKeys() {
+        super();
+    }
 
-	@Override
-	public boolean isPassive() {
-		return false;
-	}
+    @Override
+    public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+        String str = runtime.replaceVariablesInString(value, false);
+        this.getWebElement(runtime).sendKeys(str);
+        return str;
+    }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public ZestStatement deepCopy() {
+        ZestClientElementSendKeys copy =
+                new ZestClientElementSendKeys(
+                        this.getWindowHandle(), this.getType(), this.getElement(), this.getValue());
+        copy.setEnabled(this.isEnabled());
+        return copy;
+    }
+
+    @Override
+    public boolean isPassive() {
+        return false;
+    }
 }
