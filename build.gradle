@@ -142,7 +142,7 @@ publishing {
                 licenses {
                     license {
                         name = 'Mozilla Public License Version 2.0'
-                        url = 'http://mozilla.org/MPL/2.0/'
+                        url = 'https://mozilla.org/MPL/2.0/'
                         distribution = 'repo'
                     }
                 }
