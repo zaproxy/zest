@@ -20,7 +20,7 @@ If using a dependency management tool, for example [Maven](https://maven.apache.
 
  * GroupId: `org.mozilla`
  * ArtifactId: `zest`
- * Version: `0.14.0`
+ * Version: `0.14.1`
 
 ## Building
 
