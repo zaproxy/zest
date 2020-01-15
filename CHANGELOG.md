@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.14.1] - 2020-01-15
 ### Fixed
 - Restore proxying capability, in the previous version the proxy settings were ignored. [#209](https://github.com/mozilla/zest/pull/209)
 
@@ -57,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3] - 2013-09-10
 ## [0.2] - 2013-07-18
 
-[Unreleased]: https://github.com/mozilla/zest/compare/0.14.0...HEAD
+[0.14.1]: https://github.com/mozilla/zest/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/mozilla/zest/compare/0.13...0.14.0
 [0.13]: https://github.com/mozilla/zest/compare/0.12...0.13
 [0.12]: https://github.com/mozilla/zest/compare/f4bd8e08ee0cee361e933e701bca4116d875b820...0.12
