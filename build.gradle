@@ -17,7 +17,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group 'org.mozilla'
-version '0.14.0'
+version '0.14.1'
 
 mainClassName = 'org.mozilla.zest.impl.CmdLine'
 
@@ -142,7 +142,7 @@ publishing {
                 licenses {
                     license {
                         name = 'Mozilla Public License Version 2.0'
-                        url = 'http://mozilla.org/MPL/2.0/'
+                        url = 'https://mozilla.org/MPL/2.0/'
                         distribution = 'repo'
                     }
                 }

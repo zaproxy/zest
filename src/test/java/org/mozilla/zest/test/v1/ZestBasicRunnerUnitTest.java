@@ -1,20 +1,25 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.test.v1;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.matching;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import java.net.URL;
 import java.util.HashMap;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.zest.core.v1.ZestRequest;
 import org.mozilla.zest.core.v1.ZestResponse;
@@ -25,6 +30,10 @@ import org.mozilla.zest.impl.ZestBasicRunner;
 public class ZestBasicRunnerUnitTest extends ServerBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
+
+    @Rule
+    public WireMockRule proxy =
+            new WireMockRule(options().dynamicPort().enableBrowserProxying(true), false);
 
     @Before
     public void before() {
@@ -123,5 +132,31 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request.getData()).isEqualTo(data);
         server.verify(
                 putRequestedFor(urlMatching(PATH_SERVER_FILE)).withRequestBody(equalTo(data)));
+    }
+
+    @Test
+    public void shouldSendRequestThroughConfiguredProxy() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        runner.setProxy("localhost", proxy.port());
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        proxy.verify(
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
+        server.verify(
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
     }
 }

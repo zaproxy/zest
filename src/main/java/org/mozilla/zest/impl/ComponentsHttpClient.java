@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.mozilla.zest.impl;
 
 import java.io.IOException;
@@ -55,6 +55,7 @@ class ComponentsHttpClient implements ZestHttpClient {
     private final HttpClient httpClient;
     private final HttpClientContext httpContext;
     private final RequestConfig defaultRequestConfig;
+    private RequestConfig requestConfig;
     private ZestOutputWriter zestOutputWriter;
 
     /**
@@ -76,6 +77,7 @@ class ComponentsHttpClient implements ZestHttpClient {
                         // it will also become the default in following HttpClient versions.
                         .setCookieSpec(CookieSpecs.STANDARD)
                         .build();
+        this.requestConfig = defaultRequestConfig;
     }
 
     private static HttpClient getHttpClient(boolean skipSSLCertificateCheck) {
@@ -118,15 +120,13 @@ class ComponentsHttpClient implements ZestHttpClient {
 
     @Override
     public void setProxy(String host, int port) {
-        RequestConfig localRequestConfig;
         synchronized (defaultRequestConfig) {
-            localRequestConfig =
-                    RequestConfig.copy(defaultRequestConfig)
-                            .setProxy(new HttpHost(host, port))
-                            .build();
-        }
-        synchronized (httpContext) {
-            httpContext.setRequestConfig(localRequestConfig);
+            requestConfig =
+                    host == null || host.isEmpty()
+                            ? defaultRequestConfig
+                            : RequestConfig.copy(defaultRequestConfig)
+                                    .setProxy(new HttpHost(host, port))
+                                    .build();
         }
     }
 
@@ -174,7 +174,7 @@ class ComponentsHttpClient implements ZestHttpClient {
                 throw new IllegalArgumentException("Method not supported: " + req.getMethod());
         }
 
-        method.setConfig(defaultRequestConfig);
+        method.setConfig(requestConfig);
         setHeaders(method, req.getHeaders());
 
         for (ZestCookie zestCookie : req.getCookies()) {
