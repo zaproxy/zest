@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.14.2] - 2020-01-24
+### Fixed
+- Trust all certs when ignoring certificate checks, not just self signed. [#212](https://github.com/mozilla/zest/pull/212)
+
 ## [0.14.1] - 2020-01-15
 ### Fixed
 - Restore proxying capability, in the previous version the proxy settings were ignored. [#209](https://github.com/mozilla/zest/pull/209)
@@ -60,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3] - 2013-09-10
 ## [0.2] - 2013-07-18
 
-[Unreleased]: https://github.com/mozilla/zest/compare/0.14.1...HEAD
+[Unreleased]: https://github.com/mozilla/zest/compare/0.14.2...HEAD
+[0.14.2]: https://github.com/mozilla/zest/compare/0.14.1...0.14.2
 [0.14.1]: https://github.com/mozilla/zest/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/mozilla/zest/compare/0.13...0.14.0
 [0.13]: https://github.com/mozilla/zest/compare/0.12...0.13
