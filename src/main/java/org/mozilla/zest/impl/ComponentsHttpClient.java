@@ -29,7 +29,7 @@ import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -88,9 +88,7 @@ class ComponentsHttpClient implements ZestHttpClient {
             SSLContext sslContext;
             try {
                 sslContext =
-                        SSLContexts.custom()
-                                .loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE)
-                                .build();
+                        SSLContexts.custom().loadTrustMaterial(TrustAllStrategy.INSTANCE).build();
             } catch (Exception e) {
                 // there should be no exception as we don't load key material and the algorithm is
                 // built-in
