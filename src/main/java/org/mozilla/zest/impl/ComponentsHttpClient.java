@@ -27,15 +27,23 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.client.protocol.RequestAddCookies;
+import org.apache.http.client.protocol.RequestAuthCache;
+import org.apache.http.client.protocol.RequestExpectContinue;
+import org.apache.http.client.protocol.ResponseProcessCookies;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustAllStrategy;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.HttpProcessorBuilder;
+import org.apache.http.protocol.RequestContent;
+import org.apache.http.protocol.RequestTargetHost;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.mozilla.zest.core.v1.ZestAuthentication;
@@ -83,6 +91,16 @@ class ComponentsHttpClient implements ZestHttpClient {
     private static HttpClient getHttpClient(boolean skipSSLCertificateCheck) {
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
         httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
+        httpClientBuilder.setHttpProcessor(
+                HttpProcessorBuilder.create()
+                        .addAll(
+                                new RequestContent(),
+                                new RequestTargetHost(),
+                                new RequestExpectContinue(),
+                                new RequestAddCookies(),
+                                new RequestAuthCache())
+                        .add(new ResponseProcessCookies())
+                        .build());
 
         if (skipSSLCertificateCheck) {
             SSLContext sslContext;
@@ -187,7 +205,7 @@ class ComponentsHttpClient implements ZestHttpClient {
         }
 
         if (method instanceof HttpEntityEnclosingRequestBase) {
-            HttpEntity requestBody = new StringEntity(req.getData());
+            HttpEntity requestBody = new StringEntity(req.getData(), (ContentType) null);
             HttpEntityEnclosingRequestBase methodWithEntity =
                     (HttpEntityEnclosingRequestBase) method;
             methodWithEntity.setEntity(requestBody);

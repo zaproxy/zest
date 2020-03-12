@@ -89,10 +89,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request.getTimestamp()).isCloseTo(System.currentTimeMillis(), byLessThan(2000L));
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        // The HTTP client adds some headers to the ZestRequest.
-        String expectedHeaders =
-                headers + "Connection: Keep-Alive\r\nAccept-Encoding: gzip,deflate\r\n";
-        assertThat(request.getHeaders()).isEqualTo(expectedHeaders);
+        assertThat(request.getHeaders()).isEqualTo(headers);
         assertThat(request.getData()).isEqualTo(data);
 
         ZestResponse response = runner.getLastResponse();
@@ -107,6 +104,67 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
                                 + "Server: abc\r\n"
                                 + "Transfer-Encoding: chunked\r\n");
         assertThat(response.getBody()).isEqualTo("This is the response");
+    }
+
+    @Test
+    public void shouldSendRequestWithoutGeneratedUserAgentHeader() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        request.setMethod("GET");
+        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        assertThat(runner.getLastRequest().getHeaders()).doesNotContain("User-Agent");
+    }
+
+    @Test
+    public void shouldSendRequestWithoutGeneratedContentTypeHeader() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        request.setMethod("POST");
+        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        request.setData("Content Request Body");
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        assertThat(runner.getLastRequest().getHeaders()).doesNotContain("Content-Type");
+    }
+
+    @Test
+    public void shouldSendRequestWithoutGeneratedAcceptEncodingHeader() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        request.setMethod("GET");
+        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        assertThat(runner.getLastRequest().getHeaders()).doesNotContain("Accept-Encoding");
+    }
+
+    @Test
+    public void shouldSendRequestWithoutGeneratedConnectionHeader() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        request.setMethod("GET");
+        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        assertThat(runner.getLastRequest().getHeaders()).doesNotContain("Connection");
     }
 
     @Test
