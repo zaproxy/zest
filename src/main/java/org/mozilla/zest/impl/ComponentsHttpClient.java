@@ -64,6 +64,7 @@ class ComponentsHttpClient implements ZestHttpClient {
     private final HttpClientContext httpContext;
     private final RequestConfig defaultRequestConfig;
     private RequestConfig requestConfig;
+    private RequestConfig noRedirectsRequestConfig;
     private ZestOutputWriter zestOutputWriter;
 
     /**
@@ -76,16 +77,17 @@ class ComponentsHttpClient implements ZestHttpClient {
         this.httpClient = getHttpClient(skipSSLCertificateCheck);
         this.httpContext = HttpClientContext.create();
         this.httpContext.setCookieStore(new BasicCookieStore());
-        this.defaultRequestConfig =
+        RequestConfig.Builder requestConfigBuilder =
                 RequestConfig.custom()
                         .setCircularRedirectsAllowed(true)
                         .setConnectTimeout(timeoutInSeconds * 1_000)
                         .setConnectionRequestTimeout(timeoutInSeconds * 1_000)
                         // To improve compatibility with more webapps use STANDARD,
                         // it will also become the default in following HttpClient versions.
-                        .setCookieSpec(CookieSpecs.STANDARD)
-                        .build();
+                        .setCookieSpec(CookieSpecs.STANDARD);
+        this.defaultRequestConfig = requestConfigBuilder.build();
         this.requestConfig = defaultRequestConfig;
+        this.noRedirectsRequestConfig = requestConfigBuilder.setRedirectsEnabled(false).build();
     }
 
     private static HttpClient getHttpClient(boolean skipSSLCertificateCheck) {
@@ -137,12 +139,13 @@ class ComponentsHttpClient implements ZestHttpClient {
     @Override
     public void setProxy(String host, int port) {
         synchronized (defaultRequestConfig) {
-            requestConfig =
-                    host == null || host.isEmpty()
-                            ? defaultRequestConfig
-                            : RequestConfig.copy(defaultRequestConfig)
-                                    .setProxy(new HttpHost(host, port))
-                                    .build();
+            RequestConfig.Builder requestConfigBuilder = RequestConfig.copy(defaultRequestConfig);
+            if (host == null || host.isEmpty()) {
+                requestConfig = defaultRequestConfig;
+            } else {
+                requestConfig = requestConfigBuilder.setProxy(new HttpHost(host, port)).build();
+            }
+            noRedirectsRequestConfig = requestConfigBuilder.setRedirectsEnabled(false).build();
         }
     }
 
@@ -190,7 +193,7 @@ class ComponentsHttpClient implements ZestHttpClient {
                 throw new IllegalArgumentException("Method not supported: " + req.getMethod());
         }
 
-        method.setConfig(requestConfig);
+        method.setConfig(req.isFollowRedirects() ? requestConfig : noRedirectsRequestConfig);
         setHeaders(method, req.getHeaders());
 
         for (ZestCookie zestCookie : req.getCookies()) {
