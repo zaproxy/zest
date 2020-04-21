@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Reduce the changes done to HTTP request header to the essential (e.g. authentication, HTTP state). [#214](https://github.com/mozilla/zest/pull/214)
 
+### Fixed
+- Do not follow redirects when disabled. [#216](https://github.com/mozilla/zest/pull/216)
+
 ## [0.14.2] - 2020-01-24
 ### Fixed
 - Trust all certs when ignoring certificate checks, not just self signed. [#212](https://github.com/mozilla/zest/pull/212)

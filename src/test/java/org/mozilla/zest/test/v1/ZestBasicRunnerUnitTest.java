@@ -5,6 +5,7 @@ package org.mozilla.zest.test.v1;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.matching;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.byLessThan;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,6 +32,7 @@ import org.mozilla.zest.impl.ZestBasicRunner;
 public class ZestBasicRunnerUnitTest extends ServerBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
+    private static final String PATH_SERVER_REDIRECT = "/redirect";
 
     @Rule
     public WireMockRule proxy =
@@ -46,6 +49,12 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
                                         .withHeader("Name", "value")
                                         .withHeader("Server", "abc")
                                         .withBody("This is the response")));
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_REDIRECT))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(301)
+                                        .withHeader("Location", PATH_SERVER_FILE)));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -216,5 +225,126 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         server.verify(
                 getRequestedFor(urlMatching(PATH_SERVER_FILE))
                         .withHeader("Host", matching(getHostPort())));
+    }
+
+    @Test
+    public void shouldNoLongerSendRequestThroughProxyIfUnset() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.setProxy("localhost", proxy.port());
+        runner.run(script, Collections.emptyMap());
+        runner.setProxy("", 0);
+        runner.run(script, Collections.emptyMap());
+        // Then
+        proxy.verify(
+                1,
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
+        server.verify(
+                2,
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
+    }
+
+    @Test
+    public void shouldFollowRedirectsByDefault() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, Collections.emptyMap());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        server.verify(getRequestedFor(urlMatching(PATH_SERVER_REDIRECT)));
+        server.verify(getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+    }
+
+    @Test
+    public void shouldNotFollowRedirectsIfDisabled() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        request.setFollowRedirects(false);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        runner.setProxy("localhost", proxy.port());
+        // When
+        runner.run(script, Collections.emptyMap());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        server.verify(getRequestedFor(urlMatching(PATH_SERVER_REDIRECT)));
+        server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+    }
+
+    @Test
+    public void shouldFollowRedirectsThroughConfiguredProxy() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        runner.setProxy("localhost", proxy.port());
+        // When
+        runner.run(script, Collections.emptyMap());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        proxy.verify(
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
+        server.verify(
+                getRequestedFor(urlMatching(PATH_SERVER_FILE))
+                        .withHeader("Host", matching(getHostPort())));
+    }
+
+    @Test
+    public void shouldNotFollowRedirectsIfDisabledThroughConfiguredProxy() throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        String method = "GET";
+        request.setMethod(method);
+        request.setUrl(url);
+        request.setFollowRedirects(false);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        runner.setProxy("localhost", proxy.port());
+        // When
+        runner.run(script, Collections.emptyMap());
+        // Then
+        request = runner.getLastRequest();
+        assertThat(request).isNotNull();
+        assertThat(request.getMethod()).isEqualTo(method);
+        assertThat(request.getUrl()).isEqualTo(url);
+        proxy.verify(
+                getRequestedFor(urlMatching(PATH_SERVER_REDIRECT))
+                        .withHeader("Host", matching(getHostPort())));
+        server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
     }
 }
