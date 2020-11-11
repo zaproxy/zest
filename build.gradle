@@ -16,10 +16,10 @@ apply from: "$rootDir/gradle/travis-ci.gradle.kts"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-group 'org.mozilla'
+group 'org.zaproxy'
 version '0.15.0-SNAPSHOT'
 
-mainClassName = 'org.mozilla.zest.impl.CmdLine'
+mainClassName = 'org.zaproxy.zest.impl.CmdLine'
 
 sourceSets.test.resources.srcDirs 'examples'
 
@@ -115,28 +115,28 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = 'Mozilla Zest'
+                name = 'OWASP ZAP Zest'
                 packaging = 'jar'
-                description = 'Zest is an experimental scripting language developed by the Mozilla security team designed to be used in web oriented security tools.'
-                url = 'https://github.com/mozilla/zest'
+                description = 'Zest is an experimental scripting language (initially) developed by the Mozilla security team designed to be used in web oriented security tools.'
+                url = 'https://github.com/zaproxy/zest'
 
                 organization {
-                    name = 'Mozilla Foundation'
-                    url = 'https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Zest'
+                    name = 'OWASP'
+                    url = 'https://www.zaproxy.org/'
                 }
 
                 mailingLists {
                     mailingList {
-                        name = 'Mozilla Zest'
-                        post = 'mozilla-zest@googlegroups.com'
-                        archive = 'https://groups.google.com/group/mozilla-zest'
+                        name = 'OWASP ZAP Zest Group'
+                        post = 'zaproxy-zest@googlegroups.com'
+                        archive = 'https://groups.google.com/group/zaproxy-zest'
                     }
                 }
 
                 scm {
-                    url = 'https://github.com/mozilla/zest'
-                    connection = 'scm:git:https://github.com/mozilla/zest.git'
-                    developerConnection = 'scm:git:https://github.com/mozilla/zest.git'
+                    url = 'https://github.com/zaproxy/zest'
+                    connection = 'scm:git:https://github.com/zaproxy/zest.git'
+                    developerConnection = 'scm:git:https://github.com/zaproxy/zest.git'
                 }
 
                 licenses {
@@ -151,7 +151,7 @@ publishing {
                     developer {
                         id = 'psiinon'
                         name = 'Simon Bennetts'
-                        email = 'sbennetts@mozilla.com'
+                        email = 'psiinon@gmail.com'
                     }
                 }
             }
