@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="org.mozilla.zest.core.v1.ZestStatement" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestStatement.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="org.zaproxy.zest.core.v1.ZestStatement" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestStatement.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="183" y="510"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -10,8 +10,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="org.mozilla.zest.core.v1.ZestContainer" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestContainer.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="2" language="java" name="org.zaproxy.zest.core.v1.ZestContainer" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestContainer.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="521" y="152"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -19,8 +19,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="3" language="java" name="org.mozilla.zest.core.v1.ZestLoop" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoop.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="org.zaproxy.zest.core.v1.ZestLoop" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoop.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="566" width="339" x="704" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="org.mozilla.zest.core.v1.ZestLoopInteger" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopInteger.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="org.zaproxy.zest.core.v1.ZestLoopInteger" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopInteger.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="539" y="713"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -37,8 +37,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="org.mozilla.zest.core.v1.ZestLoopNext" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopNext.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="org.zaproxy.zest.core.v1.ZestLoopNext" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopNext.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="475" y="909"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -46,8 +46,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="org.mozilla.zest.core.v1.ZestLoopState" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopState.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="6" language="java" name="org.zaproxy.zest.core.v1.ZestLoopState" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopState.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1256" y="184"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -55,8 +55,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="org.mozilla.zest.core.v1.ZestLoopTokenIntegerSet" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopTokenIntegerSet.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="org.zaproxy.zest.core.v1.ZestLoopTokenIntegerSet" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopTokenIntegerSet.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1380" y="1036"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -64,8 +64,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <interface id="8" language="java" name="org.mozilla.zest.core.v1.ZestLoopTokenSet" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopTokenSet.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="8" language="java" name="org.zaproxy.zest.core.v1.ZestLoopTokenSet" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopTokenSet.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1217" y="1390"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -73,8 +73,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="org.mozilla.zest.core.v1.ZestLoopTokenStringSet" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopTokenStringSet.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="org.zaproxy.zest.core.v1.ZestLoopTokenStringSet" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopTokenStringSet.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1666" y="1131"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -82,8 +82,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="org.mozilla.zest.core.v1.ZestLoopBreak" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopBreak.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="10" language="java" name="org.zaproxy.zest.core.v1.ZestLoopBreak" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopBreak.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="153" y="909"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -91,8 +91,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="org.mozilla.zest.core.v1.ZestLoopFile" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopFile.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="org.zaproxy.zest.core.v1.ZestLoopFile" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopFile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="206" width="268" x="704" y="643"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -100,8 +100,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="org.mozilla.zest.core.v1.ZestLoopStateFile" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopStateFile.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="12" language="java" name="org.zaproxy.zest.core.v1.ZestLoopStateFile" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopStateFile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1525" y="546"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -109,8 +109,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="org.mozilla.zest.core.v1.ZestLoopStateInteger" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopStateInteger.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="13" language="java" name="org.zaproxy.zest.core.v1.ZestLoopStateInteger" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopStateInteger.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1276" y="492"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -118,8 +118,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="org.mozilla.zest.core.v1.ZestLoopStateString" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopStateString.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="14" language="java" name="org.zaproxy.zest.core.v1.ZestLoopStateString" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopStateString.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1663" y="836"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -127,8 +127,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="org.mozilla.zest.core.v1.ZestLoopString" project="zest_fork" 
-    file="/zest_fork/src/org/mozilla/zest/core/v1/ZestLoopString.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="15" language="java" name="org.zaproxy.zest.core.v1.ZestLoopString" project="zest_fork" 
+    file="/zest_fork/src/org/zaproxy/zest/core/v1/ZestLoopString.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="170" width="286" x="1012" y="643"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
