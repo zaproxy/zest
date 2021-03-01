@@ -1,6 +1,10 @@
 name: Java CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
@@ -19,7 +23,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ matrix.java }}-${{ hashFiles('**/*.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ matrix.java }}-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-${{ matrix.java }}-
             ${{ runner.os }}-gradle-
