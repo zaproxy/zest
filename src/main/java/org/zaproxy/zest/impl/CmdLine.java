@@ -163,8 +163,12 @@ public class CmdLine {
             zs = (ZestScript) ZestJSON.fromString(sb.toString());
 
             if (!ZestScript.VERSION.equals(zs.getZestVersion())) {
-                error("Error Zest version " + zs.getZestVersion() + " not supported");
-                return;
+                error(
+                        "Warning: Zest version "
+                                + zs.getZestVersion()
+                                + " is not the latest ("
+                                + ZestScript.VERSION
+                                + ") and so may not be supported");
             }
 
         } catch (Exception e) {
