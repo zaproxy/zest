@@ -4,14 +4,14 @@ plugins {
     id 'signing'
     id 'application'
     id 'jacoco'
-    id "com.diffplug.gradle.spotless" version "3.23.0"
+    id "com.diffplug.spotless" version "5.12.1"
 }
 
 repositories {
     mavenCentral()
 }
 
-apply from: "$rootDir/gradle/travis-ci.gradle.kts"
+apply from: "$rootDir/gradle/ci.gradle.kts"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -45,7 +45,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes('Implementation-Version': version,
+        attributes('Implementation-Version': archiveVersion,
         'Main-Class': mainClassName)
     }
 }
@@ -77,7 +77,7 @@ spotless {
     java {
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
 
-        googleJavaFormat().style('AOSP')
+        googleJavaFormat("1.7").style('AOSP')
     }
 }
 
