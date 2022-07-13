@@ -108,7 +108,11 @@ public class ZestActionInvoke extends ZestAction {
                 // Its a Zest script
                 engine = runtime.getScriptEngineFactory().getScriptEngine();
             } else {
-                engine = new ScriptEngineManager().getEngineByName(ext);
+                ScriptEngineManager manager = new ScriptEngineManager();
+                engine = manager.getEngineByExtension(ext);
+                if (engine == null) {
+                    engine = manager.getEngineByName(ext);
+                }
             }
         }
 

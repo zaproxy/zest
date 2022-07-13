@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Warn on running old Zest scripts from the command line rather than exit.
 
+### Fixed
+- Search script engines also by extension not just by name when invoking scripts otherwise it could miss some engines (e.g. Jython).
+
 ## [0.15.0] - 2020-11-24
 ### Changed
 - Update source code and other resources per relocation of the repository, now under the OWASP ZAP
