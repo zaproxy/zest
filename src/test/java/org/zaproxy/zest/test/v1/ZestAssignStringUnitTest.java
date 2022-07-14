@@ -3,18 +3,18 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignString;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 /** */
-public class ZestAssignStringUnitTest {
+class ZestAssignStringUnitTest {
 
     @Test
-    public void testSimpleCase() {
+    void testSimpleCase() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
         ZestResponse resp =
@@ -28,7 +28,7 @@ public class ZestAssignStringUnitTest {
     }
 
     @Test
-    public void testVariables() {
+    void testVariables() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
 
@@ -57,7 +57,7 @@ public class ZestAssignStringUnitTest {
     }
 
     @Test
-    public void testRecurse() {
+    void testRecurse() {
         ZestAssignString ast = new ZestAssignString();
         TestRuntime rt = new TestRuntime();
 
@@ -71,7 +71,7 @@ public class ZestAssignStringUnitTest {
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestAssignString assign = new ZestAssignString("var", "io;hjvd9740[w9u;sdz");
 
         String str = ZestJSON.toString(assign);

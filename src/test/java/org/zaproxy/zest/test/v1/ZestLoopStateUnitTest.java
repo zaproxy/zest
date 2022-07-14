@@ -3,44 +3,45 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestLoopStateString;
 import org.zaproxy.zest.core.v1.ZestLoopTokenStringSet;
 
 /** */
-public class ZestLoopStateUnitTest {
+class ZestLoopStateUnitTest {
     String[] values = {"A", "B", "C", "D", "D"};
     ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(values);
 
     @Test
-    public void testZestLoopState() {
+    void testZestLoopState() {
         ZestLoopStateString state = new ZestLoopStateString(set);
         assertFalse(state.isLastState(set));
     }
 
     @Test
-    public void testGetCurrentToken() {
+    void testGetCurrentToken() {
         int index = 0;
         ZestLoopStateString state = new ZestLoopStateString(set);
         assertTrue(state.getCurrentToken().equals(values[index]));
     }
 
     @Test
-    public void testGetCurrentIndex() {
+    void testGetCurrentIndex() {
         int index = 3;
         ZestLoopStateString state = new ZestLoopStateString(set);
         for (int i = 0; i < index; i++) {
             state.increase(set);
         }
-        assertTrue(state.getCurrentIndex() == index);
+        assertEquals(state.getCurrentIndex(), index);
     }
 
     @Test
-    public void testIncrease() {
+    void testIncrease() {
         ZestLoopStateString state = new ZestLoopStateString(set);
         int currentIndex = state.getCurrentIndex();
         boolean increasable = state.increase(set);
@@ -53,14 +54,14 @@ public class ZestLoopStateUnitTest {
     }
 
     @Test
-    public void testToLastState() {
+    void testToLastState() {
         ZestLoopStateString state = new ZestLoopStateString(set);
         state.toLastState(set);
         assertTrue(state.isLastState(set));
     }
 
     @Test
-    public void testIsLastState() {
+    void testIsLastState() {
         ZestLoopStateString state = new ZestLoopStateString(set);
         for (int i = 0; i < 13; i++) {
             state.increase(set);

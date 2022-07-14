@@ -3,26 +3,29 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionRegex;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** */
-public class ZestExpressionRegexUnitTest {
+class ZestExpressionRegexUnitTest {
 
     @Test
-    public void testIsLeaf() {
+    void testIsLeaf() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "");
         assertTrue(regex.isLeaf());
     }
 
     @Test
-    public void testIsInverse() {
+    void testIsInverse() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.REQUEST_HEADER, "");
         ZestExpressionRegex copy = regex.deepCopy();
         copy.setInverse(true);
@@ -31,7 +34,7 @@ public class ZestExpressionRegexUnitTest {
     }
 
     @Test
-    public void testSetInverse() {
+    void testSetInverse() {
         ZestExpressionRegex regex =
                 new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "", false, false);
         regex.setInverse(true);
@@ -39,37 +42,37 @@ public class ZestExpressionRegexUnitTest {
     }
 
     @Test
-    public void testDeepCopySameLocation() {
+    void testDeepCopySameLocation() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
         ZestExpressionRegex copy = regex.deepCopy();
-        assertTrue(regex.getVariableName().equals(copy.getVariableName()));
+        assertEquals(regex.getVariableName(), copy.getVariableName());
     }
 
     @Test
-    public void testDeepCopySameRegex() {
+    void testDeepCopySameRegex() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "PING");
         ZestExpressionRegex copy = regex.deepCopy();
-        assertTrue(regex.getRegex().equals(copy.getRegex()));
+        assertEquals(regex.getRegex(), copy.getRegex());
     }
 
     @Test
-    public void testDeepCopySameNoPointersRegex() {
+    void testDeepCopySameNoPointersRegex() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
         ZestExpressionRegex copy = regex.deepCopy();
         copy.setRegex("PONG");
-        assertFalse(regex.getRegex().equals(copy.getRegex()));
+        assertNotEquals(regex.getRegex(), copy.getRegex());
     }
 
     @Test
-    public void testDeepCopySameNoPointersLocation() {
+    void testDeepCopySameNoPointersLocation() {
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "PING");
         ZestExpressionRegex copy = regex.deepCopy();
         copy.setVariableName(ZestVariables.RESPONSE_BODY);
-        assertFalse(regex.getVariableName().equals(copy.getVariableName()));
+        assertNotEquals(regex.getVariableName(), copy.getVariableName());
     }
 
     @Test
-    public void testIsTrueHeader() {
+    void testIsTrueHeader() {
         ZestResponse response =
                 new ZestResponse(null, "123456header654321", "987654body456789", 200, 100);
         ZestExpressionRegex regexExpr =
@@ -78,7 +81,7 @@ public class ZestExpressionRegexUnitTest {
     }
 
     @Test
-    public void testIsTrueBody() {
+    void testIsTrueBody() {
         ZestResponse response =
                 new ZestResponse(null, "123456header654321", "987654body456789", 200, 100);
         ZestExpressionRegex regexExpr =
@@ -87,21 +90,21 @@ public class ZestExpressionRegexUnitTest {
     }
 
     @Test
-    public void testIsTrueNullBody() {
+    void testIsTrueNullBody() {
         ZestResponse response = new ZestResponse(null, null, null, 0, 0);
         ZestExpressionRegex regexExpr = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "");
         assertFalse(regexExpr.isTrue(new TestRuntime(response)));
     }
 
     @Test
-    public void testIsTrueNullHeader() {
+    void testIsTrueNullHeader() {
         ZestResponse response = new ZestResponse(null, null, null, 0, 0);
         ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_HEADER, "");
         assertFalse(regex.isTrue(new TestRuntime(response)));
     }
 
     @Test
-    public void shouldEvaluateAlwaysToFalseWithNullRegex() {
+    void shouldEvaluateAlwaysToFalseWithNullRegex() {
         // Given
         String nullRegex = null;
         String varName = "VarName";
@@ -110,12 +113,12 @@ public class ZestExpressionRegexUnitTest {
             // When
             boolean evalution = expressionRegex.evaluate(createRuntime(varName, varValue));
             // Then
-            assertFalse("String \"" + varValue + "\" evaludated to false.", evalution);
+            assertFalse(evalution, "String \"" + varValue + "\" evaludated to false.");
         }
     }
 
     @Test
-    public void shouldEvaluateAlwaysToTrueWithEmptyRegex() {
+    void shouldEvaluateAlwaysToTrueWithEmptyRegex() {
         // Given
         String emptyRegex = "";
         String varName = "VarName";
@@ -124,19 +127,19 @@ public class ZestExpressionRegexUnitTest {
             // When
             boolean evalution = expressionRegex.evaluate(createRuntime(varName, varValue));
             // Then
-            assertTrue("String \"" + varValue + "\" evaludated to false.", evalution);
+            assertTrue(evalution, "String \"" + varValue + "\" evaludated to false.");
         }
     }
 
     @Test
-    public void shouldAllowToSetNullRegex() {
+    void shouldAllowToSetNullRegex() {
         // Given
         String nullRegex = null;
         ZestExpressionRegex regex = new ZestExpressionRegex("VarName", "");
         // When
         regex.setRegex(nullRegex);
         // Then
-        assertTrue(regex.getRegex() == null);
+        assertNull(regex.getRegex());
     }
 
     private static TestRuntime createRuntime(String varName, String varValue) {

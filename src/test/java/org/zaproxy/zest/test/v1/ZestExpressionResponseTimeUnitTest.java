@@ -3,37 +3,37 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionResponseTime;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestRuntime;
 
 /** */
-public class ZestExpressionResponseTimeUnitTest {
+class ZestExpressionResponseTimeUnitTest {
 
     @Test
-    public void testSetTimeInMs() {
+    void testSetTimeInMs() {
         long time = 1000;
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(10);
         timeExpr.setTimeInMs(time);
-        assertTrue(time == timeExpr.getTimeInMs());
+        assertEquals(time, timeExpr.getTimeInMs());
     }
 
     @Test
-    public void testDeepCopy() {
+    void testDeepCopy() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(1000, false, true);
         ZestExpressionResponseTime copy = timeExpr.deepCopy();
-        assertTrue(copy.getTimeInMs() == timeExpr.getTimeInMs());
+        assertEquals(copy.getTimeInMs(), timeExpr.getTimeInMs());
         assertEquals(copy.isGreaterThan(), timeExpr.isGreaterThan());
         assertEquals(copy.isInverse(), timeExpr.isInverse());
     }
 
     @Test
-    public void testDeepCopyNoPointers() {
+    void testDeepCopyNoPointers() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(1000);
         ZestExpressionResponseTime copy = timeExpr.deepCopy();
         timeExpr.setGreaterThan(false);
@@ -44,7 +44,7 @@ public class ZestExpressionResponseTimeUnitTest {
     }
 
     @Test
-    public void testEvaluate() {
+    void testEvaluate() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(1000);
         timeExpr.setGreaterThan(false);
         ZestResponse response = new ZestResponse(null, "", "", 100, 10);
@@ -52,7 +52,7 @@ public class ZestExpressionResponseTimeUnitTest {
     }
 
     @Test
-    public void testIsTrueGreaterThan() {
+    void testIsTrueGreaterThan() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(0);
         timeExpr.setGreaterThan(true);
         ZestResponse response = new ZestResponse(null, "", "", 200, 100);
@@ -60,7 +60,7 @@ public class ZestExpressionResponseTimeUnitTest {
     }
 
     @Test
-    public void testEvaluateGreaterThanIsInverse() {
+    void testEvaluateGreaterThanIsInverse() {
         ZestExpressionResponseTime timeExpTime = new ZestExpressionResponseTime(1000);
         ZestResponse response = new ZestResponse(null, "", "", 200, 1000);
         timeExpTime.setInverse(true);
@@ -69,7 +69,7 @@ public class ZestExpressionResponseTimeUnitTest {
     }
 
     @Test
-    public void testDeepCopyNoPointer() {
+    void testDeepCopyNoPointer() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(100);
         ZestExpressionResponseTime copy = timeExpr.deepCopy();
         timeExpr.setTimeInMs(50);
@@ -77,7 +77,7 @@ public class ZestExpressionResponseTimeUnitTest {
     }
 
     @Test
-    public void testIsTrueDeepCopyDifferentGreaterThan() {
+    void testIsTrueDeepCopyDifferentGreaterThan() {
         ZestExpressionResponseTime timeExpr = new ZestExpressionResponseTime(1000);
         ZestExpressionResponseTime copy = timeExpr.deepCopy();
         timeExpr.setGreaterThan(false);

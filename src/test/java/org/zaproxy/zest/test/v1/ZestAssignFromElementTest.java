@@ -3,17 +3,19 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.net.URL;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignFailException;
 import org.zaproxy.zest.core.v1.ZestAssignFromElement;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 /** Unit test for {@link ZestAssignFromElement}. */
-public class ZestAssignFromElementTest {
+class ZestAssignFromElementTest {
 
     private final String htmlScaffold =
             "<html><head><title>Test Document</title></head><body>"
@@ -74,7 +76,7 @@ public class ZestAssignFromElementTest {
                     + "<form id=\"99\" action=\"foo.html#site=456\" method=\"post\"><input type=\"submit\" value=\"Submit\" /></form>\n";
 
     @Test
-    public void selectClassAttributeOfLastElement() throws Exception {
+    void selectClassAttributeOfLastElement() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var").last().selectAttributeValue("class");
@@ -87,7 +89,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void noElementFoundReturnsNull() throws Exception {
+    void noElementFoundReturnsNull() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var").whereElementIs("xyz").first().selectContent();
@@ -96,11 +98,11 @@ public class ZestAssignFromElementTest {
         String result = assign(fromElement, testPageA);
 
         // Then
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
-    public void filterByElementAndAttributeThenSelectTheFirstContent() throws Exception {
+    void filterByElementAndAttributeThenSelectTheFirstContent() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -117,7 +119,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void filterByElementAndThenSelectTheLastClassAttribute() throws Exception {
+    void filterByElementAndThenSelectTheLastClassAttribute() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -133,7 +135,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void filterBeforeLastDivAndSelectContent() throws Exception {
+    void filterBeforeLastDivAndSelectContent() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -149,7 +151,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void filterByValueIsStartingWithChoiceAndSelectContentOfSecondItem() throws Exception {
+    void filterByValueIsStartingWithChoiceAndSelectContentOfSecondItem() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -165,7 +167,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void selectActionAttributeOfSecondForm() throws Exception {
+    void selectActionAttributeOfSecondForm() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -181,7 +183,7 @@ public class ZestAssignFromElementTest {
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
                         .whereElementIs("form")
@@ -211,8 +213,8 @@ public class ZestAssignFromElementTest {
         assertEquals(fromElement.isFilteredByElementName(), fromElement2.isFilteredByElementName());
     }
 
-    @Test(expected = ZestAssignFailException.class)
-    public void invalidRegExShouldThrowAZestAssignFailException() throws Exception {
+    @Test
+    void invalidRegExShouldThrowAZestAssignFailException() throws Exception {
         // Given
         ZestAssignFromElement fromElement =
                 new ZestAssignFromElement("Var")
@@ -220,10 +222,8 @@ public class ZestAssignFromElementTest {
                         .atIndex(0)
                         .selectContent();
 
-        // When
-        assign(fromElement, testPageB);
-
-        // Then = ZestAssignFailException
+        // When / Then
+        assertThrows(ZestAssignFailException.class, () -> assign(fromElement, testPageB));
     }
 
     private String assign(ZestAssignFromElement assignFromElement, String pageContent)

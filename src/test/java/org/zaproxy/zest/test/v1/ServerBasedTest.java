@@ -5,20 +5,23 @@ package org.zaproxy.zest.test.v1;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.Rule;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 /** Helper class that manages a HTTP server for use during tests. */
 public abstract class ServerBasedTest {
 
-    @Rule public WireMockRule server = createServer();
+    @RegisterExtension WireMockExtension server = createServer();
 
-    protected WireMockRule createServer() {
-        return new WireMockRule(options().dynamicPort(), false);
+    protected WireMockExtension createServer() {
+        return WireMockExtension.newInstance()
+                .options(options().dynamicPort())
+                .failOnUnmatchedRequests(false)
+                .build();
     }
 
     protected String getHostPort() {
-        return server.getOptions().bindAddress() + ":" + server.port();
+        return server.getOptions().bindAddress() + ":" + server.getPort();
     }
 
     protected String getServerUrl(String path) {

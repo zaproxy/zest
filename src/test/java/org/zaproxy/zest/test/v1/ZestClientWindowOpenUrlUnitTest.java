@@ -3,21 +3,22 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
 import org.zaproxy.zest.core.v1.ZestClientWindowOpenUrl;
 
 /** Unit test for {@link ZestClientWindowOpenUrl}. */
-public class ZestClientWindowOpenUrlUnitTest {
+class ZestClientWindowOpenUrlUnitTest {
 
-    @Test(expected = ZestClientFailException.class)
-    public void shouldFailToOpenUrlIfWindowHandleNotFound() throws Exception {
+    @Test
+    void shouldFailToOpenUrlIfWindowHandleNotFound() throws Exception {
         // Given
         ZestClientWindowOpenUrl openUrl =
                 new ZestClientWindowOpenUrl("NoWindowHandle", "http://no.wd.localhost/");
-        // When
-        openUrl.invoke(testRuntime());
-        // Then = ZestClientFailException
+        // When / Then
+        assertThrows(ZestClientFailException.class, () -> openUrl.invoke(testRuntime()));
     }
 
     private static TestRuntime testRuntime() {

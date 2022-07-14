@@ -5,20 +5,21 @@ package org.zaproxy.zest.test.v1;
 
 import java.io.File;
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestLoopFile;
 
 /** */
-public class ZestLoopFileUnitTest {
-    public static final File file =
+class ZestLoopFileUnitTest {
+    static final File file =
             new File(ZestLoopFileUnitTest.class.getResource("/TestLoopFile.txt").getPath());
+
     /**
      * Method testOpenFile.
      *
      * @throws IOException
      */
     @Test
-    public void testOpenFile() throws IOException {
+    void testOpenFile() throws IOException {
         new ZestLoopFile(file.getAbsolutePath());
     }
 }

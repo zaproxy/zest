@@ -8,10 +8,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestActionSleep;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
 import org.zaproxy.zest.core.v1.ZestClientLaunch;
@@ -21,19 +23,19 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-public class ZestClientLaunchUnitTest extends ServerBasedTest {
+class ZestClientLaunchUnitTest extends ServerBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         server.stubFor(
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody("This is the response")));
     }
 
     @Test
-    public void shouldUseArgsPassedInConstructor() {
+    void shouldUseArgsPassedInConstructor() {
         // Given
         String windowHandle = "windowHandle";
         String browserType = "browserType";
@@ -44,11 +46,11 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
         assertEquals(invokeAction.getWindowHandle(), windowHandle);
         assertEquals(invokeAction.getBrowserType(), browserType);
         assertEquals(invokeAction.getUrl(), url);
-        assertEquals(invokeAction.getCapabilities(), null);
+        assertNull(invokeAction.getCapabilities());
     }
 
     @Test
-    public void shouldUseArgsPassedInConstructorWithCapabilities() {
+    void shouldUseArgsPassedInConstructorWithCapabilities() {
         // Given
         String windowHandle = "windowHandle";
         String browserType = "browserType";
@@ -65,7 +67,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void testHtmlUnitLaunch() throws Exception {
+    void testHtmlUnitLaunch() throws Exception {
         ZestScript script = new ZestScript();
         script.add(
                 new ZestClientLaunch(
@@ -86,7 +88,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void testHtmlUnitByClassLaunch() throws Exception {
+    void testHtmlUnitByClassLaunch() throws Exception {
         ZestScript script = new ZestScript();
         ZestClientLaunch cl =
                 new ZestClientLaunch(
@@ -105,18 +107,18 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
         verifyUrlAccessed(PATH_SERVER_FILE);
     }
 
-    @Test(expected = ZestClientFailException.class)
-    public void testInvalidName() throws Exception {
+    @Test
+    void testInvalidName() throws Exception {
         ZestScript script = new ZestScript();
         script.add(new ZestClientLaunch("bad", "baddriver", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientWindowClose("bad", 0));
 
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.run(script, null);
+        assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestClientLaunch zcl1 =
                 new ZestClientLaunch(
                         "htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE), false, "/profile");
@@ -132,7 +134,7 @@ public class ZestClientLaunchUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldDeepCopy() {
+    void shouldDeepCopy() {
         // Given
         ZestClientLaunch original =
                 new ZestClientLaunch("handle", "browser", "url", "capabilities", false, "/profile");

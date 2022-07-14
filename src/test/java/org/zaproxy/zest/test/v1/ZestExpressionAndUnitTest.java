@@ -3,90 +3,90 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionAnd;
 
-public class ZestExpressionAndUnitTest {
+class ZestExpressionAndUnitTest {
 
     @Test
-    public void testDeepCopy() {
+    void testDeepCopy() {
         ZestExpressionAnd and = new ZestExpressionAnd(null);
         and.deepCopy();
     }
 
-    @Ignore
-    public void testZestExpressionAndZestConditionalElement() {
+    @Disabled
+    void testZestExpressionAndZestConditionalElement() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testZestExpressionAndZestConditionalElementListOfZestConditionalElement() {
+    @Disabled
+    void testZestExpressionAndZestConditionalElementListOfZestConditionalElement() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testEvaluate() {
+    @Disabled
+    void testEvaluate() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testZestExpressionZestConditionalElement() {
+    @Disabled
+    void testZestExpressionZestConditionalElement() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testZestExpressionZestConditionalElementListOfZestConditionalElement() {
+    @Disabled
+    void testZestExpressionZestConditionalElementListOfZestConditionalElement() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testGetChildrenCondition() {
+    @Disabled
+    void testGetChildrenCondition() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testIsLeaf() {
+    @Disabled
+    void testIsLeaf() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testIsRoot() {
+    @Disabled
+    void testIsRoot() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testAddChildConditionZestConditionalElement() {
+    @Disabled
+    void testAddChildConditionZestConditionalElement() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testAddChildConditionZestConditionalElementInt() {
+    @Disabled
+    void testAddChildConditionZestConditionalElementInt() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testGetChild() {
+    @Disabled
+    void testGetChild() {
         fail("Not yet implemented");
     }
 
-    @Ignore
-    public void testSetChildrenCondition() {
+    @Disabled
+    void testSetChildrenCondition() {
         fail("Not yet implemented");
     }
 
     @Test
-    public void testIsNot() {
+    void testIsNot() {
         ZestExpressionAnd and = new ZestExpressionAnd(null);
         assertFalse(and.isInverse());
     }
 
     @Test
-    public void testSetNot() {
+    void testSetNot() {
         ZestExpressionAnd and = new ZestExpressionAnd(null);
         assertFalse(and.isInverse());
         and.setInverse(true);

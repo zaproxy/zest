@@ -3,18 +3,18 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionIsInteger;
 
 /** */
-public class ZestExpressionIsIntegerUnitTest {
+class ZestExpressionIsIntegerUnitTest {
 
     @Test
-    public void testZestExpressionIsIntegerBadVar() {
+    void testZestExpressionIsIntegerBadVar() {
         ZestExpressionIsInteger ast = new ZestExpressionIsInteger();
         TestRuntime rt = new TestRuntime();
         ast.setVariableName("aaa");
@@ -22,7 +22,7 @@ public class ZestExpressionIsIntegerUnitTest {
     }
 
     @Test
-    public void testZestExpressionIsIntegerTrue() {
+    void testZestExpressionIsIntegerTrue() {
         ZestExpressionIsInteger ast = new ZestExpressionIsInteger();
         TestRuntime rt = new TestRuntime();
         rt.setVariable("aaa", "12");
@@ -31,7 +31,7 @@ public class ZestExpressionIsIntegerUnitTest {
     }
 
     @Test
-    public void testZestExpressionIsIntegerFalse() {
+    void testZestExpressionIsIntegerFalse() {
         ZestExpressionIsInteger ast = new ZestExpressionIsInteger();
         TestRuntime rt = new TestRuntime();
         rt.setVariable("aaa", " 12b ");
@@ -40,7 +40,7 @@ public class ZestExpressionIsIntegerUnitTest {
     }
 
     @Test
-    public void testZestExpressionIsIntegerCopy() {
+    void testZestExpressionIsIntegerCopy() {
         ZestExpressionIsInteger ast = new ZestExpressionIsInteger("aaa", true);
         ZestExpressionIsInteger ast2 = ast.deepCopy();
         assertEquals(ast.getVariableName(), ast2.getVariableName());

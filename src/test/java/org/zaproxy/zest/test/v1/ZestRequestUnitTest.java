@@ -4,20 +4,20 @@
 package org.zaproxy.zest.test.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 import java.time.Instant;
 import java.util.Date;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestCookie;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** */
-public class ZestRequestUnitTest {
+class ZestRequestUnitTest {
 
     private static final String REQUEST_SERIALISATION =
             "{\n"
@@ -58,7 +58,7 @@ public class ZestRequestUnitTest {
      * @throws Exception
      */
     @Test
-    public void testTokenReplacement() throws Exception {
+    void testTokenReplacement() throws Exception {
         ZestRequest req = new ZestRequest();
 
         req.setUrl(new URL("http://www.example.com/app/{{token1}}"));
@@ -99,7 +99,7 @@ public class ZestRequestUnitTest {
      * @throws Exception
      */
     @Test
-    public void testDeepCopy() throws Exception {
+    void testDeepCopy() throws Exception {
         ZestRequest req = new ZestRequest();
 
         req.setUrl(new URL("http://www.example.com/app/{{token1}}"));
@@ -117,24 +117,24 @@ public class ZestRequestUnitTest {
 
         ZestRequest req2 = req.deepCopy();
 
-        assertTrue(req.getHeaders().equals(req2.getHeaders()));
-        assertTrue(req.getData().equals(req2.getData()));
-        assertTrue(req.getTimestamp() == req2.getTimestamp());
+        assertEquals(req.getHeaders(), req2.getHeaders());
+        assertEquals(req.getData(), req2.getData());
+        assertEquals(req.getTimestamp(), req2.getTimestamp());
 
         ZestCookie cookie = req.getCookies().get(0);
         ZestCookie cookie2 = req2.getCookies().get(0);
 
-        assertTrue("cookies should not be reference equals", cookie != cookie2);
-        assertTrue(cookie.getDomain().equals(cookie2.getDomain()));
-        assertTrue(cookie.getName().equals(cookie2.getName()));
-        assertTrue(cookie.getValue().equals(cookie2.getValue()));
-        assertTrue(cookie.getPath().equals(cookie2.getPath()));
-        assertTrue(cookie.getExpiryDate().equals(cookie2.getExpiryDate()));
-        assertTrue(cookie.isSecure() == cookie2.isSecure());
+        assertTrue(cookie != cookie2, "cookies should not be reference equals");
+        assertEquals(cookie.getDomain(), cookie2.getDomain());
+        assertEquals(cookie.getName(), cookie2.getName());
+        assertEquals(cookie.getValue(), cookie2.getValue());
+        assertEquals(cookie.getPath(), cookie2.getPath());
+        assertEquals(cookie.getExpiryDate(), cookie2.getExpiryDate());
+        assertEquals(cookie.isSecure(), cookie2.isSecure());
     }
 
     @Test
-    public void shouldSerialise() throws Exception {
+    void shouldSerialise() throws Exception {
         // Given
         ZestRequest request = new ZestRequest();
         request.setUrl(new URL("http://example.com/"));
@@ -154,7 +154,7 @@ public class ZestRequestUnitTest {
     }
 
     @Test
-    public void shouldDeserialise() throws Exception {
+    void shouldDeserialise() throws Exception {
         // Given
         String serialisation = REQUEST_SERIALISATION;
         // When
