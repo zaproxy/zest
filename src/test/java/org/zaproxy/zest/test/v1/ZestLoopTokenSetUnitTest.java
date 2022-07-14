@@ -3,44 +3,45 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestLoopTokenSet;
 import org.zaproxy.zest.core.v1.ZestLoopTokenStringSet;
 
 /** */
-public class ZestLoopTokenSetUnitTest {
+class ZestLoopTokenSetUnitTest {
     String[] arrayValueS = {"A", "B", "C", "D", "D"};
     Integer[] arrayValueI = {1, 2, 3, 4, 5, 4, 5};
 
     @Test
-    public void testZestLoopTokenSetString() {
+    void testZestLoopTokenSetString() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet();
-        assertFalse(set.getTokens() == null);
+        assertNotNull(set.getTokens());
     }
 
     @Test
-    public void testGetToken() {
+    void testGetToken() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         for (int i = 0; i < arrayValueS.length; i++) {
             String msg = i + " expected " + arrayValueS[i] + ", obtained " + set.getToken(i);
-            assertTrue(msg, arrayValueS[i].equals(set.getToken(i)));
+            assertEquals(arrayValueS[i], set.getToken(i));
         }
     }
 
     @Test
-    public void testIndexOf() {
+    void testIndexOf() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         int indexConsidered = 3;
         String token = set.getToken(indexConsidered);
         int indexFound = set.indexOf(token);
-        assertTrue(indexFound == indexConsidered);
+        assertEquals(indexFound, indexConsidered);
     }
 
     @Test
-    public void testRemoveToken() {
+    void testRemoveToken() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         String tokenRemoved = set.getToken(0);
         boolean isPresentBeforeRemove = set.indexOf(tokenRemoved) >= 0;
@@ -49,17 +50,17 @@ public class ZestLoopTokenSetUnitTest {
     }
 
     @Test
-    public void testReplace() {
+    void testReplace() {
         int indexOfReplace = 2;
         String valueOfNewToken = "CHANGED";
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         String newToken = valueOfNewToken;
         set.replace(indexOfReplace, newToken);
-        assertTrue(set.getToken(indexOfReplace).equals(valueOfNewToken));
+        assertEquals(set.getToken(indexOfReplace), valueOfNewToken);
     }
 
     @Test
-    public void testSize() {
+    void testSize() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         int prevSize = set.size();
         set.addToken("ernvgqiup");
@@ -67,14 +68,14 @@ public class ZestLoopTokenSetUnitTest {
     }
 
     @Test
-    public void testDeepCopy() {
+    void testDeepCopy() {
         ZestLoopTokenStringSet set = new ZestLoopTokenStringSet(arrayValueS);
         ZestLoopTokenSet<String> copy = set.deepCopy();
         for (int i = 0; i < set.size(); i++) {
             String expected = set.getToken(i);
             String obtained = copy.getToken(i);
             String msg = i + " obtained " + obtained + " instead of " + expected;
-            assertTrue(msg, expected.equals(obtained));
+            assertEquals(expected, obtained);
         }
     }
 }

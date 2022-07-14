@@ -3,29 +3,30 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionProtocol;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestRequest;
 
 /** Unit test for {@link ZestExpressionProtocol}. */
-public class ZestExpressionProtocolUnitTest {
+class ZestExpressionProtocolUnitTest {
 
     @Test
-    public void shouldNotHaveProtocolByDefault() {
+    void shouldNotHaveProtocolByDefault() {
         // Given / When
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol();
         // Then
-        assertTrue(protocolExpression.getProtocol() == null);
+        assertNull(protocolExpression.getProtocol());
     }
 
     @Test
-    public void shouldNotBeInversedByDefault() {
+    void shouldNotBeInversedByDefault() {
         // Given / When
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol();
         // Then
@@ -33,7 +34,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldSetProtocol() {
+    void shouldSetProtocol() {
         // Given
         String protocol = "http";
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol();
@@ -44,7 +45,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldSetInverse() {
+    void shouldSetInverse() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol();
         // When
@@ -54,7 +55,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldDeepCopy() {
+    void shouldDeepCopy() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("https");
         protocolExpression.setInverse(true);
@@ -67,7 +68,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNoProtocolSet() throws Exception {
+    void shouldEvaluateToFalseIfNoProtocolSet() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol();
         ZestRequest request = createRequest("http://localhost/");
@@ -78,7 +79,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNoRequest() {
+    void shouldEvaluateToFalseIfNoRequest() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         // When
@@ -88,7 +89,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfRequestButNoUrl() {
+    void shouldEvaluateToFalseIfRequestButNoUrl() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         ZestRequest request = createRequest();
@@ -99,7 +100,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToTrueIfSameProtocol() throws Exception {
+    void shouldEvaluateToTrueIfSameProtocol() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         ZestRequest request = createRequest("http://localhost/");
@@ -110,7 +111,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToTrueIfSameProtocolWithDifferenceCase() throws Exception {
+    void shouldEvaluateToTrueIfSameProtocolWithDifferenceCase() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("HTTP");
         ZestRequest request = createRequest("http://localhost/");
@@ -121,7 +122,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfInverseAndSameProtocol() throws Exception {
+    void shouldEvaluateToFalseIfInverseAndSameProtocol() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         protocolExpression.setInverse(true);
@@ -133,7 +134,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNotSameProtocol() throws Exception {
+    void shouldEvaluateToFalseIfNotSameProtocol() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("https");
         ZestRequest request = createRequest("http://localhost/");
@@ -144,7 +145,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToTrueIfInverseAndNotSameProtocol() throws Exception {
+    void shouldEvaluateToTrueIfInverseAndNotSameProtocol() throws Exception {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("https");
         protocolExpression.setInverse(true);
@@ -156,7 +157,7 @@ public class ZestExpressionProtocolUnitTest {
     }
 
     @Test
-    public void shouldSerialiseAndDeserialise() {
+    void shouldSerialiseAndDeserialise() {
         // Given
         ZestExpressionProtocol protocolExpression = new ZestExpressionProtocol("http");
         // When

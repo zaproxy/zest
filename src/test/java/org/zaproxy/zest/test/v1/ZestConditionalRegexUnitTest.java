@@ -3,9 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestConditional;
 import org.zaproxy.zest.core.v1.ZestExpressionRegex;
 import org.zaproxy.zest.core.v1.ZestRequest;
@@ -13,10 +13,10 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.core.v1.ZestStatement;
 
 /** */
-public class ZestConditionalRegexUnitTest {
+class ZestConditionalRegexUnitTest {
 
     @Test
-    public void testAddingIfs() {
+    void testAddingIfs() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
 
         ZestRequest req = new ZestRequest();
@@ -41,7 +41,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveFirstIf() {
+    void testRemoveFirstIf() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -56,7 +56,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveMiddleIf() {
+    void testRemoveMiddleIf() {
 
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
@@ -72,7 +72,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveLastIf() {
+    void testRemoveLastIf() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -87,7 +87,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveFirstIf() {
+    void testMoveFirstIf() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -102,7 +102,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveSecondIf() {
+    void testMoveSecondIf() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -118,7 +118,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveLastIf() {
+    void testMoveLastIf() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -133,7 +133,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testAddingElses() {
+    void testAddingElses() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
 
         ZestRequest req = new ZestRequest();
@@ -158,7 +158,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveFirstElse() {
+    void testRemoveFirstElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -173,7 +173,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveMiddleElse() {
+    void testRemoveMiddleElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -188,7 +188,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testRemoveLastElse() {
+    void testRemoveLastElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -203,7 +203,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveFirstElse() {
+    void testMoveFirstElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -218,7 +218,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveSecondElse() {
+    void testMoveSecondElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -233,7 +233,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMoveLastElse() {
+    void testMoveLastElse() {
         ZestConditional zc = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -248,7 +248,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testDeepConditionals1() {
+    void testDeepConditionals1() {
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
@@ -261,7 +261,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testDeepConditionals2() {
+    void testDeepConditionals2() {
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc3 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
@@ -322,7 +322,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMovingIfStatements() {
+    void testMovingIfStatements() {
         ZestScript zs = new ZestScript();
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
@@ -338,7 +338,7 @@ public class ZestConditionalRegexUnitTest {
     }
 
     @Test
-    public void testMovingElseStatements() {
+    void testMovingElseStatements() {
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestRequest req1 = new ZestRequest();
         ZestRequest req2 = new ZestRequest();
@@ -352,7 +352,7 @@ public class ZestConditionalRegexUnitTest {
     }
     /*
     	@Test
-    	public void testDepthIndexing() {
+    	void testDepthIndexing() {
     System.out.println("Failing test .........");
     		ZestScript script = new ZestScript();
     		ZestRequest req = new ZestRequest();

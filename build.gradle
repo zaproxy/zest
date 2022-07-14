@@ -37,10 +37,16 @@ dependencies {
         exclude group: 'org.seleniumhq.selenium'
     }
 
-    testImplementation('junit:junit:4.11',
-                'com.github.tomakehurst:wiremock-standalone:2.14.0',
-                'org.mockito:mockito-core:2.19.1')
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.33.2") {
+        // Not needed.
+        exclude(group: "org.junit")
+    }
+    testImplementation('org.mockito:mockito-core:2.19.1')
     testImplementation("org.assertj:assertj-core:3.11.0")
+    String jupiterVersion = "5.8.2"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
 }
 
 jar {

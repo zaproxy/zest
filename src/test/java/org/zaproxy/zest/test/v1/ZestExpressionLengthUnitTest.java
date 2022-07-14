@@ -3,19 +3,19 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionLength;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 /** */
-public class ZestExpressionLengthUnitTest {
-    public static ZestResponse response;
+class ZestExpressionLengthUnitTest {
+    static ZestResponse response;
 
     static {
         try {
@@ -32,25 +32,25 @@ public class ZestExpressionLengthUnitTest {
     }
 
     @Test
-    public void testZestExpressionLength() {
+    void testZestExpressionLength() {
         ZestExpressionLength length = new ZestExpressionLength();
         assertFalse(length.isTrue(new TestRuntime(response)));
     }
 
     @Test
-    public void testZestExpressionLengthWithParamsTrue() {
+    void testZestExpressionLengthWithParamsTrue() {
         ZestExpressionLength length = new ZestExpressionLength("response.body", 100, 100);
         assertTrue(length.isTrue(new TestRuntime(response)));
     }
 
     @Test
-    public void testZestExpressionLengthWithParamsFalse() {
+    void testZestExpressionLengthWithParamsFalse() {
         ZestExpressionLength length = new ZestExpressionLength("response.body", 100, -1);
         assertFalse(length.isTrue(new TestRuntime(response)));
     }
 
     @Test
-    public void testDeepCopy() {
+    void testDeepCopy() {
         ZestExpressionLength length = new ZestExpressionLength("var", 100, 5, true);
         ZestExpressionLength copy = length.deepCopy();
         assertEquals(copy.getVariableName(), length.getVariableName());
@@ -60,7 +60,7 @@ public class ZestExpressionLengthUnitTest {
     }
 
     @Test
-    public void testDeepCopySameParams() {
+    void testDeepCopySameParams() {
         int len = 10;
         int approx = 20;
         ZestExpressionLength length = new ZestExpressionLength("response.body", len, approx);
@@ -69,39 +69,39 @@ public class ZestExpressionLengthUnitTest {
     }
 
     @Test
-    public void testGetLength() {
+    void testGetLength() {
         int len = 10;
         int approx = 20;
         ZestExpressionLength length = new ZestExpressionLength("response.body", len, approx);
-        assertTrue(len == length.getLength());
+        assertEquals(len, length.getLength());
     }
 
     @Test
-    public void testSetLength() {
+    void testSetLength() {
         int len = 10;
         ZestExpressionLength length = new ZestExpressionLength();
         length.setLength(len);
-        assertTrue(length.getLength() == len);
+        assertEquals(length.getLength(), len);
     }
 
     @Test
-    public void testGetApprox() {
+    void testGetApprox() {
         int len = 10;
         int approx = 20;
         ZestExpressionLength length = new ZestExpressionLength("response.body", len, approx);
-        assertTrue(approx == length.getApprox());
+        assertEquals(approx, length.getApprox());
     }
 
     @Test
-    public void testSetApprox() {
+    void testSetApprox() {
         int approx = 10;
         ZestExpressionLength length = new ZestExpressionLength();
         length.setApprox(approx);
-        assertTrue(approx == length.getApprox());
+        assertEquals(approx, length.getApprox());
     }
 
     @Test
-    public void testEvaluateInverse() {
+    void testEvaluateInverse() {
         ZestExpressionLength length = new ZestExpressionLength("response.body", 100, 100);
         length.setInverse(true);
         TestRuntime runtime = new TestRuntime(response);
@@ -109,7 +109,7 @@ public class ZestExpressionLengthUnitTest {
     }
 
     @Test
-    public void testIsTrueNullBody() {
+    void testIsTrueNullBody() {
         ZestResponse resp = new ZestResponse(null, null, null, 0, 0);
         ZestExpressionLength length = new ZestExpressionLength("response.body", 100, 100);
         assertFalse(length.isTrue(new TestRuntime(resp)));

@@ -3,20 +3,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestComment;
 import org.zaproxy.zest.core.v1.ZestLoop;
 import org.zaproxy.zest.core.v1.ZestLoopTokenSet;
 import org.zaproxy.zest.core.v1.ZestStatement;
 
 /** Unit test for {@link ZestLoop}. */
-public class ZestLoopUnitTest {
+class ZestLoopUnitTest {
 
     @Test
-    public void shouldReturnEmptyListIfNoStatementsWhenCopyingStatements() {
+    void shouldReturnEmptyListIfNoStatementsWhenCopyingStatements() {
         // Given
         ZestLoop<String> loop = new ZestLoopTest();
         // When
@@ -26,7 +27,7 @@ public class ZestLoopUnitTest {
     }
 
     @Test
-    public void shouldReturnADifferentListAndStatementsWhenCopyingStatements() {
+    void shouldReturnADifferentListAndStatementsWhenCopyingStatements() {
         // Given
         ZestLoop<String> loop = new ZestLoopTest();
         loop.addStatement(new ZestComment());
@@ -35,7 +36,7 @@ public class ZestLoopUnitTest {
         List<ZestStatement> copiedStatements = loop.copyStatements();
         // Then
         assertTrue(copiedStatements != loop.getStatements());
-        assertTrue(copiedStatements.size() == loop.getStatements().size());
+        assertEquals(copiedStatements.size(), loop.getStatements().size());
         assertTrue(copiedStatements.get(0) != loop.getStatements().get(0));
         assertTrue(copiedStatements.get(1) != loop.getStatements().get(1));
     }

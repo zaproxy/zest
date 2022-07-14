@@ -3,13 +3,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionRegex;
 
-public class ZestConditionalRegexComplexUnitTest {
+class ZestConditionalRegexComplexUnitTest {
 
     @Test
-    public void testEvaluateAlone() {
+    void testEvaluateAlone() {
         new ZestExpressionRegex();
     }
 }

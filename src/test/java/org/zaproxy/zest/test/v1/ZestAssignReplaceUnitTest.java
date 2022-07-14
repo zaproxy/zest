@@ -3,16 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignReplace;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** */
-public class ZestAssignReplaceUnitTest {
+class ZestAssignReplaceUnitTest {
 
     /**
      * Method testSimpleCase.
@@ -20,7 +20,7 @@ public class ZestAssignReplaceUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSimpleCase() throws Exception {
+    void testSimpleCase() throws Exception {
         ZestAssignReplace ast = new ZestAssignReplace();
         ZestResponse resp =
                 new ZestResponse(
@@ -45,7 +45,7 @@ public class ZestAssignReplaceUnitTest {
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestAssignReplace assign = new ZestAssignReplace("var", "aaa", "bbb", false, true);
 
         String str = ZestJSON.toString(assign);
@@ -61,9 +61,8 @@ public class ZestAssignReplaceUnitTest {
     }
 
     @Test
-    public void
-            shouldReplaceStringWithDifferentCaseWhenUsingPlainStringReplacementWithoutExactCase()
-                    throws Exception {
+    void shouldReplaceStringWithDifferentCaseWhenUsingPlainStringReplacementWithoutExactCase()
+            throws Exception {
         // Given
         boolean regex = false;
         boolean exactCase = false;
@@ -76,7 +75,7 @@ public class ZestAssignReplaceUnitTest {
     }
 
     @Test
-    public void shouldReplaceStringWithDifferentCaseWhenUsingRegexReplacementWithoutExactCase()
+    void shouldReplaceStringWithDifferentCaseWhenUsingRegexReplacementWithoutExactCase()
             throws Exception {
         // Given
         boolean regex = true;
@@ -90,7 +89,7 @@ public class ZestAssignReplaceUnitTest {
     }
 
     @Test
-    public void shouldReplaceStringWithExactCaseWhenUsingPlainStringReplacementWithExactCase()
+    void shouldReplaceStringWithExactCaseWhenUsingPlainStringReplacementWithExactCase()
             throws Exception {
         // Given
         boolean regex = false;
@@ -104,8 +103,7 @@ public class ZestAssignReplaceUnitTest {
     }
 
     @Test
-    public void shouldReplaceStringWithExactCaseWhenUsingRegexReplacementWithExactCase()
-            throws Exception {
+    void shouldReplaceStringWithExactCaseWhenUsingRegexReplacementWithExactCase() throws Exception {
         // Given
         boolean regex = true;
         boolean exactCase = true;

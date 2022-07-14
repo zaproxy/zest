@@ -3,16 +3,18 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestConditional;
 import org.zaproxy.zest.core.v1.ZestExpression;
 import org.zaproxy.zest.core.v1.ZestExpressionAnd;
@@ -28,27 +30,27 @@ import org.zaproxy.zest.core.v1.ZestRuntime;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** */
-public class ZestStructuredExpressionUnitTest {
+class ZestStructuredExpressionUnitTest {
     @Test
-    public void testDeepCopySingleAndSameChildrenSize() {
+    void testDeepCopySingleAndSameChildrenSize() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         and.addChildCondition(new ZestExpressionStatusCode(100));
         and.addChildCondition(new ZestExpressionLength("response.body", 1, 1));
         ZestExpressionAnd copy = and.deepCopy();
-        assertTrue(and.getChildrenCondition().size() == copy.getChildrenCondition().size());
+        assertEquals(and.getChildrenCondition().size(), copy.getChildrenCondition().size());
     }
 
     @Test
-    public void testOrDeepCopySingleAndSameChildrenSize() {
+    void testOrDeepCopySingleAndSameChildrenSize() {
         ZestExpressionOr or = new ZestExpressionOr();
         or.addChildCondition(new ZestExpressionStatusCode(100));
         or.addChildCondition(new ZestExpressionLength("response.body", 1, 1));
         ZestExpressionOr copy = or.deepCopy();
-        assertTrue(or.getChildrenCondition().size() == copy.getChildrenCondition().size());
+        assertEquals(or.getChildrenCondition().size(), copy.getChildrenCondition().size());
     }
 
     @Test
-    public void testDeepCopySingleAndSameChildrenClasses() {
+    void testDeepCopySingleAndSameChildrenClasses() {
         List<ZestExpressionElement> children = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             children.add(new ZestExpressionLength());
@@ -56,12 +58,12 @@ public class ZestStructuredExpressionUnitTest {
         ZestExpressionAnd and = new ZestExpressionAnd(children);
         ZestExpressionAnd copy = and.deepCopy();
         for (int i = 0; i < children.size(); i++) {
-            assertTrue(and.getChild(i).getClass() == copy.getChild(i).getClass());
+            assertEquals(and.getChild(i).getClass(), copy.getChild(i).getClass());
         }
     }
 
     @Test
-    public void testOrDeepCopySingleAndSameChildrenClasses() {
+    void testOrDeepCopySingleAndSameChildrenClasses() {
         List<ZestExpressionElement> children = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             children.add(new ZestExpressionLength());
@@ -69,12 +71,12 @@ public class ZestStructuredExpressionUnitTest {
         ZestExpressionOr or = new ZestExpressionOr(children);
         ZestExpressionOr copy = or.deepCopy();
         for (int i = 0; i < children.size(); i++) {
-            assertTrue(or.getChild(i).getClass() == copy.getChild(i).getClass());
+            assertEquals(or.getChild(i).getClass(), copy.getChild(i).getClass());
         }
     }
 
     @Test
-    public void testDeepCopyComplexCondition() {
+    void testDeepCopyComplexCondition() {
         ZestExpressionAnd and1 = new ZestExpressionAnd();
         ZestExpressionAnd and2 = new ZestExpressionAnd();
         ZestExpressionAnd and3 = new ZestExpressionAnd();
@@ -95,7 +97,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testDeepCopyNoPointer() {
+    void testDeepCopyNoPointer() {
         LinkedList<ZestExpressionElement> children = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             children.add(new ZestExpressionStatusCode(i));
@@ -103,14 +105,14 @@ public class ZestStructuredExpressionUnitTest {
         ZestExpressionAnd and = new ZestExpressionAnd(children);
         ZestExpressionAnd copy = and.deepCopy();
         and.removeChildCondition(0);
-        assertTrue(
-                and.getChildrenCondition().size() + 1
-                        == copy.getChildrenCondition().size()); // different size <=> no
+        assertEquals(
+                and.getChildrenCondition().size() + 1,
+                copy.getChildrenCondition().size()); // different size <=> no
         // pointers
     }
 
     @Test
-    public void testIsLeaf() { // TODO maybe an exception raises if a
+    void testIsLeaf() { // TODO maybe an exception raises if a
         // StructuredExpr has no child
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionAnd andChild = new ZestExpressionAnd();
@@ -121,7 +123,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testRemoveFirstChild() {
+    void testRemoveFirstChild() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         and.addChildCondition(new ZestExpressionLength());
         and.addChildCondition(new ZestExpressionStatusCode());
@@ -130,7 +132,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testRemoveLastChild() {
+    void testRemoveLastChild() {
         int childrenSize = 10; // initial size
         ZestExpressionAnd and = new ZestExpressionAnd();
         for (int i = 0; i < childrenSize - 1; i++) {
@@ -146,7 +148,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testRemoveMiddleChild() {
+    void testRemoveMiddleChild() {
         int half = 5;
         ZestExpressionAnd and = new ZestExpressionAnd();
         for (int i = 0; i < half; i++) {
@@ -164,7 +166,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testRemoveAllChildren() {
+    void testRemoveAllChildren() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         for (int i = 0; i < 10; i++) {
             if (i % 2 == 0) and.addChildCondition(new ZestExpressionLength());
@@ -177,15 +179,13 @@ public class ZestStructuredExpressionUnitTest {
         if (!and.removeAllChildren(toRemove)) fail();
         else {
             for (int i = 0; i < and.getChildrenCondition().size(); i++) {
-                assertTrue(
-                        "Element n°" + i,
-                        and.getChild(i).getClass().equals(ZestExpressionStatusCode.class));
+                assertEquals(and.getChild(i).getClass(), ZestExpressionStatusCode.class);
             }
         }
     }
 
     @Test
-    public void testAddChildConditionZestExpressionElementInt() {
+    void testAddChildConditionZestExpressionElementInt() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         for (int i = 0; i < 10; i++) and.addChildCondition(new ZestExpressionLength());
         Random random = new Random();
@@ -203,7 +203,7 @@ public class ZestStructuredExpressionUnitTest {
                                 + expected.getName()
                                 + "; obtained "
                                 + wrong.getName();
-                assertTrue(msg, and.getChild(i).getClass().equals(expected));
+                assertEquals(and.getChild(i).getClass(), expected);
             } else {
                 Class<ZestExpressionLength> wrong = ZestExpressionLength.class;
                 Class<ZestExpressionStatusCode> expected = ZestExpressionStatusCode.class;
@@ -214,13 +214,13 @@ public class ZestStructuredExpressionUnitTest {
                                 + expected.getName()
                                 + "; obtained "
                                 + wrong.getName();
-                assertTrue(msg, and.getChild(i).getClass().equals(expected));
+                assertEquals(and.getChild(i).getClass(), expected);
             }
         }
     }
 
     @Test
-    public void testComplexCondition() {
+    void testComplexCondition() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionOr or = new ZestExpressionOr();
         try {
@@ -272,7 +272,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testSetChildrenCondition() {
+    void testSetChildrenCondition() {
         List<ZestExpressionElement> children = new LinkedList<>();
         children.add(new ZestExpressionAnd());
         children.add(new ZestExpressionLength("response.body", 1, 2));
@@ -283,19 +283,19 @@ public class ZestStructuredExpressionUnitTest {
             String expected = children.get(i).getClass().getName();
             String obtained = root.getChild(i).getClass().getName();
             String msg = "[" + i + "] - Obtained " + obtained + " instead of " + expected;
-            assertTrue(msg, children.get(i).getClass().equals(root.getChild(i).getClass()));
+            assertEquals(children.get(i).getClass(), root.getChild(i).getClass());
         }
     }
 
     @Test
-    public void testDeepCopyOr() {
+    void testDeepCopyOr() {
         ZestExpressionOr or = new ZestExpressionOr();
         ZestExpressionOr copy = or.deepCopy();
-        assertTrue(or.getClass().equals(copy.getClass()));
+        assertEquals(or.getClass(), copy.getClass());
     }
 
     @Test
-    public void testClearChildren() {
+    void testClearChildren() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         LinkedList<ZestExpressionElement> children = new LinkedList<>();
         children.add(new ZestExpressionAnd());
@@ -309,21 +309,21 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testDeepCopyNullChildren() {
+    void testDeepCopyNullChildren() {
         ZestExpressionAnd and = new ZestExpressionAnd(null);
         ZestExpressionAnd copy = and.deepCopy();
-        assertTrue(copy.getClass().equals(and.getClass()));
+        assertEquals(copy.getClass(), and.getClass());
     }
 
     @Test
-    public void testOrDeepCopyNullChildren() {
+    void testOrDeepCopyNullChildren() {
         ZestExpressionOr or = new ZestExpressionOr(null);
         ZestExpressionOr copy = or.deepCopy();
-        assertTrue(copy.getClass().equals(or.getClass()));
+        assertEquals(copy.getClass(), or.getClass());
     }
 
     @Test
-    public void testRemoveChildCondition() {
+    void testRemoveChildCondition() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionLength lengthExpr = new ZestExpressionLength("response.body", 10, 20);
         and.addChildCondition(lengthExpr);
@@ -332,21 +332,21 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testRemoveChildConditionReturnValue() {
+    void testRemoveChildConditionReturnValue() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionLength lengthExpr = new ZestExpressionLength("response.body", 10, 20);
         and.addChildCondition(lengthExpr);
-        assertTrue(and.removeChildCondition(lengthExpr).equals(lengthExpr));
+        assertEquals(and.removeChildCondition(lengthExpr), lengthExpr);
     }
 
     @Test
-    public void testRemoveChildNotPresent() {
+    void testRemoveChildNotPresent() {
         ZestExpressionAnd and = new ZestExpressionAnd();
-        assertTrue(and.removeChildCondition(new ZestExpressionLength()) == null);
+        assertNull(and.removeChildCondition(new ZestExpressionLength()));
     }
 
     @Test
-    public void testZestExpressionAndLazyEvaluation() {
+    void testZestExpressionAndLazyEvaluation() {
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionLength lengthExpr = new ZestExpressionLength("response.body", 100, 100, true);
         ZestExpression expectException =
@@ -370,7 +370,7 @@ public class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    public void testZestExpressionOrLazyEvaluation() {
+    void testZestExpressionOrLazyEvaluation() {
         ZestExpressionOr or = new ZestExpressionOr();
         ZestExpressionLength lengthExpr = new ZestExpressionLength("response.body", 100, 100);
         ZestExpression expectedException =

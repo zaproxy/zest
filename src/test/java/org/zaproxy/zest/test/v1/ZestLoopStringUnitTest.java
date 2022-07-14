@@ -3,14 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestActionFail;
 import org.zaproxy.zest.core.v1.ZestAssignString;
 import org.zaproxy.zest.core.v1.ZestConditional;
@@ -22,17 +22,17 @@ import org.zaproxy.zest.core.v1.ZestStatement;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-public class ZestLoopStringUnitTest {
+class ZestLoopStringUnitTest {
     String[] values = {"1", "2", "3", "4", "5", "6", "7"};
 
     @Test
-    public void testZestLoopString() {
+    void testZestLoopString() {
         ZestLoopString loop = new ZestLoopString(0, values);
         assertTrue(loop.getCurrentState() != null);
     }
 
     @Test
-    public void testZestLoopStringStringArrayIntListOfZestStatement() {
+    void testZestLoopStringStringArrayIntListOfZestStatement() {
         LinkedList<ZestStatement> statements = new LinkedList<>();
         int firstIndex = 3;
         for (int i = 0; i < firstIndex - 1; i++) {
@@ -47,12 +47,12 @@ public class ZestLoopStringUnitTest {
         }
         boolean rightStmtPos = loop.getStatement(idx).getClass().equals(ZestLoopString.class);
         boolean rightSetSize = loop.getSet().size() == values.length;
-        assertTrue("right statements position", rightStmtPos);
-        assertTrue("right Set Size", rightSetSize);
+        assertTrue(rightStmtPos, "right statements position");
+        assertTrue(rightSetSize, "right Set Size");
     }
 
     @Test
-    public void testLoop() {
+    void testLoop() {
         List<ZestStatement> stmts = new LinkedList<>();
         stmts.add(new ZestConditional());
         ZestLoopString loop = new ZestLoopString(0, values);
@@ -66,62 +66,60 @@ public class ZestLoopStringUnitTest {
         ZestLoopStateString state = loop.getCurrentState();
         boolean rightIndex = state.getCurrentIndex() == stopIndex;
         boolean rightValue = state.getCurrentToken().equals(values[state.getCurrentIndex()]);
-        assertTrue("right index", rightIndex);
-        assertTrue("right value", rightValue);
-        assertFalse("not last state", state.isLastState(loop.getSet()));
+        assertTrue(rightIndex, "right index");
+        assertTrue(rightValue, "right value");
+        assertFalse(state.isLastState(loop.getSet()), "not last state");
     }
 
     @Test
-    public void testEndLoop() {
+    void testEndLoop() {
         ZestLoopString loop = new ZestLoopString(0, values);
         loop.endLoop();
         assertTrue(loop.getCurrentState().isLastState(loop.getSet()));
     }
 
     @Test
-    public void testAddStatement() {
+    void testAddStatement() {
         ZestLoopString loop1 = new ZestLoopString(values);
         ZestLoopString loop2 = new ZestLoopString(values);
         loop1.addStatement(loop2);
-        assertTrue(loop1.getStatement(1).getClass().equals(ZestLoopString.class));
+        assertEquals(loop1.getStatement(1).getClass(), ZestLoopString.class);
     }
 
     @Test
-    public void testGetLast() {
+    void testGetLast() {
         ZestLoopString loop = new ZestLoopString(values);
         for (int i = 0; i < 10; i++) {
             loop.addStatement(new ZestConditional());
         }
         loop.addStatement(new ZestLoopString(values));
-        assertTrue(loop.getLast().getClass().equals(ZestLoopString.class));
+        assertEquals(loop.getLast().getClass(), ZestLoopString.class);
     }
 
     @Test
-    public void testDeepCopy() {
+    void testDeepCopy() {
         ZestLoopString loop = new ZestLoopString(values);
         loop.addStatement(new ZestConditional());
         loop.addStatement(new ZestLoopString(values));
         loop.addStatement(new ZestActionFail());
         ZestLoopString copy = loop.deepCopy();
-        assertTrue("same state", copy.getCurrentState().equals(loop.getCurrentState()));
+        assertEquals(copy.getCurrentState(), loop.getCurrentState());
     }
 
     @Test
-    public void testGetValues() {
+    void testGetValues() {
         ZestLoopString loop = new ZestLoopString(values);
         String[] valuesObtained = loop.getValues();
         if (valuesObtained.length != values.length) {
             fail("The two arrays do not have same length!");
         }
         for (int i = 0; i < values.length; i++) {
-            assertTrue(
-                    i + " expected " + values[i] + " instead of " + valuesObtained[i],
-                    valuesObtained[i].equals(values[i]));
+            assertEquals(valuesObtained[i], values[i]);
         }
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestLoopString loop = new ZestLoopString(values);
         String str = ZestJSON.toString(loop);
         System.out.println(str);
@@ -131,14 +129,12 @@ public class ZestLoopStringUnitTest {
             fail("The two arrays do not have same length!");
         }
         for (int i = 0; i < values.length; i++) {
-            assertTrue(
-                    i + " expected " + values[i] + " instead of " + loop2.getValues()[i],
-                    loop2.getValues()[i].equals(values[i]));
+            assertEquals(loop2.getValues()[i], values[i]);
         }
     }
 
     @Test
-    public void testDisable() throws Exception {
+    void testDisable() throws Exception {
         ZestScript script = new ZestScript();
         ZestAssignString zaInit = new ZestAssignString("res", "");
         ZestLoopString loop = new ZestLoopString("var", values);

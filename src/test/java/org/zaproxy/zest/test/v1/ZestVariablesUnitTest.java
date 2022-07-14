@@ -3,7 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -11,37 +13,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** Unit test for {@link ZestVariables}. */
-public class ZestVariablesUnitTest {
+class ZestVariablesUnitTest {
 
     private static final String VAR_NAME = "name";
     private static final String VAR_VALUE = "value";
 
     @Test
-    public void shouldHaveTokenStartByDefault() {
+    void shouldHaveTokenStartByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         String tokenStart = zestVars.getTokenStart();
         // Then
-        assertTrue("{{".equals(tokenStart));
+        assertEquals("{{", tokenStart);
     }
 
     @Test
-    public void shouldHaveTokenEndByDefault() {
+    void shouldHaveTokenEndByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         String tokenEnd = zestVars.getTokenEnd();
         // Then
-        assertTrue("}}".equals(tokenEnd));
+        assertEquals("}}", tokenEnd);
     }
 
     @Test
-    public void shouldHaveNoVariablesByDefault() {
+    void shouldHaveNoVariablesByDefault() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
@@ -51,113 +53,113 @@ public class ZestVariablesUnitTest {
     }
 
     @Test
-    public void shouldSetTokenStart() {
+    void shouldSetTokenStart() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenStart = "\\|";
         // When
         zestVars.setTokenStart(tokenStart);
         // Then
-        assertTrue(zestVars.getTokenStart().equals(tokenStart));
+        assertEquals(zestVars.getTokenStart(), tokenStart);
     }
 
     @Test
-    public void shouldSetTokenEnd() {
+    void shouldSetTokenEnd() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String tokenEnd = "|//";
         // When
         zestVars.setTokenEnd(tokenEnd);
         // Then
-        assertTrue(zestVars.getTokenEnd().equals(tokenEnd));
+        assertEquals(zestVars.getTokenEnd(), tokenEnd);
     }
 
     @Test
-    public void shouldAddVarWithNameAsValue() {
+    void shouldAddVarWithNameAsValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         zestVars.addVariable(VAR_NAME);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldAddVarWithValue() {
+    void shouldAddVarWithValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         zestVars.addVariable(VAR_NAME, VAR_VALUE);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_VALUE.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_VALUE, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldAddVarWithNameAsValueIfValueIsNull() {
+    void shouldAddVarWithNameAsValueIfValueIsNull() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
         // When
         zestVars.addVariable(VAR_NAME, value);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldNotAddVarIfAlreadyAdded() {
+    void shouldNotAddVarIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
         // When
         zestVars.addVariable(VAR_NAME);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldNotAddVarWithValueIfAlreadyAdded() {
+    void shouldNotAddVarWithValueIfAlreadyAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME);
         // When
         zestVars.addVariable(VAR_NAME, VAR_VALUE);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldGetValueOfVariableAdded() {
+    void shouldGetValueOfVariableAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.addVariable(VAR_NAME, VAR_VALUE);
         // When
         String valueObtained = zestVars.getVariable(VAR_NAME);
         // Then
-        assertTrue(valueObtained.equals(VAR_VALUE));
+        assertEquals(valueObtained, VAR_VALUE);
     }
 
     @Test
-    public void shouldGetNullValueIfVariableWasNotAdded() {
+    void shouldGetNullValueIfVariableWasNotAdded() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         String valueObtained = zestVars.getVariable(VAR_NAME);
         // Then
-        assertTrue(valueObtained == null);
+        assertNull(valueObtained);
     }
 
     @Test
-    public void shouldSetVariables() {
+    void shouldSetVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -173,55 +175,55 @@ public class ZestVariablesUnitTest {
         // When
         zestVars.setVariable(vars);
         // Then
-        assertTrue(zestVars.getVariables().size() == 3);
-        assertTrue(varName1.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(varValue1.equals(zestVars.getVariables().get(0)[1]));
-        assertTrue(varName2.equals(zestVars.getVariables().get(1)[0]));
-        assertTrue(varValue2.equals(zestVars.getVariables().get(1)[1]));
-        assertTrue(varName3.equals(zestVars.getVariables().get(2)[0]));
-        assertTrue(zestVars.getVariables().get(2)[1] == varValue3);
+        assertEquals(zestVars.getVariables().size(), 3);
+        assertEquals(varName1, zestVars.getVariables().get(0)[0]);
+        assertEquals(varValue1, zestVars.getVariables().get(0)[1]);
+        assertEquals(varName2, zestVars.getVariables().get(1)[0]);
+        assertEquals(varValue2, zestVars.getVariables().get(1)[1]);
+        assertEquals(varName3, zestVars.getVariables().get(2)[0]);
+        assertEquals(zestVars.getVariables().get(2)[1], varValue3);
     }
 
     @Test
-    public void shouldSetVariable() {
+    void shouldSetVariable() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         zestVars.setVariable(VAR_NAME, VAR_NAME);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[1]));
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[1]);
     }
 
     @Test
-    public void shouldSetVariableWithNullName() {
+    void shouldSetVariableWithNullName() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String name = null;
         // When
         zestVars.setVariable(name, VAR_VALUE);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(zestVars.getVariables().get(0)[0] == null);
-        assertTrue(zestVars.getVariables().get(0)[1] == VAR_VALUE);
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertNull(zestVars.getVariables().get(0)[0]);
+        assertEquals(zestVars.getVariables().get(0)[1], VAR_VALUE);
     }
 
     @Test
-    public void shouldSetVariableWithNullValue() {
+    void shouldSetVariableWithNullValue() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         String value = null;
         // When
         zestVars.setVariable(VAR_NAME, value);
         // Then
-        assertTrue(zestVars.getVariables().size() == 1);
-        assertTrue(VAR_NAME.equals(zestVars.getVariables().get(0)[0]));
-        assertTrue(zestVars.getVariables().get(0)[1] == value);
+        assertEquals(zestVars.getVariables().size(), 1);
+        assertEquals(VAR_NAME, zestVars.getVariables().get(0)[0]);
+        assertEquals(zestVars.getVariables().get(0)[1], value);
     }
 
     @Test
-    public void shouldAddVariables() {
+    void shouldAddVariables() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         Map<String, String> vars = new HashMap<>();
@@ -239,27 +241,27 @@ public class ZestVariablesUnitTest {
         // When
         zestVars.addVariables(vars);
         // Then
-        assertTrue(zestVars.getVariables().size() == 3);
-        assertTrue(zestVars.getVariables().get(0)[0] == varName1);
-        assertTrue(varValue1.equals(zestVars.getVariables().get(0)[1]));
-        assertTrue(varName3.equals(zestVars.getVariables().get(1)[0]));
-        assertTrue(zestVars.getVariables().get(1)[1] == varValue3);
-        assertTrue(varName2.equals(zestVars.getVariables().get(2)[0]));
-        assertTrue(zestVars.getVariables().get(2)[1] == varValue2);
+        assertEquals(zestVars.getVariables().size(), 3);
+        assertEquals(zestVars.getVariables().get(0)[0], varName1);
+        assertEquals(varValue1, zestVars.getVariables().get(0)[1]);
+        assertEquals(varName3, zestVars.getVariables().get(1)[0]);
+        assertEquals(zestVars.getVariables().get(1)[1], varValue3);
+        assertEquals(varName2, zestVars.getVariables().get(2)[0]);
+        assertEquals(zestVars.getVariables().get(2)[1], varValue2);
     }
 
     @Test
-    public void shouldReturnNullStringIfReplacingVariablesInNullString() {
+    void shouldReturnNullStringIfReplacingVariablesInNullString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         // When
         String finalString = zestVars.replaceInString(null, false);
         // Then
-        assertTrue(finalString == null);
+        assertNull(finalString);
     }
 
     @Test
-    public void shouldReplaceVariablesInString() {
+    void shouldReplaceVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "0");
@@ -275,11 +277,11 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
-        assertTrue("0 < 1 != []".equals(finalString));
+        assertEquals("0 < 1 != []", finalString);
     }
 
     @Test
-    public void shouldReplaceVariablesInVariablesInString() {
+    void shouldReplaceVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "-1 < " + token(zestVars, "Var2"));
@@ -289,11 +291,11 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
-        assertTrue("-1 < 1 <= 1".equals(finalString));
+        assertEquals("-1 < 1 <= 1", finalString);
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInVariablesInString() {
+    void shouldReplaceLoopingVariablesInVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
@@ -303,13 +305,13 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, false);
         // Then
-        assertTrue(
-                ("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2"))
-                        .equals(finalString));
+        assertEquals(
+                ("No Loop: [" + token(zestVars, "Var2") + "] | " + token(zestVars, "Var2")),
+                finalString);
     }
 
     @Test
-    public void shouldReplaceEncodedVariablesInString() {
+    void shouldReplaceEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "0");
@@ -326,11 +328,11 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, encode);
         // Then
-        assertTrue("0 < 1 != []".equals(finalString));
+        assertEquals("0 < 1 != []", finalString);
     }
 
     @Test
-    public void shouldReplaceVariablesInEncodedVariablesInString() {
+    void shouldReplaceVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var%", "-1 < " + token(zestVars, "Var&"));
@@ -342,11 +344,11 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, encode);
         // Then
-        assertTrue("-1 < 1 <= 1".equals(finalString));
+        assertEquals("-1 < 1 <= 1", finalString);
     }
 
     @Test
-    public void shouldReplaceLoopingVariablesInEncodedVariablesInString() {
+    void shouldReplaceLoopingVariablesInEncodedVariablesInString() {
         // Given
         ZestVariables zestVars = new ZestVariables();
         zestVars.setVariable("Var1", "No Loop: " + token(zestVars, "Var2"));
@@ -358,12 +360,12 @@ public class ZestVariablesUnitTest {
         // When
         String finalString = zestVars.replaceInString(string, encode);
         // Then
-        assertTrue(
+        assertEquals(
                 ("No Loop: ["
-                                + token(zestVars, "Var2")
-                                + "] | "
-                                + urlencoded(token(zestVars, "Var3")))
-                        .equals(finalString));
+                        + token(zestVars, "Var2")
+                        + "] | "
+                        + urlencoded(token(zestVars, "Var3"))),
+                finalString);
     }
 
     private static String token(ZestVariables zestVars, String string) {

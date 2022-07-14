@@ -3,16 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestActionSleep;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 /** */
-public class ZestActionSleepUnitTest {
+class ZestActionSleepUnitTest {
 
     /**
      * Method testSimpleJsScript.
@@ -20,7 +20,7 @@ public class ZestActionSleepUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSimpleJsScript() throws Exception {
+    void testSimpleJsScript() throws Exception {
         long sleepTime = 1000;
         ZestActionSleep inv = new ZestActionSleep();
         inv.setMilliseconds(sleepTime);
@@ -39,7 +39,7 @@ public class ZestActionSleepUnitTest {
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestActionSleep inv = new ZestActionSleep();
         inv.setMilliseconds(1000);
 

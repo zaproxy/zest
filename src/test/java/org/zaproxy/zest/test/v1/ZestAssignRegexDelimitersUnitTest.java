@@ -3,14 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignFailException;
 import org.zaproxy.zest.core.v1.ZestAssignRegexDelimiters;
 import org.zaproxy.zest.core.v1.ZestJSON;
@@ -20,7 +20,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-public class ZestAssignRegexDelimitersUnitTest {
+class ZestAssignRegexDelimitersUnitTest {
 
     private TestRuntime rt = new TestRuntime();
 
@@ -30,7 +30,7 @@ public class ZestAssignRegexDelimitersUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSimpleCase() throws Exception {
+    void testSimpleCase() throws Exception {
         ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
         ZestResponse resp =
                 new ZestResponse(
@@ -53,7 +53,7 @@ public class ZestAssignRegexDelimitersUnitTest {
      * @throws Exception
      */
     @Test
-    public void testRegexes() throws Exception {
+    void testRegexes() throws Exception {
         ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
         ZestResponse resp =
                 new ZestResponse(
@@ -78,7 +78,7 @@ public class ZestAssignRegexDelimitersUnitTest {
      * @throws Exception
      */
     @Test
-    public void testExceptions() throws Exception {
+    void testExceptions() throws Exception {
         ZestAssignRegexDelimiters ast = new ZestAssignRegexDelimiters();
         ZestResponse resp = new ZestResponse(null, "aaaa", "bbbb", 200, 0);
 
@@ -130,7 +130,7 @@ public class ZestAssignRegexDelimitersUnitTest {
      * @throws Exception
      */
     @Test
-    public void testAssignRegexDelimitersZestScript() throws Exception {
+    void testAssignRegexDelimitersZestScript() throws Exception {
         ZestResponse resp =
                 new ZestResponse(
                         null,

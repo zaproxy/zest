@@ -3,10 +3,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignFieldValue;
 import org.zaproxy.zest.core.v1.ZestAssignStringDelimiters;
 import org.zaproxy.zest.core.v1.ZestConditional;
@@ -18,10 +18,10 @@ import org.zaproxy.zest.core.v1.ZestStatement;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
 /** */
-public class ZestScriptUnitTest {
+class ZestScriptUnitTest {
 
     @Test
-    public void testSimpleIndexing() {
+    void testSimpleIndexing() {
         ZestScript script = new ZestScript();
         ZestRequest req = new ZestRequest();
         script.add(req);
@@ -37,7 +37,7 @@ public class ZestScriptUnitTest {
     }
 
     @Test
-    public void testDepthIndexing() {
+    void testDepthIndexing() {
         ZestScript script = new ZestScript();
         ZestRequest req = new ZestRequest();
         script.add(req);
@@ -81,7 +81,7 @@ public class ZestScriptUnitTest {
     }
 
     @Test
-    public void testDeepComplex() {
+    void testDeepComplex() {
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc3 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
@@ -159,7 +159,7 @@ public class ZestScriptUnitTest {
     }
 
     @Test
-    public void testDeepMiscOrder() {
+    void testDeepMiscOrder() {
         ZestScript script = new ZestScript();
         ZestConditional zc1 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
         ZestConditional zc2 = new ZestConditional(new ZestExpressionRegex("BODY", ""));
@@ -232,7 +232,7 @@ public class ZestScriptUnitTest {
     }
 
     @Test
-    public void testVariableNames() {
+    void testVariableNames() {
         ZestScript script = new ZestScript();
         // Check the default ones
         assertTrue(script.getVariableNames().contains(ZestVariables.REQUEST_HEADER));

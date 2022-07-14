@@ -3,17 +3,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignCalc;
 import org.zaproxy.zest.core.v1.ZestAssignFailException;
 
 /** Unit test for {@code ZestAssignCalc}. */
-public class ZestAssignCalcUnitTest {
+class ZestAssignCalcUnitTest {
 
     @Test
-    public void shouldBePassiveZestStatement() {
+    void shouldBePassiveZestStatement() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -21,15 +24,15 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldHaveNoVariableNameByDefault() {
+    void shouldHaveNoVariableNameByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
-        assertTrue(assignCalc.getVariableName() == null);
+        assertNull(assignCalc.getVariableName());
     }
 
     @Test
-    public void shouldBeEnabledByDefault() {
+    void shouldBeEnabledByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
@@ -37,27 +40,27 @@ public class ZestAssignCalcUnitTest {
     }
 
     @Test
-    public void shouldHaveNoOperandsNorOperationByDefault() {
+    void shouldHaveNoOperandsNorOperationByDefault() {
         // Given / When
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // Then
-        assertTrue(assignCalc.getOperandA() == null);
-        assertTrue(assignCalc.getOperation() == null);
-        assertTrue(assignCalc.getOperandB() == null);
+        assertNull(assignCalc.getOperandA());
+        assertNull(assignCalc.getOperation());
+        assertNull(assignCalc.getOperandB());
     }
 
     @Test
-    public void shouldConstructWithVariableName() {
+    void shouldConstructWithVariableName() {
         // Given
         String variableName = "Var1";
         // When
         ZestAssignCalc assignCalc = new ZestAssignCalc(variableName);
         // Then
-        assertTrue(variableName.equals(assignCalc.getVariableName()));
+        assertEquals(variableName, assignCalc.getVariableName());
     }
 
     @Test
-    public void shouldConstructWithVariableNameOperandsAndOperation() {
+    void shouldConstructWithVariableNameOperandsAndOperation() {
         // Given
         String variableName = "Var2";
         String operandA = "1";
@@ -66,91 +69,91 @@ public class ZestAssignCalcUnitTest {
         // When
         ZestAssignCalc assignCalc = new ZestAssignCalc(variableName, operandA, operation, operandB);
         // Then
-        assertTrue(variableName.equals(assignCalc.getVariableName()));
-        assertTrue(operandA.equals(assignCalc.getOperandA()));
-        assertTrue(operation.equals(assignCalc.getOperation()));
-        assertTrue(operandB.equals(assignCalc.getOperandB()));
+        assertEquals(variableName, assignCalc.getVariableName());
+        assertEquals(operandA, assignCalc.getOperandA());
+        assertEquals(operation, assignCalc.getOperation());
+        assertEquals(operandB, assignCalc.getOperandB());
     }
 
     @Test
-    public void shouldSetVariableName() {
+    void shouldSetVariableName() {
         // Given
         String variableName = "Var3";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setVariableName(variableName);
         // Then
-        assertTrue(variableName.equals(assignCalc.getVariableName()));
+        assertEquals(variableName, assignCalc.getVariableName());
     }
 
     @Test
-    public void shouldSetNullVariableName() {
+    void shouldSetNullVariableName() {
         // Given
         String variableName = null;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setVariableName(variableName);
         // Then
-        assertTrue(variableName == assignCalc.getVariableName());
+        assertEquals(variableName, assignCalc.getVariableName());
     }
 
     @Test
-    public void shouldSetEnabledState() {
+    void shouldSetEnabledState() {
         // Given
         boolean enabled = false;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setEnabled(enabled);
         // Then
-        assertTrue(enabled == assignCalc.isEnabled());
+        assertEquals(enabled, assignCalc.isEnabled());
     }
 
     @Test
-    public void shouldSetOperandA() {
+    void shouldSetOperandA() {
         // Given
         String operandA = "3";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setOperandA(operandA);
         // Then
-        assertTrue(operandA.equals(assignCalc.getOperandA()));
+        assertEquals(operandA, assignCalc.getOperandA());
     }
 
     @Test
-    public void shouldSetKnownOperation() {
+    void shouldSetKnownOperation() {
         // Given
         String operation = ZestAssignCalc.OPERAND_SUBTRACT;
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setOperation(operation);
         // Then
-        assertTrue(operation.equals(assignCalc.getOperation()));
+        assertEquals(operation, assignCalc.getOperation());
     }
 
     @Test
-    public void shouldSetUnknownOperation() {
+    void shouldSetUnknownOperation() {
         // Given
         String operation = "unknown";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setOperation(operation);
         // Then
-        assertTrue(operation.equals(assignCalc.getOperation()));
+        assertEquals(operation, assignCalc.getOperation());
     }
 
     @Test
-    public void shouldSetOperandB() {
+    void shouldSetOperandB() {
         // Given
         String operandB = "4";
         ZestAssignCalc assignCalc = new ZestAssignCalc();
         // When
         assignCalc.setOperandB(operandB);
         // Then
-        assertTrue(operandB.equals(assignCalc.getOperandB()));
+        assertEquals(operandB, assignCalc.getOperandB());
     }
 
     @Test
-    public void shouldDeepCopy() {
+    void shouldDeepCopy() {
         // Given
         String variableName = "Var4";
         String operandA = "5";
@@ -162,134 +165,134 @@ public class ZestAssignCalcUnitTest {
         // When
         ZestAssignCalc copy = assignCalc.deepCopy();
         // Then
-        assertTrue(variableName.equals(copy.getVariableName()));
-        assertTrue(operandA.equals(copy.getOperandA()));
-        assertTrue(operation.equals(copy.getOperation()));
-        assertTrue(operandB.equals(copy.getOperandB()));
-        assertTrue(enabled == copy.isEnabled());
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithoutOperandA() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc =
-                new ZestAssignCalc("Var", null, ZestAssignCalc.OPERAND_ADD, "2");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithEmptyOperandA() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "", ZestAssignCalc.OPERAND_ADD, "2");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithNonNumericOperandA() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc =
-                new ZestAssignCalc("Var", "NotANumber", ZestAssignCalc.OPERAND_ADD, "2");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithoutOperandB() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc =
-                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, null);
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithEmptyOperandB() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithNonNumericOperandB() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc =
-                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "NotANumber");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithoutOperation() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", null, "2");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
-    }
-
-    @Test(expected = ZestAssignFailException.class)
-    public void shouldFailTheAssignWithEmptyOperation() throws Exception {
-        // Given
-        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", "", "2");
-        // When
-        assignCalc.assign(null, new TestRuntime());
-        // Then = ZestAssignFailException
+        assertEquals(variableName, copy.getVariableName());
+        assertEquals(operandA, copy.getOperandA());
+        assertEquals(operation, copy.getOperation());
+        assertEquals(operandB, copy.getOperandB());
+        assertEquals(enabled, copy.isEnabled());
     }
 
     @Test
-    public void shouldAddAssign() throws Exception {
+    void shouldFailTheAssignWithoutOperandA() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", null, ZestAssignCalc.OPERAND_ADD, "2");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithEmptyOperandA() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "", ZestAssignCalc.OPERAND_ADD, "2");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithNonNumericOperandA() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "NotANumber", ZestAssignCalc.OPERAND_ADD, "2");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithoutOperandB() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, null);
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithEmptyOperandB() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithNonNumericOperandB() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc =
+                new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "NotANumber");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithoutOperation() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", null, "2");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldFailTheAssignWithEmptyOperation() throws Exception {
+        // Given
+        ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", "", "2");
+        // When / Then
+        assertThrows(
+                ZestAssignFailException.class, () -> assignCalc.assign(null, new TestRuntime()));
+    }
+
+    @Test
+    void shouldAddAssign() throws Exception {
         // Given
         ZestAssignCalc assignCalc = new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_ADD, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
-        assertTrue("3".equals(result));
+        assertEquals("3", result);
     }
 
     @Test
-    public void shouldSubtractAssign() throws Exception {
+    void shouldSubtractAssign() throws Exception {
         // Given
         ZestAssignCalc assignCalc =
                 new ZestAssignCalc("Var", "2", ZestAssignCalc.OPERAND_SUBTRACT, "1");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
-        assertTrue("1".equals(result));
+        assertEquals("1", result);
     }
 
     @Test
-    public void shouldMinusAssign() throws Exception {
+    void shouldMinusAssign() throws Exception {
         // Given
         ZestAssignCalc assignCalc =
                 new ZestAssignCalc("Var", "4", ZestAssignCalc.OPERAND_MULTIPLY, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
-        assertTrue("8".equals(result));
+        assertEquals("8", result);
     }
 
     @Test
-    public void shouldDivideAssign() throws Exception {
+    void shouldDivideAssign() throws Exception {
         // Given
         ZestAssignCalc assignCalc =
                 new ZestAssignCalc("Var", "6", ZestAssignCalc.OPERAND_DIVIDE, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
-        assertTrue("3".equals(result));
+        assertEquals("3", result);
     }
 
     @Test
-    public void shouldReplaceVariableInOperandA() throws Exception {
+    void shouldReplaceVariableInOperandA() throws Exception {
         // Given
         TestRuntime runtime = new TestRuntime();
         runtime.setVariable("A", "4");
@@ -298,11 +301,11 @@ public class ZestAssignCalcUnitTest {
         // When
         String result = assignCalc.assign(null, runtime);
         // Then
-        assertTrue("6".equals(result));
+        assertEquals("6", result);
     }
 
     @Test
-    public void shouldReplaceVariableInOperandB() throws Exception {
+    void shouldReplaceVariableInOperandB() throws Exception {
         // Given
         TestRuntime runtime = new TestRuntime();
         runtime.setVariable("B", "4");
@@ -311,17 +314,17 @@ public class ZestAssignCalcUnitTest {
         // When
         String result = assignCalc.assign(null, runtime);
         // Then
-        assertTrue("6".equals(result));
+        assertEquals("6", result);
     }
 
     @Test
-    public void shouldConvertResultIntoInteger() throws Exception {
+    void shouldConvertResultIntoInteger() throws Exception {
         // Given
         ZestAssignCalc assignCalc =
                 new ZestAssignCalc("Var", "1", ZestAssignCalc.OPERAND_DIVIDE, "2");
         // When
         String result = assignCalc.assign(null, new TestRuntime());
         // Then
-        assertTrue("0".equals(result));
+        assertEquals("0", result);
     }
 }

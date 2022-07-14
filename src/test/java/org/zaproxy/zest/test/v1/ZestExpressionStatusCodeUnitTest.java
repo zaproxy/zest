@@ -3,21 +3,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionStatusCode;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 /** Unit test for {@link ZestExpressionStatusCode}. */
-public class ZestExpressionStatusCodeUnitTest {
+class ZestExpressionStatusCodeUnitTest {
 
     @Test
-    public void shouldHaveZeroStatusCodeByDefault() {
+    void shouldHaveZeroStatusCodeByDefault() {
         // Given / When
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode();
         // Then
@@ -25,7 +25,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldNotBeInversedByDefault() {
+    void shouldNotBeInversedByDefault() {
         // Given / When
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode();
         // Then
@@ -33,7 +33,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldSetStatusCode() {
+    void shouldSetStatusCode() {
         // Given
         int statusCode = 201;
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode();
@@ -44,7 +44,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldSetInverse() {
+    void shouldSetInverse() {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode();
         // When
@@ -54,7 +54,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldDeepCopy() {
+    void shouldDeepCopy() {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(404);
         statusCodeExpression.setInverse(true);
@@ -67,7 +67,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNoResponse() {
+    void shouldEvaluateToFalseIfNoResponse() {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(204);
         // When
@@ -77,7 +77,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToTrueIfSameStatusCode() throws Exception {
+    void shouldEvaluateToTrueIfSameStatusCode() throws Exception {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(200);
         ZestResponse response = createResponse(200);
@@ -88,7 +88,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfInverseAndSameStatusCode() throws Exception {
+    void shouldEvaluateToFalseIfInverseAndSameStatusCode() throws Exception {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(200);
         statusCodeExpression.setInverse(true);
@@ -100,7 +100,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToFalseIfNotSameStatusCode() throws Exception {
+    void shouldEvaluateToFalseIfNotSameStatusCode() throws Exception {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(500);
         ZestResponse response = createResponse(200);
@@ -111,7 +111,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldEvaluateToTrueIfInverseAndNotSameStatusCode() throws Exception {
+    void shouldEvaluateToTrueIfInverseAndNotSameStatusCode() throws Exception {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(200);
         statusCodeExpression.setInverse(true);
@@ -123,7 +123,7 @@ public class ZestExpressionStatusCodeUnitTest {
     }
 
     @Test
-    public void shouldSerialiseAndDeserialise() {
+    void shouldSerialiseAndDeserialise() {
         // Given
         ZestExpressionStatusCode statusCodeExpression = new ZestExpressionStatusCode(401);
         // When

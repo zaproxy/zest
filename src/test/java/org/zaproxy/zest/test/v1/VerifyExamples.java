@@ -3,21 +3,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestElement;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 
 /** Verifies that the examples can be parsed. */
-public class VerifyExamples {
+class VerifyExamples {
 
     @Test
-    public void shouldParseExamples() throws Exception {
+    void shouldParseExamples() throws Exception {
         String[] scripts = {"BodgeIt_Register_XSS"};
         for (String script : scripts) {
             assertZestScript(script);
@@ -26,7 +26,7 @@ public class VerifyExamples {
 
     private static void assertZestScript(String name) throws Exception {
         ZestElement zestElement = ZestJSON.fromString(readScript(name));
-        assertTrue(name, zestElement instanceof ZestScript);
+        assertTrue(zestElement instanceof ZestScript, name);
     }
 
     private static String readScript(String name) throws Exception {

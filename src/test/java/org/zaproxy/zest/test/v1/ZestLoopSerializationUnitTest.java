@@ -3,12 +3,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestConditional;
 import org.zaproxy.zest.core.v1.ZestExpressionResponseTime;
 import org.zaproxy.zest.core.v1.ZestExpressionStatusCode;
@@ -18,7 +18,7 @@ import org.zaproxy.zest.core.v1.ZestLoopInteger;
 import org.zaproxy.zest.core.v1.ZestLoopString;
 import org.zaproxy.zest.core.v1.ZestStatement;
 
-public class ZestLoopSerializationUnitTest {
+class ZestLoopSerializationUnitTest {
     String[] values = {"a", "b", "c"};
     List<ZestStatement> statements = new LinkedList<>();
 
@@ -28,7 +28,7 @@ public class ZestLoopSerializationUnitTest {
     }
 
     @Test
-    public void testSerializationLoopString() {
+    void testSerializationLoopString() {
         ZestLoopString loop = new ZestLoopString(values);
         for (ZestStatement stmt : statements) {
             loop.addStatement(stmt);
@@ -41,11 +41,11 @@ public class ZestLoopSerializationUnitTest {
         // System.out.println("          LOOP STRING");
         // System.out.println("===============================");
         // System.out.println(copyString);
-        assertTrue(copyString.equals(loopString));
+        assertEquals(copyString, loopString);
     }
 
     @Test
-    public void testSerializationLoopInteger() {
+    void testSerializationLoopInteger() {
         ZestLoopInteger loop = new ZestLoopInteger(0, 1235);
         for (ZestStatement stmt : statements) {
             loop.addStatement(stmt);
@@ -57,11 +57,11 @@ public class ZestLoopSerializationUnitTest {
         // System.out.println("          LOOP INTEGER");
         // System.out.println("===============================");
         // System.out.println(copyString);
-        assertTrue(copyString.equals(loopString));
+        assertEquals(copyString, loopString);
     }
 
     @Test
-    public void testSerializationLoopFile() throws FileNotFoundException {
+    void testSerializationLoopFile() throws FileNotFoundException {
         ZestLoopFile loop = new ZestLoopFile(ZestLoopFileUnitTest.file.getAbsolutePath());
         for (ZestStatement stmt : statements) {
             loop.addStatement(stmt);
@@ -73,6 +73,6 @@ public class ZestLoopSerializationUnitTest {
         // System.out.println("           LOOP FILE");
         // System.out.println("===============================");
         // System.out.println(copyString);
-        assertTrue(loopString.equals(copyString));
+        assertEquals(loopString, copyString);
     }
 }

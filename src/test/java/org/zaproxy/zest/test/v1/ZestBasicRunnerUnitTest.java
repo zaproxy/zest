@@ -15,31 +15,35 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@code ZestBasicRunner}. */
-public class ZestBasicRunnerUnitTest extends ServerBasedTest {
+class ZestBasicRunnerUnitTest extends ServerBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
     private static final String PATH_SERVER_REDIRECT = "/redirect";
 
-    @Rule
-    public WireMockRule proxy =
-            new WireMockRule(options().dynamicPort().enableBrowserProxying(true), false);
+    @RegisterExtension
+    public WireMockExtension proxy =
+            WireMockExtension.newInstance()
+                    .options(options().dynamicPort().enableBrowserProxying(true))
+                    .failOnUnmatchedRequests(false)
+                    .build();
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         server.stubFor(
                 post(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(
@@ -57,20 +61,21 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
                                         .withHeader("Location", PATH_SERVER_FILE)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldFailToRunNonPassiveStatementsInPassiveScripts() throws Exception {
+    @Test
+    void shouldFailToRunNonPassiveStatementsInPassiveScripts() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         script.setType(ZestScript.Type.Passive);
         script.add(new ZestRequest());
         ZestBasicRunner runner = new ZestBasicRunner();
-        // When
-        runner.run(script, new HashMap<String, String>());
-        // Then = IllegalArgumentException
+        // When / Then
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> runner.run(script, new HashMap<String, String>()));
     }
 
     @Test
-    public void shouldSendAndReceiveHttpMessage() throws Exception {
+    void shouldSendAndReceiveHttpMessage() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -116,7 +121,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendRequestWithoutGeneratedUserAgentHeader() throws Exception {
+    void shouldSendRequestWithoutGeneratedUserAgentHeader() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -131,7 +136,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendRequestWithoutGeneratedContentTypeHeader() throws Exception {
+    void shouldSendRequestWithoutGeneratedContentTypeHeader() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -147,7 +152,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendRequestWithoutGeneratedAcceptEncodingHeader() throws Exception {
+    void shouldSendRequestWithoutGeneratedAcceptEncodingHeader() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -162,7 +167,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendRequestWithoutGeneratedConnectionHeader() throws Exception {
+    void shouldSendRequestWithoutGeneratedConnectionHeader() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -177,7 +182,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendPutRequestWithBody() throws Exception {
+    void shouldSendPutRequestWithBody() throws Exception {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
@@ -202,7 +207,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldSendRequestThroughConfiguredProxy() throws Exception {
+    void shouldSendRequestThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_FILE));
@@ -211,7 +216,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setUrl(url);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.port());
+        runner.setProxy("localhost", proxy.getPort());
         // When
         runner.run(script, new HashMap<String, String>());
         // Then
@@ -228,7 +233,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldNoLongerSendRequestThroughProxyIfUnset() throws Exception {
+    void shouldNoLongerSendRequestThroughProxyIfUnset() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_FILE));
@@ -238,7 +243,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
         // When
-        runner.setProxy("localhost", proxy.port());
+        runner.setProxy("localhost", proxy.getPort());
         runner.run(script, Collections.emptyMap());
         runner.setProxy("", 0);
         runner.run(script, Collections.emptyMap());
@@ -254,7 +259,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldFollowRedirectsByDefault() throws Exception {
+    void shouldFollowRedirectsByDefault() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
@@ -275,7 +280,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldNotFollowRedirectsIfDisabled() throws Exception {
+    void shouldNotFollowRedirectsIfDisabled() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
@@ -285,7 +290,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setFollowRedirects(false);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.port());
+        runner.setProxy("localhost", proxy.getPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then
@@ -298,7 +303,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldFollowRedirectsThroughConfiguredProxy() throws Exception {
+    void shouldFollowRedirectsThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
@@ -307,7 +312,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setUrl(url);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.port());
+        runner.setProxy("localhost", proxy.getPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then
@@ -324,7 +329,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void shouldNotFollowRedirectsIfDisabledThroughConfiguredProxy() throws Exception {
+    void shouldNotFollowRedirectsIfDisabledThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
@@ -334,7 +339,7 @@ public class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setFollowRedirects(false);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.port());
+        runner.setProxy("localhost", proxy.getPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then

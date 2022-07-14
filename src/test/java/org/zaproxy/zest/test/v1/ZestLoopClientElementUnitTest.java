@@ -6,11 +6,11 @@ package org.zaproxy.zest.test.v1;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.StringWriter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestActionPrint;
 import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestClientWindowClose;
@@ -20,7 +20,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-public class ZestLoopClientElementUnitTest extends ServerBasedTest {
+class ZestLoopClientElementUnitTest extends ServerBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
 
@@ -37,15 +37,15 @@ public class ZestLoopClientElementUnitTest extends ServerBasedTest {
                     + "</form>\n"
                     + "</body></html>\n";
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         server.stubFor(
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(HTML_RESPONSE)));
     }
 
     @Test
-    public void testClientXpathLoopReturningName() throws Exception {
+    void testClientXpathLoopReturningName() throws Exception {
         ZestScript script = new ZestScript();
         script.add(new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE)));
         ZestLoopClientElements loop =
@@ -65,7 +65,7 @@ public class ZestLoopClientElementUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void testClientXpathLoopReturningType() throws Exception {
+    void testClientXpathLoopReturningType() throws Exception {
         ZestScript script = new ZestScript();
         script.add(new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE)));
         ZestLoopClientElements loop =
@@ -85,7 +85,7 @@ public class ZestLoopClientElementUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void testClientXpathLoopReturningText() throws Exception {
+    void testClientXpathLoopReturningText() throws Exception {
         ZestScript script = new ZestScript();
         script.add(new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE)));
         ZestLoopClientElements loop =
@@ -106,7 +106,7 @@ public class ZestLoopClientElementUnitTest extends ServerBasedTest {
     }
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         ZestClientLaunch zcl1 =
                 new ZestClientLaunch("htmlunit", "HtmlUnit", getServerUrl(PATH_SERVER_FILE));
         String str = ZestJSON.toString(zcl1);
