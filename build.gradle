@@ -4,7 +4,7 @@ plugins {
     id 'signing'
     id 'application'
     id 'jacoco'
-    id "com.diffplug.spotless" version "5.12.1"
+    id "com.diffplug.spotless" version "6.11.0"
 }
 
 repositories {
@@ -13,8 +13,9 @@ repositories {
 
 apply from: "$rootDir/gradle/ci.gradle.kts"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+def javaVersion = JavaVersion.VERSION_11
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
 
 group 'org.zaproxy'
 version '0.16.0-SNAPSHOT'
@@ -70,7 +71,7 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options {
-        links = [ 'https://docs.oracle.com/javase/8/docs/api/' ]
+        links = [ 'https://docs.oracle.com/javase/11/docs/api/' ]
         encoding = 'UTF-8'
         source = sourceCompatibility
     }

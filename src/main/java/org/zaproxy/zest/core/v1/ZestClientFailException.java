@@ -4,6 +4,7 @@
 package org.zaproxy.zest.core.v1;
 
 /** The Class ZestClientFailException. */
+@SuppressWarnings("serial")
 public class ZestClientFailException extends Exception {
 
     /** The Constant serialVersionUID. */
