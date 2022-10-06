@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Warn on running old Zest scripts from the command line rather than exit.
+- Update minimum Java version to 11.
 
 ### Fixed
 - Search script engines also by extension not just by name when invoking scripts otherwise it could miss some engines (e.g. Jython).

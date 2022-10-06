@@ -3,8 +3,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-// TODO: Auto-generated Javadoc
 /** The Class ZestActionFailException. */
+@SuppressWarnings("serial")
 public class ZestAssignFailException extends Exception {
 
     /** The Constant serialVersionUID. */
