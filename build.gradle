@@ -34,10 +34,6 @@ dependencies {
              'org.seleniumhq.selenium:htmlunit-driver:2.36.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
-    implementation('com.machinepublishers:jbrowserdriver:1.0.0-RC1') {
-        exclude group: 'org.seleniumhq.selenium'
-    }
-
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.33.2") {
         // Not needed.
         exclude(group: "org.junit")
