@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.opera.core.systems.OperaDriver;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -243,10 +242,6 @@ public class ZestClientLaunch extends ZestClient {
                 driver = new HtmlUnitDriver(DesiredCapabilities.htmlUnit().merge(cap));
             } else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
                 driver = new InternetExplorerDriver(new InternetExplorerOptions(cap));
-            } else if ("JBD".equalsIgnoreCase(this.browserType)) {
-                cap.setCapability("jbd.headless", isHeadless());
-                cap.setCapability("jbd.ssl", "trustanything");
-                driver = new JBrowserDriver(cap);
             } else if ("Opera".equalsIgnoreCase(this.browserType)) {
                 driver = new OperaDriver(cap);
             } else if ("PhantomJS".equalsIgnoreCase(this.browserType)) {
