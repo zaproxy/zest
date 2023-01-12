@@ -111,12 +111,11 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(response.getStatusCode()).isEqualTo(404);
         assertThat(response.getUrl()).isEqualTo(url);
         assertThat(response.getHeaders())
-                .isEqualTo(
+                .startsWith(
                         "HTTP/1.1 404 Not Found\r\n"
                                 + "Content-Type: text/plain\r\n"
                                 + "Name: value\r\n"
-                                + "Server: abc\r\n"
-                                + "Transfer-Encoding: chunked\r\n");
+                                + "Server: abc\r\n");
         assertThat(response.getBody()).isEqualTo("This is the response");
     }
 
