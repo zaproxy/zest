@@ -226,7 +226,7 @@ class ZestClientScreenshotUnitTest {
         // When
         clientScreenshot.invoke(runtime);
         // Then
-        assertEquals(SCREENSHOT_DATA, Files.readAllBytes(path));
+        assertThat(path).hasBinaryContent(SCREENSHOT_DATA);
     }
 
     @Test
@@ -260,7 +260,7 @@ class ZestClientScreenshotUnitTest {
         clientScreenshot.invoke(runtime);
         // Then
         verify(runtime).setVariable(variableName, SCREENSHOT_DATA_BASE_64);
-        assertEquals(SCREENSHOT_DATA, Files.readAllBytes(path));
+        assertThat(path).hasBinaryContent(SCREENSHOT_DATA);
     }
 
     @Test
