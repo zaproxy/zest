@@ -7,12 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 import javax.script.ScriptEngineFactory;
 import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestAction;
@@ -581,7 +582,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     @Override
     public void addWebDriver(String handle, WebDriver wd) {
         webDriverMap.put(handle, wd);
-        wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        wd.manage().timeouts().implicitlyWait(Duration.of(10, ChronoUnit.SECONDS));
     }
 
     @Override

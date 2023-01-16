@@ -3,12 +3,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import com.opera.core.systems.OperaDriver;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -20,8 +18,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
@@ -165,8 +162,6 @@ public class ZestClientLaunch extends ZestClient {
         try {
             WebDriver driver = null;
             DesiredCapabilities cap = new DesiredCapabilities();
-            cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-            // W3C capability
             cap.setAcceptInsecureCerts(true);
 
             String httpProxy = runtime.getProxy();
@@ -239,17 +234,10 @@ public class ZestClientLaunch extends ZestClient {
 
                 driver = new ChromeDriver(chromeOptions);
             } else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
-                driver = new HtmlUnitDriver(DesiredCapabilities.htmlUnit().merge(cap));
+                cap.setBrowserName(Browser.HTMLUNIT.browserName());
+                driver = new HtmlUnitDriver(cap);
             } else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
                 driver = new InternetExplorerDriver(new InternetExplorerOptions(cap));
-            } else if ("Opera".equalsIgnoreCase(this.browserType)) {
-                driver = new OperaDriver(cap);
-            } else if ("PhantomJS".equalsIgnoreCase(this.browserType)) {
-                ArrayList<String> cliArgs = new ArrayList<>(2);
-                cliArgs.add("--ssl-protocol=any");
-                cliArgs.add("--ignore-ssl-errors=yes");
-                cap.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgs);
-                driver = new PhantomJSDriver(cap);
             } else if ("Safari".equalsIgnoreCase(this.browserType)) {
                 driver = new SafariDriver(new SafariOptions(cap));
             } else {
