@@ -4,7 +4,7 @@ plugins {
     id 'signing'
     id 'application'
     id 'jacoco'
-    id "com.diffplug.spotless" version "6.11.0"
+    id "com.diffplug.spotless" version "6.14.1"
 }
 
 repositories {
@@ -36,9 +36,9 @@ dependencies {
         // Not needed.
         exclude(group: "org.junit")
     }
-    testImplementation('org.mockito:mockito-core:2.19.1')
-    testImplementation("org.assertj:assertj-core:3.11.0")
-    String jupiterVersion = "5.8.2"
+    testImplementation('org.mockito:mockito-core:5.1.1')
+    testImplementation("org.assertj:assertj-core:3.24.2")
+    String jupiterVersion = "5.9.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
