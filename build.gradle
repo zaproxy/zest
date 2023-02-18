@@ -34,7 +34,10 @@ dependencies {
              'com.google.code.gson:gson:2.8.5',
              'org.seleniumhq.selenium:selenium-java:4.12.0',
              'org.seleniumhq.selenium:htmlunit-driver:4.12.0',
-             'net.htmlparser.jericho:jericho-html:3.1')
+             'net.htmlparser.jericho:jericho-html:3.1',
+             'com.fasterxml.jackson.core:jackson-core:2.15.2',
+             'com.fasterxml.jackson.core:jackson-databind:2.15.2',
+             'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2')
 
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0") {
         // Not needed.

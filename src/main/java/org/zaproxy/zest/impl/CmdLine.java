@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import org.zaproxy.zest.core.v1.ZestAuthentication;
 import org.zaproxy.zest.core.v1.ZestHttpAuthentication;
-import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
+import org.zaproxy.zest.core.v1.ZestYaml;
 
 public class CmdLine {
 
@@ -163,7 +163,7 @@ public class CmdLine {
 
         ZestScript zs;
         try {
-            zs = (ZestScript) ZestJSON.fromString(sb.toString());
+            zs = (ZestScript) ZestYaml.fromString(sb.toString());
 
             if (!ZestScript.VERSION.equals(zs.getZestVersion())) {
                 error(
