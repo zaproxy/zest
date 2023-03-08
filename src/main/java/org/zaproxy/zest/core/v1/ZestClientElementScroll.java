@@ -5,9 +5,9 @@ package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.JavascriptExecutor;
 
-/** 
- * Scroll in the current frame by (x,y) co-ordinates 
- * 
+/**
+ * Scroll in the current frame by (x,y) co-ordinates
+ *
  * @author aryan
  */
 public class ZestClientElementScroll extends ZestClientElement {

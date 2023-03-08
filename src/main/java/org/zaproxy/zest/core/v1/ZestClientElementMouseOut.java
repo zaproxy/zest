@@ -8,7 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 /**
  * Hovers out from the element.
  *
- * @author aryan 
+ * @author aryan
  */
 public class ZestClientElementMouseOut extends ZestClientElement {
 
