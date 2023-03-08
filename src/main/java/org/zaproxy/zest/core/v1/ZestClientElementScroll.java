@@ -3,8 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import java.io.File;
-import java.io.FileWriter;
 import org.openqa.selenium.JavascriptExecutor;
 
 /**
@@ -42,13 +40,6 @@ public class ZestClientElementScroll extends ZestClientElement {
 
     public void setYValue(int value) {
         this.Yvalue = value;
-    }
-
-    void print(String s) throws Exception {
-        File file = new File("/home/aryangupta701/output.txt");
-        FileWriter fr = new FileWriter(file, true);
-        fr.write("\n" + s + "\n");
-        fr.close();
     }
 
     @Override
