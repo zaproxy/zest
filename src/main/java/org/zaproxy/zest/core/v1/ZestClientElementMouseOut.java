@@ -25,8 +25,8 @@ public class ZestClientElementMouseOut extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-    	
-    	// Move the mouse pointer to body 
+
+        // Move the mouse pointer to body
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
         Actions actions = new Actions(wd);
         WebElement body = wd.findElement(By.tagName("body"));
