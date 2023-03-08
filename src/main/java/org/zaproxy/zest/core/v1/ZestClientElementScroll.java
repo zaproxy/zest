@@ -3,6 +3,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import java.io.File;
+import java.io.FileWriter;
 import org.openqa.selenium.JavascriptExecutor;
 
 /**
@@ -42,11 +44,20 @@ public class ZestClientElementScroll extends ZestClientElement {
         this.Yvalue = value;
     }
 
+    void print(String s) throws Exception {
+        File file = new File("/home/aryangupta701/output.txt");
+        FileWriter fr = new FileWriter(file, true);
+        fr.write("\n" + s + "\n");
+        fr.close();
+    }
+
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-        JavascriptExecutor js = (JavascriptExecutor) this.getWebElement(runtime);
-        String script = String.format("window.scrollBy(%d,%d)", Xvalue, Yvalue);
+
+        JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(this.getWindowHandle());
+        String script = String.format("window.scrollBy(%d,%d);", Xvalue, Yvalue);
         js.executeScript(script, "");
+
         return null;
     }
 

@@ -3,6 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 /**
@@ -22,9 +25,12 @@ public class ZestClientElementMouseOut extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-
-        Actions actions = new Actions(runtime.getWebDriver(this.getWindowHandle()));
-        actions.moveToElement(this.getWebElement(runtime)).moveToElement(null).perform();
+    	
+    	// Move the mouse pointer to body 
+        WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
+        Actions actions = new Actions(wd);
+        WebElement body = wd.findElement(By.tagName("body"));
+        actions.moveToElement(body).perform();
 
         return null;
     }
