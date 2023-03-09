@@ -5,63 +5,60 @@ package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.JavascriptExecutor;
 
-/**
- * Scroll in the current frame by (x,y) co-ordinates
- *
- * @author aryan
- */
 public class ZestClientElementScroll extends ZestClientElement {
 
-    private int Xvalue = 0;
-    private int Yvalue = 0;
+    private int x;
+    private int y;
 
     public ZestClientElementScroll(
-            String sessionIdName, String type, String element, int Xvalue, int Yvalue) {
+            String sessionIdName, String type, String element, int x, int y) {
         super(sessionIdName, type, element);
-        this.Xvalue = Xvalue;
-        this.Yvalue = Yvalue;
+        this.x = x;
+        this.y = y;
     }
 
     public ZestClientElementScroll() {
         super();
     }
 
-    public int getXValue() {
-        return Xvalue;
+    public int getX() {
+        return x;
     }
 
-    public int getYValue() {
-        return Yvalue;
+    public int getY() {
+        return y;
     }
 
-    public void setXValue(int value) {
-        this.Xvalue = value;
+    public void setX(int value) {
+        this.x = value;
     }
 
-    public void setYValue(int value) {
-        this.Yvalue = value;
+    public void setY(int value) {
+        this.y = value;
     }
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-        JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(this.getWindowHandle());
-        String script = String.format("window.scrollBy(%d,%d);", Xvalue, Yvalue);
+        JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(getWindowHandle());
+        String x1 = String.valueOf(x);
+        String y1 = String.valueOf(y);
+        String script = String.format("window.scrollBy(%s,%s);", x1, y1);
         js.executeScript(script, "");
 
         return null;
     }
 
     @Override
-    public ZestStatement deepCopy() {
+    public ZestClientElementScroll deepCopy() {
         ZestClientElementScroll copy =
                 new ZestClientElementScroll(
-                        this.getWindowHandle(),
-                        this.getType(),
-                        this.getElement(),
-                        this.Xvalue,
-                        this.Yvalue);
-        copy.setEnabled(this.isEnabled());
+                        getWindowHandle(),
+                        getType(),
+                        getElement(),
+                        x,
+                        y);
+        copy.setEnabled(isEnabled());
         return copy;
     }
 

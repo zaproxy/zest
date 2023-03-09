@@ -5,11 +5,6 @@ package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.interactions.Actions;
 
-/**
- * Hovers over the specified client element.
- *
- * @author aryan
- */
 public class ZestClientElementMouseOver extends ZestClientElement {
 
     public ZestClientElementMouseOver(String sessionIdName, String type, String element) {
@@ -23,8 +18,8 @@ public class ZestClientElementMouseOver extends ZestClientElement {
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-        Actions actions = new Actions(runtime.getWebDriver(this.getWindowHandle()));
-        actions.moveToElement(this.getWebElement(runtime)).perform();
+        Actions actions = new Actions(runtime.getWebDriver(getWindowHandle()));
+        actions.moveToElement(getWebElement(runtime)).perform();
 
         return null;
     }
@@ -33,8 +28,8 @@ public class ZestClientElementMouseOver extends ZestClientElement {
     public ZestStatement deepCopy() {
         ZestClientElementMouseOver copy =
                 new ZestClientElementMouseOver(
-                        this.getWindowHandle(), this.getType(), this.getElement());
-        copy.setEnabled(this.isEnabled());
+                        getWindowHandle(), getType(), getElement());
+        copy.setEnabled(isEnabled());
         return copy;
     }
 
