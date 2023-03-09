@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.zaproxy.zest.core.v1.ZestClientElementScroll;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
@@ -25,7 +26,7 @@ class ZestClientElementScrollUnitTest {
     @Test
     void shouldNotBePassive() {
         // Given / When
-    	ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
+        ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // Then
         assertEquals(false, clientElementScroll.isPassive());
     }
@@ -33,7 +34,7 @@ class ZestClientElementScrollUnitTest {
     @Test
     void shouldNotHaveWindowHandleByDefault() {
         // Given / When
-    	ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
+        ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // Then
         assertNull(clientElementScroll.getWindowHandle());
     }
@@ -41,7 +42,7 @@ class ZestClientElementScrollUnitTest {
     @Test
     void shouldBeEnabledByDefault() {
         // Given / When
-    	ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
+        ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // Then
         assertEquals(true, clientElementScroll.isEnabled());
     }
@@ -52,18 +53,20 @@ class ZestClientElementScrollUnitTest {
         int x = 10;
         ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // When
-        clientElementScroll.setX(x);;
+        clientElementScroll.setX(x);
+        ;
         // Then
         assertEquals(x, clientElementScroll.getX());
     }
-    
+
     @Test
     void shouldSetY() {
         // Given
         int y = 20;
         ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // When
-        clientElementScroll.setY(y);;
+        clientElementScroll.setY(y);
+        ;
         // Then
         assertEquals(y, clientElementScroll.getY());
     }
@@ -71,7 +74,8 @@ class ZestClientElementScrollUnitTest {
     @Test
     void shouldSerialiseAndDeserialise() {
         // Given
-    	ZestClientElementScroll original = new ZestClientElementScroll("sessionId", "type", "element", 10, 20);
+        ZestClientElementScroll original =
+                new ZestClientElementScroll("sessionId", "type", "element", 10, 20);
         original.setEnabled(false);
         // When
         String serialisation = ZestJSON.toString(original);
@@ -89,7 +93,8 @@ class ZestClientElementScrollUnitTest {
     @Test
     void shouldDeepCopy() {
         // Given
-    	ZestClientElementScroll original = new ZestClientElementScroll("sessionId", "type", "element", 10, 20);
+        ZestClientElementScroll original =
+                new ZestClientElementScroll("sessionId", "type", "element", 10, 20);
         original.setEnabled(false);
         // When
         ZestClientElementScroll copy = original.deepCopy();
@@ -102,37 +107,41 @@ class ZestClientElementScrollUnitTest {
         assertEquals(copy.getY(), original.getY());
         assertEquals(copy.isEnabled(), original.isEnabled());
     }
-    
+
     @Test
     void shouldScrollFirefox() throws ZestClientFailException {
         // Given
-    	String handle = "windowHandle";
-        ZestClientElementScroll clientElementScroll = new ZestClientElementScroll(handle,"type", "element", 0, 0);
+        String handle = "windowHandle";
+        ZestClientElementScroll clientElementScroll =
+                new ZestClientElementScroll(handle, "type", "element", 0, 0);
         int y = 500;
         clientElementScroll.setY(y);
 
-        ZestRuntime runtime = runtimeWithFirefoxDriver(handle); 
+        ZestRuntime runtime = runtimeWithFirefoxDriver(handle);
         // When
         clientElementScroll.invoke(runtime);
 
         // Then
-        verify((JavascriptExecutor) runtime.getWebDriver(handle)).executeScript("window.scrollBy(0,500);", "");
+        verify((JavascriptExecutor) runtime.getWebDriver(handle))
+                .executeScript("window.scrollBy(0,500);", "");
     }
-    
+
     @Test
     void shouldScrollChrome() throws ZestClientFailException {
         // Given
-    	String handle = "windowHandle";
-        ZestClientElementScroll clientElementScroll = new ZestClientElementScroll(handle,"type", "element", 0, 0);
+        String handle = "windowHandle";
+        ZestClientElementScroll clientElementScroll =
+                new ZestClientElementScroll(handle, "type", "element", 0, 0);
         int y = 500;
         clientElementScroll.setY(y);
 
-        ZestRuntime runtime = runtimeWithChromeDriver(handle); 
+        ZestRuntime runtime = runtimeWithChromeDriver(handle);
         // When
         clientElementScroll.invoke(runtime);
 
         // Then
-        verify((JavascriptExecutor) runtime.getWebDriver(handle)).executeScript("window.scrollBy(0,500);", "");
+        verify((JavascriptExecutor) runtime.getWebDriver(handle))
+                .executeScript("window.scrollBy(0,500);", "");
     }
 
     private static ZestRuntime runtime() {
@@ -140,21 +149,20 @@ class ZestClientElementScrollUnitTest {
     }
 
     private static ZestRuntime runtimeWithFirefoxDriver(String windowHandle) {
-    	ZestRuntime runtime = runtime();
-    	WebDriver driver = mock(FirefoxDriver.class);
-    	JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-    	when(runtime.getWebDriver(windowHandle)).thenReturn(driver);
-        when((JavascriptExecutor)runtime.getWebDriver(windowHandle)).thenReturn(jsExecutor);
-        return runtime;
-    }
-    
-    private static ZestRuntime runtimeWithChromeDriver(String windowHandle) {
-    	ZestRuntime runtime = runtime();
-    	WebDriver driver = mock(FirefoxDriver.class);
-    	JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-    	when(runtime.getWebDriver(windowHandle)).thenReturn(driver);
-        when((JavascriptExecutor)runtime.getWebDriver(windowHandle)).thenReturn(jsExecutor);
+        ZestRuntime runtime = runtime();
+        WebDriver driver = mock(FirefoxDriver.class);
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        when(runtime.getWebDriver(windowHandle)).thenReturn(driver);
+        when((JavascriptExecutor) runtime.getWebDriver(windowHandle)).thenReturn(jsExecutor);
         return runtime;
     }
 
+    private static ZestRuntime runtimeWithChromeDriver(String windowHandle) {
+        ZestRuntime runtime = runtime();
+        WebDriver driver = mock(ChromeDriver.class);
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        when(runtime.getWebDriver(windowHandle)).thenReturn(driver);
+        when((JavascriptExecutor) runtime.getWebDriver(windowHandle)).thenReturn(jsExecutor);
+        return runtime;
+    }
 }

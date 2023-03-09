@@ -32,8 +32,7 @@ public class ZestClientElementMouseOut extends ZestClientElement {
     @Override
     public ZestStatement deepCopy() {
         ZestClientElementMouseOut copy =
-                new ZestClientElementMouseOut(
-                        getWindowHandle(), getType(), getElement());
+                new ZestClientElementMouseOut(getWindowHandle(), getType(), getElement());
         copy.setEnabled(isEnabled());
         return copy;
     }
