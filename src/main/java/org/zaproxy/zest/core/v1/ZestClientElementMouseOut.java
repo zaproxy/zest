@@ -8,11 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-/**
- * Hovers out from the element.
- *
- * @author aryan
- */
 public class ZestClientElementMouseOut extends ZestClientElement {
 
     public ZestClientElementMouseOut(String sessionIdName, String type, String element) {
@@ -26,8 +21,7 @@ public class ZestClientElementMouseOut extends ZestClientElement {
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-        // Move the mouse pointer to body
-        WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
+        WebDriver wd = runtime.getWebDriver(getWindowHandle());
         Actions actions = new Actions(wd);
         WebElement body = wd.findElement(By.tagName("body"));
         actions.moveToElement(body).perform();
@@ -39,8 +33,8 @@ public class ZestClientElementMouseOut extends ZestClientElement {
     public ZestStatement deepCopy() {
         ZestClientElementMouseOut copy =
                 new ZestClientElementMouseOut(
-                        this.getWindowHandle(), this.getType(), this.getElement());
-        copy.setEnabled(this.isEnabled());
+                        getWindowHandle(), getType(), getElement());
+        copy.setEnabled(isEnabled());
         return copy;
     }
 
