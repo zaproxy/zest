@@ -17,15 +17,13 @@ public class ZestClientElementMouseOver extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-
         Actions actions = new Actions(runtime.getWebDriver(getWindowHandle()));
         actions.moveToElement(getWebElement(runtime)).perform();
-
         return null;
     }
 
     @Override
-    public ZestStatement deepCopy() {
+    public ZestClientElementMouseOver deepCopy() {
         ZestClientElementMouseOver copy =
                 new ZestClientElementMouseOver(getWindowHandle(), getType(), getElement());
         copy.setEnabled(isEnabled());

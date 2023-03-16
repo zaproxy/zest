@@ -39,20 +39,17 @@ public class ZestClientElementScroll extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-
         JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(getWindowHandle());
-        String x1 = String.valueOf(x);
-        String y1 = String.valueOf(y);
-        String script = String.format("window.scrollBy(%s,%s);", x1, y1);
-        js.executeScript(script, "");
-
+        String script = String.format("arguments[0].scrollBy(%s,%s);", x, y);
+        js.executeScript(script, getWebElement(runtime));
         return null;
     }
 
     @Override
     public ZestClientElementScroll deepCopy() {
         ZestClientElementScroll copy =
-                new ZestClientElementScroll(getWindowHandle(), getType(), getElement(), x, y);
+                new ZestClientElementScroll(
+                        getWindowHandle(), getType(), getElement(), getX(), getY());
         copy.setEnabled(isEnabled());
         return copy;
     }
