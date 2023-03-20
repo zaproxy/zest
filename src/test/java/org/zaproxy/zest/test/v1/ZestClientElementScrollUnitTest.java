@@ -56,7 +56,6 @@ class ZestClientElementScrollUnitTest {
         ZestClientElementScroll clientElementScroll = new ZestClientElementScroll();
         // When
         clientElementScroll.setY(y);
-        ;
         // Then
         assertEquals(y, clientElementScroll.getY());
     }

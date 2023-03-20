@@ -5,6 +5,10 @@ package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.interactions.Actions;
 
+/**
+ * The element being hovered over must be in view already. It is recommended to use the "scroll to"
+ * statement to ensure the element is visible before performing the mouse-over action.
+ */
 public class ZestClientElementMouseOver extends ZestClientElement {
 
     public ZestClientElementMouseOver(String sessionIdName, String type, String element) {
@@ -17,8 +21,10 @@ public class ZestClientElementMouseOver extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+
         Actions actions = new Actions(runtime.getWebDriver(getWindowHandle()));
         actions.moveToElement(getWebElement(runtime)).perform();
+
         return null;
     }
 
