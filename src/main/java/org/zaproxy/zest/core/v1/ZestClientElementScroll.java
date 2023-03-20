@@ -39,9 +39,11 @@ public class ZestClientElementScroll extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+
         JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(getWindowHandle());
         String script = String.format("arguments[0].scrollBy(%s,%s);", x, y);
         js.executeScript(script, getWebElement(runtime));
+
         return null;
     }
 

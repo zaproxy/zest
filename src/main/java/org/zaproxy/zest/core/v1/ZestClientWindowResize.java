@@ -6,14 +6,9 @@ package org.zaproxy.zest.core.v1;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Close the specified client
- *
- * @author simon
- */
 public class ZestClientWindowResize extends ZestClient {
 
-    private String windowHandle = null;
+    private String windowHandle;
     private int x;
     private int y;
 
@@ -53,7 +48,7 @@ public class ZestClientWindowResize extends ZestClient {
     }
 
     @Override
-    public ZestStatement deepCopy() {
+    public ZestClientWindowResize deepCopy() {
         ZestClientWindowResize copy = new ZestClientWindowResize(getWindowHandle(), getX(), getY());
         copy.setEnabled(isEnabled());
         return copy;
