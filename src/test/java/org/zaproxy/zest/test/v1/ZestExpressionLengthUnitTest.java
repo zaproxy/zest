@@ -7,28 +7,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.MalformedURLException;
 import java.net.URL;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionLength;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
-/** */
+/** Unit test for {@link ZestExpressionLength}. */
 class ZestExpressionLengthUnitTest {
-    static ZestResponse response;
 
-    static {
-        try {
-            response =
-                    new ZestResponse(
-                            new URL("http://this.is.a.test"),
-                            "header prefix12345postfix",
-                            "body prefix54321postfix",
-                            200,
-                            100);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+    private ZestResponse response;
+
+    @BeforeEach
+    void setup() throws Exception {
+        response =
+                new ZestResponse(
+                        new URL("http://this.is.a.test"),
+                        "header prefix12345postfix",
+                        "body prefix54321postfix",
+                        200,
+                        100);
     }
 
     @Test

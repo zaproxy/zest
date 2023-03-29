@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestRuntime;
 import org.zaproxy.zest.core.v1.ZestVariables;
 
-/** */
+/** Unit test for {@link ZestStructuredExpression}. */
 class ZestStructuredExpressionUnitTest {
     @Test
     void testDeepCopySingleAndSameChildrenSize() {
@@ -220,55 +219,49 @@ class ZestStructuredExpressionUnitTest {
     }
 
     @Test
-    void testComplexCondition() {
+    void testComplexCondition() throws Exception {
         ZestExpressionAnd and = new ZestExpressionAnd();
         ZestExpressionOr or = new ZestExpressionOr();
-        try {
-            ZestResponse resp =
-                    new ZestResponse(
-                            new URL("http://this.is.a.test"),
-                            "Header prefix12345postfix",
-                            "Body Prefix54321Postfix",
-                            200,
-                            1000);
-            ZestExpressionLength length =
-                    new ZestExpressionLength(ZestVariables.RESPONSE_BODY, 0, 1);
-            length.setInverse(true);
-            ZestExpressionStatusCode code = new ZestExpressionStatusCode(200);
-            ZestExpressionRegex regex =
-                    new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "54321");
-            ZestExpressionResponseTime time = new ZestExpressionResponseTime(100);
-            LinkedList<String> includeRegex = new LinkedList<>();
-            LinkedList<String> excludeRegex = new LinkedList<>();
-            excludeRegex.add("");
-            ZestExpressionURL url = new ZestExpressionURL(includeRegex, excludeRegex);
-            url.setInverse(true);
-            time.setGreaterThan(true);
-            ZestExpression genericExp =
-                    new ZestExpression() {
+        ZestResponse resp =
+                new ZestResponse(
+                        new URL("http://this.is.a.test"),
+                        "Header prefix12345postfix",
+                        "Body Prefix54321Postfix",
+                        200,
+                        1000);
+        ZestExpressionLength length = new ZestExpressionLength(ZestVariables.RESPONSE_BODY, 0, 1);
+        length.setInverse(true);
+        ZestExpressionStatusCode code = new ZestExpressionStatusCode(200);
+        ZestExpressionRegex regex = new ZestExpressionRegex(ZestVariables.RESPONSE_BODY, "54321");
+        ZestExpressionResponseTime time = new ZestExpressionResponseTime(100);
+        LinkedList<String> includeRegex = new LinkedList<>();
+        LinkedList<String> excludeRegex = new LinkedList<>();
+        excludeRegex.add("");
+        ZestExpressionURL url = new ZestExpressionURL(includeRegex, excludeRegex);
+        url.setInverse(true);
+        time.setGreaterThan(true);
+        ZestExpression genericExp =
+                new ZestExpression() {
 
-                        @Override
-                        public ZestExpression deepCopy() {
-                            return null;
-                        }
+                    @Override
+                    public ZestExpression deepCopy() {
+                        return null;
+                    }
 
-                        @Override
-                        public boolean isTrue(ZestRuntime runtime) {
-                            return false;
-                        }
-                    };
-            or.addChildCondition(genericExp);
-            and.addChildCondition(length);
-            and.addChildCondition(code);
-            and.addChildCondition(regex);
-            and.addChildCondition(time);
-            and.addChildCondition(url);
-            or.addChildCondition(and);
-            ZestConditional cond = new ZestConditional(or);
-            assertTrue(cond.isTrue(new TestRuntime(resp)));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+                    @Override
+                    public boolean isTrue(ZestRuntime runtime) {
+                        return false;
+                    }
+                };
+        or.addChildCondition(genericExp);
+        and.addChildCondition(length);
+        and.addChildCondition(code);
+        and.addChildCondition(regex);
+        and.addChildCondition(time);
+        and.addChildCondition(url);
+        or.addChildCondition(and);
+        ZestConditional cond = new ZestConditional(or);
+        assertTrue(cond.isTrue(new TestRuntime(resp)));
     }
 
     @Test
