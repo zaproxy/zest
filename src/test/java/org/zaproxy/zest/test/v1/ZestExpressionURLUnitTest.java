@@ -7,26 +7,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionURL;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
-/** */
+/** Unit test for {@link ZestExpressionURL}. */
 class ZestExpressionURLUnitTest {
 
-    List<String> includeStrings = new LinkedList<>();
-    List<String> excludeStrings = new LinkedList<>();
-    int includeSize = 10;
-    int excludeSize = 5;
+    private int includeSize;
+    private List<String> includeStrings;
 
-    {
-        for (int i = 0; i < includeSize; i++) includeStrings.add("PING" + i);
-        for (int i = 0; i < excludeSize; i++) excludeStrings.add("PONG" + i);
+    private int excludeSize;
+    private List<String> excludeStrings;
+
+    @BeforeEach
+    void setup() {
+        includeSize = 10;
+        includeStrings = new ArrayList<>(includeSize);
+        for (int i = 0; i < includeSize; i++) {
+            includeStrings.add("PING" + i);
+        }
+
+        excludeSize = 5;
+        excludeStrings = new ArrayList<>(excludeSize);
+        for (int i = 0; i < excludeSize; i++) {
+            excludeStrings.add("PONG" + i);
+        }
     }
 
     @Test
@@ -47,45 +58,33 @@ class ZestExpressionURLUnitTest {
     }
 
     @Test
-    void testIsTrue() {
+    void testIsTrue() throws Exception {
         ZestExpressionURL urlExpr = new ZestExpressionURL();
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
-        try {
-            ZestRequest request = new ZestRequest();
-            request.setUrl(new URL("http://www.PING1.com"));
-            assertTrue(urlExpr.isTrue(new TestRuntime(request)));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        ZestRequest request = new ZestRequest();
+        request.setUrl(new URL("http://www.PING1.com"));
+        assertTrue(urlExpr.isTrue(new TestRuntime(request)));
     }
 
     @Test
-    void testIsTrueFalse() {
+    void testIsTrueFalse() throws Exception {
         ZestExpressionURL urlExpr = new ZestExpressionURL();
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
-        try {
-            ZestRequest request = new ZestRequest();
-            request.setUrl(new URL("http://www.PONG1.com"));
-            assertFalse(urlExpr.isTrue(new TestRuntime(request)));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        ZestRequest request = new ZestRequest();
+        request.setUrl(new URL("http://www.PONG1.com"));
+        assertFalse(urlExpr.isTrue(new TestRuntime(request)));
     }
 
     @Test
-    void testIsTrueDifferentURL() {
+    void testIsTrueDifferentURL() throws Exception {
         ZestExpressionURL urlExpr = new ZestExpressionURL();
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
-        try {
-            ZestRequest request = new ZestRequest();
-            request.setUrl(new URL("http://www.asdf.com"));
-            assertFalse(urlExpr.isTrue(new TestRuntime(request)));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        ZestRequest request = new ZestRequest();
+        request.setUrl(new URL("http://www.asdf.com"));
+        assertFalse(urlExpr.isTrue(new TestRuntime(request)));
     }
 
     @Test
@@ -155,14 +154,10 @@ class ZestExpressionURLUnitTest {
     }
 
     @Test
-    void testIsTrueExcludePattern() {
-        try {
-            ZestResponse response =
-                    new ZestResponse(new URL("http://www.PONG19874.com"), "", "", 200, 100);
-            ZestExpressionURL urlExpr = new ZestExpressionURL(includeStrings, excludeStrings);
-            assertFalse(urlExpr.isTrue(new TestRuntime(response)));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+    void testIsTrueExcludePattern() throws Exception {
+        ZestResponse response =
+                new ZestResponse(new URL("http://www.PONG19874.com"), "", "", 200, 100);
+        ZestExpressionURL urlExpr = new ZestExpressionURL(includeStrings, excludeStrings);
+        assertFalse(urlExpr.isTrue(new TestRuntime(response)));
     }
 }
