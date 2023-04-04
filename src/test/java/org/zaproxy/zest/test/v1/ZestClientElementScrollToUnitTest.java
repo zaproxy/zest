@@ -3,16 +3,29 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.zaproxy.zest.core.v1.ZestClientElementScrollTo;
+import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestJSON;
+import org.zaproxy.zest.core.v1.ZestScript;
+import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementScrollTo}. */
-class ZestClientElementScrollToUnitTest {
+class ZestClientElementScrollToUnitTest extends ServerBasedTest {
+
+    private static final String PATH_SERVER_FILE = "/test.html";
 
     @Test
     void shouldNotBePassive() {
@@ -53,6 +66,37 @@ class ZestClientElementScrollToUnitTest {
         assertEquals(deserialised.getWindowHandle(), original.getWindowHandle());
         assertEquals(deserialised.getElement(), original.getElement());
         assertEquals(deserialised.isEnabled(), original.isEnabled());
+    }
+
+    @Test
+    void shouldScrollToElement() throws Exception {
+        // Given
+        String htmlContent =
+                "<html><head></head><body style='height: 2000px;'><div style='height: 5000px;'></div><p id=\"test-id\">Paragraph</p></body></html>";
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+
+        // When
+        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(new ZestClientElementScrollTo("windowHandle", "id", "test-id"));
+        runner.run(script, null);
+        WebDriver driver = runner.getWebDriver("windowHandle");
+        WebElement element = driver.findElement(By.id("test-id"));
+        Point location = element.getLocation();
+        int viewportHeight = driver.manage().window().getSize().getHeight();
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        runner.removeWebDriver("windowHandle");
+
+        // Then
+        long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
+        boolean isInView =
+                element.isDisplayed()
+                        && location.getY() >= scrollY
+                        && location.getY() <= scrollY + viewportHeight;
+        assertEquals(true, isInView);
     }
 
     @Test
