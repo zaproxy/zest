@@ -3,16 +3,26 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestClientElementScroll;
+import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestJSON;
+import org.zaproxy.zest.core.v1.ZestScript;
+import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementScroll}. */
-class ZestClientElementScrollUnitTest {
+class ZestClientElementScrollUnitTest extends ServerBasedTest {
+
+    private static final String PATH_SERVER_FILE = "/test.html";
 
     @Test
     void shouldNotBePassive() {
@@ -95,5 +105,31 @@ class ZestClientElementScrollUnitTest {
         assertEquals(copy.getX(), original.getX());
         assertEquals(copy.getY(), original.getY());
         assertEquals(copy.isEnabled(), original.isEnabled());
+    }
+
+    @Test
+    void shouldScroll() throws Exception {
+        // Given
+        String htmlContent =
+                "<html><head></head><body style='height: 2000px;'><div style='height: 5000px;'></div></body></html>";
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+
+        // When
+        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(new ZestClientElementScroll("windowHandle", "cssselector", "body", 0, 100));
+        runner.run(script, null);
+        WebDriver driver = runner.getWebDriver("windowHandle");
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        long scrollX = (long) jsExecutor.executeScript("return window.scrollX;");
+        long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
+        runner.removeWebDriver("windowHandle");
+
+        // Then
+        assertEquals(0, scrollX);
+        assertEquals(100, scrollY);
     }
 }
