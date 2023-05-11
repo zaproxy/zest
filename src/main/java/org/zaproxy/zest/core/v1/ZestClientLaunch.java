@@ -187,7 +187,9 @@ public class ZestClientLaunch extends ZestClient {
 
             if ("Firefox".equalsIgnoreCase(this.browserType)) {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.setHeadless(isHeadless());
+                if (isHeadless()) {
+                    firefoxOptions.addArguments("-headless");
+                }
                 if (isProfilePathSet()) {
                     firefoxOptions.setProfile(new FirefoxProfile(new File(profilePath)));
                 }
@@ -218,7 +220,9 @@ public class ZestClientLaunch extends ZestClient {
                 driver = new FirefoxDriver(firefoxOptions);
             } else if ("Chrome".equalsIgnoreCase(this.browserType)) {
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.setHeadless(isHeadless());
+                if (isHeadless()) {
+                    chromeOptions.addArguments("--headless=new");
+                }
                 if (isProfilePathSet()) {
                     Path path = Paths.get(profilePath);
                     String userDataDir = path.getParent().toString();
