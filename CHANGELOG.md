@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Client statements for Scroll, MouseOver, and Window Resize events. [#243](https://github.com/zaproxy/zest/issues/243)
 
 ### Changed
-- Update Selenium to version 4.9.1.
+- Update Selenium to version 4.10.0.
 
 ## [0.17.0] - 2023-03-31
 ### Changed
