@@ -126,7 +126,7 @@ class ZestClientElementScrollUnitTest extends ServerBasedTest {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         long scrollX = (long) jsExecutor.executeScript("return window.scrollX;");
         long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
-        runner.removeWebDriver("windowHandle");
+        driver.quit();
 
         // Then
         assertEquals(0, scrollX);

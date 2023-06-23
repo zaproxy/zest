@@ -128,7 +128,7 @@ class ZestClientWindowResizeUnitTest extends ServerBasedTest {
         runner.run(script, null);
         WebDriver driver = runner.getWebDriver("windowHandle");
         Dimension size = driver.manage().window().getSize();
-        runner.removeWebDriver("windowHandle");
+        driver.quit();
         // Then
         assertEquals(700, size.width);
         assertEquals(500, size.height);

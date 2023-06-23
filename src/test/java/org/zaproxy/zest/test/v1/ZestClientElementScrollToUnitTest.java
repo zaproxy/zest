@@ -88,7 +88,6 @@ class ZestClientElementScrollToUnitTest extends ServerBasedTest {
         Point location = element.getLocation();
         int viewportHeight = driver.manage().window().getSize().getHeight();
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        runner.removeWebDriver("windowHandle");
 
         // Then
         long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
@@ -96,6 +95,7 @@ class ZestClientElementScrollToUnitTest extends ServerBasedTest {
                 element.isDisplayed()
                         && location.getY() >= scrollY
                         && location.getY() <= scrollY + viewportHeight;
+        driver.quit();
         assertEquals(true, isInView);
     }
 
