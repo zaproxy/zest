@@ -24,6 +24,7 @@ public class ZestLoopTokenIntegerSet extends ZestElement implements ZestLoopToke
         this.start = 0;
         this.end = 0;
     }
+
     /**
      * Instantiates a new zest loop token integer set.
      *

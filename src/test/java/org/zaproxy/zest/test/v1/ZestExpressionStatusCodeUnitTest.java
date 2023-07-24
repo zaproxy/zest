@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionStatusCode;
 import org.zaproxy.zest.core.v1.ZestJSON;
@@ -138,6 +138,6 @@ class ZestExpressionStatusCodeUnitTest {
     }
 
     private static ZestResponse createResponse(int statusCode) throws Exception {
-        return new ZestResponse(new URL("http://localhost/"), "", "", statusCode, 0);
+        return new ZestResponse(new URI("http://localhost/").toURL(), "", "", statusCode, 0);
     }
 }

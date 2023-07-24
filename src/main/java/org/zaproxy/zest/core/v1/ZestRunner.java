@@ -24,8 +24,11 @@ public interface ZestRunner {
      * @throws ZestClientFailException
      */
     String run(ZestScript script, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException;
 
     /**
@@ -40,8 +43,11 @@ public interface ZestRunner {
      * @throws ZestClientFailException
      */
     String runScript(Reader reader, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException;
 
     /**
@@ -56,8 +62,11 @@ public interface ZestRunner {
      * @throws ZestClientFailException
      */
     String runScript(String script, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException;
 
     /**
@@ -73,8 +82,11 @@ public interface ZestRunner {
      * @throws ZestClientFailException
      */
     String run(ZestScript script, ZestRequest target, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException;
 
     /**
@@ -92,8 +104,11 @@ public interface ZestRunner {
      * @throws ZestClientFailException
      */
     ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastResponse)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException;
 
     /**
@@ -141,8 +156,12 @@ public interface ZestRunner {
             throws ZestAssignFailException;
 
     ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse)
-            throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException,
-                    IOException, ZestAssignFailException, ZestClientFailException;
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    ZestInvalidCommonTestException,
+                    IOException,
+                    ZestAssignFailException,
+                    ZestClientFailException;
 
     String handleClient(ZestScript script, ZestClient client) throws ZestClientFailException;
 

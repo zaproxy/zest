@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionLength;
@@ -22,7 +22,7 @@ class ZestExpressionLengthUnitTest {
     void setup() throws Exception {
         response =
                 new ZestResponse(
-                        new URL("http://this.is.a.test"),
+                        new URI("http://this.is.a.test").toURL(),
                         "header prefix12345postfix",
                         "body prefix54321postfix",
                         200,
