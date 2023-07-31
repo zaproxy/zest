@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestExpressionProtocol;
 import org.zaproxy.zest.core.v1.ZestJSON;
@@ -177,7 +177,7 @@ class ZestExpressionProtocolUnitTest {
 
     private static ZestRequest createRequest(String url) throws Exception {
         ZestRequest request = createRequest();
-        request.setUrl(new URL(url));
+        request.setUrl(new URI(url).toURL());
         return request;
     }
 }

@@ -5,7 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+### Changed
+- Update code to build without deprecation warnings in newer Java versions, this might
+cause invalid URLs to cause errors where previously they would be silently accepted.
 
 ## [0.18.0] - 2023-06-26
 ### Added

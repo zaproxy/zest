@@ -3,23 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import java.io.IOException;
-import java.net.URL;
-import org.zaproxy.zest.core.v1.ZestActionFailException;
-import org.zaproxy.zest.core.v1.ZestAssertFailException;
-import org.zaproxy.zest.core.v1.ZestAssignFailException;
-import org.zaproxy.zest.core.v1.ZestClientFailException;
-import org.zaproxy.zest.core.v1.ZestInvalidCommonTestException;
+import java.net.URI;
 import org.zaproxy.zest.core.v1.ZestLoopInteger;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 public class TestZestScriptWithLoop {
-    public static void main(String[] args)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
-                    ZestClientFailException {
+    public static void main(String[] args) throws Exception {
         for (int i = 1; i < 9; i++) {
             ZestScript script =
                     new ZestScript(
@@ -37,7 +28,7 @@ public class TestZestScriptWithLoop {
             ZestRequest request = new ZestRequest();
             request.setMethod("GET");
             request.setHeaders(requestH);
-            request.setUrl(new URL("http://localhost:8080/bodgeit/"));
+            request.setUrl(new URI("http://localhost:8080/bodgeit/").toURL());
 
             // ---- INTEGER ---
 

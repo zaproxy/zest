@@ -24,8 +24,10 @@ public abstract class ZestLoop<T> extends ZestStatement
 
     /** The variable name. */
     private String variableName = "";
+
     /** contains the snapshot of the current state of the loop. */
     private transient ZestLoopState<T> currentState;
+
     /** contains the index of the current statement considered. */
     private transient int stmtIndex = 0;
 
@@ -54,6 +56,7 @@ public abstract class ZestLoop<T> extends ZestStatement
         this.statements = statements;
         this.currentState = set.getFirstState();
     }
+
     /**
      * inits the loop refreshing the current state to the first considered state
      *
@@ -63,6 +66,7 @@ public abstract class ZestLoop<T> extends ZestStatement
         this.runtime = runtime;
         this.currentState = this.getSet().getFirstState();
     }
+
     /**
      * sets the current state to the new one (for subclasses).
      *
@@ -175,6 +179,7 @@ public abstract class ZestLoop<T> extends ZestStatement
     public T getCurrentToken() {
         return this.currentState.getCurrentToken();
     }
+
     /**
      * returns the current index (related to the current token) of the loop
      *
@@ -183,6 +188,7 @@ public abstract class ZestLoop<T> extends ZestStatement
     public int getCurrentIndex() {
         return this.currentState.getCurrentIndex();
     }
+
     /**
      * returns the current statement index
      *
@@ -298,14 +304,17 @@ public abstract class ZestLoop<T> extends ZestStatement
         }
         return true;
     }
+
     /**
      * checks if the loop is on its last state
      *
      * @return true if the loop is over
      */
     public abstract boolean isLastState();
+
     /** increase the loop indexes */
     protected abstract void increase();
+
     /** ends the loop taking its current state to the last state */
     public abstract void toLastState();
 
@@ -327,11 +336,13 @@ public abstract class ZestLoop<T> extends ZestStatement
         }
         return statements.get(currentStmt);
     }
+
     /** act as a BREAK */
     public void onControlBreak() {
         toLastState();
         this.stmtIndex = statements.size();
     }
+
     /** act as a NEXT */
     public void onControlNext() {
         increase();

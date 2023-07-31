@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -224,7 +224,7 @@ class ZestStructuredExpressionUnitTest {
         ZestExpressionOr or = new ZestExpressionOr();
         ZestResponse resp =
                 new ZestResponse(
-                        new URL("http://this.is.a.test"),
+                        new URI("http://this.is.a.test").toURL(),
                         "Header prefix12345postfix",
                         "Body Prefix54321Postfix",
                         200,

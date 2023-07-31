@@ -7,6 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.Date;
@@ -61,7 +64,7 @@ class ZestRequestUnitTest {
     void testTokenReplacement() throws Exception {
         ZestRequest req = new ZestRequest();
 
-        req.setUrl(new URL("http://www.example.com/app/{{token1}}"));
+        req.setUrlToken("http://www.example.com/app/{{token1}}");
         req.setHeaders("Set-Cookie: test={{token2}}");
         req.setData("test={{token3}}&user=12{{token3}}34");
         req.addCookie(
@@ -102,7 +105,7 @@ class ZestRequestUnitTest {
     void testDeepCopy() throws Exception {
         ZestRequest req = new ZestRequest();
 
-        req.setUrl(new URL("http://www.example.com/app/{{token1}}"));
+        req.setUrlToken("http://www.example.com/app/{{token1}}");
         req.setHeaders("Set-Cookie: test={{token2}}");
         req.setData("test={{token3}}&user=12{{token3}}34");
         req.setTimestamp(Instant.now().toEpochMilli());
@@ -137,7 +140,7 @@ class ZestRequestUnitTest {
     void shouldSerialise() throws Exception {
         // Given
         ZestRequest request = new ZestRequest();
-        request.setUrl(new URL("http://example.com/"));
+        request.setUrl(createUrl("http://example.com/"));
         request.setUrlToken("http://{{host}}/");
         request.setMethod("POST");
         request.setHeaders("Header-A: value-a\r\nHeader-B: value-b");
@@ -160,7 +163,7 @@ class ZestRequestUnitTest {
         // When
         ZestRequest deserialisedRequest = (ZestRequest) ZestJSON.fromString(serialisation);
         // Then
-        assertThat(deserialisedRequest.getUrl()).isEqualTo(new URL("http://example.com/"));
+        assertThat(deserialisedRequest.getUrl()).isEqualTo(createUrl("http://example.com/"));
         assertThat(deserialisedRequest.getUrlToken()).isEqualTo("http://{{host}}/");
         assertThat(deserialisedRequest.getMethod()).isEqualTo("POST");
         assertThat(deserialisedRequest.getHeaders())
@@ -178,5 +181,9 @@ class ZestRequestUnitTest {
                                 "/path/id",
                                 new Date(1558960123000L),
                                 false));
+    }
+
+    private static URL createUrl(String value) throws MalformedURLException, URISyntaxException {
+        return new URI(value).toURL();
     }
 }

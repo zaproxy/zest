@@ -6,7 +6,9 @@ package org.zaproxy.zest.core.v1;
 import java.util.Date;
 import java.util.Objects;
 
-/** @since 0.14.0 */
+/**
+ * @since 0.14.0
+ */
 public class ZestCookie {
 
     private String domain;

@@ -3,7 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-/** @since 0.14.0 */
+/**
+ * @since 0.14.0
+ */
 public interface ZestOutputWriter {
 
     /**
