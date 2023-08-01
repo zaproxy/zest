@@ -118,19 +118,19 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = 'OWASP ZAP Zest'
+                name = 'ZAP Zest'
                 packaging = 'jar'
                 description = 'Zest is an experimental scripting language (initially) developed by the Mozilla security team designed to be used in web oriented security tools.'
                 url = 'https://github.com/zaproxy/zest'
 
                 organization {
-                    name = 'OWASP'
+                    name = 'ZAP'
                     url = 'https://www.zaproxy.org/'
                 }
 
                 mailingLists {
                     mailingList {
-                        name = 'OWASP ZAP Zest Group'
+                        name = 'ZAP Zest Group'
                         post = 'zaproxy-zest@googlegroups.com'
                         archive = 'https://groups.google.com/group/zaproxy-zest'
                     }

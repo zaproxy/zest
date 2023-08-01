@@ -33,7 +33,7 @@ cause invalid URLs to cause errors where previously they would be silently accep
 
 ## [0.15.0] - 2020-11-24
 ### Changed
-- Update source code and other resources per relocation of the repository, now under the OWASP ZAP
+- Update source code and other resources per relocation of the repository, now under the ZAP
 GitHub organisation. The Java classes are now under `org.zaproxy` as well as the artifact. The engine
 name remains the same for compatibility with previous versions.
 - Reduce the changes done to HTTP request header to the essential (e.g. authentication, HTTP state). [#214](https://github.com/zaproxy/zest/pull/214)
