@@ -1,7 +1,7 @@
 {
   "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
   "zestVersion": "0.8",
-  "generatedBy": "OWASP ZAP Dev Build",
+  "generatedBy": "ZAP Dev Build",
   "title": "BodgeIt Register XSS",
   "description": "This Zest script demonstrates the XSS issue in the BodgeIt Register page.\nIt uses a \u0027random integer replacement\u0027 transformation to ensure a new user is registered each time the script is run.",
   "prefix": "http://localhost:8080/bodgeit",

@@ -1,4 +1,4 @@
-OWASP ZAP Zest
+ZAP Zest
 ============
 
 Zest is a specialized scripting language (initially) developed by the Mozilla security team and is intended to be used in 
@@ -9,7 +9,7 @@ It is completely free, open source and can be included in any tool whether open 
 Version 1 of Zest:
 * Is aimed at creating scripts for reproducing basic security vulnerabilities
 * Includes a java reference implementation
-* Has been included in a proof-of-concept OWASP ZAP add-on
+* Has been included in a proof-of-concept ZAP add-on
 
 For more details see the wiki: https://github.com/zaproxy/zest/wiki
 
