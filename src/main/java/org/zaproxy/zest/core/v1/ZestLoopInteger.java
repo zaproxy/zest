@@ -9,6 +9,7 @@ import java.util.LinkedList;
 public class ZestLoopInteger extends ZestLoop<Integer> {
 
     private ZestLoopTokenIntegerSet set;
+
     /** Instantiates a new zest loop integer. */
     public ZestLoopInteger() {
         super();
@@ -87,6 +88,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
     public ZestLoopStateInteger getCurrentState() {
         return (ZestLoopStateInteger) super.getCurrentState();
     }
+
     /**
      * sets the step for the loop
      *
@@ -95,6 +97,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
     public void setStep(int step) {
         this.getSet().setStep(step);
     }
+
     /**
      * returns the step of this loop
      *
@@ -159,6 +162,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
     public void endLoop() {
         this.endLoop(getSet());
     }
+
     /**
      * sets a new start index
      *
@@ -167,6 +171,7 @@ public class ZestLoopInteger extends ZestLoop<Integer> {
     public void setStart(int newStart) {
         this.setSet(new ZestLoopTokenIntegerSet(newStart, getEnd()));
     }
+
     /**
      * sets the new end index
      *

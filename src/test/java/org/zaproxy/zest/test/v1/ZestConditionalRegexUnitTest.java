@@ -350,6 +350,7 @@ class ZestConditionalRegexUnitTest {
 
         checkOrder(new ZestStatement[] {zc1, req2, req1, null});
     }
+
     /*
     	@Test
     	void testDepthIndexing() {

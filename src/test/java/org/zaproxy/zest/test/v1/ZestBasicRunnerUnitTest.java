@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.byLessThan;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,7 +82,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        URL url = createUrl(getServerUrl(PATH_SERVER_FILE));
         String method = "POST";
         request.setMethod(method);
         request.setUrl(url);
@@ -125,7 +128,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         request.setMethod("GET");
-        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        request.setUrl(createUrl(getServerUrl(PATH_SERVER_FILE)));
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
         // When
@@ -140,7 +143,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         request.setMethod("POST");
-        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        request.setUrl(createUrl(getServerUrl(PATH_SERVER_FILE)));
         request.setData("Content Request Body");
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
@@ -156,7 +159,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         request.setMethod("GET");
-        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        request.setUrl(createUrl(getServerUrl(PATH_SERVER_FILE)));
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
         // When
@@ -171,7 +174,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
         request.setMethod("GET");
-        request.setUrl(new URL(getServerUrl(PATH_SERVER_FILE)));
+        request.setUrl(createUrl(getServerUrl(PATH_SERVER_FILE)));
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
         // When
@@ -185,7 +188,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         // Given
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        URL url = createUrl(getServerUrl(PATH_SERVER_FILE));
         String method = "PUT";
         request.setMethod(method);
         request.setUrl(url);
@@ -209,7 +212,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldSendRequestThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        URL url = createUrl(getServerUrl(PATH_SERVER_FILE));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -235,7 +238,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldNoLongerSendRequestThroughProxyIfUnset() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_FILE));
+        URL url = createUrl(getServerUrl(PATH_SERVER_FILE));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -261,7 +264,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldFollowRedirectsByDefault() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        URL url = createUrl(getServerUrl(PATH_SERVER_REDIRECT));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -282,7 +285,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldNotFollowRedirectsIfDisabled() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        URL url = createUrl(getServerUrl(PATH_SERVER_REDIRECT));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -305,7 +308,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldFollowRedirectsThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        URL url = createUrl(getServerUrl(PATH_SERVER_REDIRECT));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -331,7 +334,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     void shouldNotFollowRedirectsIfDisabledThroughConfiguredProxy() throws Exception {
         ZestScript script = new ZestScript();
         ZestRequest request = new ZestRequest();
-        URL url = new URL(getServerUrl(PATH_SERVER_REDIRECT));
+        URL url = createUrl(getServerUrl(PATH_SERVER_REDIRECT));
         String method = "GET";
         request.setMethod(method);
         request.setUrl(url);
@@ -350,5 +353,9 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
                 getRequestedFor(urlMatching(PATH_SERVER_REDIRECT))
                         .withHeader("Host", matching(getHostPort())));
         server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+    }
+
+    private static URL createUrl(String value) throws MalformedURLException, URISyntaxException {
+        return new URI(value).toURL();
     }
 }

@@ -4,7 +4,7 @@ plugins {
     id 'signing'
     id 'application'
     id 'jacoco'
-    id "com.diffplug.spotless" version "6.14.1"
+    id "com.diffplug.spotless" version "6.20.0"
 }
 
 repositories {
@@ -13,14 +13,18 @@ repositories {
 
 apply from: "$rootDir/gradle/ci.gradle.kts"
 
-def javaVersion = JavaVersion.VERSION_11
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
+java {
+    def javaVersion = JavaVersion.VERSION_11
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+}
 
 group 'org.zaproxy'
 version '0.19.0-SNAPSHOT'
 
-mainClassName = 'org.zaproxy.zest.impl.CmdLine'
+application {
+    mainClass.set("org.zaproxy.zest.impl.CmdLine")
+}
 
 sourceSets.test.resources.srcDirs 'examples'
 
@@ -28,26 +32,24 @@ dependencies {
     implementation (
              'org.apache.httpcomponents:httpclient:4.5.8',
              'com.google.code.gson:gson:2.8.5',
-             'org.seleniumhq.selenium:selenium-java:4.10.0',
-             'org.seleniumhq.selenium:htmlunit-driver:4.10.0',
+             'org.seleniumhq.selenium:selenium-java:4.11.0',
+             'org.seleniumhq.selenium:htmlunit-driver:4.11.0',
              'net.htmlparser.jericho:jericho-html:3.1')
 
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0") {
         // Not needed.
         exclude(group: "org.junit")
     }
-    testImplementation('org.mockito:mockito-core:5.1.1')
+    testImplementation('org.mockito:mockito-core:5.4.0')
     testImplementation("org.assertj:assertj-core:3.24.2")
-    String jupiterVersion = "5.9.2"
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 jar {
     manifest {
-        attributes('Implementation-Version': archiveVersion,
-        'Main-Class': mainClassName)
+        attributes('Implementation-Version': archiveVersion.get(),
+        'Main-Class': application.mainClass.get())
     }
 }
 
@@ -58,11 +60,7 @@ test {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.compilerArgs = [
-        // Enable all warnings,
         '-Xlint:all',
-        // but allow to compile with newer Java versions.
-        '-Xlint:-options',
-        // Be strict, treat warnings as errors.
         '-Werror'
     ]
 }
@@ -71,7 +69,7 @@ tasks.withType(Javadoc) {
     options {
         links = [ 'https://docs.oracle.com/javase/11/docs/api/' ]
         encoding = 'UTF-8'
-        source = sourceCompatibility
+        source = java.sourceCompatibility
     }
     if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
@@ -82,7 +80,7 @@ spotless {
     java {
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
 
-        googleJavaFormat("1.7").style('AOSP')
+        googleJavaFormat("1.17.0").aosp()
     }
 }
 
@@ -120,19 +118,19 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = 'OWASP ZAP Zest'
+                name = 'ZAP Zest'
                 packaging = 'jar'
                 description = 'Zest is an experimental scripting language (initially) developed by the Mozilla security team designed to be used in web oriented security tools.'
                 url = 'https://github.com/zaproxy/zest'
 
                 organization {
-                    name = 'OWASP'
+                    name = 'ZAP'
                     url = 'https://www.zaproxy.org/'
                 }
 
                 mailingLists {
                     mailingList {
-                        name = 'OWASP ZAP Zest Group'
+                        name = 'ZAP Zest Group'
                         post = 'zaproxy-zest@googlegroups.com'
                         archive = 'https://groups.google.com/group/zaproxy-zest'
                     }

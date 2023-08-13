@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added 
 - 'waitForElementToAppear' global token for Zest scripts to wait until elements are visible.
 
+### Changed
+- Update code to build without deprecation warnings in newer Java versions, this might
+cause invalid URLs to cause errors where previously they would be silently accepted.
+- Update Selenium to version 4.11.0.
+
 ## [0.18.0] - 2023-06-26
 ### Added
 - Client statements for Scroll, MouseOver, and Window Resize events. [#243](https://github.com/zaproxy/zest/issues/243)
@@ -32,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.15.0] - 2020-11-24
 ### Changed
-- Update source code and other resources per relocation of the repository, now under the OWASP ZAP
+- Update source code and other resources per relocation of the repository, now under the ZAP
 GitHub organisation. The Java classes are now under `org.zaproxy` as well as the artifact. The engine
 name remains the same for compatibility with previous versions.
 - Reduce the changes done to HTTP request header to the essential (e.g. authentication, HTTP state). [#214](https://github.com/zaproxy/zest/pull/214)

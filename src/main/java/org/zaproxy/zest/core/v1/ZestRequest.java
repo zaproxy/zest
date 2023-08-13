@@ -4,6 +4,8 @@
 package org.zaproxy.zest.core.v1;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,12 +101,20 @@ public class ZestRequest extends ZestStatement {
         if (url == null && urlToken != null) {
             try {
                 // We're assuming that the token has been replaced by this time ;)
-                return new URL(this.urlToken);
+                return createUrl(this.urlToken);
             } catch (MalformedURLException e) {
                 // Ignore - assume it includes an unexpanded token
             }
         }
         return url;
+    }
+
+    private static URL createUrl(String value) throws MalformedURLException {
+        try {
+            return new URI(value).toURL();
+        } catch (URISyntaxException e) {
+            throw new MalformedURLException(e.getMessage());
+        }
     }
 
     /**
@@ -310,13 +320,13 @@ public class ZestRequest extends ZestStatement {
         if (this.urlToken != null) {
             this.setUrlToken(tokens.replaceInString(this.urlToken, true));
             try {
-                this.setUrl(new URL(this.getUrlToken()));
+                this.setUrl(createUrl(this.getUrlToken()));
             } catch (MalformedURLException e) {
                 // Ignore
             }
         } else if (this.url != null) {
             try {
-                this.setUrl(new URL(tokens.replaceInString(this.url.toString(), true)));
+                this.setUrl(createUrl(tokens.replaceInString(this.url.toString(), true)));
             } catch (MalformedURLException e) {
                 // Ignore
             }
@@ -342,7 +352,7 @@ public class ZestRequest extends ZestStatement {
     public void setPrefix(String oldPrefix, String newPrefix) throws MalformedURLException {
         if (this.getUrl() != null && this.getUrl().toString().startsWith(oldPrefix)) {
             String urlStr = newPrefix + getUrl().toString().substring(oldPrefix.length());
-            this.setUrl(new URL(urlStr));
+            this.setUrl(createUrl(urlStr));
         } else {
             throw new IllegalArgumentException(
                     "Request url " + getUrl() + " does not start with " + oldPrefix);

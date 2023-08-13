@@ -86,12 +86,16 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         setHttpClient(new ComponentsHttpClient(timeout, skipSSLCertificateCheck));
     }
 
-    /** @since 0.14.0 */
+    /**
+     * @since 0.14.0
+     */
     public ZestBasicRunner(ZestHttpClient httpclient) {
         setHttpClient(httpclient);
     }
 
-    /** @since 0.14.0 */
+    /**
+     * @since 0.14.0
+     */
     public ZestBasicRunner(ScriptEngineFactory factory, ZestHttpClient httpclient) {
         setHttpClient(httpclient);
         this.scriptEngineFactory = factory;
@@ -104,8 +108,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public String run(ZestScript script, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException {
 
         return this.run(script, null, params);
@@ -113,8 +120,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public String run(ZestScript script, ZestRequest target, Map<String, String> tokens)
-            throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException,
-                    IOException, ZestAssignFailException, ZestClientFailException {
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    ZestInvalidCommonTestException,
+                    IOException,
+                    ZestAssignFailException,
+                    ZestClientFailException {
         List<ZestAuthentication> auth = script.getAuthentication();
         if (auth != null) {
             for (ZestAuthentication za : auth) {
@@ -155,8 +166,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public ZestResponse runStatement(ZestScript script, ZestStatement stmt, ZestResponse lastRes)
-            throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException,
-                    IOException, ZestAssignFailException, ZestClientFailException {
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    ZestInvalidCommonTestException,
+                    IOException,
+                    ZestAssignFailException,
+                    ZestClientFailException {
         if (skipStatements || !stmt.isEnabled()) {
             return lastRes;
         }
@@ -261,8 +276,12 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public ZestResponse handleLoop(ZestScript script, ZestLoop<?> loop, ZestResponse lastResponse)
-            throws ZestAssertFailException, ZestActionFailException, ZestInvalidCommonTestException,
-                    IOException, ZestAssignFailException, ZestClientFailException {
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    ZestInvalidCommonTestException,
+                    IOException,
+                    ZestAssignFailException,
+                    ZestClientFailException {
         try {
             loop.init(this);
             String token = "";
@@ -412,8 +431,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public String runScript(Reader reader, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader fr = new BufferedReader(reader)) {
@@ -427,8 +449,11 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
     @Override
     public String runScript(String script, Map<String, String> params)
-            throws ZestAssertFailException, ZestActionFailException, IOException,
-                    ZestInvalidCommonTestException, ZestAssignFailException,
+            throws ZestAssertFailException,
+                    ZestActionFailException,
+                    IOException,
+                    ZestInvalidCommonTestException,
+                    ZestAssignFailException,
                     ZestClientFailException {
         return run((ZestScript) ZestJSON.fromString(script), params);
     }
@@ -535,7 +560,9 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
         }
     }
 
-    /** @since 0.14.0 */
+    /**
+     * @since 0.14.0
+     */
     public void setHttpClient(ZestHttpClient httpclient) {
         this.httpclient = httpclient;
         this.httpclient.init(this);

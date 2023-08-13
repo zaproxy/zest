@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +66,7 @@ class ZestExpressionURLUnitTest {
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
         ZestRequest request = new ZestRequest();
-        request.setUrl(new URL("http://www.PING1.com"));
+        request.setUrl(createUrl("http://www.PING1.com"));
         assertTrue(urlExpr.isTrue(new TestRuntime(request)));
     }
 
@@ -73,7 +76,7 @@ class ZestExpressionURLUnitTest {
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
         ZestRequest request = new ZestRequest();
-        request.setUrl(new URL("http://www.PONG1.com"));
+        request.setUrl(createUrl("http://www.PONG1.com"));
         assertFalse(urlExpr.isTrue(new TestRuntime(request)));
     }
 
@@ -83,7 +86,7 @@ class ZestExpressionURLUnitTest {
         urlExpr.setIncludeRegexes(includeStrings);
         urlExpr.setExcludeRegexes(excludeStrings);
         ZestRequest request = new ZestRequest();
-        request.setUrl(new URL("http://www.asdf.com"));
+        request.setUrl(createUrl("http://www.asdf.com"));
         assertFalse(urlExpr.isTrue(new TestRuntime(request)));
     }
 
@@ -156,8 +159,12 @@ class ZestExpressionURLUnitTest {
     @Test
     void testIsTrueExcludePattern() throws Exception {
         ZestResponse response =
-                new ZestResponse(new URL("http://www.PONG19874.com"), "", "", 200, 100);
+                new ZestResponse(createUrl("http://www.PONG19874.com"), "", "", 200, 100);
         ZestExpressionURL urlExpr = new ZestExpressionURL(includeStrings, excludeStrings);
         assertFalse(urlExpr.isTrue(new TestRuntime(response)));
+    }
+
+    private static URL createUrl(String value) throws MalformedURLException, URISyntaxException {
+        return new URI(value).toURL();
     }
 }
