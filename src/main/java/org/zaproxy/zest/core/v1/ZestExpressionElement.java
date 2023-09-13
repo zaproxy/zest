@@ -6,7 +6,7 @@ package org.zaproxy.zest.core.v1;
 // TODO: Auto-generated Javadoc
 /**
  * this interface represents a Conditional Element, such as a simple<br>
- * Coditional (based on regex, Status Code, ..) or a list of AND/OR<br>
+ * Conditional (based on regex, Status Code, ..) or a list of AND/OR<br>
  * clauses
  *
  * @author Alessandro Secco: seccoale@gmail.com

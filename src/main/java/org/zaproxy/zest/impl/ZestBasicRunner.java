@@ -31,7 +31,6 @@ import org.zaproxy.zest.core.v1.ZestControlLoopBreak;
 import org.zaproxy.zest.core.v1.ZestControlLoopNext;
 import org.zaproxy.zest.core.v1.ZestControlReturn;
 import org.zaproxy.zest.core.v1.ZestInvalidCommonTestException;
-import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestLoop;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
@@ -40,6 +39,7 @@ import org.zaproxy.zest.core.v1.ZestRuntime;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.core.v1.ZestStatement;
 import org.zaproxy.zest.core.v1.ZestVariables;
+import org.zaproxy.zest.core.v1.ZestYaml;
 
 public class ZestBasicRunner implements ZestRunner, ZestRuntime {
 
@@ -444,7 +444,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
                 sb.append(line);
             }
         }
-        return run((ZestScript) ZestJSON.fromString(sb.toString()), params);
+        return run((ZestScript) ZestYaml.fromString(sb.toString()), params);
     }
 
     @Override
@@ -455,7 +455,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
                     ZestInvalidCommonTestException,
                     ZestAssignFailException,
                     ZestClientFailException {
-        return run((ZestScript) ZestJSON.fromString(script), params);
+        return run((ZestScript) ZestYaml.fromString(script), params);
     }
 
     @Override
