@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update code to build without deprecation warnings in newer Java versions, this might
 cause invalid URLs to cause errors where previously they would be silently accepted.
-- Update Selenium to version 4.12.0.
+- Update Selenium to version 4.12.1.
 
 ## [0.18.0] - 2023-06-26
 ### Added
