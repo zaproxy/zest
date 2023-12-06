@@ -4,11 +4,8 @@ plugins {
     id 'signing'
     id 'application'
     id 'jacoco'
-    id "com.diffplug.spotless" version "6.20.0"
-}
-
-repositories {
-    mavenCentral()
+    id "com.diffplug.spotless"
+    id "org.zaproxy.common"
 }
 
 apply from: "$rootDir/gradle/ci.gradle.kts"
@@ -43,9 +40,9 @@ dependencies {
         // Not needed.
         exclude(group: "org.junit")
     }
-    testImplementation('org.mockito:mockito-core:5.4.0')
+    testImplementation('org.mockito:mockito-core:5.8.0')
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -58,14 +55,6 @@ jar {
 
 test {
     useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs = [
-        '-Xlint:all',
-        '-Werror'
-    ]
 }
 
 tasks.withType(Javadoc) {
@@ -81,6 +70,8 @@ tasks.withType(Javadoc) {
 
 spotless {
     java {
+        clearSteps()
+
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
 
         googleJavaFormat("1.17.0").aosp()
