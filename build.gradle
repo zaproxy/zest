@@ -57,6 +57,12 @@ test {
     useJUnitPlatform()
 }
 
+tasks.withType(JavaCompile) {
+    if (JavaVersion.current().getMajorVersion() >= "21") {
+        options.compilerArgs = options.compilerArgs + "-Xlint:-this-escape"
+    }
+}
+
 tasks.withType(Javadoc) {
     options {
         links = [ 'https://docs.oracle.com/javase/11/docs/api/' ]
