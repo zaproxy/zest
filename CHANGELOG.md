@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Update Selenium to version 4.19.0.
+- Update HtmlUnit to major version 3.
 
 ## [0.20.0] - 2023-10-12
 ### Changed
