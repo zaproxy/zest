@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.22.0] - 2024-06-28
+### Added
+- Allow Zest runtimes to provide engines for script execution.
+
 ### Changed
 - Update Selenium to version 4.22.0.
 
@@ -115,7 +118,7 @@ name remains the same for compatibility with previous versions.
 ## [0.3] - 2013-09-10
 ## [0.2] - 2013-07-18
 
-[Unreleased]: https://github.com/zaproxy/zest/compare/0.21.0...HEAD
+[0.22.0]: https://github.com/zaproxy/zest/compare/0.21.0...0.22.0
 [0.21.0]: https://github.com/zaproxy/zest/compare/0.20.0...0.21.0
 [0.20.0]: https://github.com/zaproxy/zest/compare/0.19.0...0.20.0
 [0.19.0]: https://github.com/zaproxy/zest/compare/0.18.0...0.19.0
