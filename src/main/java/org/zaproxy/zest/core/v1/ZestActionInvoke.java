@@ -108,11 +108,7 @@ public class ZestActionInvoke extends ZestAction {
                 // Its a Zest script
                 engine = runtime.getScriptEngineFactory().getScriptEngine();
             } else {
-                ScriptEngineManager manager = new ScriptEngineManager();
-                engine = manager.getEngineByExtension(ext);
-                if (engine == null) {
-                    engine = manager.getEngineByName(ext);
-                }
+                engine = getScriptEngine(runtime, ext);
             }
         }
 
@@ -195,6 +191,20 @@ public class ZestActionInvoke extends ZestAction {
         } catch (Exception e) {
             throw new ZestActionFailException(this, e);
         }
+    }
+
+    private static ScriptEngine getScriptEngine(ZestRuntime runtime, String ext) {
+        ScriptEngine engine = runtime.getScriptEngine(ext);
+        if (engine != null) {
+            return engine;
+        }
+
+        ScriptEngineManager manager = new ScriptEngineManager();
+        engine = manager.getEngineByExtension(ext);
+        if (engine != null) {
+            return engine;
+        }
+        return manager.getEngineByName(ext);
     }
 
     private Charset getCharsetImpl() {

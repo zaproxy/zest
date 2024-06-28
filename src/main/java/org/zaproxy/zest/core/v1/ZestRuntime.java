@@ -4,6 +4,7 @@
 package org.zaproxy.zest.core.v1;
 
 import java.util.List;
+import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import org.openqa.selenium.WebDriver;
 
@@ -53,6 +54,19 @@ public interface ZestRuntime extends ZestOutputWriter {
      */
     default void setGlobalVariable(String name, String value) {
         // Nothing to do.
+    }
+
+    /**
+     * Gets a {@code ScriptEngine} for the given extension.
+     *
+     * <p>If no engine is returned it is used a default engine, if available.
+     *
+     * @param extension the extension of the script.
+     * @return the {@code ScriptEngine}, or {@code null}.
+     * @since 0.22.0
+     */
+    default ScriptEngine getScriptEngine(String extension) {
+        return null;
     }
 
     /**
