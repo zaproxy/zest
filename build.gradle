@@ -29,8 +29,8 @@ dependencies {
     implementation (
              'org.apache.httpcomponents:httpclient:4.5.8',
              'com.google.code.gson:gson:2.8.5',
-             'org.seleniumhq.selenium:selenium-java:4.23.0',
-             'org.seleniumhq.selenium:htmlunit3-driver:4.22.0',
+             'org.seleniumhq.selenium:selenium-java:4.23.1',
+             'org.seleniumhq.selenium:htmlunit3-driver:4.23.0',
              'net.htmlparser.jericho:jericho-html:3.1',
              'com.fasterxml.jackson.core:jackson-core:2.15.2',
              'com.fasterxml.jackson.core:jackson-databind:2.15.2',
