@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      dependencies:
+      gha:
         applies-to: version-updates
         patterns:
         - "*"
