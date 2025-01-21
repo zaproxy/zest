@@ -93,7 +93,7 @@ public class ZestLoopTokenClientElementsSet extends ZestElement
                 if (this.attribute == null || this.attribute.length() == 0) {
                     val = we.getText();
                 } else {
-                    val = we.getAttribute(attribute);
+                    val = getAttribute(we, attribute);
                 }
 
                 if (val != null && val.length() > 0) {
@@ -104,6 +104,14 @@ public class ZestLoopTokenClientElementsSet extends ZestElement
             this.convertedSet = set;
         }
         return convertedSet;
+    }
+
+    private static String getAttribute(WebElement element, String name) {
+        String value = element.getDomAttribute(name);
+        if (value != null) {
+            return value;
+        }
+        return element.getDomProperty(name);
     }
 
     @Override
