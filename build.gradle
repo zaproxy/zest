@@ -11,7 +11,7 @@ plugins {
 apply from: "$rootDir/gradle/ci.gradle.kts"
 
 java {
-    def javaVersion = JavaVersion.VERSION_11
+    def javaVersion = JavaVersion.VERSION_17
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 }
@@ -62,7 +62,7 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options {
-        links = [ 'https://docs.oracle.com/javase/11/docs/api/' ]
+        links = [ "https://docs.oracle.com/en/java/javase/17/docs/api/" ]
         encoding = 'UTF-8'
         source = java.sourceCompatibility
     }
