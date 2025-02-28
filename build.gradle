@@ -16,8 +16,8 @@ java {
     targetCompatibility = javaVersion
 }
 
-group 'org.zaproxy'
-version '0.25.0-SNAPSHOT'
+group = 'org.zaproxy'
+version = '0.25.0-SNAPSHOT'
 
 application {
     mainClass.set("org.zaproxy.zest.impl.CmdLine")
@@ -79,7 +79,7 @@ spotless {
 
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
 
-        googleJavaFormat("1.17.0").aosp()
+        googleJavaFormat("1.25.2").aosp()
     }
 }
 
@@ -98,7 +98,7 @@ publishing {
         maven {
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
 
             if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
                 credentials {
