@@ -3,12 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignFieldValue;
 import org.zaproxy.zest.core.v1.ZestAssignStringDelimiters;
+import org.zaproxy.zest.core.v1.ZestClientLaunch;
+import org.zaproxy.zest.core.v1.ZestClientWindowHandle;
 import org.zaproxy.zest.core.v1.ZestConditional;
 import org.zaproxy.zest.core.v1.ZestExpressionRegex;
 import org.zaproxy.zest.core.v1.ZestFieldDefinition;
@@ -259,5 +263,33 @@ class ZestScriptUnitTest {
         assertTrue(script.getVariableNames().contains("test.var.2"));
 
         // TODO check more containers
+    }
+
+    @Test
+    void shouldGetClientWindowHandles() {
+        // Given
+        ZestScript script = new ZestScript();
+        script.add(createClientLaunch("handleA"));
+        ZestClientWindowHandle stmtB = new ZestClientWindowHandle();
+        stmtB.setWindowHandle("handleB");
+        script.add(stmtB);
+        script.add(createClientLaunch("handleC"));
+        ZestConditional stmtConditional = new ZestConditional();
+        script.add(stmtConditional);
+        stmtConditional.addIf(createClientLaunch("conditional-if"));
+        stmtConditional.addElse(createClientLaunch("conditional-else"));
+
+        // When
+        Set<String> handles = script.getClientWindowHandles();
+
+        // Then
+        assertThat(handles)
+                .contains("handleA", "handleB", "handleC", "conditional-if", "conditional-else");
+    }
+
+    private static ZestClientLaunch createClientLaunch(String handle) {
+        ZestClientLaunch stmt = new ZestClientLaunch();
+        stmt.setWindowHandle(handle);
+        return stmt;
     }
 }
