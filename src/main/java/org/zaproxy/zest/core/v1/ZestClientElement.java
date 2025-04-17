@@ -49,7 +49,7 @@ public abstract class ZestClientElement extends ZestClient {
         this.element = element;
     }
 
-    protected WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
+    public WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
 
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
 
