@@ -77,29 +77,11 @@ public class ZestExpressionClientElementExists extends ZestExpression {
         if (wd == null) {
             return false;
         }
-        String elem = runtime.replaceVariablesInString(this.getElement(), false);
-        By by = null;
+        By by = ZestScript.getBy(runtime.replaceVariablesInString(this.getElement(), false), type);
 
-        if ("className".equalsIgnoreCase(type)) {
-            by = By.className(elem);
-        } else if ("cssSelector".equalsIgnoreCase(type)) {
-            by = By.cssSelector(elem);
-        } else if ("id".equalsIgnoreCase(type)) {
-            by = By.id(elem);
-        } else if ("linkText".equalsIgnoreCase(type)) {
-            by = By.linkText(elem);
-        } else if ("name".equalsIgnoreCase(type)) {
-            by = By.name(elem);
-        } else if ("partialLinkText".equalsIgnoreCase(type)) {
-            by = By.partialLinkText(elem);
-        } else if ("tagName".equalsIgnoreCase(type)) {
-            by = By.tagName(elem);
-        } else if ("xpath".equalsIgnoreCase(type)) {
-            by = By.xpath(elem);
-        } else {
+        if (by == null) {
             return false;
         }
-
         return wd.findElements(by).size() > 0;
     }
 

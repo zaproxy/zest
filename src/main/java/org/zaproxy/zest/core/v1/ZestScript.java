@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import org.openqa.selenium.By;
 
 /** The Class ZestScript. */
 public class ZestScript extends ZestStatement implements ZestContainer {
@@ -603,5 +604,26 @@ public class ZestScript extends ZestStatement implements ZestContainer {
             prev = statement.setPrev(prev);
         }
         return prev;
+    }
+
+    public static By getBy(String elem, String type) {
+        if ("className".equalsIgnoreCase(type)) {
+            return By.className(elem);
+        } else if ("cssSelector".equalsIgnoreCase(type)) {
+            return By.cssSelector(elem);
+        } else if ("id".equalsIgnoreCase(type)) {
+            return By.id(elem);
+        } else if ("linkText".equalsIgnoreCase(type)) {
+            return By.linkText(elem);
+        } else if ("name".equalsIgnoreCase(type)) {
+            return By.name(elem);
+        } else if ("partialLinkText".equalsIgnoreCase(type)) {
+            return By.partialLinkText(elem);
+        } else if ("tagName".equalsIgnoreCase(type)) {
+            return By.tagName(elem);
+        } else if ("xpath".equalsIgnoreCase(type)) {
+            return By.xpath(elem);
+        }
+        return null;
     }
 }

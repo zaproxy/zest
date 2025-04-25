@@ -27,10 +27,7 @@ public class ZestClientElementScrollTo extends ZestClientElement {
 
     @Override
     public ZestClientElementScrollTo deepCopy() {
-        ZestClientElementScrollTo copy =
-                new ZestClientElementScrollTo(getWindowHandle(), getType(), getElement());
-        copy.setEnabled(isEnabled());
-        return copy;
+        return this.deepCopy(ZestClientElementScrollTo::new);
     }
 
     @Override

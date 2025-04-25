@@ -73,15 +73,10 @@ public class ZestClientElementAssign extends ZestClientElement {
     }
 
     @Override
-    public ZestStatement deepCopy() {
-        ZestClientElementAssign copy =
-                new ZestClientElementAssign(
-                        this.getVariableName(),
-                        this.getWindowHandle(),
-                        this.getType(),
-                        this.getElement(),
-                        this.getAttribute());
-        copy.setEnabled(this.isEnabled());
+    public ZestClientElementAssign deepCopy() {
+        ZestClientElementAssign copy = this.deepCopy(ZestClientElementAssign::new);
+        copy.setVariableName(this.getVariableName());
+        copy.setAttribute(this.getAttribute());
         return copy;
     }
 
