@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Allow to access the `WebElement` referenced by a `ZestClientElement`.
+- New waitForMsec parameter to all client elements.
 
 ### Changed
  - Update Selenium to version 4.31.0.

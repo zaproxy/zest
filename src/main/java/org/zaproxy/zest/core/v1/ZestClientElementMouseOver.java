@@ -30,10 +30,7 @@ public class ZestClientElementMouseOver extends ZestClientElement {
 
     @Override
     public ZestClientElementMouseOver deepCopy() {
-        ZestClientElementMouseOver copy =
-                new ZestClientElementMouseOver(getWindowHandle(), getType(), getElement());
-        copy.setEnabled(isEnabled());
-        return copy;
+        return this.deepCopy(ZestClientElementMouseOver::new);
     }
 
     @Override

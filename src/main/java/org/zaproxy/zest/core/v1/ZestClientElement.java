@@ -3,9 +3,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import java.time.Duration;
+import java.util.function.Supplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /** An abstract class representing an action on a client element. */
 public abstract class ZestClientElement extends ZestClient {
@@ -13,6 +17,15 @@ public abstract class ZestClientElement extends ZestClient {
     private String windowHandle = null;
     private String type = null;
     private String element = null;
+    private int waitForMsec = 0;
+
+    public ZestClientElement(String windowHandle, String type, String element, int waitForMsec) {
+        super();
+        this.windowHandle = windowHandle;
+        this.type = type;
+        this.element = element;
+        this.waitForMsec = waitForMsec;
+    }
 
     public ZestClientElement(String windowHandle, String type, String element) {
         super();
@@ -49,6 +62,14 @@ public abstract class ZestClientElement extends ZestClient {
         this.element = element;
     }
 
+    public int getWaitForMsec() {
+        return waitForMsec;
+    }
+
+    public void setWaitForMsec(int waitForMsec) {
+        this.waitForMsec = waitForMsec;
+    }
+
     public WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
 
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
@@ -57,29 +78,33 @@ public abstract class ZestClientElement extends ZestClient {
             throw new ZestClientFailException(
                     this, "No client: " + runtime.getVariable(getWindowHandle()));
         }
-        String elem = runtime.replaceVariablesInString(this.getElement(), false);
 
         try {
-            if ("className".equalsIgnoreCase(type)) {
-                return wd.findElement(By.className(elem));
-            } else if ("cssSelector".equalsIgnoreCase(type)) {
-                return wd.findElement(By.cssSelector(elem));
-            } else if ("id".equalsIgnoreCase(type)) {
-                return wd.findElement(By.id(elem));
-            } else if ("linkText".equalsIgnoreCase(type)) {
-                return wd.findElement(By.linkText(elem));
-            } else if ("name".equalsIgnoreCase(type)) {
-                return wd.findElement(By.name(elem));
-            } else if ("partialLinkText".equalsIgnoreCase(type)) {
-                return wd.findElement(By.partialLinkText(elem));
-            } else if ("tagName".equalsIgnoreCase(type)) {
-                return wd.findElement(By.tagName(elem));
-            } else if ("xpath".equalsIgnoreCase(type)) {
-                return wd.findElement(By.xpath(elem));
+            By by =
+                    ZestScript.getBy(
+                            runtime.replaceVariablesInString(this.getElement(), false), type);
+            if (by == null) {
+                throw new ZestClientFailException(this, "Unsupported type: " + type);
             }
-            throw new ZestClientFailException(this, "Unsupported type: " + type);
+
+            if (this.waitForMsec > 0) {
+                WebDriverWait wait = new WebDriverWait(wd, Duration.ofMillis(waitForMsec));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            }
+            return wd.findElement(by);
+
         } catch (Exception e) {
             throw new ZestClientFailException(this, e);
         }
+    }
+
+    protected <T extends ZestClientElement> T deepCopy(Supplier<T> t) {
+        T copy = t.get();
+        copy.setType(this.getType());
+        copy.setElement(this.getElement());
+        copy.setEnabled(this.isEnabled());
+        copy.setWaitForMsec(this.getWaitForMsec());
+        copy.setWindowHandle(this.getWindowHandle());
+        return copy;
     }
 }

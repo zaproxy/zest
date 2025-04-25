@@ -49,10 +49,9 @@ public class ZestClientElementScroll extends ZestClientElement {
 
     @Override
     public ZestClientElementScroll deepCopy() {
-        ZestClientElementScroll copy =
-                new ZestClientElementScroll(
-                        getWindowHandle(), getType(), getElement(), getX(), getY());
-        copy.setEnabled(isEnabled());
+        ZestClientElementScroll copy = this.deepCopy(ZestClientElementScroll::new);
+        copy.setX(this.getX());
+        copy.setY(this.getY());
         return copy;
     }
 
