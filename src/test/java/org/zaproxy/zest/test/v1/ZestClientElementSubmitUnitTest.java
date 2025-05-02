@@ -9,22 +9,19 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestClientElementSubmit;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
 import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestJSON;
+import org.zaproxy.zest.core.v1.ZestRuntime;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
@@ -185,7 +182,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
     }
 
     @Test
-    void shouldFailIfElementAddedAfterWaiting() throws Exception {
+    void shouldFailIfElementAddedAfterWaiting() {
         // Given
         String htmlContent = "<html><head></head><body><form id=\"form\"></form></body></html>";
         server.stubFor(
@@ -193,63 +190,68 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
         ZestBasicRunner runner = new ZestBasicRunner();
+        TestClientLaunch clientLaunch =
+                new TestClientLaunch(
+                        "windowHandle",
+                        """
+                        setTimeout(() => {
+                            var el = document.createElement('input');
+                            el.id = 'test-submit';
+                            el.type = 'submit';
+                            document.getElementById('form').appendChild(el);
+                        }, "15000");
+                        """);
 
-        // When
-        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(clientLaunch);
         script.add(
                 newZestClientElementSubmit(
                         "windowHandle", "id", "test-submit", (int) TimeUnit.SECONDS.toMillis(5)));
 
-        String js =
-                """
-                setTimeout(() => {
-                    var el = document.createElement('input');
-                    el.id = 'test-submit';
-                    el.type = 'submit';
-                    document.getElementById('form').appendChild(el);
-                }, "15000");
-                """;
-
-        // Then
-        long startTime = System.currentTimeMillis();
-
-        AtomicBoolean passed = new AtomicBoolean(false);
-
-        // Have to run this in the background so we can add the element while its running
-        Thread t =
-                new Thread(
-                        () -> {
-                            try {
-                                runner.run(script, null);
-                                passed.set(true);
-                            } catch (Exception e) {
-                                // Ignore
-                            }
-                        });
-        t.start();
-
-        WebDriver driver = null;
-        for (int i = 0; i < 10; i++) {
-            driver = runner.getWebDriver("windowHandle");
-            if (driver != null) {
-                break;
-            }
-            Thread.sleep(500);
-        }
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        jsExecutor.executeScript(js);
-
-        // Wait for the Zest script to complete
-        t.join();
-        long timeTaken = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
-
-        // Then
-        assertFalse(passed.get(), "Did not expect the script to suceed");
-        assertTrue(timeTaken >= 5, "Took less time than expected: " + timeTaken);
-        assertTrue(timeTaken < 15, "Took more time than expected: " + timeTaken);
+        // When / Then
+        ZestClientFailException ex =
+                assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+        assertThat(ex)
+                .hasMessageContaining(
+                        "Expected condition failed: waiting for element to be clickable: By.id: test-submit");
     }
 
-    @Disabled("Seems to work fine locally but fails in CI/CD")
+    @Test
+    void shouldFailIfElementEnabledAfterWaiting() {
+        // Given
+        String htmlContent =
+                """
+                <html><head></head><body>
+                    <form id="form">
+                        <input id="test-submit" type="submit" disabled="true" />
+                    </form>
+                </body></html>
+                """;
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+        TestClientLaunch clientLaunch =
+                new TestClientLaunch(
+                        "windowHandle",
+                        """
+                        setTimeout(() => {
+                            document.getElementById("test-submit").disabled = false;
+                        }, "10000");
+                        """);
+        script.add(clientLaunch);
+        script.add(
+                newZestClientElementSubmit(
+                        "windowHandle", "id", "test-submit", (int) TimeUnit.SECONDS.toMillis(5)));
+
+        // When / Then
+        ZestClientFailException ex =
+                assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+        assertThat(ex)
+                .hasMessageContaining(
+                        "Expected condition failed: waiting for element to be clickable: By.id: test-submit");
+    }
+
     @Test
     void shouldSubmitElementAddedWithinWait() throws Exception {
         // Given
@@ -259,60 +261,69 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
         ZestBasicRunner runner = new ZestBasicRunner();
+        TestClientLaunch clientLaunch =
+                new TestClientLaunch(
+                        "windowHandle",
+                        """
+                        setTimeout(() => {
+                            var el = document.createElement("input");
+                            el.id = "test-submit";
+                            el.type = "submit";
+                            document.getElementById("form").appendChild(el);
+                        }, "3000");
+                        """);
 
-        // When
-        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(clientLaunch);
         script.add(
                 newZestClientElementSubmit(
                         "windowHandle", "id", "test-submit", (int) TimeUnit.SECONDS.toMillis(10)));
 
-        String js =
+        // When
+        runner.run(script, null);
+
+        // Then
+        long timeTaken =
+                TimeUnit.MILLISECONDS.toSeconds(
+                        System.currentTimeMillis() - clientLaunch.getStartTime());
+        assertTrue(timeTaken < 12, "Took more time than expected: " + timeTaken);
+    }
+
+    @Test
+    void shouldSubmitElementEnabledWithinWait() throws Exception {
+        // Given
+        String htmlContent =
                 """
-                setTimeout(() => {
-                  var el = document.createElement('input');
-                  el.id = 'test-submit';
-                  el.type = 'submit';
-                  document.getElementById('form').appendChild(el);
-                }, "3000");
+                <html><head></head><body>
+                    <form id="form">
+                        <input id="test-submit" type="submit" disabled="true" />
+                    </form>
+                </body></html>
                 """;
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+        TestClientLaunch clientLaunch =
+                new TestClientLaunch(
+                        "windowHandle",
+                        """
+                        setTimeout(() => {
+                            document.getElementById("test-submit").disabled = false;
+                        }, "3000");
+                        """);
+        script.add(clientLaunch);
+        script.add(
+                newZestClientElementSubmit(
+                        "windowHandle", "id", "test-submit", (int) TimeUnit.SECONDS.toMillis(10)));
+
+        // When
+        runner.run(script, null);
 
         // Then
-        long startTime = System.currentTimeMillis();
-
-        AtomicBoolean passed = new AtomicBoolean(false);
-        StringBuffer msg = new StringBuffer();
-
-        // Have to run this in the background so we can add the element while its running
-        Thread t =
-                new Thread(
-                        () -> {
-                            try {
-                                runner.run(script, null);
-                                passed.set(true);
-                            } catch (Exception e) {
-                                msg.append("Exception ");
-                                msg.append(e.getMessage());
-                            }
-                        });
-        t.start();
-
-        WebDriver driver = null;
-        for (int i = 0; i < 10; i++) {
-            driver = runner.getWebDriver("windowHandle");
-            if (driver != null) {
-                break;
-            }
-            Thread.sleep(200);
-        }
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        jsExecutor.executeScript(js);
-
-        // Wait for the Zest script to complete
-        t.join();
-        long timeTaken = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
-
-        // Then
-        assertTrue(passed.get(), msg.toString());
+        long timeTaken =
+                TimeUnit.MILLISECONDS.toSeconds(
+                        System.currentTimeMillis() - clientLaunch.getStartTime());
         assertTrue(timeTaken < 12, "Took more time than expected: " + timeTaken);
     }
 
@@ -337,5 +348,31 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
         ZestClientElementSubmit el = new ZestClientElementSubmit(sessionIdName, type, element);
         el.setWaitForMsec(waitForMsec);
         return el;
+    }
+
+    private class TestClientLaunch extends ZestClientLaunch {
+
+        private final String script;
+        private Long startTime;
+
+        TestClientLaunch(String windowHandle, String script) {
+            super(windowHandle, "firefox", getServerUrl(PATH_SERVER_FILE));
+
+            this.script = script;
+        }
+
+        @Override
+        public String invoke(ZestRuntime runtime) throws ZestClientFailException {
+            String handle = super.invoke(runtime);
+
+            ((JavascriptExecutor) runtime.getWebDriver(handle)).executeScript(script);
+            startTime = System.currentTimeMillis();
+
+            return handle;
+        }
+
+        public Long getStartTime() {
+            return startTime;
+        }
     }
 }
