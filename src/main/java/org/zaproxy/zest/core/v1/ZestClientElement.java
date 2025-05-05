@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -89,13 +90,28 @@ public abstract class ZestClientElement extends ZestClient {
 
             if (this.waitForMsec > 0) {
                 WebDriverWait wait = new WebDriverWait(wd, Duration.ofMillis(waitForMsec));
-                return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+                return wait.until(getExpectedCondition(by));
             }
             return wd.findElement(by);
 
         } catch (Exception e) {
             throw new ZestClientFailException(this, e);
         }
+    }
+
+    /**
+     * Gets the excepted condition to wait for the element.
+     *
+     * <p>Implementations should override this method to provide a more appropriate condition, by
+     * default it uses {@link ExpectedConditions#visibilityOfElementLocated(By)}.
+     *
+     * @param by the element locator, never {@code null}.
+     * @return the expected condition, should not be {@code null}.
+     * @since 0.27.0
+     * @see #getWaitForMsec()
+     */
+    protected ExpectedCondition<WebElement> getExpectedCondition(By by) {
+        return ExpectedConditions.visibilityOfElementLocated(by);
     }
 
     protected <T extends ZestClientElement> T deepCopy(Supplier<T> t) {

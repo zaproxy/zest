@@ -3,6 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 /**
  * Click on the specified client element.
  *
@@ -24,6 +29,11 @@ public class ZestClientElementClick extends ZestClientElement {
         this.getWebElement(runtime).click();
 
         return null;
+    }
+
+    @Override
+    protected ExpectedCondition<WebElement> getExpectedCondition(By by) {
+        return ExpectedConditions.elementToBeClickable(by);
     }
 
     @Override
