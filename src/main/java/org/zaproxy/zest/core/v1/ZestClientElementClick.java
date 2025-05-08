@@ -4,7 +4,9 @@
 package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -26,9 +28,26 @@ public class ZestClientElementClick extends ZestClientElement {
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
 
-        this.getWebElement(runtime).click();
+        WebElement element = getWebElement(runtime);
+        try {
+            element.click();
+        } catch (ElementClickInterceptedException e) {
+            clickOnElementPositon(runtime, element);
+        }
 
         return null;
+    }
+
+    private void clickOnElementPositon(ZestRuntime runtime, WebElement element)
+            throws ZestClientFailException {
+        try {
+            new Actions(runtime.getWebDriver(getWindowHandle()))
+                    .moveToElement(element)
+                    .click()
+                    .perform();
+        } catch (Exception e) {
+            throw new ZestClientFailException(this, e);
+        }
     }
 
     @Override
