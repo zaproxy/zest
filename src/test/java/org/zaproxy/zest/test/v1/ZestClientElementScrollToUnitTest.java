@@ -100,6 +100,31 @@ class ZestClientElementScrollToUnitTest extends ServerBasedTest {
     }
 
     @Test
+    void shouldNotScrollToElementWhenInView() throws Exception {
+        // Given
+        String htmlContent =
+                "<html><head></head><body style='height: 2000px;'><div style='height: 100px;'></div><p id=\"test-id\">Paragraph</p></body></html>";
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(new ZestClientElementScrollTo("windowHandle", "id", "test-id"));
+
+        // When
+        runner.run(script, null);
+
+        // Then
+        WebDriver driver = runner.getWebDriver("windowHandle");
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
+        driver.quit();
+        // Zero means no scroll happened
+        assertThat(scrollY).isZero();
+    }
+
+    @Test
     void shouldDeepCopy() {
         // Given
         ZestClientElementScrollTo original =
