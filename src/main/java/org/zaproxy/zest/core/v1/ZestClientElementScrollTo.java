@@ -23,7 +23,10 @@ public class ZestClientElementScrollTo extends ZestClientElement {
         JavascriptExecutor js = (JavascriptExecutor) runtime.getWebDriver(getWindowHandle());
 
         if (!isElementInView(js, getWebElement(runtime))) {
-            String script = "arguments[0].scrollIntoView();";
+            String script =
+                    """
+                    arguments[0].scrollIntoView({ block: "nearest" });
+                    """;
             js.executeScript(script, getWebElement(runtime));
         }
 
