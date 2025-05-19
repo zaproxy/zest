@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
 ## [0.29.0] - 2025-05-19
 ### Changed
 - Change `ZestClientElementScrollTo` to scroll with `nearest` vertical alignment, to ensure the element is kept visible.
@@ -154,6 +156,7 @@ name remains the same for compatibility with previous versions.
 ## [0.3] - 2013-09-10
 ## [0.2] - 2013-07-18
 
+[Unreleased]: https://github.com/zaproxy/zest/compare/0.29.0...HEAD
 [0.29.0]: https://github.com/zaproxy/zest/compare/0.28.0...0.29.0
 [0.28.0]: https://github.com/zaproxy/zest/compare/0.27.0...0.28.0
 [0.27.0]: https://github.com/zaproxy/zest/compare/0.26.0...0.27.0
