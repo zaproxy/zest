@@ -3,8 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import org.openqa.selenium.WebElement;
-
 /**
  * Clear the specified client element.
  *
@@ -55,21 +53,13 @@ public class ZestClientElementAssign extends ZestClientElement {
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
         String val;
         if (this.attribute != null && this.attribute.length() > 0) {
-            val = getAttribute(getWebElement(runtime), attribute);
+            val = getWebElement(runtime).getAttribute(attribute);
         } else {
             val = this.getWebElement(runtime).getText();
         }
         runtime.setVariable(variableName, val);
 
         return val;
-    }
-
-    private static String getAttribute(WebElement element, String name) {
-        String value = element.getDomAttribute(name);
-        if (value != null) {
-            return value;
-        }
-        return element.getDomProperty(name);
     }
 
     @Override
