@@ -4,6 +4,7 @@
 package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,8 +26,14 @@ public class ZestClientElementSubmit extends ZestClientElement {
 
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
-        this.getWebElement(runtime).submit();
-
+        WebElement el = this.getWebElement(runtime);
+        try {
+            el.submit();
+        } catch (UnsupportedOperationException e) {
+            // This can fail in the input element is not in a form, as per the OWASP Juice Shop
+            // login!
+            el.sendKeys(Keys.RETURN);
+        }
         return null;
     }
 
