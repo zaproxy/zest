@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update Selenium to version 4.33.0.
 
+### Fixed
+- Send RETURN key if submit fails for input elements not in a form.
+
 ## [0.29.0] - 2025-05-19
 ### Changed
 - Change `ZestClientElementScrollTo` to scroll with `nearest` vertical alignment, to ensure the element is kept visible.

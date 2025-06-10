@@ -328,6 +328,23 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
     }
 
     @Test
+    void shouldSubmitIfInputElementNotInForm() throws Exception {
+        // Given
+        String htmlContent =
+                "<html><head></head><body><input id=\"test-submit\" type=\"submit\" value=\"Submit\" /></body></html>";
+        server.stubFor(
+                get(urlEqualTo(PATH_SERVER_FILE))
+                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        ZestScript script = new ZestScript();
+        ZestBasicRunner runner = new ZestBasicRunner();
+
+        // When / Then
+        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(new ZestClientElementSubmit("windowHandle", "id", "test-submit"));
+        runner.run(script, null);
+    }
+
+    @Test
     void shouldDeepCopy() {
         // Given
         ZestClientElementSubmit original =
