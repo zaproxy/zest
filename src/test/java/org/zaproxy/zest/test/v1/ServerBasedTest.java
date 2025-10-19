@@ -21,7 +21,7 @@ public abstract class ServerBasedTest {
     }
 
     protected String getHostPort() {
-        return server.getOptions().bindAddress() + ":" + server.getPort();
+        return "127.0.0.1:" + server.getPort();
     }
 
     protected String getServerUrl(String path) {
