@@ -26,7 +26,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementSubmit}. */
-class ZestClientElementSubmitUnitTest extends ServerBasedTest {
+class ZestClientElementSubmitUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test.html";
 
@@ -81,7 +81,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
@@ -111,7 +111,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
@@ -144,7 +144,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When / Then
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
@@ -166,7 +166,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
@@ -189,7 +189,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         TestClientLaunch clientLaunch =
                 new TestClientLaunch(
                         "windowHandle",
@@ -230,7 +230,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         TestClientLaunch clientLaunch =
                 new TestClientLaunch(
                         "windowHandle",
@@ -260,7 +260,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         TestClientLaunch clientLaunch =
                 new TestClientLaunch(
                         "windowHandle",
@@ -303,7 +303,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         TestClientLaunch clientLaunch =
                 new TestClientLaunch(
                         "windowHandle",
@@ -336,7 +336,7 @@ class ZestClientElementSubmitUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When / Then
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));

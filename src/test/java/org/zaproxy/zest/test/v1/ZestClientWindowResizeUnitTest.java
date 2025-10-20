@@ -22,7 +22,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientWindowResize}. */
-class ZestClientWindowResizeUnitTest extends ServerBasedTest {
+class ZestClientWindowResizeUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test.html";
 
@@ -121,14 +121,13 @@ class ZestClientWindowResizeUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientWindowResize("windowHandle", 700, 500));
         runner.run(script, null);
         WebDriver driver = runner.getWebDriver("windowHandle");
         Dimension size = driver.manage().window().getSize();
-        driver.quit();
         // Then
         assertEquals(700, size.width);
         assertEquals(500, size.height);

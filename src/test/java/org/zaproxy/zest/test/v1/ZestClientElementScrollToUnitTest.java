@@ -23,7 +23,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementScrollTo}. */
-class ZestClientElementScrollToUnitTest extends ServerBasedTest {
+class ZestClientElementScrollToUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test.html";
 
@@ -77,7 +77,7 @@ class ZestClientElementScrollToUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
@@ -108,7 +108,7 @@ class ZestClientElementScrollToUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientElementScrollTo("windowHandle", "id", "test-id"));
 

@@ -20,7 +20,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-class ZestLoopClientElementUnitTest extends ServerBasedTest {
+class ZestLoopClientElementUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
 
@@ -54,7 +54,7 @@ class ZestLoopClientElementUnitTest extends ServerBasedTest {
         script.add(loop);
         script.add(new ZestClientWindowClose("htmlunit", 0));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // Uncomment this to proxy via ZAP
         // runner.setProxy("localhost", 8090);
         StringWriter sw = new StringWriter();
@@ -74,7 +74,7 @@ class ZestLoopClientElementUnitTest extends ServerBasedTest {
         script.add(loop);
         script.add(new ZestClientWindowClose("htmlunit", 0));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // Uncomment this to proxy via ZAP
         // runner.setProxy("localhost", 8090);
         StringWriter sw = new StringWriter();
@@ -95,7 +95,7 @@ class ZestLoopClientElementUnitTest extends ServerBasedTest {
         script.add(loop);
         script.add(new ZestClientWindowClose("htmlunit", 0));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // Uncomment this to proxy via ZAP
         // runner.setProxy("localhost", 8090);
         StringWriter sw = new StringWriter();

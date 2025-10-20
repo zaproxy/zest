@@ -28,10 +28,9 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.HTTPDTestServer;
 import org.zaproxy.zest.testutils.NanoServerHandler;
-import org.zaproxy.zest.testutils.ZestTestRunner;
 
 /** Unit test for {@link ZestClientElementClick}. */
-class ZestClientElementClickUnitTest {
+class ZestClientElementClickUnitTest extends ClientBasedTest {
 
     private static final String WINDOW_HANDLE = "windowHandle";
 
@@ -94,7 +93,7 @@ class ZestClientElementClickUnitTest {
                     }
                 });
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestTestRunner();
+        runner = new ZestBasicRunner();
         script.add(new TestClientLaunch(WINDOW_HANDLE));
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "missing"));
 
@@ -129,7 +128,7 @@ class ZestClientElementClickUnitTest {
                     }
                 });
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestTestRunner();
+        runner = new ZestBasicRunner();
         script.add(new TestClientLaunch(WINDOW_HANDLE));
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "login"));
 
@@ -167,7 +166,7 @@ class ZestClientElementClickUnitTest {
                     }
                 });
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestTestRunner();
+        runner = new ZestBasicRunner();
         script.add(new TestClientLaunch(WINDOW_HANDLE));
         script.add(new ZestClientWindowResize(WINDOW_HANDLE, size, size));
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "login"));
@@ -221,7 +220,7 @@ class ZestClientElementClickUnitTest {
                     }
                 });
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestTestRunner();
+        runner = new ZestBasicRunner();
         script.add(new TestClientLaunch(WINDOW_HANDLE));
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", element));
 
