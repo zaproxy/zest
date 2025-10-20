@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestClientElementScroll;
 import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestJSON;
@@ -20,7 +19,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementScroll}. */
-class ZestClientElementScrollUnitTest extends ServerBasedTest {
+class ZestClientElementScrollUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test.html";
 
@@ -116,17 +115,15 @@ class ZestClientElementScrollUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
 
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientElementScroll("windowHandle", "cssselector", "body", 0, 100));
         runner.run(script, null);
-        WebDriver driver = runner.getWebDriver("windowHandle");
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) runner.getWebDriver("windowHandle");
         long scrollX = (long) jsExecutor.executeScript("return window.scrollX;");
         long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
-        driver.quit();
 
         // Then
         assertEquals(0, scrollX);

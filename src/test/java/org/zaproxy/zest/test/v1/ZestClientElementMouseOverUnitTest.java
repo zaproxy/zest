@@ -21,7 +21,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@link ZestClientElementMouseOver}. */
-class ZestClientElementMouseOverUnitTest extends ServerBasedTest {
+class ZestClientElementMouseOverUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test.html";
 
@@ -75,7 +75,7 @@ class ZestClientElementMouseOverUnitTest extends ServerBasedTest {
                 get(urlEqualTo(PATH_SERVER_FILE))
                         .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
         ZestScript script = new ZestScript();
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // When
         script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientElementMouseOver("windowHandle", "id", "test-id"));

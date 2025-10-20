@@ -23,7 +23,7 @@ import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** */
-class ZestClientLaunchUnitTest extends ServerBasedTest {
+class ZestClientLaunchUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
 
@@ -75,7 +75,7 @@ class ZestClientLaunchUnitTest extends ServerBasedTest {
         script.add(new ZestClientWindowClose("htmlunit", 0));
         script.add(new ZestActionSleep(1));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // Uncomment this to proxy via ZAP
         // runner.setProxy("localhost", 8090);
         runner.run(script, null);
@@ -99,7 +99,7 @@ class ZestClientLaunchUnitTest extends ServerBasedTest {
         script.add(cl);
         script.add(new ZestClientWindowClose("htmlunit", 0));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         // Uncomment this to proxy via ZAP
         // runner.setProxy("localhost", 8090);
         runner.run(script, null);
@@ -113,7 +113,7 @@ class ZestClientLaunchUnitTest extends ServerBasedTest {
         script.add(new ZestClientLaunch("bad", "baddriver", getServerUrl(PATH_SERVER_FILE)));
         script.add(new ZestClientWindowClose("bad", 0));
 
-        ZestBasicRunner runner = new ZestBasicRunner();
+        runner = new ZestBasicRunner();
         assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
     }
 
