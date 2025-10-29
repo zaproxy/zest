@@ -12,12 +12,12 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -240,8 +240,18 @@ public class ZestClientLaunch extends ZestClient {
             } else if ("HtmlUnit".equalsIgnoreCase(this.browserType)) {
                 cap.setBrowserName(Browser.HTMLUNIT.browserName());
                 driver = new HtmlUnitDriver(cap);
-            } else if ("InternetExplorer".equalsIgnoreCase(this.browserType)) {
-                driver = new InternetExplorerDriver(new InternetExplorerOptions(cap));
+            } else if ("Edge".equalsIgnoreCase(this.browserType)) {
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (isHeadless()) {
+                    edgeOptions.addArguments("--headless=new");
+                }
+
+                edgeOptions.setCapability("webSocketUrl", true);
+                edgeOptions.addArguments("--proxy-bypass-list=<-loopback>");
+
+                edgeOptions.merge(cap);
+
+                driver = new EdgeDriver(edgeOptions);
             } else if ("Safari".equalsIgnoreCase(this.browserType)) {
                 driver = new SafariDriver(new SafariOptions(cap));
             } else {
