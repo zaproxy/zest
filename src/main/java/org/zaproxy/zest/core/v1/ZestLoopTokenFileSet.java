@@ -3,6 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -28,7 +31,9 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
      * @param pathToFile the path to file
      * @throws FileNotFoundException the file not found exception
      */
-    public ZestLoopTokenFileSet(String pathToFile) throws FileNotFoundException {
+    @JsonCreator
+    public ZestLoopTokenFileSet(@JsonProperty("pathToFile") String pathToFile)
+            throws FileNotFoundException {
         super();
         this.pathToFile = pathToFile;
         this.convertedSet = this.getConvertedSet(new File(pathToFile));
@@ -105,6 +110,7 @@ public class ZestLoopTokenFileSet extends ZestElement implements ZestLoopTokenSe
         return new File(pathToFile);
     }
 
+    @JsonGetter("pathToFile")
     public String getFilePath() {
         return this.pathToFile;
     }

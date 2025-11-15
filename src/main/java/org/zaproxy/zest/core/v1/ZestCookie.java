@@ -3,6 +3,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,8 +22,14 @@ public class ZestCookie {
     private Date expiry;
     private boolean secure;
 
+    @JsonCreator
     public ZestCookie(
-            String domain, String name, String value, String path, Date expiry, boolean secure) {
+            @JsonProperty("domain") String domain,
+            @JsonProperty("name") String name,
+            @JsonProperty("value") String value,
+            @JsonProperty("path") String path,
+            @JsonProperty("expiry") Date expiry,
+            @JsonProperty("secure") boolean secure) {
         this.domain = domain;
         this.name = name;
         this.value = value;
@@ -60,10 +70,12 @@ public class ZestCookie {
         this.path = path;
     }
 
+    @JsonGetter("expiry")
     public Date getExpiryDate() {
         return expiry;
     }
 
+    @JsonSetter("expiry")
     public void setExpiryDate(Date expiry) {
         this.expiry = expiry;
     }

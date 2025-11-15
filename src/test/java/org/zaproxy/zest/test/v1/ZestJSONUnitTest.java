@@ -54,7 +54,7 @@ class ZestJSONUnitTest {
                   "statements": [
                     {
                       "url": "https://example.com/",
-                      "data": "name\\u003d\\"Never Gonna Give You Up\\"\\u0026artist\\u003d\\"Rick Astley\\"",
+                      "data": "name\\u003D\\"Never Gonna Give You Up\\"\\u0026artist\\u003D\\"Rick Astley\\"",
                       "method": "POST",
                       "headers": "Content-Type: application/x-www-form-urlencoded",
                       "assertions": [],
