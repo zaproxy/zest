@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.net.MalformedURLException;
 
 /** The base abstract class that all Zest statements must extend. */
@@ -177,6 +178,7 @@ public abstract class ZestStatement extends ZestElement {
      *
      * @return true, if is passive
      */
+    @JsonIgnore
     public abstract boolean isPassive();
 
     /* Useful when debuging ;)

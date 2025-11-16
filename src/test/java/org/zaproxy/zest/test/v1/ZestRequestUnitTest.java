@@ -26,7 +26,7 @@ class ZestRequestUnitTest {
             "{\n"
                     + "  \"url\": \"http://example.com/\",\n"
                     + "  \"urlToken\": \"http://{{host}}/\",\n"
-                    + "  \"data\": \"a\\u003db\\u0026c\\u003dd\",\n"
+                    + "  \"data\": \"a\\u003Db\\u0026c\\u003Dd\",\n"
                     + "  \"method\": \"POST\",\n"
                     + "  \"headers\": \"Header-A: value-a\\r\\nHeader-B: value-b\",\n"
                     + "  \"assertions\": [],\n"
