@@ -16,6 +16,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import java.net.MalformedURLException;
@@ -24,12 +25,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.zaproxy.zest.core.v1.ZestComment;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestScript;
+import org.zaproxy.zest.core.v1.ZestStatement;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Unit test for {@code ZestBasicRunner}. */
@@ -353,6 +357,64 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
                 getRequestedFor(urlMatching(PATH_SERVER_REDIRECT))
                         .withHeader("Host", matching(getHostPort())));
         server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+    }
+
+    @Test
+    void shouldDefaultToNoStatementDelay() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        script.add(new ZestComment("1"));
+        script.add(new ZestComment("2"));
+        script.add(new ZestComment("3"));
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        long startTime = System.currentTimeMillis();
+        runner.run(script, Collections.emptyMap());
+        long endTime = System.currentTimeMillis();
+        // Then
+        assertThat(script.getStatementDelay()).isEqualTo(0);
+        assertTrue(endTime - startTime < 50);
+    }
+
+    @Test
+    void shouldApplyStatementDelay() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        script.add(new ZestComment("1"));
+        script.add(new ZestComment("2"));
+        script.add(new ZestComment("3"));
+        ZestBasicRunner runner = new ZestBasicRunner();
+        script.setOptions(Map.of(ZestScript.STATEMENT_DELAY_MS, "100"));
+        // When
+        long startTime = System.currentTimeMillis();
+        runner.run(script, Collections.emptyMap());
+        long endTime = System.currentTimeMillis();
+        // Then
+        assertThat(script.getStatementDelay()).isEqualTo(100);
+        assertTrue(endTime - startTime >= 300);
+    }
+
+    @Test
+    void shouldNotApplyStatementDelayToDisabledStatements() throws Exception {
+        // Given
+        ZestScript script = new ZestScript();
+        script.add(disable(new ZestComment("1")));
+        script.add(disable(new ZestComment("2")));
+        script.add(disable(new ZestComment("3")));
+        ZestBasicRunner runner = new ZestBasicRunner();
+        script.setOptions(Map.of(ZestScript.STATEMENT_DELAY_MS, "100"));
+        // When
+        long startTime = System.currentTimeMillis();
+        runner.run(script, Collections.emptyMap());
+        long endTime = System.currentTimeMillis();
+        // Then
+        assertThat(script.getStatementDelay()).isEqualTo(100);
+        assertTrue(endTime - startTime < 50);
+    }
+
+    private static ZestStatement disable(ZestStatement stmt) {
+        stmt.setEnabled(false);
+        return stmt;
     }
 
     private static URL createUrl(String value) throws MalformedURLException, URISyntaxException {

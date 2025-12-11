@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,6 +25,10 @@ import org.zaproxy.zest.core.v1.ZestYaml;
 class ZestYamlUnitTest {
 
     private static Stream<Arguments> provideZestScriptAndYaml() throws Exception {
+        return Stream.concat(basicScriptWithRequest(), emptyScriptWithStatementDelay());
+    }
+
+    private static Stream<Arguments> basicScriptWithRequest() throws Exception {
         var script = new ZestScript();
         var request = new ZestRequest();
         request.setMethod("POST");
@@ -37,49 +42,76 @@ class ZestYamlUnitTest {
         script.add(conditional);
 
         String yaml =
-                "---\n"
-                        + "about: This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/\n"
-                        + "zestVersion: 0.8\n"
-                        + "parameters:\n"
-                        + "  tokenStart: \"{{\"\n"
-                        + "  tokenEnd: \"}}\"\n"
-                        + "  tokens: {}\n"
-                        + "  elementType: ZestVariables\n"
-                        + "statements:\n"
-                        + "- url: https://example.com/\n"
-                        + "  data: name=\"Never Gonna Give You Up\"&artist=\"Rick Astley\"\n"
-                        + "  method: POST\n"
-                        + "  headers: \"Content-Type: application/x-www-form-urlencoded\"\n"
-                        + "  assertions: []\n"
-                        + "  followRedirects: true\n"
-                        + "  timestamp: 0\n"
-                        + "  cookies: []\n"
-                        + "  index: 1\n"
-                        + "  enabled: true\n"
-                        + "  elementType: ZestRequest\n"
-                        + "- rootExpression:\n"
-                        + "    code: 404\n"
-                        + "    not: false\n"
-                        + "    elementType: ZestExpressionStatusCode\n"
-                        + "  ifStatements:\n"
-                        + "  - message: Got a 404!\n"
-                        + "    index: 1\n"
-                        + "    enabled: true\n"
-                        + "    elementType: ZestActionPrint\n"
-                        + "  elseStatements:\n"
-                        + "  - message: Didn't get a 404!\n"
-                        + "    index: 2\n"
-                        + "    enabled: true\n"
-                        + "    elementType: ZestActionPrint\n"
-                        + "  index: 2\n"
-                        + "  enabled: true\n"
-                        + "  elementType: ZestConditional\n"
-                        + "authentication: []\n"
-                        + "index: 0\n"
-                        + "enabled: true\n"
-                        + "elementType: ZestScript\n";
+                """
+                ---
+                about: This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/
+                zestVersion: 0.8
+                parameters:
+                  tokenStart: "{{"
+                  tokenEnd: "}}"
+                  tokens: {}
+                  elementType: ZestVariables
+                statements:
+                - url: https://example.com/
+                  data: name="Never Gonna Give You Up"&artist="Rick Astley"
+                  method: POST
+                  headers: "Content-Type: application/x-www-form-urlencoded"
+                  assertions: []
+                  followRedirects: true
+                  timestamp: 0
+                  cookies: []
+                  index: 1
+                  enabled: true
+                  elementType: ZestRequest
+                - rootExpression:
+                    code: 404
+                    not: false
+                    elementType: ZestExpressionStatusCode
+                  ifStatements:
+                  - message: Got a 404!
+                    index: 1
+                    enabled: true
+                    elementType: ZestActionPrint
+                  elseStatements:
+                  - message: Didn't get a 404!
+                    index: 2
+                    enabled: true
+                    elementType: ZestActionPrint
+                  index: 2
+                  enabled: true
+                  elementType: ZestConditional
+                authentication: []
+                options: {}
+                index: 0
+                enabled: true
+                elementType: ZestScript
+                """;
 
         return Stream.of(Arguments.of(script, yaml));
+    }
+
+    private static Stream<Arguments> emptyScriptWithStatementDelay() throws Exception {
+        var script = new ZestScript();
+        script.setOptions(Map.of(ZestScript.STATEMENT_DELAY_MS, "10"));
+        String json =
+                """
+                ---
+                about: This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/
+                zestVersion: 0.8
+                parameters:
+                  tokenStart: "{{"
+                  tokenEnd: "}}"
+                  tokens: {}
+                  elementType: ZestVariables
+                statements: []
+                authentication: []
+                options:
+                  statementDelay: 10
+                index: 0
+                enabled: true
+                elementType: ZestScript
+                """;
+        return Stream.of(Arguments.of(script, json));
     }
 
     @ParameterizedTest

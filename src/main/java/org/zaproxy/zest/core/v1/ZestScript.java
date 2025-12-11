@@ -6,9 +6,12 @@ package org.zaproxy.zest.core.v1;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import org.openqa.selenium.By;
 
@@ -24,6 +27,8 @@ public class ZestScript extends ZestStatement implements ZestContainer {
     /** A standard 'about' message to be included in all scripts. */
     public static final String ABOUT =
             "This is a Zest script. For more details about Zest visit " + ZEST_URL;
+
+    public static final String STATEMENT_DELAY_MS = "statementDelay";
 
     /**
      * The type of the script: Active - the script will try to actively find vulnerabilities in the
@@ -94,6 +99,10 @@ public class ZestScript extends ZestStatement implements ZestContainer {
 
     /** The authentication. */
     private List<ZestAuthentication> authentication = new ArrayList<>();
+
+    private Map<String, String> options = Map.of();
+
+    private transient int statementDelay;
 
     /** Instantiates a new zest script. */
     public ZestScript() {
@@ -204,6 +213,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
             script.addAuthentication((ZestAuthentication) za.deepCopy());
         }
         script.setParameters(this.getParameters().deepCopy());
+        script.setOptions(new HashMap<>(this.getOptions()));
     }
 
     /**
@@ -424,6 +434,36 @@ public class ZestScript extends ZestStatement implements ZestContainer {
      */
     public void setParameters(ZestVariables parameters) {
         this.parameters = parameters;
+    }
+
+    public Map<String, String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Map<String, String> options) throws IllegalArgumentException {
+        for (Entry<String, String> opt : options.entrySet()) {
+            switch (opt.getKey()) {
+                case STATEMENT_DELAY_MS:
+                    try {
+                        int delay = Integer.parseInt(opt.getValue());
+                        if (delay < 0) {
+                            throw new NumberFormatException();
+                        }
+                        this.statementDelay = delay;
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException(
+                                "Invalid " + STATEMENT_DELAY_MS + " value: " + opt.getValue());
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid parameter: " + opt.getKey());
+            }
+        }
+        this.options = options;
+    }
+
+    public int getStatementDelay() {
+        return statementDelay;
     }
 
     /**
