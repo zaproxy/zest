@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestAssignFieldValue;
@@ -285,6 +286,21 @@ class ZestScriptUnitTest {
         // Then
         assertThat(handles)
                 .contains("handleA", "handleB", "handleC", "conditional-if", "conditional-else");
+    }
+
+    @Test
+    void shouldDuplicateScriptOptions() {
+        // Given
+        ZestScript script1 = new ZestScript();
+        script1.setOptions(Map.of(ZestScript.STATEMENT_DELAY_MS, "10"));
+        ZestScript script2 = new ZestScript();
+
+        // When
+        script1.duplicateTo(script2);
+
+        // Then
+        assertEquals(1, script2.getOptions().size());
+        assertThat(script2.getOptions()).containsEntry(ZestScript.STATEMENT_DELAY_MS, "10");
     }
 
     private static ZestClientLaunch createClientLaunch(String handle) {

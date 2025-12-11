@@ -179,6 +179,14 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
             throw new IllegalArgumentException(
                     stmt.getElementType() + " not allowed in passive scripts");
         }
+        if (script.getStatementDelay() > 0) {
+            try {
+                this.debug(stmt.getIndex() + " Statement delay: " + script.getStatementDelay());
+                Thread.sleep(script.getStatementDelay());
+            } catch (InterruptedException e) {
+                // Ignore
+            }
+        }
 
         if (stmt instanceof ZestRequest) {
             this.lastRequest = ((ZestRequest) stmt).deepCopy();
