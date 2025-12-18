@@ -17,7 +17,7 @@ java {
 }
 
 group = 'org.zaproxy'
-version = '0.34.0'
+version = '0.35.0-SNAPSHOT'
 
 application {
     mainClass.set("org.zaproxy.zest.impl.CmdLine")
@@ -28,7 +28,6 @@ sourceSets.test.resources.srcDirs 'examples'
 dependencies {
     implementation (
              'org.apache.httpcomponents:httpclient:4.5.8',
-             'com.google.code.gson:gson:2.8.5',
              'org.seleniumhq.selenium:selenium-java:4.39.0',
              'org.seleniumhq.selenium:htmlunit3-driver:4.34.0',
              'net.htmlparser.jericho:jericho-html:3.1')
