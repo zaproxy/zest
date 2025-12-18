@@ -6,10 +6,14 @@ package org.zaproxy.zest.test.v1;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import java.net.URI;
 import java.util.Map;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -147,5 +151,57 @@ class ZestJSONUnitTest {
         // Then
         assertThat(element.getElementType().equals(expectedElement.getElementType()), is(true));
         assertThat(ZestJSON.toString(element), is(equalTo(ZestJSON.toString(expectedElement))));
+    }
+
+    @Test
+    void shouldSetOptions() {
+        // Given
+        String json =
+                """
+                {
+                  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+                  "zestVersion": "0.8",
+                  "statements": [],
+                  "authentication": [],
+                  "options": {
+                    "statementDelay": "10"
+                  },
+                  "index": 0,
+                  "enabled": true,
+                  "elementType": "ZestScript"
+                }
+                """;
+
+        // When
+        ZestScript script = (ZestScript) ZestJSON.fromString(json);
+        // Then
+        assertEquals(script.getStatementDelay(), 10);
+    }
+
+    @Test
+    void shouldFailOnBadOptions() {
+        // Given
+        String json =
+                """
+                {
+                  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+                  "zestVersion": "0.8",
+                  "statements": [],
+                  "authentication": [],
+                  "options": {
+                    "statementDelai": "10"
+                  },
+                  "index": 0,
+                  "enabled": true,
+                  "elementType": "ZestScript"
+                }
+                """;
+
+        // When
+        Exception e = assertThrows(RuntimeException.class, () -> ZestJSON.fromString(json));
+        // Then
+        assertEquals(e.getCause().getClass(), JsonMappingException.class);
+        assertEquals(
+                e.getCause().getMessage().startsWith("Invalid parameter: statementDelai"), true);
     }
 }

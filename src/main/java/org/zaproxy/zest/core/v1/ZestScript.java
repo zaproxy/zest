@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -440,6 +441,7 @@ public class ZestScript extends ZestStatement implements ZestContainer {
         return options;
     }
 
+    @JsonSetter("options")
     public void setOptions(Map<String, String> options) throws IllegalArgumentException {
         for (Entry<String, String> opt : options.entrySet()) {
             switch (opt.getKey()) {

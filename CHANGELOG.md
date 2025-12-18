@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update Jackson to version 2.20.1.
 - Migrate JSON serialization from Gson to Jackson. [#253](https://github.com/zaproxy/zest/issues/253)
+
+### Fixed
+- Correctly load options from a JSON definition.
+
 ### Removed
 - Remove dependency on Gson.
 
