@@ -3,20 +3,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.zaproxy.zest.impl.jackson.JacksonConfig;
 
 public class ZestYaml {
+    private static final int CODE_POINT_LIMIT = 10 * 1024 * 1024; // 10 MB
+
+    private static YAMLMapper yamlMapper = null;
+
     public static String toString(ZestElement element) {
         try {
-            String jsonString = ZestJSON.toString(element);
-            JsonNode jsonNodeTree = new ObjectMapper().readTree(jsonString);
-            return new YAMLMapper()
-                    .configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true)
-                    .writeValueAsString(jsonNodeTree);
+            return getYamlMapper().writeValueAsString(element);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -24,12 +24,26 @@ public class ZestYaml {
 
     public static ZestElement fromString(String str) {
         try {
-            ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-            Object obj = yamlReader.readValue(str, Object.class);
-            ObjectMapper jsonWriter = new ObjectMapper();
-            return ZestJSON.fromString(jsonWriter.writeValueAsString(obj));
+            return getYamlMapper().readValue(str, ZestElement.class);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private static YAMLMapper getYamlMapper() {
+        if (yamlMapper == null) {
+            LoaderOptions loaderOptions = new LoaderOptions();
+            loaderOptions.setCodePointLimit(CODE_POINT_LIMIT);
+
+            YAMLFactory yamlFactory = YAMLFactory.builder().loaderOptions(loaderOptions).build();
+            YAMLMapper.Builder builder = YAMLMapper.builder(yamlFactory);
+
+            builder.enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+                    .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID);
+
+            yamlMapper = JacksonConfig.configureCommonBuilder(builder).build();
+        }
+
+        return yamlMapper;
     }
 }

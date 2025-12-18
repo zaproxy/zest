@@ -3,6 +3,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URL;
 
 /** The Class ZestResponse. */
@@ -32,8 +34,13 @@ public class ZestResponse extends ZestElement {
      * @param statusCode the status code
      * @param responseTimeInMs the response time in ms
      */
+    @JsonCreator
     public ZestResponse(
-            URL url, String headers, String body, int statusCode, long responseTimeInMs) {
+            @JsonProperty("url") URL url,
+            @JsonProperty("headers") String headers,
+            @JsonProperty("body") String body,
+            @JsonProperty("statusCode") int statusCode,
+            @JsonProperty("responseTimeInMs") long responseTimeInMs) {
         this.url = url;
         this.headers = headers;
         this.body = body;

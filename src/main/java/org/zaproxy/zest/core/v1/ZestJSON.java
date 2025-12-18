@@ -3,30 +3,23 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.core.v1;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Date;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonFactoryBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.core.util.Separators;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.zaproxy.zest.impl.jackson.HtmlSafeCharacterEscapes;
+import org.zaproxy.zest.impl.jackson.JacksonConfig;
 
-// TODO: Auto-generated Javadoc
 /** The Class ZestJSON. */
 public class ZestJSON {
 
-    /** The gson. */
-    private static Gson gson = null;
+    /** The object mapper. */
+    private static JsonMapper jsonMapper = null;
 
     /**
      * To string.
@@ -35,7 +28,11 @@ public class ZestJSON {
      * @return the string
      */
     public static String toString(ZestElement element) {
-        return getGson().toJson(element);
+        try {
+            return getJsonMapper().writeValueAsString(element);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize ZestElement", e);
+        }
     }
 
     /**
@@ -45,97 +42,58 @@ public class ZestJSON {
      * @return the zest element
      */
     public static ZestElement fromString(String str) {
-        ZestElement ze = getGson().fromJson(str, ZestElement.class);
-        if (ze != null && ze instanceof ZestStatement) {
-            ((ZestStatement) ze).init();
+        ZestElement ze;
+        try {
+            ze = getJsonMapper().readValue(str, ZestElement.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to deserialize ZestElement", e);
         }
+
+        if (ze instanceof ZestStatement zs) {
+            zs.init();
+        }
+
         return ze;
     }
 
-    /**
-     * Gets the gson.
-     *
-     * @return the gson
-     */
-    private static Gson getGson() {
-        if (gson == null) {
-            GsonBuilder builder = newDefaultGsonBuilder();
-            // Need to add all of the abstract classes
-            Arrays.asList(
-                            ZestAction.class,
-                            ZestAssignment.class,
-                            ZestAuthentication.class,
-                            ZestElement.class,
-                            ZestStatement.class,
-                            ZestExpressionElement.class,
-                            ZestLoop.class,
-                            ZestLoopState.class,
-                            ZestLoopTokenSet.class)
-                    .forEach(type -> builder.registerTypeAdapter(type, ZestTypeAdapter.INSTANCE));
-            gson = builder.create();
+    private static JsonMapper getJsonMapper() {
+        if (jsonMapper == null) {
+            JsonFactory factory =
+                    ((JsonFactoryBuilder) JsonFactory.builder())
+                            .characterEscapes(HtmlSafeCharacterEscapes.instance())
+                            .build();
+
+            JsonMapper.Builder builder =
+                    JsonMapper.builder(factory)
+                            .defaultPrettyPrinter(createPrettyPrinter())
+                            // Equivalent to setPrettyPrinting()
+                            .enable(SerializationFeature.INDENT_OUTPUT);
+
+            jsonMapper = JacksonConfig.configureCommonBuilder(builder).build();
         }
-        return gson;
+
+        return jsonMapper;
     }
 
-    private static GsonBuilder newDefaultGsonBuilder() {
-        return new GsonBuilder()
-                .registerTypeAdapter(Date.class, DateTypeAdapter.INSTANCE)
-                .setPrettyPrinting();
-    }
+    private static DefaultPrettyPrinter createPrettyPrinter() {
+        Separators separators =
+                new Separators(
+                        Separators.DEFAULT_ROOT_VALUE_SEPARATOR,
+                        PrettyPrinter.DEFAULT_SEPARATORS.getObjectFieldValueSeparator(),
+                        Separators.Spacing.AFTER,
+                        PrettyPrinter.DEFAULT_SEPARATORS.getObjectEntrySeparator(),
+                        Separators.Spacing.NONE,
+                        "",
+                        PrettyPrinter.DEFAULT_SEPARATORS.getArrayValueSeparator(),
+                        Separators.Spacing.NONE,
+                        "");
 
-    private static class ZestTypeAdapter
-            implements JsonDeserializer<ZestElement>, JsonSerializer<ZestElement> {
+        DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter(separators);
 
-        static final ZestTypeAdapter INSTANCE = new ZestTypeAdapter();
+        var indenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n");
+        prettyPrinter.indentArraysWith(indenter);
+        prettyPrinter.indentObjectsWith(indenter);
 
-        private static final String ZEST_PACKAGE = ZestTypeAdapter.class.getPackage().getName();
-
-        @Override
-        public ZestElement deserialize(
-                JsonElement element, Type rawType, JsonDeserializationContext arg2) {
-            if (element instanceof JsonObject) {
-                String elementType = ((JsonObject) element).get("elementType").getAsString();
-
-                if (elementType.startsWith("Zest")) {
-                    try {
-                        Class<?> c = Class.forName(ZEST_PACKAGE + "." + elementType);
-                        return (ZestElement) getGson().fromJson(element, c);
-
-                    } catch (ClassNotFoundException e) {
-                        throw new JsonParseException(e);
-                    }
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public JsonElement serialize(
-                ZestElement element, Type rawType, JsonSerializationContext context) {
-            return newDefaultGsonBuilder().create().toJsonTree(element);
-        }
-    }
-
-    private static class DateTypeAdapter implements JsonDeserializer<Date>, JsonSerializer<Date> {
-
-        static final DateTypeAdapter INSTANCE = new DateTypeAdapter();
-
-        private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_DATE_TIME;
-
-        @Override
-        public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(FORMAT.format(src.toInstant().atOffset(ZoneOffset.UTC)));
-        }
-
-        @Override
-        public Date deserialize(
-                JsonElement json, Type typeOfT, JsonDeserializationContext context) {
-            String value = json.getAsJsonPrimitive().getAsString();
-            try {
-                return new Date(FORMAT.parse(value, Instant::from).toEpochMilli());
-            } catch (DateTimeParseException e) {
-                throw new JsonParseException("Failed to parse the date: " + value, e);
-            }
-        }
+        return prettyPrinter;
     }
 }
