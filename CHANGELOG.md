@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.34.0] - 2025-12-18
 ### Changed
 - Update Jackson to version 2.20.1.
 - Migrate JSON serialization from Gson to Jackson. [#253](https://github.com/zaproxy/zest/issues/253)
@@ -193,7 +193,7 @@ name remains the same for compatibility with previous versions.
 ## [0.3] - 2013-09-10
 ## [0.2] - 2013-07-18
 
-[Unreleased]: https://github.com/zaproxy/zest/compare/0.33.0...HEAD
+[0.34.0]: https://github.com/zaproxy/zest/compare/0.33.0...0.34.0
 [0.33.0]: https://github.com/zaproxy/zest/compare/0.32.0...0.33.0
 [0.32.0]: https://github.com/zaproxy/zest/compare/0.31.0...0.32.0
 [0.31.0]: https://github.com/zaproxy/zest/compare/0.30.0...0.31.0
