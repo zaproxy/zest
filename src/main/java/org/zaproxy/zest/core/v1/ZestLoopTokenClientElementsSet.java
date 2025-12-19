@@ -27,6 +27,8 @@ public class ZestLoopTokenClientElementsSet extends ZestElement
 
     private transient ZestLoopClientElements loop;
 
+    public ZestLoopTokenClientElementsSet() {}
+
     /**
      * Instantiates a new zest loop token file set.
      *
