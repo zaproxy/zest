@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove dependency on Gson.
 
+### Fixed
+- Fix deserialization of `ZestLoopTokenClientElementsSet`.
+
 ## [0.34.0] - 2025-12-18
 ### Changed
 - Update Jackson to version 2.20.1.
