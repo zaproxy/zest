@@ -3,23 +3,23 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
-import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestClientWindowResize;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
+import org.zaproxy.zest.testutils.NanoServerHandler;
 
 /** Unit test for {@link ZestClientWindowResize}. */
 class ZestClientWindowResizeUnitTest extends ClientBasedTest {
@@ -116,14 +116,17 @@ class ZestClientWindowResizeUnitTest extends ClientBasedTest {
     @Test
     void shouldResizeWindow() throws Exception {
         // Given
-        String htmlContent = "<html><head></head><body></body></html>";
-        server.stubFor(
-                get(urlEqualTo(PATH_SERVER_FILE))
-                        .willReturn(aResponse().withStatus(200).withBody(htmlContent)));
+        server.addHandler(
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        return newFixedLengthResponse("<html><head></head><body></body></html>");
+                    }
+                });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
         // When
-        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
+        script.add(new TestClientLaunch("windowHandle", PATH_SERVER_FILE));
         script.add(new ZestClientWindowResize("windowHandle", 700, 500));
         runner.run(script, null);
         WebDriver driver = runner.getWebDriver("windowHandle");

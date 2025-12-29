@@ -3,10 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -140,7 +137,7 @@ class ZestJSONUnitTest {
         // When
         String json = ZestJSON.toString(element);
         // Then
-        assertThat(json.trim(), is(equalTo(expectedJson.trim())));
+        assertThat(json).isEqualToIgnoringNewLines(expectedJson);
     }
 
     @ParameterizedTest
@@ -149,8 +146,8 @@ class ZestJSONUnitTest {
         // When
         ZestElement element = ZestJSON.fromString(json);
         // Then
-        assertThat(element.getElementType().equals(expectedElement.getElementType()), is(true));
-        assertThat(ZestJSON.toString(element), is(equalTo(ZestJSON.toString(expectedElement))));
+        assertThat(element.getElementType()).isEqualTo(expectedElement.getElementType());
+        assertThat(ZestJSON.toString(element)).isEqualTo(ZestJSON.toString(expectedElement));
     }
 
     @Test
@@ -175,7 +172,7 @@ class ZestJSONUnitTest {
         // When
         ZestScript script = (ZestScript) ZestJSON.fromString(json);
         // Then
-        assertEquals(script.getStatementDelay(), 10);
+        assertThat(script.getStatementDelay()).isEqualTo(10);
     }
 
     @Test
@@ -200,8 +197,9 @@ class ZestJSONUnitTest {
         // When
         Exception e = assertThrows(RuntimeException.class, () -> ZestJSON.fromString(json));
         // Then
-        assertEquals(e.getCause().getClass(), JsonMappingException.class);
-        assertEquals(
-                e.getCause().getMessage().startsWith("Invalid parameter: statementDelai"), true);
+        assertThat(e)
+                .hasCauseInstanceOf(JsonMappingException.class)
+                .cause()
+                .hasMessageStartingWith("Invalid parameter: statementDelai");
     }
 }

@@ -3,22 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,15 +20,18 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.zaproxy.zest.core.v1.ZestComment;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.core.v1.ZestStatement;
 import org.zaproxy.zest.impl.ZestBasicRunner;
+import org.zaproxy.zest.testutils.HTTPDTestServer;
+import org.zaproxy.zest.testutils.HTTPDTestServer.Request;
+import org.zaproxy.zest.testutils.NanoServerHandler;
 
 /** Unit test for {@code ZestBasicRunner}. */
 class ZestBasicRunnerUnitTest extends ServerBasedTest {
@@ -42,30 +39,65 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     private static final String PATH_SERVER_FILE = "/test";
     private static final String PATH_SERVER_REDIRECT = "/redirect";
 
-    @RegisterExtension
-    public WireMockExtension proxy =
-            WireMockExtension.newInstance()
-                    .options(options().dynamicPort().enableBrowserProxying(true))
-                    .failOnUnmatchedRequests(false)
-                    .build();
+    private NanoServerHandler fileHandler;
+    private NanoServerHandler redirectHandler;
+    private HTTPDTestServer proxy;
+
+    @BeforeEach
+    void startProxy() throws IOException {
+        proxy = new HTTPDTestServer(0);
+        proxy.start();
+    }
+
+    @AfterEach
+    void stopProxy() {
+        if (proxy != null) {
+            proxy.stop();
+        }
+    }
 
     @BeforeEach
     void before() {
-        server.stubFor(
-                post(urlEqualTo(PATH_SERVER_FILE))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(404)
-                                        .withHeader("Content-Type", "text/plain")
-                                        .withHeader("Name", "value")
-                                        .withHeader("Server", "abc")
-                                        .withBody("This is the response")));
-        server.stubFor(
-                get(urlEqualTo(PATH_SERVER_REDIRECT))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(301)
-                                        .withHeader("Location", PATH_SERVER_FILE)));
+        fileHandler =
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected boolean handles(IHTTPSession session) {
+                        return session.getUri().endsWith(getName());
+                    }
+
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        Response response =
+                                newFixedLengthResponse(
+                                        Response.Status.NOT_FOUND,
+                                        NanoHTTPD.MIME_PLAINTEXT,
+                                        "This is the response");
+                        response.addHeader("Name", "value");
+                        response.addHeader("Server", "abc");
+                        return response;
+                    }
+                };
+        proxy.addHandler(fileHandler);
+        server.addHandler(fileHandler);
+
+        redirectHandler =
+                new NanoServerHandler(PATH_SERVER_REDIRECT) {
+                    @Override
+                    protected boolean handles(IHTTPSession session) {
+                        return session.getUri().endsWith(getName());
+                    }
+
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        Response response =
+                                newFixedLengthResponse(
+                                        Response.Status.REDIRECT, NanoHTTPD.MIME_PLAINTEXT, "");
+                        response.addHeader("Location", PATH_SERVER_FILE);
+                        return response;
+                    }
+                };
+        proxy.addHandler(redirectHandler);
+        server.addHandler(redirectHandler);
     }
 
     @Test
@@ -118,11 +150,9 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(response.getStatusCode()).isEqualTo(404);
         assertThat(response.getUrl()).isEqualTo(url);
         assertThat(response.getHeaders())
-                .startsWith(
-                        "HTTP/1.1 404 Not Found\r\n"
-                                + "Content-Type: text/plain\r\n"
-                                + "Name: value\r\n"
-                                + "Server: abc\r\n");
+                .startsWith("HTTP/1.1 404 Not Found\r\n")
+                .contains("Name: value\r\n")
+                .contains("Server: abc\r\n");
         assertThat(response.getBody()).isEqualTo("This is the response");
     }
 
@@ -208,8 +238,9 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
         assertThat(request.getData()).isEqualTo(data);
-        server.verify(
-                putRequestedFor(urlMatching(PATH_SERVER_FILE)).withRequestBody(equalTo(data)));
+        Request actualRequest = assertThat(server.getRequests()).hasSize(1).actual().get(0);
+        assertThat(actualRequest.method()).isEqualTo("PUT");
+        assertThat(actualRequest.body()).isEqualTo(data);
     }
 
     @Test
@@ -222,7 +253,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setUrl(url);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.getPort());
+        runner.setProxy("localhost", proxy.getListeningPort());
         // When
         runner.run(script, new HashMap<String, String>());
         // Then
@@ -230,12 +261,8 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        proxy.verify(
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
-        server.verify(
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
+        Request actualRequest = assertThat(proxy.getRequests()).hasSize(1).actual().get(0);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
     }
 
     @Test
@@ -249,19 +276,15 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
         // When
-        runner.setProxy("localhost", proxy.getPort());
+        runner.setProxy("localhost", proxy.getListeningPort());
         runner.run(script, Collections.emptyMap());
         runner.setProxy("", 0);
         runner.run(script, Collections.emptyMap());
         // Then
-        proxy.verify(
-                1,
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
-        server.verify(
-                2,
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
+        Request actualRequest = assertThat(proxy.getRequests()).hasSize(1).actual().get(0);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
+        actualRequest = assertThat(server.getRequests()).hasSize(1).actual().get(0);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
     }
 
     @Test
@@ -281,8 +304,9 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        server.verify(getRequestedFor(urlMatching(PATH_SERVER_REDIRECT)));
-        server.verify(getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+        var requests = assertThat(server.getRequests()).hasSize(2).actual();
+        assertThat(requests.get(0).uri()).endsWith(PATH_SERVER_REDIRECT);
+        assertThat(requests.get(1).uri()).endsWith(PATH_SERVER_FILE);
     }
 
     @Test
@@ -296,7 +320,6 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setFollowRedirects(false);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.getPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then
@@ -304,8 +327,8 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        server.verify(getRequestedFor(urlMatching(PATH_SERVER_REDIRECT)));
-        server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+        Request serverRequest = assertThat(server.getRequests()).hasSize(1).actual().get(0);
+        assertThat(serverRequest.uri()).isEqualTo(PATH_SERVER_REDIRECT);
     }
 
     @Test
@@ -318,7 +341,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setUrl(url);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.getPort());
+        runner.setProxy("localhost", proxy.getListeningPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then
@@ -326,12 +349,13 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        proxy.verify(
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
-        server.verify(
-                getRequestedFor(urlMatching(PATH_SERVER_FILE))
-                        .withHeader("Host", matching(getHostPort())));
+        var requests = assertThat(proxy.getRequests()).hasSize(2).actual();
+        Request actualRequest = requests.get(0);
+        assertThat(actualRequest.uri()).endsWith(PATH_SERVER_REDIRECT);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
+        actualRequest = requests.get(1);
+        assertThat(actualRequest.uri()).endsWith(PATH_SERVER_FILE);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
     }
 
     @Test
@@ -345,7 +369,7 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         request.setFollowRedirects(false);
         script.add(request);
         ZestBasicRunner runner = new ZestBasicRunner();
-        runner.setProxy("localhost", proxy.getPort());
+        runner.setProxy("localhost", proxy.getListeningPort());
         // When
         runner.run(script, Collections.emptyMap());
         // Then
@@ -353,10 +377,9 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo(method);
         assertThat(request.getUrl()).isEqualTo(url);
-        proxy.verify(
-                getRequestedFor(urlMatching(PATH_SERVER_REDIRECT))
-                        .withHeader("Host", matching(getHostPort())));
-        server.verify(0, getRequestedFor(urlMatching(PATH_SERVER_FILE)));
+        Request actualRequest = assertThat(proxy.getRequests()).hasSize(1).actual().get(0);
+        assertThat(actualRequest.uri()).endsWith(PATH_SERVER_REDIRECT);
+        assertThat(actualRequest.headers()).contains(Map.entry("host", getHostPort()));
     }
 
     @Test

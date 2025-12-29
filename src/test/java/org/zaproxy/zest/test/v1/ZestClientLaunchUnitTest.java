@@ -3,15 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.zaproxy.zest.core.v1.ZestActionSleep;
@@ -21,17 +20,25 @@ import org.zaproxy.zest.core.v1.ZestClientWindowClose;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
+import org.zaproxy.zest.testutils.NanoServerHandler;
 
 /** */
 class ZestClientLaunchUnitTest extends ClientBasedTest {
 
     private static final String PATH_SERVER_FILE = "/test";
 
+    private boolean urlAccessed;
+
     @BeforeEach
     void before() {
-        server.stubFor(
-                get(urlEqualTo(PATH_SERVER_FILE))
-                        .willReturn(aResponse().withStatus(200).withBody("This is the response")));
+        server.addHandler(
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        urlAccessed = true;
+                        return newFixedLengthResponse("This is the response");
+                    }
+                });
     }
 
     @Test
@@ -80,11 +87,7 @@ class ZestClientLaunchUnitTest extends ClientBasedTest {
         // runner.setProxy("localhost", 8090);
         runner.run(script, null);
 
-        verifyUrlAccessed(PATH_SERVER_FILE);
-    }
-
-    private void verifyUrlAccessed(String filePath) {
-        server.verify(getRequestedFor(urlMatching(filePath)));
+        assertThat(urlAccessed).isTrue();
     }
 
     @Test
@@ -104,7 +107,7 @@ class ZestClientLaunchUnitTest extends ClientBasedTest {
         // runner.setProxy("localhost", 8090);
         runner.run(script, null);
 
-        verifyUrlAccessed(PATH_SERVER_FILE);
+        assertThat(urlAccessed).isTrue();
     }
 
     @Test

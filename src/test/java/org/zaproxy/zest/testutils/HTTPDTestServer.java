@@ -6,11 +6,12 @@ package org.zaproxy.zest.testutils;
 import fi.iki.elonen.NanoHTTPD;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HTTPDTestServer extends NanoHTTPD {
 
     private List<NanoServerHandler> handlers = new ArrayList<>();
-    private List<String> requestedUris = new ArrayList<>();
+    private List<Request> requests = new ArrayList<>();
 
     private NanoServerHandler handler404 =
             new NanoServerHandler("") {
@@ -28,17 +29,21 @@ public class HTTPDTestServer extends NanoHTTPD {
         super(port);
     }
 
-    public List<String> getRequestedUris() {
-        return requestedUris;
+    public List<Request> getRequests() {
+        return requests;
     }
 
     @Override
     public Response serve(IHTTPSession session) {
-        String uri = session.getUri();
-        requestedUris.add(uri);
+        requests.add(
+                new Request(
+                        session.getUri(),
+                        session.getMethod().toString(),
+                        session.getHeaders(),
+                        NanoServerHandler.getBody(session)));
 
         for (NanoServerHandler handler : handlers) {
-            if (uri.startsWith(handler.getName())) {
+            if (handler.handles(session)) {
                 return handler.serve(session);
             }
         }
@@ -56,4 +61,7 @@ public class HTTPDTestServer extends NanoHTTPD {
     public void setHandler404(NanoServerHandler handler) {
         this.handler404 = handler;
     }
+
+    public static record Request(
+            String uri, String method, Map<String, String> headers, String body) {}
 }

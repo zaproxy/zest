@@ -20,6 +20,10 @@ public abstract class NanoServerHandler {
         return name;
     }
 
+    protected boolean handles(IHTTPSession session) {
+        return session.getUri().startsWith(getName());
+    }
+
     protected abstract Response serve(IHTTPSession session);
 
     /**
@@ -27,7 +31,7 @@ public abstract class NanoServerHandler {
      *
      * @param session the session that has the request
      */
-    protected void consumeBody(IHTTPSession session) {
+    protected static void consumeBody(IHTTPSession session) {
         try {
             session.getInputStream().skip(getBodySize(session));
         } catch (IOException e) {
@@ -42,7 +46,7 @@ public abstract class NanoServerHandler {
      * @param session the session that has the request
      * @return the size of the body
      */
-    protected int getBodySize(IHTTPSession session) {
+    protected static int getBodySize(IHTTPSession session) {
         String contentLengthHeader = session.getHeaders().get("content-length");
         if (contentLengthHeader == null) {
             return 0;
@@ -69,7 +73,7 @@ public abstract class NanoServerHandler {
      * @param session the session that has the request
      * @return the body
      */
-    public String getBody(IHTTPSession session) {
+    public static String getBody(IHTTPSession session) {
         int contentLength = getBodySize(session);
         if (contentLength == 0) {
             return "";

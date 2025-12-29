@@ -3,11 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.test.v1;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
 import java.io.StringWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestLoopClientElements;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
+import org.zaproxy.zest.testutils.NanoServerHandler;
 
 /** */
 class ZestLoopClientElementUnitTest extends ClientBasedTest {
@@ -39,9 +40,13 @@ class ZestLoopClientElementUnitTest extends ClientBasedTest {
 
     @BeforeEach
     void before() {
-        server.stubFor(
-                get(urlEqualTo(PATH_SERVER_FILE))
-                        .willReturn(aResponse().withStatus(200).withBody(HTML_RESPONSE)));
+        server.addHandler(
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        return newFixedLengthResponse(HTML_RESPONSE);
+                    }
+                });
     }
 
     @Test
