@@ -40,7 +40,6 @@ dependencies {
 
     implementation("io.github.classgraph:classgraph:4.8.184")
 
-    testImplementation("org.wiremock:wiremock:3.10.0")
     testImplementation("org.mockito:mockito-core:5.15.2")
     testImplementation("org.nanohttpd:nanohttpd-webserver:2.3.1")
     testImplementation("org.assertj:assertj-core:3.27.3")

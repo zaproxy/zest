@@ -9,12 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,11 +19,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.zaproxy.zest.core.v1.ZestClientElementClick;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
-import org.zaproxy.zest.core.v1.ZestClientLaunch;
 import org.zaproxy.zest.core.v1.ZestClientWindowResize;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
-import org.zaproxy.zest.testutils.HTTPDTestServer;
 import org.zaproxy.zest.testutils.NanoServerHandler;
 
 /** Unit test for {@link ZestClientElementClick}. */
@@ -67,25 +62,10 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                     </html>
                     """);
 
-    private HTTPDTestServer nano;
-
-    @BeforeEach
-    void startServer() throws IOException {
-        nano = new HTTPDTestServer(0);
-        nano.start();
-    }
-
-    @AfterEach
-    void stopServer() {
-        if (nano != null) {
-            nano.stop();
-        }
-    }
-
     @Test
     void shouldNotClickMissingElement() {
         // Given
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(PATH_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -94,7 +74,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                 });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
-        script.add(new TestClientLaunch(WINDOW_HANDLE));
+        script.add(createClientLaunch());
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "missing"));
 
         // When / Then
@@ -111,7 +91,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
     @MethodSource("baseCases")
     void shouldClickElement(String response) throws Exception {
         // Given
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(PATH_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -119,7 +99,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                     }
                 });
         AtomicReference<Boolean> formSubmitted = new AtomicReference<>(false);
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(FORM_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -129,7 +109,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                 });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
-        script.add(new TestClientLaunch(WINDOW_HANDLE));
+        script.add(createClientLaunch());
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "login"));
 
         // When
@@ -149,7 +129,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
     @MethodSource("resizeCases")
     void shouldClickElementAfterWindowResize(String response, int size) throws Exception {
         // Given
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(PATH_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -157,7 +137,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                     }
                 });
         AtomicReference<Boolean> formSubmitted = new AtomicReference<>(false);
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(FORM_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -167,7 +147,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                 });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
-        script.add(new TestClientLaunch(WINDOW_HANDLE));
+        script.add(createClientLaunch());
         script.add(new ZestClientWindowResize(WINDOW_HANDLE, size, size));
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", "login"));
 
@@ -182,7 +162,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
     @ValueSource(strings = {"l2", "l3"})
     void shouldClickObscuredElement(String element) throws Exception {
         // Given
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(PATH_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -211,7 +191,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                     }
                 });
         AtomicReference<Boolean> formSubmitted = new AtomicReference<>(false);
-        nano.addHandler(
+        server.addHandler(
                 new NanoServerHandler(FORM_SERVER_FILE) {
                     @Override
                     protected Response serve(IHTTPSession session) {
@@ -221,7 +201,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
                 });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
-        script.add(new TestClientLaunch(WINDOW_HANDLE));
+        script.add(createClientLaunch());
         script.add(new ZestClientElementClick(WINDOW_HANDLE, "id", element));
 
         // When
@@ -231,13 +211,7 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
         assertThat(formSubmitted.get()).isTrue();
     }
 
-    private class TestClientLaunch extends ZestClientLaunch {
-
-        TestClientLaunch(String windowHandle) {
-            super(
-                    windowHandle,
-                    "firefox",
-                    "http://localhost:" + nano.getListeningPort() + PATH_SERVER_FILE);
-        }
+    private TestClientLaunch createClientLaunch() {
+        return new TestClientLaunch(WINDOW_HANDLE, PATH_SERVER_FILE);
     }
 }
