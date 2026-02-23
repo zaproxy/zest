@@ -42,6 +42,10 @@ public class ZestJSON {
      * @return the zest element
      */
     public static ZestElement fromString(String str) {
+        if (str == null || str.isBlank()) {
+            return null;
+        }
+
         ZestElement ze;
         try {
             ze = getJsonMapper().readValue(str, ZestElement.class);
