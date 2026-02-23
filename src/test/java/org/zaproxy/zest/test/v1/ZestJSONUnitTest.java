@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.zaproxy.zest.core.v1.ZestActionPrint;
 import org.zaproxy.zest.core.v1.ZestConditional;
 import org.zaproxy.zest.core.v1.ZestElement;
@@ -148,6 +150,16 @@ class ZestJSONUnitTest {
         // Then
         assertThat(element.getElementType()).isEqualTo(expectedElement.getElementType());
         assertThat(ZestJSON.toString(element)).isEqualTo(ZestJSON.toString(expectedElement));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"  "})
+    void shouldConvertNullAndEmptyJsonStringToNullZestElement(String json) {
+        // When
+        ZestElement element = ZestJSON.fromString(json);
+        // Then
+        assertThat(element).isNull();
     }
 
     @Test
