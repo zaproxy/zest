@@ -26,25 +26,22 @@ application {
 sourceSets.test.resources.srcDirs 'examples'
 
 dependencies {
-    implementation (
-             'org.apache.httpcomponents:httpclient:4.5.8',
-             'org.seleniumhq.selenium:selenium-java:4.39.0',
-             'org.seleniumhq.selenium:htmlunit3-driver:4.34.0',
-             'net.htmlparser.jericho:jericho-html:3.1')
+    implementation libs.classgraph
+    implementation libs.httpcomponents
+    implementation platform(libs.jackson.bom)
+    implementation libs.jackson.annotations
+    implementation libs.jackson.core
+    implementation libs.jackson.databind
+    implementation libs.jackson.dataformat.yaml
+    implementation libs.jericho
+    implementation libs.selenium.htmlunit3Driver
+    implementation libs.selenium.java
 
-    implementation(platform("com.fasterxml.jackson:jackson-bom:2.20.1"))
-    implementation("com.fasterxml.jackson.core:jackson-core")
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.core:jackson-annotations")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
-
-    implementation("io.github.classgraph:classgraph:4.8.184")
-
-    testImplementation("org.mockito:mockito-core:5.15.2")
-    testImplementation("org.nanohttpd:nanohttpd-webserver:2.3.1")
-    testImplementation("org.assertj:assertj-core:3.27.3")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
+    testImplementation libs.nanohttpdWebserver
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly libs.junit.platformLauncher
 }
 
 jar {
@@ -81,7 +78,7 @@ spotless {
 
         licenseHeaderFile "$projectDir/gradle/spotless/license.java"
 
-        googleJavaFormat("1.25.2").aosp()
+        googleJavaFormat(libs.versions.googleJavaFormat.get()).aosp()
     }
 }
 
