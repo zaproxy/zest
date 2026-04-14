@@ -1,0 +1,19 @@
+[versions]
+googleJavaFormat = "1.25.2"
+
+[libraries]
+assertj-core = "org.assertj:assertj-core:3.27.3"
+classgraph = "io.github.classgraph:classgraph:4.8.184"
+httpcomponents = "org.apache.httpcomponents:httpclient:4.5.8"
+jericho = "net.htmlparser.jericho:jericho-html:3.1"
+jackson-bom = "com.fasterxml.jackson:jackson-bom:2.20.1"
+jackson-core.module = "com.fasterxml.jackson.core:jackson-core"
+jackson-databind.module = "com.fasterxml.jackson.core:jackson-databind"
+jackson-annotations.module = "com.fasterxml.jackson.core:jackson-annotations"
+jackson-dataformat-yaml.module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+junit-jupiter = "org.junit.jupiter:junit-jupiter:5.11.4"
+junit-platformLauncher = "org.junit.platform:junit-platform-launcher:1.11.4"
+mockito-core = "org.mockito:mockito-core:5.15.2"
+nanohttpdWebserver = "org.nanohttpd:nanohttpd-webserver:2.3.1"
+selenium-htmlunit3Driver = "org.seleniumhq.selenium:htmlunit3-driver:4.34.0"
+selenium-java = "org.seleniumhq.selenium:selenium-java:4.39.0"
