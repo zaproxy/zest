@@ -9,3 +9,14 @@ updates:
         applies-to: version-updates
         patterns:
         - "*"
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      gradle:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "gradle-wrapper"
