@@ -227,7 +227,7 @@ class ZestClientElementSubmitUnitTest extends ClientBasedTest {
                 assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
         assertThat(ex)
                 .hasMessageContaining(
-                        "Expected condition failed: waiting for element to be clickable: By.id: test-submit");
+                        "Expected condition failed: waiting for element found by By.id: test-submit to be clickable");
     }
 
     @Test
@@ -267,7 +267,7 @@ class ZestClientElementSubmitUnitTest extends ClientBasedTest {
                 assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
         assertThat(ex)
                 .hasMessageContaining(
-                        "Expected condition failed: waiting for element to be clickable: By.id: test-submit");
+                        "Expected condition failed: waiting for element found by By.id: test-submit to be clickable");
     }
 
     @Test

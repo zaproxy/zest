@@ -1,9 +1,12 @@
 [versions]
 googleJavaFormat = "1.25.2"
+graaljs = "25.0.2"
 
 [libraries]
 assertj-core = "org.assertj:assertj-core:3.27.7"
 classgraph = "io.github.classgraph:classgraph:4.8.184"
+graalvm-js = { module = "org.graalvm.js:js-community", version.ref = "graaljs" }
+graalvm-js-scriptengine = { module = "org.graalvm.js:js-scriptengine", version.ref = "graaljs" }
 httpcomponents = "org.apache.httpcomponents:httpclient:4.5.14"
 jericho = "net.htmlparser.jericho:jericho-html:3.4"
 jackson-bom = "com.fasterxml.jackson:jackson-bom:2.21.2"

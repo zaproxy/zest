@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
 import org.zaproxy.zest.core.v1.ZestActionInvoke;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestResponse;
@@ -37,10 +35,6 @@ class ZestActionInvokeUnitTest {
     }
 
     @Test
-    @EnabledForJreRange(
-            disabledReason = "JavaScript engine not present.",
-            min = JRE.JAVA_8,
-            max = JRE.JAVA_11)
     void testSimpleJsScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
         inv.setVariableName("test");
@@ -57,10 +51,6 @@ class ZestActionInvokeUnitTest {
     }
 
     @Test
-    @EnabledForJreRange(
-            disabledReason = "JavaScript engine not present.",
-            min = JRE.JAVA_8,
-            max = JRE.JAVA_11)
     void testParamJsScript() throws Exception {
         ZestActionInvoke inv = new ZestActionInvoke();
         inv.setVariableName("test");
@@ -128,10 +118,6 @@ class ZestActionInvokeUnitTest {
     }
 
     @Test
-    @EnabledForJreRange(
-            disabledReason = "JavaScript engine not present.",
-            min = JRE.JAVA_8,
-            max = JRE.JAVA_11)
     void shouldReplaceVariablesPassedAsParameters() throws Exception {
         // Given
         String varName = "VarName";
