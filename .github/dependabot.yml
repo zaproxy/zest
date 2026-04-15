@@ -20,3 +20,4 @@ updates:
           - "*"
     ignore:
       - dependency-name: "gradle-wrapper"
+      - dependency-name: "com.diffplug.spotless*" # newer versions lead to runtime error, will need to update the common zap plugin first
