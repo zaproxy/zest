@@ -7,8 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -617,7 +615,7 @@ public class ZestBasicRunner implements ZestRunner, ZestRuntime {
     @Override
     public void addWebDriver(String handle, WebDriver wd) {
         webDriverMap.put(handle, wd);
-        wd.manage().timeouts().implicitlyWait(Duration.of(10, ChronoUnit.SECONDS));
+        ZestUtils.turnOnImplicitWait(wd);
     }
 
     @Override

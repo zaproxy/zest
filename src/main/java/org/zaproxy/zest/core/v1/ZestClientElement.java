@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.zaproxy.zest.impl.ZestUtils;
 
 /** An abstract class representing an action on a client element. */
 public abstract class ZestClientElement extends ZestClient {
@@ -90,13 +91,22 @@ public abstract class ZestClientElement extends ZestClient {
 
             if (this.waitForMsec > 0) {
                 WebDriverWait wait = new WebDriverWait(wd, Duration.ofMillis(waitForMsec));
-                return wait.until(getExpectedCondition(by));
+                try {
+                    return wait.until(getExpectedCondition(by));
+                } catch (Exception e) {
+                    // Ignore, as some frameworks keep elements hidden until you act on them
+                    return ZestUtils.withoutImplicitWait(wd, () -> findElement(wd, by));
+                }
             }
-            return wd.findElement(by);
+            return findElement(wd, by);
 
         } catch (Exception e) {
             throw new ZestClientFailException(this, e);
         }
+    }
+
+    private WebElement findElement(WebDriver wd, By by) {
+        return wd.findElement(by);
     }
 
     /**

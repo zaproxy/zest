@@ -5,6 +5,7 @@ package org.zaproxy.zest.test.v1;
 
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -226,12 +227,13 @@ class ZestClientElementSubmitUnitTest extends ClientBasedTest {
         ZestClientFailException ex =
                 assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
         assertThat(ex)
-                .hasMessageContaining(
-                        "Expected condition failed: waiting for element found by By.id: test-submit to be clickable");
+                .message()
+                .contains("org.openqa.selenium.NoSuchElementException: Unable to locate element:")
+                .contains("test-submit");
     }
 
     @Test
-    void shouldFailIfElementEnabledAfterWaiting() {
+    void shouldSubmitDisabledElementWhenClickableWaitFailsButElementInDom() throws Exception {
         // Given
         server.addHandler(
                 new NanoServerHandler(PATH_SERVER_FILE) {
@@ -249,25 +251,13 @@ class ZestClientElementSubmitUnitTest extends ClientBasedTest {
                 });
         ZestScript script = new ZestScript();
         runner = new ZestBasicRunner();
-        TestClientLaunch clientLaunch =
-                new TestClientLaunch(
-                        "windowHandle",
-                        """
-                        setTimeout(() => {
-                            document.getElementById("test-submit").disabled = false;
-                        }, "10000");
-                        """);
-        script.add(clientLaunch);
+        script.add(new ZestClientLaunch("windowHandle", "firefox", getServerUrl(PATH_SERVER_FILE)));
         script.add(
                 newZestClientElementSubmit(
                         "windowHandle", "id", "test-submit", (int) TimeUnit.SECONDS.toMillis(5)));
 
         // When / Then
-        ZestClientFailException ex =
-                assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
-        assertThat(ex)
-                .hasMessageContaining(
-                        "Expected condition failed: waiting for element found by By.id: test-submit to be clickable");
+        assertDoesNotThrow(() -> runner.run(script, null));
     }
 
     @Test
