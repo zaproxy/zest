@@ -3,14 +3,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.zaproxy.zest.impl;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import org.openqa.selenium.WebDriver;
 import org.zaproxy.zest.core.v1.ZestResponse;
 
 public class ZestUtils {
+
+    private static final int DEFAULT_IMPLICIT_WAIT_SECONDS = 10;
 
     public static List<String> getForms(ZestResponse response) {
         List<String> list = new ArrayList<>();
@@ -48,5 +54,24 @@ public class ZestUtils {
             }
         }
         return list;
+    }
+
+    public static void turnOffImplicitWait(WebDriver wd) {
+        wd.manage().timeouts().implicitlyWait(Duration.of(0, ChronoUnit.SECONDS));
+    }
+
+    public static void turnOnImplicitWait(WebDriver wd) {
+        wd.manage()
+                .timeouts()
+                .implicitlyWait(Duration.of(DEFAULT_IMPLICIT_WAIT_SECONDS, ChronoUnit.SECONDS));
+    }
+
+    public static <T> T withoutImplicitWait(WebDriver wd, Supplier<? extends T> function) {
+        turnOffImplicitWait(wd);
+        try {
+            return function.get();
+        } finally {
+            turnOnImplicitWait(wd);
+        }
     }
 }

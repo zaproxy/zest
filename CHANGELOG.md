@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Restore JSON deserialization behaviour.
+- Handle text (and similar) input elements which only become visible when interacted with.
 
 ## [0.35.0] - 2025-12-22
 ### Removed
