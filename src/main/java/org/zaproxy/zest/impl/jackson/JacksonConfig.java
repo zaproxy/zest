@@ -80,15 +80,21 @@ public final class JacksonConfig {
 
         // Scan for the Zest package and register all ZestElement subtypes
         // TODO Remove runtime dependency on ClassGraph
-        try (ScanResult scanResult = new ClassGraph().acceptPackages(ZEST_PACKAGE).scan()) {
+        try (ScanResult scanResult =
+                new ClassGraph()
+                        .enableClasspath()
+                        .enableNonSystemModules()
+                        .enableClassInfo()
+                        .acceptPackages(ZEST_PACKAGE)
+                        .scan()) {
             NamedType[] subtypes =
-                    scanResult.getSubclasses(ZestElement.class).stream()
+                    scanResult.getAllSubclasses(ZestElement.class).stream()
                             .mapMulti(
                                     (ClassInfo classInfo, Consumer<Class<?>> consumer) -> {
-                                        final Class<?> classRef = classInfo.loadClass();
-                                        if (classRef != null) {
-                                            // Pass the classRef along for subtype registration
-                                            consumer.accept(classRef);
+                                        try {
+                                            consumer.accept(Class.forName(classInfo.getName()));
+                                        } catch (ClassNotFoundException e) {
+                                            // Should not happen, loading own classes.
                                         }
                                     })
                             .map(NamedType::new)
