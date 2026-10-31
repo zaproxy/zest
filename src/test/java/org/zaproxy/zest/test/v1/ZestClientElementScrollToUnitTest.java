@@ -93,7 +93,7 @@ class ZestClientElementScrollToUnitTest extends ClientBasedTest {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
         // Then
-        long scrollY = (long) jsExecutor.executeScript("return window.scrollY;");
+        long scrollY = ((Number) jsExecutor.executeScript("return window.scrollY;")).longValue();
         boolean isInView =
                 element.isDisplayed()
                         && location.getY() >= scrollY
