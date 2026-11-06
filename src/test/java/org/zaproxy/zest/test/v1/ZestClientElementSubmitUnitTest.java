@@ -13,8 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.JavascriptExecutor;
 import org.zaproxy.zest.core.v1.ZestClientElementSubmit;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
@@ -24,6 +28,7 @@ import org.zaproxy.zest.core.v1.ZestRuntime;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
+import org.zaproxy.zest.testutils.ShadowDomPage;
 
 /** Unit test for {@link ZestClientElementSubmit}. */
 class ZestClientElementSubmitUnitTest extends ClientBasedTest {
@@ -376,6 +381,32 @@ class ZestClientElementSubmitUnitTest extends ClientBasedTest {
         assertEquals(copy.getWindowHandle(), original.getWindowHandle());
         assertEquals(copy.getElement(), original.getElement());
         assertEquals(copy.isEnabled(), original.isEnabled());
+    }
+
+    @Nested
+    class ShadowDom extends ClientBasedTest {
+
+        @ParameterizedTest(name = "{0} {1}")
+        @MethodSource("org.zaproxy.zest.testutils.ShadowDomPage#cases")
+        void shouldSubmitElement(String browser, List<String> modes, int delayMs) throws Exception {
+            // Given
+            ZestClientElementSubmit element =
+                    new ZestClientElementSubmit("", "cssSelector", "#field");
+            ZestScript script =
+                    ShadowDomPage.setup(
+                            server,
+                            this::getServerUrl,
+                            browser,
+                            element,
+                            modes,
+                            delayMs,
+                            "initial");
+            runner = new ZestBasicRunner();
+            // When
+            runner.run(script, null);
+            // Then
+            assertThat(ShadowDomPage.result(runner)).isEqualTo(ShadowDomPage.SUBMITTED);
+        }
     }
 
     private ZestClientElementSubmit newZestClientElementSubmit(

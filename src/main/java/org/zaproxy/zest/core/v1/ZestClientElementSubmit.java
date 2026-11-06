@@ -4,8 +4,12 @@
 package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -32,9 +36,22 @@ public class ZestClientElementSubmit extends ZestClientElement {
         } catch (UnsupportedOperationException e) {
             // This can fail in the input element is not in a form, as per the OWASP Juice Shop
             // login!
-            el.sendKeys(Keys.RETURN);
+            sendReturn(runtime, el);
         }
         return null;
+    }
+
+    private void sendReturn(ZestRuntime runtime, WebElement el) throws ZestClientFailException {
+        try {
+            el.sendKeys(Keys.RETURN);
+        } catch (ElementNotInteractableException e) {
+            if (getShadowPath() == null || getShadowPath().isEmpty()) {
+                throw new ZestClientFailException(this, e);
+            }
+            WebDriver wd = runtime.getWebDriver(getWindowHandle());
+            ((JavascriptExecutor) wd).executeScript("arguments[0].focus();", el);
+            new Actions(wd).sendKeys(Keys.RETURN).perform();
+        }
     }
 
     @Override

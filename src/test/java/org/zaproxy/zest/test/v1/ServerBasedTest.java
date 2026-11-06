@@ -38,7 +38,11 @@ public abstract class ServerBasedTest {
     protected class TestClientLaunch extends ZestClientLaunch {
 
         TestClientLaunch(String windowHandle, String path) {
-            super(windowHandle, "firefox", getServerUrl(path));
+            this(windowHandle, "firefox", path);
+        }
+
+        TestClientLaunch(String windowHandle, String browser, String path) {
+            super(windowHandle, browser, getServerUrl(path));
         }
     }
 }
