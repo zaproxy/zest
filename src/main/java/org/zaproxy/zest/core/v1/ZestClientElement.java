@@ -4,6 +4,8 @@
 package org.zaproxy.zest.core.v1;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +22,7 @@ public abstract class ZestClientElement extends ZestClient {
     private String type = null;
     private String element = null;
     private int waitForMsec = 0;
+    private List<String> shadowPath;
 
     public ZestClientElement(String windowHandle, String type, String element, int waitForMsec) {
         super();
@@ -72,6 +75,40 @@ public abstract class ZestClientElement extends ZestClient {
         this.waitForMsec = waitForMsec;
     }
 
+    /**
+     * Gets the CSS selectors of the shadow hosts, outermost first, containing the element.
+     *
+     * <p>Each selector is relative to the root (document or shadow root) that contains the host,
+     * and the {@link #getElement() element} is relative to the shadow root of the last host. The
+     * {@link #getType() type} must be {@code cssSelector} when the path is not empty.
+     *
+     * @return the shadow path, might be {@code null} or empty if the element is not in a shadow
+     *     root.
+     */
+    public List<String> getShadowPath() {
+        return shadowPath;
+    }
+
+    public void setShadowPath(List<String> shadowPath) {
+        this.shadowPath = shadowPath;
+    }
+
+    private By createBy(ZestRuntime runtime) {
+        if (shadowPath == null || shadowPath.isEmpty()) {
+            return ZestScript.getBy(
+                    runtime.replaceVariablesInString(this.getElement(), false), type);
+        }
+        if (!"cssSelector".equalsIgnoreCase(type)) {
+            return null;
+        }
+        List<String> path = new ArrayList<>(shadowPath.size() + 1);
+        for (String host : shadowPath) {
+            path.add(runtime.replaceVariablesInString(host, false));
+        }
+        path.add(runtime.replaceVariablesInString(element, false));
+        return new ShadowBy(path);
+    }
+
     public WebElement getWebElement(ZestRuntime runtime) throws ZestClientFailException {
 
         WebDriver wd = runtime.getWebDriver(this.getWindowHandle());
@@ -82,9 +119,7 @@ public abstract class ZestClientElement extends ZestClient {
         }
 
         try {
-            By by =
-                    ZestScript.getBy(
-                            runtime.replaceVariablesInString(this.getElement(), false), type);
+            By by = createBy(runtime);
             if (by == null) {
                 throw new ZestClientFailException(this, "Unsupported type: " + type);
             }
@@ -131,6 +166,9 @@ public abstract class ZestClientElement extends ZestClient {
         copy.setEnabled(this.isEnabled());
         copy.setWaitForMsec(this.getWaitForMsec());
         copy.setWindowHandle(this.getWindowHandle());
+        if (shadowPath != null) {
+            copy.setShadowPath(new ArrayList<>(shadowPath));
+        }
         return copy;
     }
 }

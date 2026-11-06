@@ -4,7 +4,11 @@
 package org.zaproxy.zest.core.v1;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -30,7 +34,17 @@ public class ZestClientElementSendKeys extends ZestClientElement {
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
         String str = runtime.replaceVariablesInString(value, false);
-        this.getWebElement(runtime).sendKeys(str);
+        WebElement element = this.getWebElement(runtime);
+        try {
+            element.sendKeys(str);
+        } catch (ElementNotInteractableException e) {
+            if (getShadowPath() == null || getShadowPath().isEmpty()) {
+                throw new ZestClientFailException(this, e);
+            }
+            WebDriver wd = runtime.getWebDriver(getWindowHandle());
+            ((JavascriptExecutor) wd).executeScript("arguments[0].focus();", element);
+            new Actions(wd).sendKeys(str).perform();
+        }
         return str;
     }
 

@@ -12,6 +12,7 @@ import fi.iki.elonen.NanoHTTPD.Response;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,6 +24,7 @@ import org.zaproxy.zest.core.v1.ZestClientWindowResize;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
+import org.zaproxy.zest.testutils.ShadowDomPage;
 
 /** Unit test for {@link ZestClientElementClick}. */
 class ZestClientElementClickUnitTest extends ClientBasedTest {
@@ -209,6 +211,32 @@ class ZestClientElementClickUnitTest extends ClientBasedTest {
 
         // Then
         assertThat(formSubmitted.get()).isTrue();
+    }
+
+    @Nested
+    class ShadowDom {
+
+        @ParameterizedTest(name = "{0} {1}")
+        @MethodSource("org.zaproxy.zest.testutils.ShadowDomPage#cases")
+        void shouldClickElement(String browser, List<String> modes, int delayMs) throws Exception {
+            // Given
+            ZestClientElementClick element =
+                    new ZestClientElementClick("", "cssSelector", "#button");
+            ZestScript script =
+                    ShadowDomPage.setup(
+                            server,
+                            ZestClientElementClickUnitTest.this::getServerUrl,
+                            browser,
+                            element,
+                            modes,
+                            delayMs,
+                            "");
+            runner = new ZestBasicRunner();
+            // When
+            runner.run(script, null);
+            // Then
+            assertThat(ShadowDomPage.result(runner)).isEqualTo(ShadowDomPage.CLICKED);
+        }
     }
 
     private TestClientLaunch createClientLaunch() {

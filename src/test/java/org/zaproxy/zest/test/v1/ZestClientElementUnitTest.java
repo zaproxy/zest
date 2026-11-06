@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -20,6 +22,7 @@ import org.zaproxy.zest.core.v1.ZestClientElementAssign;
 import org.zaproxy.zest.core.v1.ZestClientElementClear;
 import org.zaproxy.zest.core.v1.ZestClientElementSendKeys;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
+import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
@@ -180,6 +183,32 @@ class ZestClientElementUnitTest extends ClientBasedTest {
                 timeTakenMs < TimeUnit.SECONDS.toMillis(10),
                 "Expected visibility wait to succeed without waiting the full timeout: "
                         + timeTakenMs);
+    }
+
+    @Test
+    void shouldSerialiseAndDeserialiseShadowPath() {
+        // Given
+        ZestClientElementClear clear =
+                new ZestClientElementClear(WINDOW_HANDLE, "cssSelector", "#button");
+        clear.setShadowPath(List.of("#host0", "div > div"));
+        // When
+        String json = ZestJSON.toString(clear);
+        ZestClientElementClear result = (ZestClientElementClear) ZestJSON.fromString(json);
+        // Then
+        assertThat(result.getShadowPath()).containsExactly("#host0", "div > div");
+    }
+
+    @Test
+    void shouldDeepCopyShadowPath() {
+        // Given
+        ZestClientElementClear clear =
+                new ZestClientElementClear(WINDOW_HANDLE, "cssSelector", "#button");
+        clear.setShadowPath(new ArrayList<>(List.of("#host0")));
+        // When
+        ZestClientElementClear copy = clear.deepCopy();
+        clear.getShadowPath().add("#host1");
+        // Then
+        assertThat(copy.getShadowPath()).containsExactly("#host0");
     }
 
     private void serveHtml(String html) {
