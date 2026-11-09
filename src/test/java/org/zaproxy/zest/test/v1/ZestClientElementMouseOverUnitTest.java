@@ -10,7 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
+import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +23,7 @@ import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
+import org.zaproxy.zest.testutils.ShadowDomPage;
 
 /** Unit test for {@link ZestClientElementMouseOver}. */
 class ZestClientElementMouseOverUnitTest extends ClientBasedTest {
@@ -104,5 +109,32 @@ class ZestClientElementMouseOverUnitTest extends ClientBasedTest {
         assertEquals(copy.getWindowHandle(), original.getWindowHandle());
         assertEquals(copy.getElement(), original.getElement());
         assertEquals(copy.isEnabled(), original.isEnabled());
+    }
+
+    @Nested
+    class ShadowDom {
+
+        @ParameterizedTest(name = "{0} {1}")
+        @MethodSource("org.zaproxy.zest.testutils.ShadowDomPage#cases")
+        void shouldMouseOverElement(String browser, List<String> modes, int delayMs)
+                throws Exception {
+            // Given
+            ZestClientElementMouseOver element =
+                    new ZestClientElementMouseOver("", "cssSelector", "#button");
+            ZestScript script =
+                    ShadowDomPage.setup(
+                            server,
+                            ZestClientElementMouseOverUnitTest.this::getServerUrl,
+                            browser,
+                            element,
+                            modes,
+                            delayMs,
+                            "");
+            runner = new ZestBasicRunner();
+            // When
+            runner.run(script, null);
+            // Then
+            assertThat(ShadowDomPage.result(runner)).isEqualTo(ShadowDomPage.HOVERED);
+        }
     }
 }

@@ -32,7 +32,7 @@ public class ZestClientElementSubmit extends ZestClientElement {
         } catch (UnsupportedOperationException e) {
             // This can fail in the input element is not in a form, as per the OWASP Juice Shop
             // login!
-            el.sendKeys(Keys.RETURN);
+            sendKeys(runtime, el, Keys.RETURN);
         }
         return null;
     }

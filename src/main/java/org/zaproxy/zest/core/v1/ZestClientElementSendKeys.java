@@ -30,7 +30,8 @@ public class ZestClientElementSendKeys extends ZestClientElement {
     @Override
     public String invoke(ZestRuntime runtime) throws ZestClientFailException {
         String str = runtime.replaceVariablesInString(value, false);
-        this.getWebElement(runtime).sendKeys(str);
+        WebElement element = this.getWebElement(runtime);
+        sendKeys(runtime, element, str);
         return str;
     }
 
