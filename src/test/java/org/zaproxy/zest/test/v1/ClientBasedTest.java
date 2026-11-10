@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 
 /** Quits the browsers that might have been launched using the {@link #runner} */
-abstract class ClientBasedTest extends ServerBasedTest {
+public abstract class ClientBasedTest extends ServerBasedTest {
 
     protected ZestBasicRunner runner;
 

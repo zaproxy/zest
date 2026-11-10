@@ -10,9 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -20,6 +26,8 @@ import org.zaproxy.zest.core.v1.ZestClientElementAssign;
 import org.zaproxy.zest.core.v1.ZestClientElementClear;
 import org.zaproxy.zest.core.v1.ZestClientElementSendKeys;
 import org.zaproxy.zest.core.v1.ZestClientFailException;
+import org.zaproxy.zest.core.v1.ZestClientLaunch;
+import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
@@ -180,6 +188,153 @@ class ZestClientElementUnitTest extends ClientBasedTest {
                 timeTakenMs < TimeUnit.SECONDS.toMillis(10),
                 "Expected visibility wait to succeed without waiting the full timeout: "
                         + timeTakenMs);
+    }
+
+    @Test
+    void shouldThrowWithUnsupportedType() throws Exception {
+        // Given
+        server.addHandler(
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        return newFixedLengthResponse(VISIBLE_INPUT_HTML);
+                    }
+                });
+        ZestClientElementClear clear = new ZestClientElementClear(WINDOW_HANDLE, "unknown", "x");
+        ZestScript script = new ZestScript();
+        runner = new ZestBasicRunner();
+        script.add(new TestClientLaunch(WINDOW_HANDLE, PATH_SERVER_FILE));
+        script.add(clear);
+        // When
+        ZestClientFailException e =
+                assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+        // Then
+        assertThat(e).hasMessageContaining("Unsupported type: unknown");
+    }
+
+    @Test
+    void shouldThrowWithShadowPathAndNonCssSelectorType() throws Exception {
+        // Given
+        server.addHandler(
+                new NanoServerHandler(PATH_SERVER_FILE) {
+                    @Override
+                    protected Response serve(IHTTPSession session) {
+                        return newFixedLengthResponse(VISIBLE_INPUT_HTML);
+                    }
+                });
+        ZestClientElementClear clear =
+                new ZestClientElementClear(WINDOW_HANDLE, "xpath", "//input");
+        clear.setShadowPath(List.of("#host"));
+        ZestScript script = new ZestScript();
+        runner = new ZestBasicRunner();
+        script.add(new TestClientLaunch(WINDOW_HANDLE, PATH_SERVER_FILE));
+        script.add(clear);
+        // When
+        ZestClientFailException e =
+                assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+        // Then
+        assertThat(e)
+                .hasMessageContaining(
+                        "A shadow path requires the type cssSelector, but was: xpath");
+    }
+
+    @Test
+    void shouldSerialiseAndDeserialiseShadowPath() {
+        // Given
+        ZestClientElementClear clear =
+                new ZestClientElementClear(WINDOW_HANDLE, "cssSelector", "#button");
+        clear.setShadowPath(List.of("#host0", "div > div"));
+        // When
+        String json = ZestJSON.toString(clear);
+        ZestClientElementClear result = (ZestClientElementClear) ZestJSON.fromString(json);
+        // Then
+        assertThat(result.getShadowPath()).containsExactly("#host0", "div > div");
+    }
+
+    @Test
+    void shouldDeepCopyShadowPath() {
+        // Given
+        ZestClientElementClear clear =
+                new ZestClientElementClear(WINDOW_HANDLE, "cssSelector", "#button");
+        clear.setShadowPath(new ArrayList<>(List.of("#host0")));
+        // When
+        ZestClientElementClear copy = clear.deepCopy();
+        clear.getShadowPath().add("#host1");
+        // Then
+        assertThat(copy.getShadowPath()).containsExactly("#host0");
+    }
+
+    @Nested
+    class NotInteractable extends ClientBasedTest {
+
+        private static final String WINDOW_HANDLE = "windowHandle";
+        private static final String PATH = "/test.html";
+
+        @ParameterizedTest
+        @ValueSource(strings = {"firefox", "chrome"})
+        void shouldThrow(String browser) throws Exception {
+            // Given
+            serve("<html><body><input id='field' style='display: none'></body></html>");
+            ZestClientElementSendKeys element =
+                    new ZestClientElementSendKeys(WINDOW_HANDLE, "cssSelector", "#field", "a");
+            ZestScript script = script(browser, element);
+            // When
+            ZestClientFailException e =
+                    assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+            // Then
+            assertThat(e).hasCauseInstanceOf(ElementNotInteractableException.class);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"firefox", "chrome"})
+        void shouldThrowWhenElementInShadowRootCannotBeFocused(String browser) throws Exception {
+            // Given
+            serve(
+                    """
+                    <html><body>
+                      <input id="other" autofocus>
+                      <div id="host"></div>
+                      <script>
+                        const root = document.getElementById('host').attachShadow({mode: 'closed'});
+                        root.innerHTML = '<input id="field" disabled>';
+                      </script>
+                    </body></html>
+                    """);
+            ZestClientElementSendKeys element =
+                    new ZestClientElementSendKeys(WINDOW_HANDLE, "cssSelector", "#field", "a");
+            element.setShadowPath(List.of("#host"));
+            ZestScript script = script(browser, element);
+            // When
+            ZestClientFailException e =
+                    assertThrows(ZestClientFailException.class, () -> runner.run(script, null));
+            // Then
+            assertThat(e).hasMessageContaining("Unable to focus");
+            assertThat(
+                            runner.getWebDrivers()
+                                    .iterator()
+                                    .next()
+                                    .findElement(By.id("other"))
+                                    .getDomProperty("value"))
+                    .isEmpty();
+        }
+
+        private void serve(String html) {
+            server.addHandler(
+                    new NanoServerHandler(PATH) {
+                        @Override
+                        protected Response serve(IHTTPSession session) {
+                            return newFixedLengthResponse(html);
+                        }
+                    });
+        }
+
+        private ZestScript script(String browser, ZestClientElementSendKeys element) {
+            ZestScript script = new ZestScript();
+            runner = new ZestBasicRunner();
+            script.add(new ZestClientLaunch(WINDOW_HANDLE, browser, getServerUrl(PATH)));
+            script.add(element);
+            return script;
+        }
     }
 
     private void serveHtml(String html) {

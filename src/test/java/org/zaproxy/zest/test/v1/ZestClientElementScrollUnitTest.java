@@ -10,13 +10,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
+import java.time.Duration;
+import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.zaproxy.zest.core.v1.ZestClientElementScroll;
 import org.zaproxy.zest.core.v1.ZestJSON;
 import org.zaproxy.zest.core.v1.ZestScript;
 import org.zaproxy.zest.impl.ZestBasicRunner;
 import org.zaproxy.zest.testutils.NanoServerHandler;
+import org.zaproxy.zest.testutils.ShadowDomPage;
 
 /** Unit test for {@link ZestClientElementScroll}. */
 class ZestClientElementScrollUnitTest extends ClientBasedTest {
@@ -131,5 +138,39 @@ class ZestClientElementScrollUnitTest extends ClientBasedTest {
         // Then
         assertEquals(0, scrollX);
         assertEquals(100, scrollY);
+    }
+
+    @Nested
+    class ShadowDom {
+
+        @ParameterizedTest(name = "{0} {1}")
+        @MethodSource("org.zaproxy.zest.testutils.ShadowDomPage#cases")
+        void shouldScrollElement(String browser, List<String> modes, int delayMs) throws Exception {
+            // Given
+            ZestClientElementScroll element =
+                    new ZestClientElementScroll("", "cssSelector", "#scroller", 0, 100);
+            ZestScript script =
+                    ShadowDomPage.setup(
+                            server,
+                            ZestClientElementScrollUnitTest.this::getServerUrl,
+                            browser,
+                            element,
+                            modes,
+                            delayMs,
+                            "");
+            runner = new ZestBasicRunner();
+            // When
+            runner.run(script, null);
+            // Then
+            awaitResult();
+            assertThat(ShadowDomPage.result(runner))
+                    .startsWith(ShadowDomPage.SCROLLED_PREFIX)
+                    .isNotEqualTo(ShadowDomPage.SCROLLED_PREFIX + "0");
+        }
+
+        private void awaitResult() {
+            new WebDriverWait(ShadowDomPage.driver(runner), Duration.ofSeconds(5))
+                    .until(d -> !ShadowDomPage.result(runner).isEmpty());
+        }
     }
 }
