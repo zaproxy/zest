@@ -4,6 +4,7 @@
 package org.zaproxy.zest.impl;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.Locale;
 import javax.net.ssl.SSLContext;
@@ -22,6 +23,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -166,32 +168,8 @@ class ComponentsHttpClient implements ZestHttpClient {
 
     @Override
     public ZestResponse send(ZestRequest req) throws IOException {
-        HttpRequestBase method;
-        switch (req.getMethod()) {
-            case "GET":
-                method = new HttpGet(req.getUrl().toString());
-                break;
-            case "POST":
-                method = new HttpPost(req.getUrl().toString());
-                break;
-            case "OPTIONS":
-                method = new HttpOptions(req.getUrl().toString());
-                break;
-            case "HEAD":
-                method = new HttpHead(req.getUrl().toString());
-                break;
-            case "PUT":
-                method = new HttpPut(req.getUrl().toString());
-                break;
-            case "DELETE":
-                method = new HttpDelete(req.getUrl().toString());
-                break;
-            case "TRACE":
-                method = new HttpTrace(req.getUrl().toString());
-                break;
-            default:
-                throw new IllegalArgumentException("Method not supported: " + req.getMethod());
-        }
+        HttpRequestBase method =
+                createMethod(req.getMethod(), req.getUrl().toString(), req.getData());
 
         method.setConfig(req.isFollowRedirects() ? requestConfig : noRedirectsRequestConfig);
         setHeaders(method, req.getHeaders());
@@ -208,7 +186,8 @@ class ComponentsHttpClient implements ZestHttpClient {
         }
 
         if (method instanceof HttpEntityEnclosingRequestBase) {
-            HttpEntity requestBody = new StringEntity(req.getData(), (ContentType) null);
+            HttpEntity requestBody =
+                    new StringEntity(nullToEmpty(req.getData()), (ContentType) null);
             HttpEntityEnclosingRequestBase methodWithEntity =
                     (HttpEntityEnclosingRequestBase) method;
             methodWithEntity.setEntity(requestBody);
@@ -246,6 +225,71 @@ class ComponentsHttpClient implements ZestHttpClient {
                 responseBody,
                 code,
                 new Date().getTime() - start.getTime());
+    }
+
+    /**
+     * Creates the request for the given method. POST, PUT and PATCH always carry the request body.
+     * GET, HEAD, OPTIONS, DELETE and TRACE use their own request type when there is no body, and
+     * any other method, or one of those with a body, is sent as given, with the body.
+     */
+    static HttpRequestBase createMethod(String name, String uri, String data) {
+        boolean hasBody = data != null && !data.isEmpty();
+        switch (name) {
+            case "POST":
+                return new HttpPost(uri);
+            case "PUT":
+                return new HttpPut(uri);
+            case "PATCH":
+                return new HttpPatch(uri);
+            case "GET":
+                return hasBody ? new AnyMethodWithBody(name, uri) : new HttpGet(uri);
+            case "HEAD":
+                return hasBody ? new AnyMethodWithBody(name, uri) : new HttpHead(uri);
+            case "OPTIONS":
+                return hasBody ? new AnyMethodWithBody(name, uri) : new HttpOptions(uri);
+            case "DELETE":
+                return hasBody ? new AnyMethodWithBody(name, uri) : new HttpDelete(uri);
+            case "TRACE":
+                return hasBody ? new AnyMethodWithBody(name, uri) : new HttpTrace(uri);
+            default:
+                return hasBody ? new AnyMethodWithBody(name, uri) : new AnyMethod(name, uri);
+        }
+    }
+
+    private static String nullToEmpty(String value) {
+        return value == null ? "" : value;
+    }
+
+    /** A request with the given method and no body. */
+    private static class AnyMethod extends HttpRequestBase {
+
+        private final String method;
+
+        AnyMethod(String method, String uri) {
+            this.method = method;
+            setURI(URI.create(uri));
+        }
+
+        @Override
+        public String getMethod() {
+            return method;
+        }
+    }
+
+    /** A request with the given method and a body. */
+    private static class AnyMethodWithBody extends HttpEntityEnclosingRequestBase {
+
+        private final String method;
+
+        AnyMethodWithBody(String method, String uri) {
+            this.method = method;
+            setURI(URI.create(uri));
+        }
+
+        @Override
+        public String getMethod() {
+            return method;
+        }
     }
 
     private static void setHeaders(HttpRequestBase method, String headers) {

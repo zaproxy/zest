@@ -23,6 +23,8 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.zaproxy.zest.core.v1.ZestComment;
 import org.zaproxy.zest.core.v1.ZestRequest;
 import org.zaproxy.zest.core.v1.ZestResponse;
@@ -438,6 +440,79 @@ class ZestBasicRunnerUnitTest extends ServerBasedTest {
     private static ZestStatement disable(ZestStatement stmt) {
         stmt.setEnabled(false);
         return stmt;
+    }
+
+    @Test
+    void shouldSendPatchWithItsBody() throws Exception {
+        // Given
+        Request sent = sendToServer("PATCH", "{\"name\":\"value\"}");
+        // Then
+        assertThat(sent.method()).isEqualTo("PATCH");
+        assertThat(sent.body()).isEqualTo("{\"name\":\"value\"}");
+        assertThat(sent.headers()).containsEntry("content-length", "16");
+    }
+
+    @Test
+    void shouldSendPatchWithoutBody() throws Exception {
+        // Given
+        Request sent = sendToServer("PATCH", "");
+        // Then
+        assertThat(sent.method()).isEqualTo("PATCH");
+        assertThat(sent.body()).isEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"GET", "DELETE", "OPTIONS"})
+    void shouldSendBodyWithMethodsThatUsuallyHaveNone(String method) throws Exception {
+        // Given
+        Request sent = sendToServer(method, "a=b&c=d");
+        // Then
+        assertThat(sent.method()).isEqualTo(method);
+        assertThat(sent.body()).isEqualTo("a=b&c=d");
+        assertThat(sent.headers()).containsEntry("content-length", "7");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"GET", "DELETE", "OPTIONS"})
+    void shouldNotSendBodyWithMethodsThatUsuallyHaveNoneIfEmpty(String method) throws Exception {
+        // Given
+        Request sent = sendToServer(method, "");
+        // Then
+        assertThat(sent.method()).isEqualTo(method);
+        assertThat(sent.headers()).doesNotContainKey("content-length");
+    }
+
+    @Test
+    void shouldSendAnyOtherMethodWithBody() throws Exception {
+        // Given
+        Request sent = sendToServer("PROPFIND", "<propfind xmlns=\"DAV:\"/>");
+        // Then
+        assertThat(sent.method()).isEqualTo("PROPFIND");
+        assertThat(sent.body()).isEqualTo("<propfind xmlns=\"DAV:\"/>");
+    }
+
+    @Test
+    void shouldSendAnyOtherMethodWithoutBody() throws Exception {
+        // Given
+        Request sent = sendToServer("MKCOL", "");
+        // Then
+        assertThat(sent.method()).isEqualTo("MKCOL");
+        assertThat(sent.headers()).doesNotContainKey("content-length");
+    }
+
+    private Request sendToServer(String method, String data) throws Exception {
+        ZestScript script = new ZestScript();
+        ZestRequest request = new ZestRequest();
+        request.setMethod(method);
+        request.setUrl(createUrl(getServerUrl(PATH_SERVER_FILE)));
+        request.setData(data);
+        script.add(request);
+        ZestBasicRunner runner = new ZestBasicRunner();
+        // When
+        runner.run(script, new HashMap<String, String>());
+        // Then
+        assertThat(server.getRequests()).hasSize(1);
+        return server.getRequests().get(0);
     }
 
     private static URL createUrl(String value) throws MalformedURLException, URISyntaxException {
