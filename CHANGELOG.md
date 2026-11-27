@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update dependencies.
 
+### Fixed
+- Send requests with any method, including PATCH, and send the body with any method that has one (e.g. GET or DELETE with a body). [#370](https://github.com/zaproxy/zest/issues/370)
+
 ## [0.37.0] - 2026-11-11
 ### Added
 - Support for elements in (nested) open and closed shadow roots, through `shadowPath` in the client elements (CSS selectors only).
